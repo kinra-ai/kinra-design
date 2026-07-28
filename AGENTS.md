@@ -7,8 +7,9 @@ The package is consumed at build time; deployed sites remain self-contained.
 
 1. Check `git status --short --branch` and preserve existing work.
 2. Read `README.md` and `docs/principles.md` before changing a public token or
-   promoting a component.
-3. Run `npm run check` before handing off a change.
+   promoting a component. Read `docs/adoption.md` or `docs/releasing.md` when
+   changing the consumer or release contract.
+3. Run `npm run verify` before handing off a change.
 
 ## Boundaries
 
@@ -27,4 +28,11 @@ The package is consumed at build time; deployed sites remain self-contained.
   reserved for signal, reasoning, success, warning, and failure.
 - Motion must explain causality, progress, or spatial change. Settled state is
   static, and reduced motion retains equivalent meaning.
+- `build:reference` is intentionally not named `build`. npm treats a Git
+  dependency with a `build`, `prepare`, `prepack`, or install lifecycle script
+  as source that must be rebuilt during installation. Do not add one of those
+  scripts without reviewing that consumer cost.
+- Released tags are immutable and match the version in `package.json`.
+  Consumers pin an exact tag and upgrade deliberately; never make `main` or a
+  floating range their production dependency.
 - Do not publish or push without explicit approval.

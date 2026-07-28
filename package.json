@@ -6,6 +6,7 @@
   "type": "module",
   "files": [
     "assets",
+    "docs",
     "src/styles",
     "README.md",
     "TRADEMARKS.md"
@@ -22,8 +23,9 @@
   ],
   "scripts": {
     "dev": "astro dev --root examples/reference",
-    "build": "astro build --root examples/reference",
+    "build:reference": "astro build --root examples/reference",
     "check": "astro check --root examples/reference && npm run format:check",
+    "verify": "npm run check && npm run build:reference",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

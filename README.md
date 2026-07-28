@@ -19,20 +19,32 @@ this repository being available.
 Routes, site copy, curriculum, product claims, analytics, deployment files,
 and release artifacts stay with the site that owns them.
 
+## Consumer model
+
+This repository is not deployed as a shared runtime or CDN. Each site installs
+an exact release at build time, and Astro or the owning generator bundles the
+selected CSS and assets into that site's own static output. A design release
+therefore changes no live surface until that surface deliberately upgrades.
+
+See [`docs/adoption.md`](docs/adoption.md) for the complete consumer contract,
+including the first `kinra-learn` migration.
+
 ## Install
 
-Until an npm release is useful, pin the Git repository to a tag or commit:
+Until an npm registry release is useful, pin the public Git repository to an
+immutable tag over HTTPS:
 
 ```json
 {
   "dependencies": {
-    "@kinra/web": "github:kinra-ai/kinra-design#<tag-or-commit>"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.1.0"
   }
 }
 ```
 
-The package name and exports are already npm-compatible, so moving to a public
-registry later will not require changing imports.
+Run `npm install` and commit the consumer's lockfile. HTTPS keeps public build
+hosts credential-free. The package name and exports are already npm-compatible,
+so moving to a public registry later will not require changing imports.
 
 ## Use
 
@@ -65,21 +77,32 @@ Consumers should pin an exact tag or commit. Do not load shared CSS from a
 live CDN or use a floating Git branch: every deployed site should be
 reproducible and independently releasable.
 
+The full import applies the Kinra reset, body defaults, ambient canvas, prose,
+and primitives. Existing host themes should import only the pieces they can
+own safely. The available entry points and site-by-site guidance live in
+[`docs/adoption.md`](docs/adoption.md).
+
 ## Develop
 
 ```bash
-npm install
+npm ci
 npm run dev
-npm run check
-npm run build
+npm run verify
+npm pack --dry-run
 ```
 
 The reference site lives in `examples/reference`. The distributable package is
-limited by `files` in `package.json`; the example and toolchain are not shipped
-to consumers.
+limited by `files` in `package.json`; it includes the public guides but not the
+example, toolchain, or generated output. `build:reference` is deliberately not
+called `build`: npm treats a Git dependency containing a root `build` script as
+source that must be built during every installation, while this package already
+ships consumable CSS and SVG source.
 
-See [`docs/principles.md`](docs/principles.md) for the design contract and the
-rules for growing the package.
+Read the focused guides for the work at hand:
+
+- [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine
+- [`docs/adoption.md`](docs/adoption.md) — installing and integrating a release
+- [`docs/releasing.md`](docs/releasing.md) — versioning, verification, and tags
 
 ## License
 
