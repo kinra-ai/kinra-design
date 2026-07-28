@@ -1,0 +1,56 @@
+{
+  "name": "@kinra/web",
+  "version": "0.1.0",
+  "description": "Kinra's shared Graphite+ foundations for simple web surfaces.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "assets",
+    "src/styles",
+    "README.md",
+    "TRADEMARKS.md"
+  ],
+  "exports": {
+    ".": "./src/styles/index.css",
+    "./styles": "./src/styles/index.css",
+    "./styles/*": "./src/styles/*",
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "astro dev --root examples/reference",
+    "build": "astro build --root examples/reference",
+    "check": "astro check --root examples/reference && npm run format:check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kinra-ai/kinra-design.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kinra-ai/kinra-design/issues"
+  },
+  "homepage": "https://github.com/kinra-ai/kinra-design#readme",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "npm@11.17.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "astro": "7.1.4",
+    "prettier": "3.9.6",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "6.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true
+  }
+}

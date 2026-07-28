@@ -1,0 +1,141 @@
+@import "./tokens.css";
+
+@layer kinra.reset, kinra.base;
+
+@layer kinra.reset {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	html,
+	body {
+		margin: 0;
+		min-height: 100%;
+	}
+
+	button,
+	input,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	img,
+	svg {
+		display: block;
+		max-width: 100%;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+}
+
+@layer kinra.base {
+	html {
+		background: var(--kin-color-ground);
+		scroll-behavior: smooth;
+	}
+
+	body {
+		background: var(--kin-color-ground);
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-base);
+		line-height: 1.6;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	a {
+		color: var(--kin-color-primary);
+		text-decoration-color: var(--kin-primary-30);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+	}
+
+	a:hover {
+		color: var(--kin-color-text);
+		text-decoration-color: var(--kin-color-primary);
+	}
+
+	::selection {
+		background: var(--kin-color-primary);
+		color: var(--kin-color-ground);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--kin-color-primary);
+		outline-offset: 3px;
+	}
+
+	* {
+		scrollbar-color: var(--kin-color-rule) transparent;
+		scrollbar-width: thin;
+	}
+
+	::-webkit-scrollbar {
+		height: 7px;
+		width: 7px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: var(--kin-color-rule);
+		border-radius: 999px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--kin-color-text-muted);
+	}
+
+	.kin-sr-only {
+		border: 0;
+		clip: rect(0, 0, 0, 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		white-space: nowrap;
+		width: 1px;
+	}
+
+	.kin-sr-only:focus {
+		background: var(--kin-color-surface-raised);
+		border: 1px solid var(--kin-color-primary);
+		border-radius: var(--kin-radius-md);
+		clip: auto;
+		color: var(--kin-color-text);
+		height: auto;
+		left: var(--kin-space-3);
+		margin: 0;
+		overflow: visible;
+		padding: var(--kin-space-3) var(--kin-space-4);
+		position: fixed;
+		top: var(--kin-space-3);
+		white-space: normal;
+		width: auto;
+		z-index: 100;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
+}

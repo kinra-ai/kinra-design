@@ -1,0 +1,155 @@
+@import "./tokens.css";
+
+@layer kinra.components {
+	.kin-canvas {
+		isolation: isolate;
+		min-height: 100vh;
+		position: relative;
+	}
+
+	.kin-canvas::before {
+		background-image:
+			radial-gradient(
+				circle at 76% 8%,
+				color-mix(in srgb, var(--kin-color-primary) 7%, transparent),
+				transparent 29%
+			),
+			radial-gradient(
+				circle at 18% 88%,
+				color-mix(in srgb, var(--kin-color-reason) 4%, transparent),
+				transparent 25%
+			),
+			linear-gradient(
+				color-mix(in srgb, var(--kin-color-rule) 34%, transparent) 1px,
+				transparent 1px
+			),
+			linear-gradient(
+				90deg,
+				color-mix(in srgb, var(--kin-color-rule) 34%, transparent) 1px,
+				transparent 1px
+			);
+		background-size:
+			auto,
+			auto,
+			4rem 4rem,
+			4rem 4rem;
+		content: "";
+		inset: 0;
+		mask-image: linear-gradient(to bottom, black, transparent 72%);
+		pointer-events: none;
+		position: fixed;
+		z-index: -1;
+	}
+
+	.kin-surface {
+		background: var(--kin-surface-raised);
+		border: 1px solid var(--kin-border-subtle);
+		border-radius: var(--kin-radius-lg);
+	}
+
+	.kin-eyebrow {
+		color: var(--kin-color-primary);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	.kin-button {
+		align-items: center;
+		border: 1px solid var(--kin-color-rule);
+		border-radius: var(--kin-radius-md);
+		cursor: pointer;
+		display: inline-flex;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		font-weight: 650;
+		gap: var(--kin-space-2);
+		justify-content: center;
+		min-height: 2.75rem;
+		padding: var(--kin-space-3) var(--kin-space-5);
+		text-decoration: none;
+		transition:
+			background var(--kin-duration-normal) ease,
+			border-color var(--kin-duration-normal) ease,
+			color var(--kin-duration-normal) ease,
+			transform var(--kin-duration-normal) var(--kin-ease-out);
+	}
+
+	.kin-button:hover {
+		transform: translateY(-1px);
+	}
+
+	.kin-button--primary {
+		background: var(--kin-color-primary);
+		border-color: var(--kin-color-primary);
+		color: var(--kin-color-ground);
+	}
+
+	.kin-button--primary:hover {
+		background: var(--kin-color-text);
+		border-color: var(--kin-color-text);
+		color: var(--kin-color-ground);
+	}
+
+	.kin-button--quiet {
+		background: var(--kin-surface-raised);
+		color: var(--kin-color-text-subtle);
+	}
+
+	.kin-button--quiet:hover {
+		background: var(--kin-surface-primary);
+		border-color: var(--kin-primary-30);
+		color: var(--kin-color-text);
+	}
+
+	.kin-status {
+		align-items: center;
+		color: var(--kin-color-text-subtle);
+		display: inline-flex;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		gap: var(--kin-space-2);
+	}
+
+	.kin-status::before {
+		background: var(--kin-color-text-muted);
+		border-radius: 50%;
+		content: "";
+		height: 0.4rem;
+		width: 0.4rem;
+	}
+
+	.kin-status[data-state="running"]::before {
+		animation: kin-status-pulse 1.8s var(--kin-ease-standard) infinite;
+		background: var(--kin-color-primary);
+		box-shadow: var(--kin-glow-primary);
+	}
+
+	.kin-status[data-state="success"]::before {
+		background: var(--kin-color-success);
+	}
+
+	.kin-status[data-state="warning"]::before {
+		background: var(--kin-color-warning);
+	}
+
+	.kin-status[data-state="error"]::before {
+		background: var(--kin-color-error);
+	}
+}
+
+@keyframes kin-status-pulse {
+	0%,
+	100% {
+		opacity: 0.65;
+		transform: scale(0.9);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.15);
+	}
+}

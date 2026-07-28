@@ -1,0 +1,306 @@
+---
+import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+
+const colours = [
+	["Ground", "--kin-color-ground"],
+	["Text", "--kin-color-text"],
+	["Primary", "--kin-color-primary"],
+	["Reason", "--kin-color-reason"],
+	["Success", "--kin-color-success"],
+	["Warning", "--kin-color-warning"],
+	["Error", "--kin-color-error"],
+];
+---
+
+<ReferenceLayout
+	title="Kinra design"
+	description="The shared Graphite+ design foundation for Kinra web surfaces."
+>
+	<header class="site-header">
+		<a href="/" aria-label="Kinra design home">
+			<img src={wordmarkUrl} alt="Kinra" />
+			<span>design</span>
+		</a>
+		<span class="kin-status" data-state="running">Reference surface</span>
+	</header>
+
+	<main id="main">
+		<section class="hero kin-prose">
+			<p class="kin-eyebrow">Graphite+ foundations</p>
+			<h1>One visual language.<br />Different jobs.</h1>
+			<p>
+				Shared tokens, assets, and low-level patterns give Learn, Docs, Get, and
+				future surfaces a recognizable Kinra identity without forcing them into
+				one template.
+			</p>
+			<div class="actions">
+				<a class="kin-button kin-button--primary" href="#foundations"
+					>See the system</a
+				>
+				<a
+					class="kin-button kin-button--quiet"
+					href="https://github.com/kinra-ai/kinra-design"
+				>
+					View source
+				</a>
+			</div>
+		</section>
+
+		<section id="foundations" class="section" aria-labelledby="colour-heading">
+			<div class="section-heading">
+				<p class="kin-eyebrow">01 / Colour roles</p>
+				<h2 id="colour-heading">Colour carries meaning.</h2>
+				<p>
+					Cyan is live signal. Periwinkle is reasoning. Status colours report
+					real state.
+				</p>
+			</div>
+
+			<div class="swatches">
+				{
+					colours.map(([label, token]) => (
+						<div class="swatch kin-surface">
+							<span style={`--swatch: var(${token})`} />
+							<strong>{label}</strong>
+							<code>{token}</code>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="section split" aria-labelledby="type-heading">
+			<div class="section-heading">
+				<p class="kin-eyebrow">02 / Type roles</p>
+				<h2 id="type-heading">Shared hierarchy, contextual voice.</h2>
+				<p>
+					Interface and prose stacks are separate roles, so each surface can fit
+					its job.
+				</p>
+			</div>
+
+			<article class="kin-prose prose-sample">
+				<h2>Work at the right focal distance</h2>
+				<p>
+					A shared system should make common choices easy without erasing the
+					character of the thing being built.
+				</p>
+				<blockquote>
+					<p>
+						The abstraction is earned when two real surfaces need the same
+						responsibility.
+					</p>
+				</blockquote>
+				<p>
+					Import the whole foundation with <code>@kinra/web/styles</code>, or
+					use only its tokens.
+				</p>
+			</article>
+		</section>
+
+		<section class="section" aria-labelledby="state-heading">
+			<div class="section-heading">
+				<p class="kin-eyebrow">03 / Truthful state</p>
+				<h2 id="state-heading">Settled things stay settled.</h2>
+				<p>
+					Only running work moves. Every state keeps an explicit text label.
+				</p>
+			</div>
+
+			<div class="state-row kin-surface">
+				<span class="kin-status">Idle</span>
+				<span class="kin-status" data-state="running">Running</span>
+				<span class="kin-status" data-state="success">Complete</span>
+				<span class="kin-status" data-state="warning">Needs attention</span>
+				<span class="kin-status" data-state="error">Failed</span>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<span>Kinra design</span>
+		<span>Build-time shared. Independently deployed.</span>
+	</footer>
+</ReferenceLayout>
+
+<style>
+	.site-header,
+	main,
+	footer {
+		margin-inline: auto;
+		max-width: var(--kin-measure-wide);
+		width: calc(100% - 2 * clamp(var(--kin-space-5), 5vw, var(--kin-space-10)));
+	}
+
+	.site-header {
+		align-items: center;
+		border-bottom: 1px solid var(--kin-border-quiet);
+		display: flex;
+		justify-content: space-between;
+		min-height: 5.5rem;
+	}
+
+	.site-header a {
+		align-items: center;
+		display: flex;
+		gap: var(--kin-space-4);
+		text-decoration: none;
+	}
+
+	.site-header img {
+		height: auto;
+		width: 7.25rem;
+	}
+
+	.site-header a span {
+		border-left: 1px solid var(--kin-color-rule);
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-xs);
+		font-weight: 650;
+		letter-spacing: 0.15em;
+		padding-left: var(--kin-space-4);
+		text-transform: uppercase;
+	}
+
+	.hero {
+		max-width: 58rem;
+		padding-block: clamp(var(--kin-space-10), 12vw, var(--kin-space-12));
+	}
+
+	.hero .kin-eyebrow {
+		font-size: var(--kin-text-xs);
+		margin-bottom: var(--kin-space-5);
+	}
+
+	.hero h1 {
+		font-size: clamp(3rem, 9vw, 6.75rem);
+		margin-bottom: var(--kin-space-7);
+	}
+
+	.hero > p:not(.kin-eyebrow) {
+		max-width: 45rem;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-space-3);
+		margin-top: var(--kin-space-8);
+	}
+
+	.section {
+		border-top: 1px solid var(--kin-border-quiet);
+		padding-block: var(--kin-space-11);
+	}
+
+	.section-heading {
+		max-width: 40rem;
+	}
+
+	.section-heading h2 {
+		font-size: clamp(1.75rem, 4vw, 2.75rem);
+		letter-spacing: -0.04em;
+		line-height: 1.15;
+		margin: var(--kin-space-4) 0;
+	}
+
+	.section-heading > p:last-child {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		margin: 0;
+	}
+
+	.swatches {
+		display: grid;
+		gap: var(--kin-space-3);
+		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+		margin-top: var(--kin-space-8);
+	}
+
+	.swatch {
+		padding: var(--kin-space-3);
+	}
+
+	.swatch > span {
+		background: var(--swatch);
+		border: 1px solid var(--kin-border-subtle);
+		border-radius: var(--kin-radius-md);
+		display: block;
+		height: 5rem;
+		margin-bottom: var(--kin-space-3);
+	}
+
+	.swatch strong,
+	.swatch code {
+		display: block;
+	}
+
+	.swatch strong {
+		font-size: var(--kin-text-sm);
+	}
+
+	.swatch code {
+		color: var(--kin-color-text-muted);
+		font-size: 0.625rem;
+		margin-top: var(--kin-space-1);
+	}
+
+	.split {
+		display: grid;
+		gap: clamp(var(--kin-space-8), 8vw, var(--kin-space-12));
+		grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr);
+	}
+
+	.prose-sample {
+		--kin-font-heading: var(--kin-font-mono);
+		margin-top: 0;
+	}
+
+	.prose-sample h2 {
+		margin-top: 0;
+	}
+
+	.state-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-space-6);
+		margin-top: var(--kin-space-8);
+		padding: var(--kin-space-6);
+	}
+
+	footer {
+		border-top: 1px solid var(--kin-border-quiet);
+		color: var(--kin-color-text-muted);
+		display: flex;
+		font-size: var(--kin-text-xs);
+		justify-content: space-between;
+		padding-block: var(--kin-space-7);
+	}
+
+	@media (max-width: 48rem) {
+		.site-header .kin-status {
+			display: none;
+		}
+
+		.split {
+			grid-template-columns: 1fr;
+		}
+
+		footer {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: var(--kin-space-2);
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.hero h1 {
+			font-size: 2.7rem;
+		}
+
+		.actions .kin-button {
+			width: 100%;
+		}
+	}
+</style>

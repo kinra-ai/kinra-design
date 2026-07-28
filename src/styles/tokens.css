@@ -1,0 +1,129 @@
+/* Graphite+ role tokens. Public custom properties use the kin- namespace. */
+
+:root {
+	color-scheme: dark;
+
+	/* Colour roles */
+	--kin-color-ground: #101114;
+	--kin-color-ground-deep: #0c0d10;
+	--kin-color-surface: #14171d;
+	--kin-color-surface-raised: #1a1d23;
+	--kin-color-text: #e3e3e6;
+	--kin-color-text-subtle: #b4b8bf;
+	--kin-color-text-muted: #8c9099;
+	--kin-color-primary: #5fbfd6;
+	--kin-color-primary-strong: #3a9fc8;
+	--kin-color-reason: #9e97d2;
+	--kin-color-success: #5fc198;
+	--kin-color-warning: #d6a855;
+	--kin-color-error: #e5786e;
+	--kin-color-code-string: #83b692;
+	--kin-color-rule: #2a2e36;
+	--kin-color-transparent: transparent;
+
+	/* Derived surfaces */
+	--kin-border-subtle: color-mix(
+		in srgb,
+		var(--kin-color-rule) 68%,
+		transparent
+	);
+	--kin-border-quiet: color-mix(
+		in srgb,
+		var(--kin-color-rule) 42%,
+		transparent
+	);
+	--kin-surface-panel: color-mix(
+		in srgb,
+		var(--kin-color-surface) 92%,
+		transparent
+	);
+	--kin-surface-raised: color-mix(
+		in srgb,
+		var(--kin-color-surface-raised) 88%,
+		transparent
+	);
+	--kin-surface-primary: color-mix(
+		in srgb,
+		var(--kin-color-primary) 8%,
+		transparent
+	);
+	--kin-surface-reason: color-mix(
+		in srgb,
+		var(--kin-color-reason) 8%,
+		transparent
+	);
+	--kin-primary-60: color-mix(
+		in srgb,
+		var(--kin-color-primary) 60%,
+		transparent
+	);
+	--kin-primary-30: color-mix(
+		in srgb,
+		var(--kin-color-primary) 30%,
+		transparent
+	);
+	--kin-primary-18: color-mix(
+		in srgb,
+		var(--kin-color-primary) 18%,
+		transparent
+	);
+	--kin-primary-12: color-mix(
+		in srgb,
+		var(--kin-color-primary) 12%,
+		transparent
+	);
+
+	/* Typography roles */
+	--kin-font-sans:
+		Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		sans-serif;
+	--kin-font-mono:
+		"SFMono-Regular", "Cascadia Code", "Roboto Mono", "DejaVu Sans Mono",
+		"Liberation Mono", monospace;
+	--kin-font-ui: var(--kin-font-mono);
+	--kin-font-heading: var(--kin-font-ui);
+	--kin-font-prose: var(--kin-font-sans);
+	--kin-font-code: var(--kin-font-mono);
+	--kin-text-xs: 0.6875rem;
+	--kin-text-sm: 0.8125rem;
+	--kin-text-base: 1rem;
+	--kin-text-lg: 1.125rem;
+	--kin-text-xl: 1.375rem;
+
+	/* Spacing */
+	--kin-space-1: 0.25rem;
+	--kin-space-2: 0.5rem;
+	--kin-space-3: 0.75rem;
+	--kin-space-4: 1rem;
+	--kin-space-5: 1.25rem;
+	--kin-space-6: 1.5rem;
+	--kin-space-7: 2rem;
+	--kin-space-8: 2.5rem;
+	--kin-space-9: 3rem;
+	--kin-space-10: 4rem;
+	--kin-space-11: 5rem;
+	--kin-space-12: 6.5rem;
+
+	/* Shape and depth */
+	--kin-radius-sm: 0.3125rem;
+	--kin-radius-md: 0.5rem;
+	--kin-radius-lg: 0.75rem;
+	--kin-radius-xl: 1.125rem;
+	--kin-shadow-panel: 0 1rem 3rem
+		color-mix(in srgb, var(--kin-color-ground-deep) 50%, transparent);
+	--kin-shadow-float: 0 1.375rem 4.375rem
+		color-mix(in srgb, var(--kin-color-ground-deep) 70%, transparent);
+	--kin-glow-primary: 0 0 1.75rem var(--kin-primary-12);
+
+	/* Causal motion */
+	--kin-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--kin-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--kin-duration-fast: 120ms;
+	--kin-duration-normal: 180ms;
+	--kin-duration-slow: 320ms;
+
+	/* Reading and shell measures */
+	--kin-measure-prose: 48.75rem;
+	--kin-measure-wide: 75rem;
+	--kin-sidebar-width: 18.25rem;
+}
