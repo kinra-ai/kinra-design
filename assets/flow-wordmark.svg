@@ -1,0 +1,12 @@
+<!-- flow wordmark — Kinra canonical grid. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1369 300">
+<defs><linearGradient id="flb" x1="0" y1="0" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#73c6e5"/><stop offset=".25" stop-color="#52b5dc"/><stop offset=".5" stop-color="#3a9fc8"/><stop offset=".75" stop-color="#2b82ae"/><stop offset="1" stop-color="#1a6490"/>
+</linearGradient></defs>
+<g fill="url(#flb)" fill-rule="evenodd">
+<path d="M0 300V0H246V83H86V136H166V219H86V300Z"/>
+<path d="M321 300V0H407V219H567V300Z"/>
+<path d="M642 300V0H888V300ZM728 83V219H802V83Z"/>
+<path d="M963 300V0H1049V219H1123V83H1209V219H1283V0H1369V300Z"/>
+</g>
+</svg>

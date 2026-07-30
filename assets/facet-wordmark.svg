@@ -1,0 +1,14 @@
+<!-- facet wordmark — drawn on the Kinra canonical grid (300 unit height,
+     86 stems, 83 bars, 75 letter gap, shared blue gradient). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1530 300">
+<defs><linearGradient id="fb" x1="0" y1="0" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#73c6e5"/><stop offset=".25" stop-color="#52b5dc"/><stop offset=".5" stop-color="#3a9fc8"/><stop offset=".75" stop-color="#2b82ae"/><stop offset="1" stop-color="#1a6490"/>
+</linearGradient></defs>
+<g fill="url(#fb)" fill-rule="evenodd">
+<path d="M0 300V0H246V83H86V136H166V219H86V300Z"/>
+<path d="M321 300V83H401V0H567V300H481V219H407V300ZM407 83V136H481V83Z"/>
+<path d="M642 300V0H888V83H728V219H888V300Z"/>
+<path d="M963 300V0H1209V83H1049V136H1129V219H1209V300Z"/>
+<path d="M1364 300V83H1284V0H1530V83H1450V300Z"/>
+</g>
+</svg>

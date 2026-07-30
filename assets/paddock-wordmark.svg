@@ -1,0 +1,15 @@
+<!-- paddock wordmark — Kinra canonical grid. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2172 300">
+<defs><linearGradient id="pab" x1="0" y1="0" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#73c6e5"/><stop offset=".25" stop-color="#52b5dc"/><stop offset=".5" stop-color="#3a9fc8"/><stop offset=".75" stop-color="#2b82ae"/><stop offset="1" stop-color="#1a6490"/>
+</linearGradient></defs>
+<g fill="url(#pab)" fill-rule="evenodd">
+<path d="M0 300V0H246V164H86V300ZM86 83V136H160V83Z"/>
+<path d="M321 300V83H401V0H567V300H481V219H407V300ZM407 83V136H481V83Z"/>
+<path d="M642 300V0H808V83H888V219H808V300ZM728 83V219H802V83Z"/>
+<path d="M963 300V0H1129V83H1209V219H1129V300ZM1049 83V219H1123V83Z"/>
+<path d="M1284 300V0H1530V300ZM1370 83V219H1444V83Z"/>
+<path d="M1605 300V0H1851V83H1691V219H1851V300Z"/>
+<path d="M1926 300V0H2012V136H2086V0H2172V164H2092V219H2172V300H2086V219H2012V300Z"/>
+</g>
+</svg>

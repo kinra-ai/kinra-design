@@ -1,0 +1,13 @@
+<!-- scope wordmark — Kinra canonical grid. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1530 300">
+<defs><linearGradient id="scb" x1="0" y1="0" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#73c6e5"/><stop offset=".25" stop-color="#52b5dc"/><stop offset=".5" stop-color="#3a9fc8"/><stop offset=".75" stop-color="#2b82ae"/><stop offset="1" stop-color="#1a6490"/>
+</linearGradient></defs>
+<g fill="url(#scb)" fill-rule="evenodd">
+<path d="M0 0H246V83H86V136H246V300H0V219H160V164H0Z"/>
+<path d="M321 300V0H567V83H407V219H567V300Z"/>
+<path d="M642 300V0H888V300ZM728 83V219H802V83Z"/>
+<path d="M963 300V0H1209V164H1049V300ZM1049 83V136H1123V83Z"/>
+<path d="M1284 300V0H1530V83H1370V136H1450V219H1530V300Z"/>
+</g>
+</svg>
