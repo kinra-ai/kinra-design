@@ -89,6 +89,17 @@
 	--kin-text-base: 1rem;
 	--kin-text-lg: 1.125rem;
 	--kin-text-xl: 1.375rem;
+	--kin-text-display: clamp(2.75rem, 5vw, 4.5rem);
+	--kin-text-title: clamp(2.4rem, 4.4vw, 4rem);
+	--kin-text-section: clamp(1.9rem, 3.2vw, 3rem);
+	--kin-weight-quiet: 430;
+	--kin-weight-heading: 580;
+	--kin-weight-display: 620;
+	--kin-weight-strong: 650;
+	--kin-leading-display: 0.98;
+	--kin-leading-heading: 1.08;
+	--kin-tracking-display: -0.065em;
+	--kin-tracking-heading: -0.052em;
 
 	/* Spacing */
 	--kin-space-1: 0.25rem;
@@ -123,7 +134,14 @@
 	--kin-duration-slow: 320ms;
 
 	/* Reading and shell measures */
-	--kin-measure-prose: 48.75rem;
-	--kin-measure-wide: 75rem;
+	--kin-measure-prose: 46rem;
+	--kin-measure-wide: 82rem;
+	--kin-page-gutter: clamp(1.25rem, 4vw, 3.75rem);
 	--kin-sidebar-width: 18.25rem;
+}
+
+@media (max-width: 42rem) {
+	:root {
+		--kin-text-display: clamp(2.5rem, 10vw, 3.5rem);
+	}
 }

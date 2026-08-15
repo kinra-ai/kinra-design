@@ -3,6 +3,11 @@
 Kinra's shared design foundation for small public web surfaces. It carries the
 Graphite+ identity without coupling every site to the same generator.
 
+The foundation follows Kinra's field-guide voice: flat graphite ground, a
+quiet top wash, restrained cyan and periwinkle signals, mono interface
+hierarchy, readable prose, hairline rules, and open space. Bounded or elevated
+surfaces remain explicit exceptions.
+
 The package is build-time only. Astro, Starlight, or another consumer imports
 the source it needs and emits a self-contained site; browsers never depend on
 this repository being available.
@@ -11,6 +16,7 @@ this repository being available.
 
 - role-named design tokens
 - opt-in base, canvas, prose, and primitive styles
+- the shared responsive page frame proven across public and operating surfaces
 - canonical brand assets
 - generic components once at least two real sites need the same abstraction
 - thin adapters for generators such as Starlight
@@ -27,7 +33,7 @@ selected CSS and assets into that site's own static output. A design release
 therefore changes no live surface until that surface deliberately upgrades.
 
 See [`docs/adoption.md`](docs/adoption.md) for the complete consumer contract,
-including the first `kinra-learn` migration.
+the current adoption map, and the `0.2.0` migration notes.
 
 ## Install
 
@@ -41,6 +47,10 @@ immutable tag over HTTPS:
   }
 }
 ```
+
+`v0.1.0` remains the latest immutable release. The current source prepares the
+`0.2.0` visual contract; test it by pinning an exact commit, never `main`, until
+an approved tag exists.
 
 Run `npm install` and commit the consumer's lockfile. HTTPS keeps public build
 hosts credential-free. The package name and exports are already npm-compatible,
@@ -77,7 +87,7 @@ Consumers should pin an exact tag or commit. Do not load shared CSS from a
 live CDN or use a floating Git branch: every deployed site should be
 reproducible and independently releasable.
 
-The full import applies the Kinra reset, body defaults, ambient canvas, prose,
+The full import applies the Kinra reset, body defaults, quiet canvas, prose,
 and primitives. Existing host themes should import only the pieces they can
 own safely. The available entry points and site-by-site guidance live in
 [`docs/adoption.md`](docs/adoption.md).

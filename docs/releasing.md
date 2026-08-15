@@ -2,11 +2,13 @@
 
 Releases are immutable Git tags. Consumers pin an exact tag and upgrade on
 their own schedule. The package is not currently published to an npm registry.
+The current source prepares `0.2.0`; `v0.1.0` remains the latest immutable tag
+until that release is explicitly approved.
 
 ## Versioning
 
-The tag and `package.json` version always match: package version `0.1.0` is tag
-`v0.1.0`.
+The tag and `package.json` version always match: package version `0.2.0` is tag
+`v0.2.0`.
 
 - Patch releases fix the implementation without removing or renaming public
   tokens, exports, assets, or classes.
@@ -44,8 +46,8 @@ Then push the verified commit and its tag:
 
 ```bash
 git push origin main
-git tag -a v0.1.0 -m "@kinra/web v0.1.0"
-git push origin v0.1.0
+git tag -a v0.2.0 -m "@kinra/web v0.2.0"
+git push origin v0.2.0
 ```
 
 Creating or pushing a release tag requires explicit maintainer approval. An

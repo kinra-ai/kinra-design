@@ -8,43 +8,34 @@
 	}
 
 	.kin-canvas::before {
-		background-image:
-			radial-gradient(
-				circle at 76% 8%,
-				color-mix(in srgb, var(--kin-color-primary) 7%, transparent),
-				transparent 29%
-			),
-			radial-gradient(
-				circle at 18% 88%,
-				color-mix(in srgb, var(--kin-color-reason) 4%, transparent),
-				transparent 25%
-			),
-			linear-gradient(
-				color-mix(in srgb, var(--kin-color-rule) 34%, transparent) 1px,
-				transparent 1px
-			),
-			linear-gradient(
-				90deg,
-				color-mix(in srgb, var(--kin-color-rule) 34%, transparent) 1px,
-				transparent 1px
-			);
-		background-size:
-			auto,
-			auto,
-			4rem 4rem,
-			4rem 4rem;
+		background: linear-gradient(
+			to bottom,
+			color-mix(in srgb, var(--kin-color-surface) 38%, transparent),
+			transparent 34rem
+		);
 		content: "";
 		inset: 0;
-		mask-image: linear-gradient(to bottom, black, transparent 72%);
 		pointer-events: none;
 		position: fixed;
 		z-index: -1;
 	}
 
+	.kin-frame {
+		margin-inline: auto;
+		max-width: var(--kin-measure-wide);
+		width: calc(100% - 2 * var(--kin-page-gutter));
+	}
+
 	.kin-surface {
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-surface--raised {
 		background: var(--kin-surface-raised);
-		border: 1px solid var(--kin-border-subtle);
+		border-color: var(--kin-border-subtle);
 		border-radius: var(--kin-radius-lg);
+		box-shadow: var(--kin-shadow-panel);
 	}
 
 	.kin-eyebrow {
@@ -74,12 +65,7 @@
 		transition:
 			background var(--kin-duration-normal) ease,
 			border-color var(--kin-duration-normal) ease,
-			color var(--kin-duration-normal) ease,
-			transform var(--kin-duration-normal) var(--kin-ease-out);
-	}
-
-	.kin-button:hover {
-		transform: translateY(-1px);
+			color var(--kin-duration-normal) ease;
 	}
 
 	.kin-button--primary {
@@ -107,19 +93,24 @@
 
 	.kin-status {
 		align-items: center;
-		color: var(--kin-color-text-subtle);
+		color: var(--kin-color-text-muted);
 		display: inline-flex;
 		font-family: var(--kin-font-ui);
-		font-size: var(--kin-text-sm);
+		font-size: var(--kin-text-xs);
 		gap: var(--kin-space-2);
+		letter-spacing: 0.03em;
 	}
 
 	.kin-status::before {
 		background: var(--kin-color-text-muted);
 		border-radius: 50%;
 		content: "";
-		height: 0.4rem;
-		width: 0.4rem;
+		height: 0.42rem;
+		width: 0.42rem;
+	}
+
+	.kin-status[data-state="reason"]::before {
+		background: var(--kin-color-reason);
 	}
 
 	.kin-status[data-state="running"]::before {

@@ -18,127 +18,196 @@ const colours = [
 	description="The shared Graphite+ design foundation for Kinra web surfaces."
 >
 	<header class="site-header">
-		<a href="/" aria-label="Kinra design home">
-			<img src={wordmarkUrl} alt="Kinra" />
-			<span>design</span>
-		</a>
-		<span class="kin-status" data-state="running">Reference surface</span>
+		<div class="site-header__inner kin-frame">
+			<a href="/" aria-label="Kinra design home">
+				<img src={wordmarkUrl} alt="Kinra" />
+				<span>design</span>
+			</a>
+			<span class="kin-status" data-state="reason">Reference surface</span>
+		</div>
 	</header>
 
 	<main id="main">
-		<section class="hero kin-prose">
-			<p class="kin-eyebrow">Graphite+ foundations</p>
-			<h1>One visual language.<br />Different jobs.</h1>
-			<p>
-				Shared tokens, assets, and low-level patterns give Learn, Docs, Get, and
-				future surfaces a recognizable Kinra identity without forcing them into
-				one template.
-			</p>
-			<div class="actions">
-				<a class="kin-button kin-button--primary" href="#foundations"
-					>See the system</a
-				>
-				<a
-					class="kin-button kin-button--quiet"
-					href="https://github.com/kinra-ai/kinra-design"
-				>
-					View source
-				</a>
+		<section class="hero kin-frame">
+			<div class="hero__copy">
+				<p class="kin-eyebrow">Graphite+ / shared web foundation</p>
+				<h1>One visual language. <em>Different jobs.</em></h1>
+				<p class="hero__lede">
+					Shared tokens, assets, and low-level patterns give product,
+					documentation, learning, and operating surfaces a recognizable Kinra
+					identity without forcing them into one template.
+				</p>
+				<div class="actions">
+					<a class="kin-button kin-button--primary" href="#foundations"
+						>Read the foundation</a
+					>
+					<a
+						class="kin-button kin-button--quiet"
+						href="https://github.com/kinra-ai/kinra-design"
+					>
+						View source
+					</a>
+				</div>
 			</div>
+
+			<aside class="foundation-field kin-surface" aria-label="Foundation map">
+				<div class="foundation-field__title">
+					<span>Foundation map</span>
+					<strong>Graphite+</strong>
+				</div>
+				<dl>
+					<div>
+						<dt>Signal</dt>
+						<dd>Cyan for public, live, and active state.</dd>
+					</div>
+					<div>
+						<dt>Reason</dt>
+						<dd>Periwinkle for inference, reflection, and context.</dd>
+					</div>
+					<div>
+						<dt>Structure</dt>
+						<dd>Graphite ground, hairline rules, and open space.</dd>
+					</div>
+					<div>
+						<dt>Motion</dt>
+						<dd>Only when the underlying state is changing.</dd>
+					</div>
+				</dl>
+				<p>
+					<span aria-hidden="true">↳</span> Composition stays with the surface.
+				</p>
+			</aside>
 		</section>
 
-		<section id="foundations" class="section" aria-labelledby="colour-heading">
-			<div class="section-heading">
-				<p class="kin-eyebrow">01 / Colour roles</p>
-				<h2 id="colour-heading">Colour carries meaning.</h2>
-				<p>
-					Cyan is live signal. Periwinkle is reasoning. Status colours report
-					real state.
-				</p>
-			</div>
-
-			<div class="swatches">
-				{
-					colours.map(([label, token]) => (
-						<div class="swatch kin-surface">
-							<span style={`--swatch: var(${token})`} />
-							<strong>{label}</strong>
-							<code>{token}</code>
-						</div>
-					))
-				}
-			</div>
-		</section>
-
-		<section class="section split" aria-labelledby="type-heading">
-			<div class="section-heading">
-				<p class="kin-eyebrow">02 / Type roles</p>
-				<h2 id="type-heading">Shared hierarchy, contextual voice.</h2>
-				<p>
-					Interface and prose stacks are separate roles, so each surface can fit
-					its job.
-				</p>
-			</div>
-
-			<article class="kin-prose prose-sample">
-				<h2>Work at the right focal distance</h2>
-				<p>
-					A shared system should make common choices easy without erasing the
-					character of the thing being built.
-				</p>
-				<blockquote>
+		<section
+			id="foundations"
+			class="section section--band"
+			aria-labelledby="colour-heading"
+		>
+			<div class="section__inner kin-frame">
+				<div class="section-heading">
+					<div>
+						<p class="kin-eyebrow">01 / Colour roles</p>
+						<h2 id="colour-heading">Colour carries meaning.</h2>
+					</div>
 					<p>
-						The abstraction is earned when two real surfaces need the same
-						responsibility.
+						Cyan is live signal. Periwinkle is reasoning. Status colours report
+						real state; ground and structure stay quiet.
 					</p>
-				</blockquote>
-				<p>
-					Import the whole foundation with <code>@kinra/web/styles</code>, or
-					use only its tokens.
-				</p>
-			</article>
+				</div>
+
+				<div class="swatches">
+					{
+						colours.map(([label, token]) => (
+							<article class="swatch">
+								<span
+									class="swatch__sample"
+									style={"--swatch: var(" + token + ")"}
+								/>
+								<strong>{label}</strong>
+								<code>{token}</code>
+							</article>
+						))
+					}
+				</div>
+			</div>
 		</section>
 
-		<section class="section" aria-labelledby="state-heading">
-			<div class="section-heading">
-				<p class="kin-eyebrow">03 / Truthful state</p>
-				<h2 id="state-heading">Settled things stay settled.</h2>
-				<p>
-					Only running work moves. Every state keeps an explicit text label.
-				</p>
-			</div>
+		<section class="section" aria-labelledby="type-heading">
+			<div class="section__inner kin-frame">
+				<div class="section-heading">
+					<div>
+						<p class="kin-eyebrow">02 / Type roles</p>
+						<h2 id="type-heading">Shared hierarchy, contextual voice.</h2>
+					</div>
+					<p>
+						Interface and prose stacks stay separate. Weight, measure, and
+						contrast establish hierarchy before decoration does.
+					</p>
+				</div>
 
-			<div class="state-row kin-surface">
-				<span class="kin-status">Idle</span>
-				<span class="kin-status" data-state="running">Running</span>
-				<span class="kin-status" data-state="success">Complete</span>
-				<span class="kin-status" data-state="warning">Needs attention</span>
-				<span class="kin-status" data-state="error">Failed</span>
+				<div class="type-specimen">
+					<div class="display-sample">
+						<p class="kin-eyebrow">Display / interface voice</p>
+						<p>Structure first. <em>Signal second.</em></p>
+					</div>
+
+					<article class="kin-prose prose-sample">
+						<h2>Work at the right focal distance</h2>
+						<p>
+							A shared system should make common choices easy without erasing
+							the character of the thing being built.
+						</p>
+						<blockquote>
+							<p>
+								The abstraction is earned when two real surfaces need the same
+								responsibility.
+							</p>
+						</blockquote>
+						<p>
+							Import the complete foundation with
+							<code>@kinra/web/styles</code>, or use only the roles a host theme
+							can own safely.
+						</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--band" aria-labelledby="state-heading">
+			<div class="section__inner kin-frame">
+				<div class="section-heading">
+					<div>
+						<p class="kin-eyebrow">03 / Truthful state</p>
+						<h2 id="state-heading">Settled things stay settled.</h2>
+					</div>
+					<p>
+						Only running work moves. Every state keeps an explicit text label
+						and never relies on colour alone.
+					</p>
+				</div>
+
+				<div class="state-list">
+					<div><span class="kin-status">Idle</span></div>
+					<div>
+						<span class="kin-status" data-state="reason">Reasoning</span>
+					</div>
+					<div>
+						<span class="kin-status" data-state="running">Running</span>
+					</div>
+					<div>
+						<span class="kin-status" data-state="success">Complete</span>
+					</div>
+					<div>
+						<span class="kin-status" data-state="warning">Needs attention</span>
+					</div>
+					<div>
+						<span class="kin-status" data-state="error">Failed</span>
+					</div>
+				</div>
 			</div>
 		</section>
 	</main>
 
 	<footer>
-		<span>Kinra design</span>
-		<span>Build-time shared. Independently deployed.</span>
+		<div class="footer__inner kin-frame">
+			<span>Kinra design</span>
+			<span>Build-time shared. Independently deployed.</span>
+		</div>
 	</footer>
 </ReferenceLayout>
 
 <style>
-	.site-header,
-	main,
-	footer {
-		margin-inline: auto;
-		max-width: var(--kin-measure-wide);
-		width: calc(100% - 2 * clamp(var(--kin-space-5), 5vw, var(--kin-space-10)));
+	.site-header {
+		background: color-mix(in srgb, var(--kin-color-ground) 95%, transparent);
+		border-bottom: 1px solid var(--kin-border-quiet);
 	}
 
-	.site-header {
+	.site-header__inner {
 		align-items: center;
-		border-bottom: 1px solid var(--kin-border-quiet);
 		display: flex;
 		justify-content: space-between;
-		min-height: 5.5rem;
+		min-height: 4.75rem;
 	}
 
 	.site-header a {
@@ -150,36 +219,58 @@ const colours = [
 
 	.site-header img {
 		height: auto;
-		width: 7.25rem;
+		width: 7.4rem;
 	}
 
 	.site-header a span {
 		border-left: 1px solid var(--kin-color-rule);
 		color: var(--kin-color-text-muted);
 		font-size: var(--kin-text-xs);
-		font-weight: 650;
+		font-weight: var(--kin-weight-strong);
 		letter-spacing: 0.15em;
 		padding-left: var(--kin-space-4);
 		text-transform: uppercase;
 	}
 
 	.hero {
-		max-width: 58rem;
-		padding-block: clamp(var(--kin-space-10), 12vw, var(--kin-space-12));
+		align-items: center;
+		display: grid;
+		gap: clamp(var(--kin-space-9), 7vw, var(--kin-space-12));
+		grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.72fr);
+		min-height: min(44rem, calc(100svh - 4.75rem));
+		padding-block: clamp(var(--kin-space-10), 9vw, 8rem);
 	}
 
-	.hero .kin-eyebrow {
-		font-size: var(--kin-text-xs);
-		margin-bottom: var(--kin-space-5);
+	.hero__copy > .kin-eyebrow {
+		margin: 0 0 var(--kin-space-6);
 	}
 
 	.hero h1 {
-		font-size: clamp(3rem, 9vw, 6.75rem);
-		margin-bottom: var(--kin-space-7);
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-display);
+		font-weight: var(--kin-weight-display);
+		letter-spacing: var(--kin-tracking-display);
+		line-height: var(--kin-leading-display);
+		margin: 0;
+		max-width: 12ch;
+		text-wrap: balance;
 	}
 
-	.hero > p:not(.kin-eyebrow) {
-		max-width: 45rem;
+	.hero h1 em,
+	.display-sample em {
+		color: var(--kin-color-text-muted);
+		font-style: normal;
+		font-weight: var(--kin-weight-quiet);
+	}
+
+	.hero__lede {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+		line-height: 1.75;
+		margin: var(--kin-space-8) 0 0;
+		max-width: 42rem;
 	}
 
 	.actions {
@@ -189,46 +280,128 @@ const colours = [
 		margin-top: var(--kin-space-8);
 	}
 
+	.foundation-field {
+		min-width: 0;
+		padding: clamp(var(--kin-space-5), 4vw, var(--kin-space-7));
+	}
+
+	.foundation-field__title {
+		align-items: flex-end;
+		border-bottom: 1px solid var(--kin-color-rule);
+		display: flex;
+		justify-content: space-between;
+		padding-bottom: var(--kin-space-4);
+	}
+
+	.foundation-field__title span,
+	.foundation-field__title strong {
+		font-size: var(--kin-text-xs);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.foundation-field__title span {
+		color: var(--kin-color-text-muted);
+	}
+
+	.foundation-field__title strong {
+		color: var(--kin-color-primary);
+	}
+
+	.foundation-field dl {
+		margin: var(--kin-space-4) 0 0;
+	}
+
+	.foundation-field dl > div {
+		border-bottom: 1px solid var(--kin-border-quiet);
+		display: grid;
+		gap: var(--kin-space-4);
+		grid-template-columns: 6.5rem 1fr;
+		padding-block: var(--kin-space-5);
+	}
+
+	.foundation-field dt {
+		color: var(--kin-color-text);
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+	}
+
+	.foundation-field dd {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.55;
+		margin: 0;
+	}
+
+	.foundation-field > p {
+		color: var(--kin-color-text-subtle);
+		font-size: var(--kin-text-xs);
+		line-height: 1.6;
+		margin: var(--kin-space-5) 0 0;
+	}
+
+	.foundation-field > p span {
+		color: var(--kin-color-primary);
+		margin-right: var(--kin-space-2);
+	}
+
 	.section {
-		border-top: 1px solid var(--kin-border-quiet);
-		padding-block: var(--kin-space-11);
+		padding-block: clamp(var(--kin-space-10), 9vw, 8rem);
+	}
+
+	.section--band {
+		background: var(--kin-color-ground-deep);
+		border-block: 1px solid var(--kin-border-quiet);
 	}
 
 	.section-heading {
-		max-width: 40rem;
+		display: grid;
+		gap: var(--kin-space-6) clamp(var(--kin-space-8), 7vw, var(--kin-space-12));
+		grid-template-columns: minmax(18rem, 0.95fr) minmax(16rem, 0.72fr);
+		margin-bottom: clamp(var(--kin-space-9), 6vw, var(--kin-space-11));
 	}
 
 	.section-heading h2 {
-		font-size: clamp(1.75rem, 4vw, 2.75rem);
-		letter-spacing: -0.04em;
-		line-height: 1.15;
-		margin: var(--kin-space-4) 0;
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-section);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: var(--kin-tracking-heading);
+		line-height: var(--kin-leading-heading);
+		margin: var(--kin-space-4) 0 0;
+		text-wrap: balance;
 	}
 
-	.section-heading > p:last-child {
-		color: var(--kin-color-text-subtle);
+	.section-heading > p {
+		align-self: end;
+		color: var(--kin-color-text-muted);
 		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-lg);
+		line-height: 1.7;
 		margin: 0;
 	}
 
 	.swatches {
+		background: var(--kin-color-rule);
 		display: grid;
-		gap: var(--kin-space-3);
-		grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-		margin-top: var(--kin-space-8);
+		gap: 1px;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		padding: 1px;
 	}
 
 	.swatch {
-		padding: var(--kin-space-3);
+		background: var(--kin-color-ground-deep);
+		min-width: 0;
+		padding: var(--kin-space-4);
 	}
 
-	.swatch > span {
+	.swatch__sample {
 		background: var(--swatch);
 		border: 1px solid var(--kin-border-subtle);
-		border-radius: var(--kin-radius-md);
 		display: block;
-		height: 5rem;
-		margin-bottom: var(--kin-space-3);
+		height: 4rem;
+		margin-bottom: var(--kin-space-4);
 	}
 
 	.swatch strong,
@@ -237,6 +410,7 @@ const colours = [
 	}
 
 	.swatch strong {
+		color: var(--kin-color-text);
 		font-size: var(--kin-text-sm);
 	}
 
@@ -244,16 +418,32 @@ const colours = [
 		color: var(--kin-color-text-muted);
 		font-size: 0.625rem;
 		margin-top: var(--kin-space-1);
+		overflow-wrap: anywhere;
 	}
 
-	.split {
+	.type-specimen {
 		display: grid;
-		gap: clamp(var(--kin-space-8), 8vw, var(--kin-space-12));
-		grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr);
+		gap: clamp(var(--kin-space-9), 8vw, var(--kin-space-12));
+		grid-template-columns: minmax(17rem, 0.8fr) minmax(22rem, 1.2fr);
+	}
+
+	.display-sample,
+	.prose-sample {
+		border-top: 1px solid var(--kin-color-rule);
+		padding-top: var(--kin-space-7);
+	}
+
+	.display-sample > p:last-child {
+		color: var(--kin-color-text);
+		font-size: var(--kin-text-section);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: var(--kin-tracking-heading);
+		line-height: var(--kin-leading-heading);
+		margin: var(--kin-space-5) 0 0;
+		text-wrap: balance;
 	}
 
 	.prose-sample {
-		--kin-font-heading: var(--kin-font-mono);
 		margin-top: 0;
 	}
 
@@ -261,21 +451,62 @@ const colours = [
 		margin-top: 0;
 	}
 
-	.state-row {
+	.state-list {
+		background: var(--kin-color-rule);
+		display: grid;
+		gap: 1px;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		padding: 1px;
+	}
+
+	.state-list > div {
+		align-items: center;
+		background: var(--kin-color-ground-deep);
 		display: flex;
-		flex-wrap: wrap;
-		gap: var(--kin-space-6);
-		margin-top: var(--kin-space-8);
-		padding: var(--kin-space-6);
+		min-height: 5rem;
+		padding: var(--kin-space-5);
 	}
 
 	footer {
-		border-top: 1px solid var(--kin-border-quiet);
+		background: var(--kin-color-ground-deep);
+		border-top: 1px solid var(--kin-color-rule);
+	}
+
+	.footer__inner {
 		color: var(--kin-color-text-muted);
 		display: flex;
-		font-size: var(--kin-text-xs);
+		font-size: 0.625rem;
 		justify-content: space-between;
-		padding-block: var(--kin-space-7);
+		letter-spacing: 0.03em;
+		padding-block: var(--kin-space-5);
+	}
+
+	@media (max-width: 64rem) {
+		.hero {
+			align-items: start;
+			grid-template-columns: 1fr;
+			min-height: 0;
+		}
+
+		.hero__copy {
+			max-width: 50rem;
+		}
+
+		.foundation-field {
+			max-width: 48rem;
+		}
+
+		.swatches {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.type-specimen {
+			grid-template-columns: 1fr;
+		}
+
+		.state-list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 
 	@media (max-width: 48rem) {
@@ -283,24 +514,34 @@ const colours = [
 			display: none;
 		}
 
-		.split {
+		.section-heading {
 			grid-template-columns: 1fr;
 		}
 
-		footer {
-			align-items: flex-start;
-			flex-direction: column;
-			gap: var(--kin-space-2);
+		.swatches,
+		.state-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.swatch:last-child {
+			grid-column: 1 / -1;
 		}
 	}
 
 	@media (max-width: 30rem) {
-		.hero h1 {
-			font-size: 2.7rem;
-		}
-
 		.actions .kin-button {
 			width: 100%;
+		}
+
+		.foundation-field dl > div {
+			gap: var(--kin-space-2);
+			grid-template-columns: 1fr;
+		}
+
+		.footer__inner {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: var(--kin-space-2);
 		}
 	}
 </style>

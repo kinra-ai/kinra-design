@@ -11,7 +11,7 @@ This package owns:
 - role-named tokens and the Graphite+ palette
 - accessibility and reduced-motion foundations
 - canonical Kinra marks
-- scoped prose, canvas, surface, button, and status primitives
+- scoped frame, prose, canvas, surface, button, and status primitives
 - future generic components and generator adapters after real reuse earns them
 
 The consumer owns:
@@ -65,19 +65,26 @@ import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
 
 <body class="kin-canvas">
   <header><img src={wordmarkUrl} alt="Kinra" /></header>
-  <main class="kin-prose"><slot /></main>
+  <main class="kin-frame kin-prose"><slot /></main>
 </body>
 ```
 
 The current public primitive classes are:
 
 - `.kin-canvas`
-- `.kin-surface`
+- `.kin-frame`
+- `.kin-surface` and the explicit `.kin-surface--raised` modifier
 - `.kin-eyebrow`
 - `.kin-button`, `.kin-button--primary`, and `.kin-button--quiet`
-- `.kin-status` with `data-state="running|success|warning|error"`
+- `.kin-status` with `data-state="reason|running|success|warning|error"`
 - `.kin-prose`
 - `.kin-sr-only`
+
+The frame uses `--kin-measure-wide` and `--kin-page-gutter`. Fluid display,
+title, and section roles are available as `--kin-text-display`,
+`--kin-text-title`, and `--kin-text-section`, with matching weight, leading,
+and tracking roles. A consumer may override these roles without copying the
+foundation's values.
 
 Site CSS should load after the package and may override role tokens rather than
 copying their values. For example, Learn can retain its mono reading voice:
@@ -87,6 +94,25 @@ copying their values. For example, Learn can retain its mono reading voice:
   --kin-font-prose: var(--kin-font-mono);
 }
 ```
+
+## Moving from 0.1 to 0.2
+
+The `0.2.0` source deliberately consolidates patterns proven independently by
+Kinra Site and Depot:
+
+- `.kin-canvas` replaces the grid and ambient glows with one quiet top wash;
+- `.kin-frame` owns the repeated 82rem measure and responsive page gutter;
+- `.kin-surface` becomes square, flat, and rule-bound by default, while
+  `.kin-surface--raised` opts into radius and shadow;
+- `.kin-prose` uses the flatter editorial treatment for quotations, code
+  blocks, tables, and rules;
+- buttons no longer lift decoratively on hover; running state remains the only
+  looping shared motion.
+
+When upgrading, remove local canvas and frame copies only after visual review.
+Add `.kin-surface--raised` anywhere the old elevated treatment carries real
+meaning. Pin the release or an exact test commit and verify desktop, mobile,
+keyboard focus, and reduced motion before deployment.
 
 ## Update a consumer
 
@@ -100,26 +126,23 @@ copying their values. For example, Learn can retain its mono reading voice:
 There is no automatic fleet-wide rollout. A tag can coexist across consumers
 for as long as each site needs.
 
-## First adoption: `kinra-learn`
+## Current adoption map
 
-Begin this work from the `kinra-learn` repository so its own instructions,
-content history, and deployment remain authoritative.
+- **Kinra Site** is the public reference consumer. It pins an exact design
+  commit, imports the complete foundation once, and owns its field-guide
+  composition, public routes, documentation shell, curriculum rendering, and
+  deployment. Kinra Learn remains the authority for lesson text; it is not a
+  second public renderer.
+- **Depot** vendors an exact released copy so its self-contained Go binary does
+  not acquire a runtime dependency. Its `depot-` app layer owns forge-specific
+  layout and interaction. Re-vendoring remains a deliberate consumer update.
+- **Kinra OS** pins an exact design commit for roles and primitives while
+  retaining an immersive, application-specific shell. Its grid and ambient
+  field serve a different job and are not evidence that the public canvas
+  should regain decorative motion or texture.
 
-1. Read that repository's `AGENTS.md` or `CLAUDE.md` and preserve the existing
-   lesson content and visual behavior.
-2. Create a static Astro application. Give lessons real routes and model the
-   Markdown curriculum as an Astro content collection.
-3. Install `@kinra/web` at `v0.1.0` and import the complete foundation from the
-   root layout.
-4. Keep Learn's lesson navigation, progress, table of contents, content model,
-   and deployment in `kinra-learn`. Replace duplicated palette, spacing,
-   reset, prose, button, and brand-asset definitions with package roles.
-5. Keep a style local when it serves only Learn. Propose moving it here only
-   after another real consumer demonstrates the same stable responsibility.
-6. Verify direct lesson URLs, browser back/forward, keyboard navigation,
-   reduced motion, narrow mobile layout, and the static production build.
-
-After Learn is stable, use the differences uncovered by that migration to
-refine the package before adopting it in Get or creating a Starlight adapter
-for Docs. Do not make the current MkDocs surface consume the full global
-stylesheet as an interim shortcut.
+The quiet canvas and responsive frame moved here only after Kinra Site and
+Depot implemented the same values independently. Route shells, documentation
+rails, product showcases, forge tables, and operating controls remain with
+their consumers until another implementation demonstrates the same stable
+responsibility.
