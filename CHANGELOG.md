@@ -7,8 +7,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Prepared on `main` as `0.2.0` in `package.json`; not yet tagged. Tagging
-`v0.2.0` requires explicit maintainer approval (see `docs/releasing.md`).
+Nothing yet.
+
+## [0.2.0] - 2026-08-16
 
 ### Changed
 
@@ -24,5 +25,6 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.1.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.2.0...main
+[0.2.0]: https://github.com/kinra-ai/kinra-design/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/kinra-ai/kinra-design/releases/tag/v0.1.0

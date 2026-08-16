@@ -7,22 +7,21 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.1.0` (`7a367ac`).
-- `main` carries a prepared but unreleased `0.2.0` (Graphite+ alignment with
-  Kinra Site). `package.json` already reads `0.2.0`; the `v0.2.0` tag does not
-  exist yet and requires explicit maintainer approval before it is pushed.
+- Latest immutable tag: `v0.2.0` (2026-08-16, Graphite+ alignment with Kinra
+  Site; approved by Blake). `package.json` matches the tag.
+- Prior release: `v0.1.0` (`7a367ac`).
 
 ## Adoption
 
 - **kinra-site** and **kinra-os** each pin the exact pre-`0.2.0` commit
-  `2089818` while the release is unreleased — a deliberate test pin, not
-  `main`.
+  `2089818` — a deliberate test pin, not `main`.
 - **depot** vendors the released `v0.1.0` tag verbatim into
   `internal/server/static/kinra/`, with provenance recorded in that
   directory's `VENDORED.md`.
-- No consumer has adopted the current `main` HEAD (`8442f6e`) yet.
+- No consumer has adopted `v0.2.0` yet; each upgrade is that consumer's
+  deliberate action.
 
 ## Next event
 
-Tagging `v0.2.0` (or amending the manifest back to match `v0.1.0`) is a
-maintainer decision, not implied by this status entry.
+Consumer upgrades to `v0.2.0`, each through the owning repository's own
+change process.

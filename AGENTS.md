@@ -1,15 +1,13 @@
 # Kinra design
 
 Kind: product · Lifecycle: active · Versioning: semver
-Deviations: `package.json` is a release-in-preparation ahead of its last tag
-(`0.2.0` vs. `v0.1.0`); see docs/releasing.md. Tagging `v0.2.0` requires
-explicit maintainer approval and is not implied by the version bump.
 
 Kinra's shared, framework-light visual foundation for simple web surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
-Real consumers pin an exact release: `kinra-site` and `kinra-os` pin an exact
-commit while `0.2.0` is unreleased, and `depot` vendors the `v0.1.0` tag (see
-`depot/internal/server/static/kinra/VENDORED.md`).
+Real consumers pin an exact release or commit: `kinra-site` and `kinra-os`
+pin the exact pre-`0.2.0` commit `2089818`, and `depot` vendors the `v0.1.0`
+tag (see `depot/internal/server/static/kinra/VENDORED.md`); see `STATUS.md`
+for current release and adoption state.
 
 ## Start here
 
