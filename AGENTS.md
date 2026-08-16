@@ -1,15 +1,25 @@
 # Kinra design
 
+Kind: product · Lifecycle: active · Versioning: semver
+Deviations: `package.json` is a release-in-preparation ahead of its last tag
+(`0.2.0` vs. `v0.1.0`); see docs/releasing.md. Tagging `v0.2.0` requires
+explicit maintainer approval and is not implied by the version bump.
+
 Kinra's shared, framework-light visual foundation for simple web surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
+Real consumers pin an exact release: `kinra-site` and `kinra-os` pin an exact
+commit while `0.2.0` is unreleased, and `depot` vendors the `v0.1.0` tag (see
+`depot/internal/server/static/kinra/VENDORED.md`).
 
 ## Start here
 
-1. Check `git status --short --branch` and preserve existing work.
+1. Check `git status --short --branch` and preserve existing work. Read
+   `STATUS.md` for current release and adoption state.
 2. Read `README.md` and `docs/principles.md` before changing a public token or
    promoting a component. Read `docs/adoption.md` or `docs/releasing.md` when
    changing the consumer or release contract.
-3. Run `npm run verify` before handing off a change.
+3. Run `npm run verify` before handing off a change (`npm run check` alone
+   for a docs-only change).
 
 ## Boundaries
 

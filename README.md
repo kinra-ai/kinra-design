@@ -113,6 +113,8 @@ Read the focused guides for the work at hand:
 - [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine
 - [`docs/adoption.md`](docs/adoption.md) — installing and integrating a release
 - [`docs/releasing.md`](docs/releasing.md) — versioning, verification, and tags
+- [`STATUS.md`](STATUS.md) — current release and adoption state
+- [`CHANGELOG.md`](CHANGELOG.md) — notable changes per release
 
 ## License
 

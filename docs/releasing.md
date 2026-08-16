@@ -39,8 +39,10 @@ Confirm that:
 
 1. `package.json` carries the intended version and Apache-2.0 declaration.
 2. the reference build accurately demonstrates the public contract
-3. the working tree is clean after the release commit
-4. the annotated tag matches the package version
+3. `CHANGELOG.md` moves the release's entries out of `[Unreleased]` under the
+   new version heading, and `STATUS.md` reflects the new latest tag
+4. the working tree is clean after the release commit
+5. the annotated tag matches the package version
 
 Then push the verified commit and its tag:
 
