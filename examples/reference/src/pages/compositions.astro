@@ -1,0 +1,109 @@
+---
+import Specimen from "../components/Specimen.astro";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Compositions"
+	description="Framework-independent layout compositions for Kinra web surfaces."
+	current="Compositions"
+>
+	<header class="catalog-intro">
+		<div class="catalog-intro__inner kin-frame">
+			<div>
+				<p class="kin-eyebrow">Compositions</p>
+				<h1>Arrange relationships, not page templates.</h1>
+			</div>
+			<p class="catalog-intro__copy">
+				These classes solve recurring spatial responsibilities. Content,
+				semantics, and visual emphasis still belong to the consumer.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Stack"
+			contract=".kin-stack · data-space"
+			description="A vertical rhythm for related children. Select a named density or override --kin-layout-space locally."
+		>
+			<div class="kin-stack" data-space="compact">
+				<div class="demo-block">
+					<strong>Heading</strong>Sets the responsibility.
+				</div>
+				<div class="demo-block">
+					<strong>Evidence</strong>Supports the claim.
+				</div>
+				<div class="demo-block"><strong>Action</strong>Advances the work.</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Cluster"
+			contract=".kin-cluster · data-align · data-justify"
+			description="A wrapping row for actions, metadata, and small peer elements."
+		>
+			<div class="kin-cluster" data-justify="between">
+				<div class="kin-cluster" data-space="compact">
+					<span class="kin-badge" data-tone="success">Verified</span>
+					<span class="kin-status" data-state="reason">Awaiting review</span>
+				</div>
+				<div class="kin-cluster" data-space="compact">
+					<button class="kin-button kin-button--quiet" type="button"
+						>Cancel</button
+					>
+					<button class="kin-button kin-button--primary" type="button"
+						>Continue</button
+					>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Fluid grid"
+			contract=".kin-grid · --kin-grid-min"
+			description="An auto-fitting grid that wraps without page-specific breakpoints."
+		>
+			<div class="kin-grid" style="--kin-grid-min: 12rem">
+				<div class="demo-block"><strong>Kin</strong>Local AI peer</div>
+				<div class="demo-block"><strong>Depot</strong>Git forge</div>
+				<div class="demo-block"><strong>Flow</strong>Coordination truth</div>
+				<div class="demo-block"><strong>Scope</strong>CAD inspection</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Split"
+			contract=".kin-split · data-ratio · data-align"
+			description="Two peer regions with optional lead or trail emphasis; collapses to source order on narrow screens."
+		>
+			<div class="kin-split" data-ratio="lead" data-align="center">
+				<div class="demo-block">
+					<strong>Primary narrative</strong>Receives more measure without
+					dictating typography or surface treatment.
+				</div>
+				<div class="demo-block">
+					<strong>Grounding context</strong>Remains a peer in accessible source
+					order.
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Sidebar"
+			contract=".kin-sidebar · data-side · --kin-sidebar-size"
+			description="A navigation or context rail beside a flexible work region; collapses without hiding either region."
+		>
+			<div class="kin-sidebar" style="--kin-sidebar-size: 11rem">
+				<aside class="demo-block demo-sidebar">
+					<strong>Reference rail</strong>Overview<br />Install<br />Contracts<br
+					/>Migration
+				</aside>
+				<div class="demo-block demo-sidebar">
+					<strong>Work region</strong>The owning product decides whether this is
+					prose, data, a canvas, or an interactive workflow.
+				</div>
+			</div>
+		</Specimen>
+	</div>
+</ReferenceLayout>

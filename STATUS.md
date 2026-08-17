@@ -11,6 +11,14 @@ adoption map; this file only tracks current state, not process.
   Site; approved by Blake). `package.json` matches the tag.
 - Prior release: `v0.1.0` (`7a367ac`).
 
+## Development
+
+- `main` contains an unreleased, additive design-system expansion: layout
+  compositions, generic operating components, surface recipes, a source-owned
+  candidate registry, and a multi-page reference catalog.
+- `package.json` remains at the latest released version until a maintainer
+  explicitly approves the next release identity and tag.
+
 ## Adoption
 
 - **kinra-site** and **kinra-os** each pin the exact pre-`0.2.0` commit
@@ -23,5 +31,6 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Consumer upgrades to `v0.2.0`, each through the owning repository's own
-change process.
+Maintainer review of the unreleased package expansion and its next release
+identity. Consumer version upgrades remain separate changes in their owning
+repositories.

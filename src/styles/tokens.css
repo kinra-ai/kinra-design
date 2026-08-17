@@ -89,6 +89,7 @@
 	--kin-text-base: 1rem;
 	--kin-text-lg: 1.125rem;
 	--kin-text-xl: 1.375rem;
+	--kin-text-2xl: 1.75rem;
 	--kin-text-display: clamp(2.75rem, 5vw, 4.5rem);
 	--kin-text-title: clamp(2.4rem, 4.4vw, 4rem);
 	--kin-text-section: clamp(1.9rem, 3.2vw, 3rem);
@@ -133,10 +134,18 @@
 	--kin-duration-normal: 180ms;
 	--kin-duration-slow: 320ms;
 
-	/* Reading and shell measures */
+	/* Controls, reading, and shell measures */
+	--kin-control-height: 2.75rem;
+	--kin-control-height-compact: 2.25rem;
+	--kin-control-padding-inline: var(--kin-space-4);
+	--kin-hit-target: 2.75rem;
+	--kin-measure-narrow: 34rem;
 	--kin-measure-prose: 46rem;
+	--kin-measure-content: 64rem;
 	--kin-measure-wide: 82rem;
 	--kin-page-gutter: clamp(1.25rem, 4vw, 3.75rem);
+	--kin-region-space: clamp(3.5rem, 8vw, 7rem);
+	--kin-layout-gap: clamp(var(--kin-space-6), 4vw, var(--kin-space-9));
 	--kin-sidebar-width: 18.25rem;
 }
 

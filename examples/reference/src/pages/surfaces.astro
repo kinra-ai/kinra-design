@@ -1,0 +1,115 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Surfaces"
+	description="Kinra surface recipes for editorial, documentation, operations, and application work."
+	current="Surfaces"
+>
+	<header class="catalog-intro">
+		<div class="catalog-intro__inner kin-frame">
+			<div>
+				<p class="kin-eyebrow">Surface recipes</p>
+				<h1>Shared roles tuned to different jobs.</h1>
+			</div>
+			<p class="catalog-intro__copy">
+				A recipe adjusts measure, density, and typographic roles. It does not
+				provide a route shell or turn unlike products into the same template.
+			</p>
+		</div>
+	</header>
+
+	<section class="catalog-section kin-frame" aria-labelledby="surface-heading">
+		<div class="catalog-heading">
+			<h2 id="surface-heading">Four focal distances</h2>
+			<p>
+				Apply <code>data-kin-surface</code> to a document or a bounded region, then
+				compose the actual experience locally.
+			</p>
+		</div>
+		<div class="surface-grid">
+			<article class="surface-sample" data-kin-surface="editorial">
+				<header class="surface-sample__header">
+					<h2>Editorial</h2>
+					<code>editorial</code>
+				</header>
+				<p class="kin-eyebrow">Field note</p>
+				<h3 class="surface-sample__title">
+					Give an idea enough room to alter pace.
+				</h3>
+				<p class="surface-sample__body">
+					Long-form reading favors generous regions, a restrained measure, and a
+					clear difference between interface and prose voices.
+				</p>
+			</article>
+
+			<article class="surface-sample" data-kin-surface="documentation">
+				<header class="surface-sample__header">
+					<h2>Documentation</h2>
+					<code>documentation</code>
+				</header>
+				<div class="surface-docs">
+					<nav aria-label="Example documentation navigation">
+						Overview<br />Install<br />Concepts<br />Reference
+					</nav>
+					<div>
+						<h3 class="surface-sample__title">Install the package</h3>
+						<p class="surface-sample__body">
+							Dense navigation and readable prose can coexist without adopting a
+							marketing-page rhythm.
+						</p>
+					</div>
+				</div>
+			</article>
+
+			<article class="surface-sample" data-kin-surface="operations">
+				<header class="surface-sample__header">
+					<h2>Operations</h2>
+					<code>operations</code>
+				</header>
+				<div class="kin-cluster" data-justify="between">
+					<h3 class="surface-sample__title">Inference endpoints</h3>
+					<span class="kin-status" data-state="success">Healthy</span>
+				</div>
+				<div class="surface-operation-row">
+					<span>kloud-a</span><span class="kin-badge" data-tone="success"
+						>Ready</span
+					>
+				</div>
+				<div class="surface-operation-row">
+					<span>local-vision</span><span class="kin-badge" data-tone="reason"
+						>Standby</span
+					>
+				</div>
+			</article>
+
+			<article class="surface-sample" data-kin-surface="application">
+				<header class="surface-sample__header">
+					<h2>Application</h2>
+					<code>application</code>
+				</header>
+				<div class="surface-application">
+					<div class="surface-application__rail">
+						Files<br />Peers<br />Tasks
+					</div>
+					<div class="surface-application__work">
+						<span>Product-owned work canvas</span>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame">
+		<div class="kin-notice" data-tone="reason">
+			<p class="kin-notice__title">
+				Recipes are a starting pressure, not a theme switcher
+			</p>
+			<p class="kin-notice__body">
+				A consumer may override any role it can own safely. Product-specific
+				grids, navigation, editors, and immersive canvases remain local.
+			</p>
+		</div>
+	</section>
+</ReferenceLayout>

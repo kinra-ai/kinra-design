@@ -1,0 +1,43 @@
+@import "./tokens.css";
+
+/*
+ * Surface recipes tune shared roles for a job. They do not provide a page
+ * template, and may be applied to a whole document or a bounded specimen.
+ * They remain unlayered so their scoped roles override the unlayered root
+ * tokens; consumer CSS loaded afterward can still override either.
+ */
+
+[data-kin-surface="editorial"] {
+	--kin-font-ui: var(--kin-font-mono);
+	--kin-font-heading: var(--kin-font-mono);
+	--kin-font-prose: var(--kin-font-sans);
+	--kin-measure-prose: 48rem;
+	--kin-region-space: clamp(4.5rem, 9vw, 8rem);
+}
+
+[data-kin-surface="documentation"] {
+	--kin-font-ui: var(--kin-font-mono);
+	--kin-font-heading: var(--kin-font-mono);
+	--kin-font-prose: var(--kin-font-sans);
+	--kin-measure-wide: 96rem;
+	--kin-page-gutter: clamp(1rem, 3vw, 2.5rem);
+	--kin-region-space: clamp(3rem, 6vw, 5rem);
+	--kin-sidebar-width: 17rem;
+}
+
+[data-kin-surface="operations"] {
+	--kin-control-height: 2.5rem;
+	--kin-grid-min: 15rem;
+	--kin-measure-wide: 96rem;
+	--kin-page-gutter: clamp(1rem, 2.5vw, 2.25rem);
+	--kin-region-space: clamp(2.5rem, 5vw, 4.5rem);
+	--kin-text-base: 0.9375rem;
+}
+
+[data-kin-surface="application"] {
+	--kin-control-height: 2.5rem;
+	--kin-layout-gap: clamp(var(--kin-space-4), 2.5vw, var(--kin-space-7));
+	--kin-measure-wide: 120rem;
+	--kin-page-gutter: clamp(0.875rem, 2vw, 2rem);
+	--kin-region-space: clamp(2rem, 4vw, 3.5rem);
+}

@@ -1,13 +1,29 @@
 ---
 import "@kinra/web/styles";
+import "@kinra/web/registry/patterns/editorial-feature/editorial-feature.css";
+import "@kinra/web/registry/patterns/narrative-intro/narrative-intro.css";
+import "@kinra/web/registry/patterns/operations-region/operations-region.css";
 import markUrl from "@kinra/web/assets/mark.svg?url";
+import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
+import "../styles/reference.css";
 
 interface Props {
 	title: string;
 	description: string;
+	current: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, current } = Astro.props;
+const navigation = [
+	["Overview", "/"],
+	["Foundations", "/foundations/"],
+	["Compositions", "/compositions/"],
+	["Components", "/components/"],
+	["Patterns", "/patterns/"],
+	["Surfaces", "/surfaces/"],
+];
+const documentTitle =
+	current === "Overview" ? title : `${title} · Kinra design`;
 ---
 
 <!doctype html>
@@ -18,10 +34,45 @@ const { title, description } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href={markUrl} />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+		<title>{documentTitle}</title>
 	</head>
-	<body class="kin-canvas">
+	<body class="kin-canvas" data-kin-surface="documentation">
 		<a class="kin-sr-only" href="#main">Skip to content</a>
-		<slot />
+		<header class="reference-header">
+			<div class="reference-header__top kin-frame">
+				<a class="reference-brand" href="/" aria-label="Kinra design home">
+					<img src={wordmarkUrl} alt="Kinra" />
+					<span>design</span>
+				</a>
+				<span class="kin-badge" data-tone="reason">Unreleased catalog</span>
+			</div>
+			<nav class="reference-nav" aria-label="Reference sections">
+				<ul class="kin-frame">
+					{
+						navigation.map(([label, href]) => (
+							<li>
+								<a
+									href={href}
+									aria-current={current === label ? "page" : undefined}
+								>
+									{label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="reference-footer">
+			<div class="kin-frame kin-cluster" data-justify="between">
+				<span>Kinra design</span>
+				<span>Shared contracts. Source-owned outcomes.</span>
+			</div>
+		</footer>
 	</body>
 </html>

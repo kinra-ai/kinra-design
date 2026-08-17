@@ -1,0 +1,129 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+
+const colours = [
+	["Ground", "--kin-color-ground"],
+	["Surface", "--kin-color-surface"],
+	["Text", "--kin-color-text"],
+	["Primary", "--kin-color-primary"],
+	["Reason", "--kin-color-reason"],
+	["Success", "--kin-color-success"],
+	["Warning", "--kin-color-warning"],
+	["Error", "--kin-color-error"],
+];
+
+const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+---
+
+<ReferenceLayout
+	title="Foundations"
+	description="Kinra design tokens for colour, typography, spacing, and motion."
+	current="Foundations"
+>
+	<header class="catalog-intro">
+		<div class="catalog-intro__inner kin-frame">
+			<div>
+				<p class="kin-eyebrow">Foundations</p>
+				<h1>Quiet structure makes real signal legible.</h1>
+			</div>
+			<p class="catalog-intro__copy">
+				Role-named values keep Kinra recognizable while allowing product
+				surfaces to change composition, density, and reading voice.
+			</p>
+		</div>
+	</header>
+
+	<section class="catalog-section kin-frame" aria-labelledby="colour-heading">
+		<div class="catalog-heading">
+			<h2 id="colour-heading">Colour roles</h2>
+			<p>
+				Ground and structure stay quiet. Cyan is public or live signal;
+				periwinkle is reasoning. Status colours report actual state.
+			</p>
+		</div>
+		<div class="swatches">
+			{
+				colours.map(([label, token]) => (
+					<article class="swatch">
+						<span class="swatch__sample" style={`--swatch: var(${token})`} />
+						<strong>{label}</strong>
+						<code>{token}</code>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="type-heading">
+		<div class="catalog-heading">
+			<h2 id="type-heading">Two voices, one hierarchy</h2>
+			<p>
+				Monospace carries interface and authored structure. Sans-serif prose
+				keeps extended reading calm and legible.
+			</p>
+		</div>
+		<div class="kin-split" data-ratio="lead" data-space="loose">
+			<div class="type-specimen">
+				<p class="kin-eyebrow">Display / interface</p>
+				<p class="type-specimen__display">
+					Structure first. <span>Signal second.</span>
+				</p>
+			</div>
+			<article class="kin-prose">
+				<h3>Work at the right focal distance</h3>
+				<p>
+					A shared system should make common choices easy without erasing the
+					character of the thing being built.
+				</p>
+				<blockquote>
+					<p>Abstraction is earned by repeated responsibility.</p>
+				</blockquote>
+				<p>
+					Product copy remains with the product. The system provides measure,
+					hierarchy, and durable defaults.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="spacing-heading">
+		<div class="catalog-heading">
+			<h2 id="spacing-heading">Spacing scale</h2>
+			<p>
+				Named steps support tight controls, ordinary content, and generous
+				regions without inventing a second product-specific scale.
+			</p>
+		</div>
+		<div class="spacing-scale" aria-label="Spacing token scale">
+			{
+				spaces.map((space) => (
+					<div class="space-token">
+						<span style={`--space: var(--kin-space-${space})`} />
+						<code>{space}</code>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="motion-heading">
+		<div class="kin-split" data-ratio="trail">
+			<div>
+				<p class="kin-eyebrow">Motion</p>
+				<h2 id="motion-heading" class="surface-sample__title">
+					Settled things stay settled.
+				</h2>
+			</div>
+			<div class="kin-stack">
+				<div class="kin-notice" data-tone="primary">
+					<p class="kin-notice__title">Causal by default</p>
+					<p class="kin-notice__body">
+						Motion may explain progress, spatial change, or a completed action.
+						It does not decorate idle state.
+					</p>
+				</div>
+				<span class="kin-status" data-state="running">Verifying package</span>
+			</div>
+		</div>
+	</section>
+</ReferenceLayout>

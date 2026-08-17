@@ -1,547 +1,125 @@
 ---
-import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
 import ReferenceLayout from "../layouts/ReferenceLayout.astro";
-
-const colours = [
-	["Ground", "--kin-color-ground"],
-	["Text", "--kin-color-text"],
-	["Primary", "--kin-color-primary"],
-	["Reason", "--kin-color-reason"],
-	["Success", "--kin-color-success"],
-	["Warning", "--kin-color-warning"],
-	["Error", "--kin-color-error"],
-];
 ---
 
 <ReferenceLayout
 	title="Kinra design"
-	description="The shared Graphite+ design foundation for Kinra web surfaces."
+	description="The framework-light design system for Kinra web products and public surfaces."
+	current="Overview"
 >
-	<header class="site-header">
-		<div class="site-header__inner kin-frame">
-			<a href="/" aria-label="Kinra design home">
-				<img src={wordmarkUrl} alt="Kinra" />
-				<span>design</span>
-			</a>
-			<span class="kin-status" data-state="reason">Reference surface</span>
+	<section class="overview-hero kin-frame">
+		<div>
+			<p class="kin-eyebrow">Graphite+ / shared design system</p>
+			<h1>One identity. <span>More than one visual sentence.</span></h1>
 		</div>
-	</header>
-
-	<main id="main">
-		<section class="hero kin-frame">
-			<div class="hero__copy">
-				<p class="kin-eyebrow">Graphite+ / shared web foundation</p>
-				<h1>One visual language. <em>Different jobs.</em></h1>
-				<p class="hero__lede">
-					Shared tokens, assets, and low-level patterns give product,
-					documentation, learning, and operating surfaces a recognizable Kinra
-					identity without forcing them into one template.
-				</p>
-				<div class="actions">
-					<a class="kin-button kin-button--primary" href="#foundations"
-						>Read the foundation</a
-					>
-					<a
-						class="kin-button kin-button--quiet"
-						href="https://github.com/kinra-ai/kinra-design"
-					>
-						View source
-					</a>
-				</div>
+		<div class="overview-hero__support">
+			<p>
+				Foundations establish Kinra's voice. Compositions, components, and
+				copy-owned patterns give each product room to answer its own job.
+			</p>
+			<div class="kin-cluster" data-space="compact">
+				<a class="kin-button kin-button--primary" href="/foundations/"
+					>Explore the system</a
+				>
+				<a
+					class="kin-button kin-button--quiet"
+					href="https://github.com/kinra-ai/kinra-design">View source</a
+				>
 			</div>
+		</div>
+	</section>
 
-			<aside class="foundation-field kin-surface" aria-label="Foundation map">
-				<div class="foundation-field__title">
-					<span>Foundation map</span>
-					<strong>Graphite+</strong>
-				</div>
-				<dl>
-					<div>
-						<dt>Signal</dt>
-						<dd>Cyan for public, live, and active state.</dd>
-					</div>
-					<div>
-						<dt>Reason</dt>
-						<dd>Periwinkle for inference, reflection, and context.</dd>
-					</div>
-					<div>
-						<dt>Structure</dt>
-						<dd>Graphite ground, hairline rules, and open space.</dd>
-					</div>
-					<div>
-						<dt>Motion</dt>
-						<dd>Only when the underlying state is changing.</dd>
-					</div>
-				</dl>
+	<section class="catalog-section kin-frame" aria-labelledby="layers-heading">
+		<div class="catalog-heading">
+			<h2 id="layers-heading">A layered contract</h2>
+			<p>
+				Use the smallest stable layer that solves the repeated responsibility.
+				Move higher-level code into the owning product.
+			</p>
+		</div>
+		<div class="layer-map">
+			<article class="layer-card">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor"
+					></circle>
+					<circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+				</svg>
+				<h2>Foundations</h2>
+				<p>Roles for colour, type, space, motion, depth, and accessibility.</p>
+				<a href="/foundations/">Inspect tokens</a>
+			</article>
+			<article class="layer-card">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M3 5h18M3 12h12M3 19h18" fill="none" stroke="currentColor"
+					></path>
+				</svg>
+				<h2>Compositions</h2>
 				<p>
-					<span aria-hidden="true">↳</span> Composition stays with the surface.
+					Responsive relationships that organize content without styling it.
 				</p>
-			</aside>
-		</section>
-
-		<section
-			id="foundations"
-			class="section section--band"
-			aria-labelledby="colour-heading"
-		>
-			<div class="section__inner kin-frame">
-				<div class="section-heading">
-					<div>
-						<p class="kin-eyebrow">01 / Colour roles</p>
-						<h2 id="colour-heading">Colour carries meaning.</h2>
-					</div>
-					<p>
-						Cyan is live signal. Periwinkle is reasoning. Status colours report
-						real state; ground and structure stay quiet.
-					</p>
-				</div>
-
-				<div class="swatches">
-					{
-						colours.map(([label, token]) => (
-							<article class="swatch">
-								<span
-									class="swatch__sample"
-									style={"--swatch: var(" + token + ")"}
-								/>
-								<strong>{label}</strong>
-								<code>{token}</code>
-							</article>
-						))
-					}
-				</div>
-			</div>
-		</section>
-
-		<section class="section" aria-labelledby="type-heading">
-			<div class="section__inner kin-frame">
-				<div class="section-heading">
-					<div>
-						<p class="kin-eyebrow">02 / Type roles</p>
-						<h2 id="type-heading">Shared hierarchy, contextual voice.</h2>
-					</div>
-					<p>
-						Interface and prose stacks stay separate. Weight, measure, and
-						contrast establish hierarchy before decoration does.
-					</p>
-				</div>
-
-				<div class="type-specimen">
-					<div class="display-sample">
-						<p class="kin-eyebrow">Display / interface voice</p>
-						<p>Structure first. <em>Signal second.</em></p>
-					</div>
-
-					<article class="kin-prose prose-sample">
-						<h2>Work at the right focal distance</h2>
-						<p>
-							A shared system should make common choices easy without erasing
-							the character of the thing being built.
-						</p>
-						<blockquote>
-							<p>
-								The abstraction is earned when two real surfaces need the same
-								responsibility.
-							</p>
-						</blockquote>
-						<p>
-							Import the complete foundation with
-							<code>@kinra/web/styles</code>, or use only the roles a host theme
-							can own safely.
-						</p>
-					</article>
-				</div>
-			</div>
-		</section>
-
-		<section class="section section--band" aria-labelledby="state-heading">
-			<div class="section__inner kin-frame">
-				<div class="section-heading">
-					<div>
-						<p class="kin-eyebrow">03 / Truthful state</p>
-						<h2 id="state-heading">Settled things stay settled.</h2>
-					</div>
-					<p>
-						Only running work moves. Every state keeps an explicit text label
-						and never relies on colour alone.
-					</p>
-				</div>
-
-				<div class="state-list">
-					<div><span class="kin-status">Idle</span></div>
-					<div>
-						<span class="kin-status" data-state="reason">Reasoning</span>
-					</div>
-					<div>
-						<span class="kin-status" data-state="running">Running</span>
-					</div>
-					<div>
-						<span class="kin-status" data-state="success">Complete</span>
-					</div>
-					<div>
-						<span class="kin-status" data-state="warning">Needs attention</span>
-					</div>
-					<div>
-						<span class="kin-status" data-state="error">Failed</span>
-					</div>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<footer>
-		<div class="footer__inner kin-frame">
-			<span>Kinra design</span>
-			<span>Build-time shared. Independently deployed.</span>
+				<a href="/compositions/">Arrange content</a>
+			</article>
+			<article class="layer-card">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<rect
+						x="3"
+						y="4"
+						width="18"
+						height="16"
+						fill="none"
+						stroke="currentColor"></rect>
+					<path d="M3 9h18M9 9v11" fill="none" stroke="currentColor"></path>
+				</svg>
+				<h2>Components</h2>
+				<p>Accessible controls and states with stable semantic contracts.</p>
+				<a href="/components/">Review components</a>
+			</article>
+			<article class="layer-card">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z"
+						fill="none"
+						stroke="currentColor"></path>
+				</svg>
+				<h2>Patterns</h2>
+				<p>
+					Real product compositions distributed as source to copy and adapt.
+				</p>
+				<a href="/patterns/">Browse registry</a>
+			</article>
+			<article class="layer-card">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						d="M4 6h16M6 10h12M8 14h8M10 18h4"
+						fill="none"
+						stroke="currentColor"></path>
+				</svg>
+				<h2>Surface recipes</h2>
+				<p>
+					Role adjustments for editorial, docs, operations, and application
+					work.
+				</p>
+				<a href="/surfaces/">Compare jobs</a>
+			</article>
 		</div>
-	</footer>
+	</section>
+
+	<section class="contract-strip" aria-label="Ownership contract">
+		<div>
+			<p class="kin-eyebrow">Shared and versioned</p>
+			<h2>Responsibilities that must not drift</h2>
+			<p>
+				Tokens, accessible control behavior, layout primitives, assets, and
+				compatibility promises belong to the package.
+			</p>
+		</div>
+		<div>
+			<p class="kin-eyebrow">Copied and source-owned</p>
+			<h2>Outcomes that should keep their character</h2>
+			<p>
+				Routes, product workflows, authored copy, and higher-level composition
+				stay with the consumer that understands their job.
+			</p>
+		</div>
+	</section>
 </ReferenceLayout>
-
-<style>
-	.site-header {
-		background: color-mix(in srgb, var(--kin-color-ground) 95%, transparent);
-		border-bottom: 1px solid var(--kin-border-quiet);
-	}
-
-	.site-header__inner {
-		align-items: center;
-		display: flex;
-		justify-content: space-between;
-		min-height: 4.75rem;
-	}
-
-	.site-header a {
-		align-items: center;
-		display: flex;
-		gap: var(--kin-space-4);
-		text-decoration: none;
-	}
-
-	.site-header img {
-		height: auto;
-		width: 7.4rem;
-	}
-
-	.site-header a span {
-		border-left: 1px solid var(--kin-color-rule);
-		color: var(--kin-color-text-muted);
-		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: 0.15em;
-		padding-left: var(--kin-space-4);
-		text-transform: uppercase;
-	}
-
-	.hero {
-		align-items: center;
-		display: grid;
-		gap: clamp(var(--kin-space-9), 7vw, var(--kin-space-12));
-		grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.72fr);
-		min-height: min(44rem, calc(100svh - 4.75rem));
-		padding-block: clamp(var(--kin-space-10), 9vw, 8rem);
-	}
-
-	.hero__copy > .kin-eyebrow {
-		margin: 0 0 var(--kin-space-6);
-	}
-
-	.hero h1 {
-		color: var(--kin-color-text);
-		font-family: var(--kin-font-heading);
-		font-size: var(--kin-text-display);
-		font-weight: var(--kin-weight-display);
-		letter-spacing: var(--kin-tracking-display);
-		line-height: var(--kin-leading-display);
-		margin: 0;
-		max-width: 12ch;
-		text-wrap: balance;
-	}
-
-	.hero h1 em,
-	.display-sample em {
-		color: var(--kin-color-text-muted);
-		font-style: normal;
-		font-weight: var(--kin-weight-quiet);
-	}
-
-	.hero__lede {
-		color: var(--kin-color-text-subtle);
-		font-family: var(--kin-font-prose);
-		font-size: clamp(1.05rem, 1.7vw, 1.25rem);
-		line-height: 1.75;
-		margin: var(--kin-space-8) 0 0;
-		max-width: 42rem;
-	}
-
-	.actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--kin-space-3);
-		margin-top: var(--kin-space-8);
-	}
-
-	.foundation-field {
-		min-width: 0;
-		padding: clamp(var(--kin-space-5), 4vw, var(--kin-space-7));
-	}
-
-	.foundation-field__title {
-		align-items: flex-end;
-		border-bottom: 1px solid var(--kin-color-rule);
-		display: flex;
-		justify-content: space-between;
-		padding-bottom: var(--kin-space-4);
-	}
-
-	.foundation-field__title span,
-	.foundation-field__title strong {
-		font-size: var(--kin-text-xs);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-
-	.foundation-field__title span {
-		color: var(--kin-color-text-muted);
-	}
-
-	.foundation-field__title strong {
-		color: var(--kin-color-primary);
-	}
-
-	.foundation-field dl {
-		margin: var(--kin-space-4) 0 0;
-	}
-
-	.foundation-field dl > div {
-		border-bottom: 1px solid var(--kin-border-quiet);
-		display: grid;
-		gap: var(--kin-space-4);
-		grid-template-columns: 6.5rem 1fr;
-		padding-block: var(--kin-space-5);
-	}
-
-	.foundation-field dt {
-		color: var(--kin-color-text);
-		font-size: var(--kin-text-sm);
-		font-weight: var(--kin-weight-strong);
-	}
-
-	.foundation-field dd {
-		color: var(--kin-color-text-muted);
-		font-family: var(--kin-font-prose);
-		font-size: var(--kin-text-sm);
-		line-height: 1.55;
-		margin: 0;
-	}
-
-	.foundation-field > p {
-		color: var(--kin-color-text-subtle);
-		font-size: var(--kin-text-xs);
-		line-height: 1.6;
-		margin: var(--kin-space-5) 0 0;
-	}
-
-	.foundation-field > p span {
-		color: var(--kin-color-primary);
-		margin-right: var(--kin-space-2);
-	}
-
-	.section {
-		padding-block: clamp(var(--kin-space-10), 9vw, 8rem);
-	}
-
-	.section--band {
-		background: var(--kin-color-ground-deep);
-		border-block: 1px solid var(--kin-border-quiet);
-	}
-
-	.section-heading {
-		display: grid;
-		gap: var(--kin-space-6) clamp(var(--kin-space-8), 7vw, var(--kin-space-12));
-		grid-template-columns: minmax(18rem, 0.95fr) minmax(16rem, 0.72fr);
-		margin-bottom: clamp(var(--kin-space-9), 6vw, var(--kin-space-11));
-	}
-
-	.section-heading h2 {
-		color: var(--kin-color-text);
-		font-family: var(--kin-font-heading);
-		font-size: var(--kin-text-section);
-		font-weight: var(--kin-weight-heading);
-		letter-spacing: var(--kin-tracking-heading);
-		line-height: var(--kin-leading-heading);
-		margin: var(--kin-space-4) 0 0;
-		text-wrap: balance;
-	}
-
-	.section-heading > p {
-		align-self: end;
-		color: var(--kin-color-text-muted);
-		font-family: var(--kin-font-prose);
-		font-size: var(--kin-text-lg);
-		line-height: 1.7;
-		margin: 0;
-	}
-
-	.swatches {
-		background: var(--kin-color-rule);
-		display: grid;
-		gap: 1px;
-		grid-template-columns: repeat(7, minmax(0, 1fr));
-		padding: 1px;
-	}
-
-	.swatch {
-		background: var(--kin-color-ground-deep);
-		min-width: 0;
-		padding: var(--kin-space-4);
-	}
-
-	.swatch__sample {
-		background: var(--swatch);
-		border: 1px solid var(--kin-border-subtle);
-		display: block;
-		height: 4rem;
-		margin-bottom: var(--kin-space-4);
-	}
-
-	.swatch strong,
-	.swatch code {
-		display: block;
-	}
-
-	.swatch strong {
-		color: var(--kin-color-text);
-		font-size: var(--kin-text-sm);
-	}
-
-	.swatch code {
-		color: var(--kin-color-text-muted);
-		font-size: 0.625rem;
-		margin-top: var(--kin-space-1);
-		overflow-wrap: anywhere;
-	}
-
-	.type-specimen {
-		display: grid;
-		gap: clamp(var(--kin-space-9), 8vw, var(--kin-space-12));
-		grid-template-columns: minmax(17rem, 0.8fr) minmax(22rem, 1.2fr);
-	}
-
-	.display-sample,
-	.prose-sample {
-		border-top: 1px solid var(--kin-color-rule);
-		padding-top: var(--kin-space-7);
-	}
-
-	.display-sample > p:last-child {
-		color: var(--kin-color-text);
-		font-size: var(--kin-text-section);
-		font-weight: var(--kin-weight-heading);
-		letter-spacing: var(--kin-tracking-heading);
-		line-height: var(--kin-leading-heading);
-		margin: var(--kin-space-5) 0 0;
-		text-wrap: balance;
-	}
-
-	.prose-sample {
-		margin-top: 0;
-	}
-
-	.prose-sample h2 {
-		margin-top: 0;
-	}
-
-	.state-list {
-		background: var(--kin-color-rule);
-		display: grid;
-		gap: 1px;
-		grid-template-columns: repeat(6, minmax(0, 1fr));
-		padding: 1px;
-	}
-
-	.state-list > div {
-		align-items: center;
-		background: var(--kin-color-ground-deep);
-		display: flex;
-		min-height: 5rem;
-		padding: var(--kin-space-5);
-	}
-
-	footer {
-		background: var(--kin-color-ground-deep);
-		border-top: 1px solid var(--kin-color-rule);
-	}
-
-	.footer__inner {
-		color: var(--kin-color-text-muted);
-		display: flex;
-		font-size: 0.625rem;
-		justify-content: space-between;
-		letter-spacing: 0.03em;
-		padding-block: var(--kin-space-5);
-	}
-
-	@media (max-width: 64rem) {
-		.hero {
-			align-items: start;
-			grid-template-columns: 1fr;
-			min-height: 0;
-		}
-
-		.hero__copy {
-			max-width: 50rem;
-		}
-
-		.foundation-field {
-			max-width: 48rem;
-		}
-
-		.swatches {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
-
-		.type-specimen {
-			grid-template-columns: 1fr;
-		}
-
-		.state-list {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
-
-	@media (max-width: 48rem) {
-		.site-header .kin-status {
-			display: none;
-		}
-
-		.section-heading {
-			grid-template-columns: 1fr;
-		}
-
-		.swatches,
-		.state-list {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.swatch:last-child {
-			grid-column: 1 / -1;
-		}
-	}
-
-	@media (max-width: 30rem) {
-		.actions .kin-button {
-			width: 100%;
-		}
-
-		.foundation-field dl > div {
-			gap: var(--kin-space-2);
-			grid-template-columns: 1fr;
-		}
-
-		.footer__inner {
-			align-items: flex-start;
-			flex-direction: column;
-			gap: var(--kin-space-2);
-		}
-	}
-</style>

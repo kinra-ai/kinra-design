@@ -7,7 +7,27 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+
+- Add framework-independent stack, cluster, grid, split, sidebar, and region
+  compositions.
+- Add shared badges, notices, form fields, controls, tables, empty states, and
+  native disclosure treatment proven across operating surfaces.
+- Add opt-in editorial, documentation, operations, and application surface
+  recipes.
+- Add a checked, source-owned registry with narrative intro, editorial
+  feature, and operations region candidate patterns.
+- Replace the single reference page with a responsive catalog for foundations,
+  compositions, components, patterns, and surface recipes.
+- Add the public contract catalog and registry adoption guidance.
+
+### Changed
+
+- Broaden the repository boundary from small public surfaces to Kinra web
+  products while preserving consumer ownership of routes, copy, workflows,
+  and product-specific composition.
+- Reserve numbering for real sequence, progression, reference, or identity
+  rather than default section decoration.
 
 ## [0.2.0] - 2026-08-16
 

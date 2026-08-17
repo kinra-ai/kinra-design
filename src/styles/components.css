@@ -1,0 +1,352 @@
+@import "./tokens.css";
+
+/* Generic controls and states proven across operating Kinra surfaces. */
+
+@layer kinra.components {
+	.kin-badge {
+		align-items: center;
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-border-subtle);
+		border-radius: 999px;
+		color: var(--kin-color-text-subtle);
+		display: inline-flex;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-weight: var(--kin-weight-strong);
+		gap: var(--kin-space-2);
+		letter-spacing: 0.035em;
+		line-height: 1.3;
+		min-height: 1.75rem;
+		padding: var(--kin-space-1) var(--kin-space-3);
+		width: fit-content;
+	}
+
+	.kin-badge[data-tone="primary"] {
+		background: var(--kin-surface-primary);
+		border-color: var(--kin-primary-30);
+		color: var(--kin-color-primary);
+	}
+
+	.kin-badge[data-tone="reason"] {
+		background: var(--kin-surface-reason);
+		border-color: color-mix(in srgb, var(--kin-color-reason) 32%, transparent);
+		color: var(--kin-color-reason);
+	}
+
+	.kin-badge[data-tone="success"] {
+		border-color: color-mix(in srgb, var(--kin-color-success) 35%, transparent);
+		color: var(--kin-color-success);
+	}
+
+	.kin-badge[data-tone="warning"] {
+		border-color: color-mix(in srgb, var(--kin-color-warning) 38%, transparent);
+		color: var(--kin-color-warning);
+	}
+
+	.kin-badge[data-tone="error"] {
+		border-color: color-mix(in srgb, var(--kin-color-error) 38%, transparent);
+		color: var(--kin-color-error);
+	}
+
+	.kin-notice {
+		--kin-notice-signal: var(--kin-color-text-muted);
+
+		background: color-mix(
+			in srgb,
+			var(--kin-notice-signal) 5%,
+			var(--kin-color-ground-deep)
+		);
+		border: 1px solid var(--kin-border-subtle);
+		border-inline-start: 2px solid var(--kin-notice-signal);
+		display: grid;
+		gap: var(--kin-space-2);
+		padding: var(--kin-space-5);
+	}
+
+	.kin-notice[data-tone="primary"] {
+		--kin-notice-signal: var(--kin-color-primary);
+	}
+
+	.kin-notice[data-tone="reason"] {
+		--kin-notice-signal: var(--kin-color-reason);
+	}
+
+	.kin-notice[data-tone="success"] {
+		--kin-notice-signal: var(--kin-color-success);
+	}
+
+	.kin-notice[data-tone="warning"] {
+		--kin-notice-signal: var(--kin-color-warning);
+	}
+
+	.kin-notice[data-tone="error"] {
+		--kin-notice-signal: var(--kin-color-error);
+	}
+
+	.kin-notice__title {
+		color: var(--kin-color-text);
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+		margin: 0;
+	}
+
+	.kin-notice__body {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.6;
+		margin: 0;
+		max-width: var(--kin-measure-prose);
+	}
+
+	.kin-field {
+		display: grid;
+		gap: var(--kin-space-2);
+	}
+
+	.kin-field__label {
+		color: var(--kin-color-text);
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+		line-height: 1.4;
+	}
+
+	.kin-field__required {
+		color: var(--kin-color-error);
+		font-size: var(--kin-text-xs);
+		font-weight: var(--kin-weight-strong);
+		margin-inline-start: var(--kin-space-2);
+	}
+
+	.kin-field__hint,
+	.kin-field__error {
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-xs);
+		line-height: 1.55;
+		margin: 0;
+	}
+
+	.kin-field__hint {
+		color: var(--kin-color-text-muted);
+	}
+
+	.kin-field__error {
+		color: var(--kin-color-error);
+		font-weight: var(--kin-weight-strong);
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea) {
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+		border-radius: var(--kin-radius-sm);
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		min-height: var(--kin-control-height);
+		padding-inline: var(--kin-control-padding-inline);
+		transition:
+			background var(--kin-duration-fast) ease,
+			border-color var(--kin-duration-fast) ease;
+		width: 100%;
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea)::placeholder {
+		color: var(--kin-color-text-muted);
+		opacity: 1;
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea):hover:not(:disabled) {
+		border-color: var(--kin-color-text-muted);
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea):focus-visible {
+		background: var(--kin-color-surface);
+		border-color: var(--kin-color-primary);
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea)[aria-invalid="true"] {
+		border-color: var(--kin-color-error);
+	}
+
+	:is(.kin-input, .kin-select, .kin-textarea):disabled {
+		color: var(--kin-color-text-muted);
+		cursor: not-allowed;
+		opacity: 0.68;
+	}
+
+	.kin-textarea {
+		min-height: 8rem;
+		padding-block: var(--kin-space-3);
+		resize: vertical;
+	}
+
+	.kin-check {
+		align-items: flex-start;
+		color: var(--kin-color-text-subtle);
+		cursor: pointer;
+		display: inline-flex;
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		gap: var(--kin-space-3);
+		line-height: 1.5;
+		min-height: var(--kin-hit-target);
+		padding-block: var(--kin-space-2);
+	}
+
+	.kin-check input {
+		accent-color: var(--kin-color-primary);
+		height: 1rem;
+		margin: 0.2rem 0 0;
+		width: 1rem;
+	}
+
+	.kin-table-wrap {
+		border: 1px solid var(--kin-color-rule);
+		max-width: 100%;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+	}
+
+	.kin-table {
+		border-collapse: collapse;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		min-width: 36rem;
+		width: 100%;
+	}
+
+	.kin-table caption {
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-xs);
+		padding: var(--kin-space-3) var(--kin-space-4);
+		text-align: left;
+	}
+
+	.kin-table :is(th, td) {
+		border-bottom: 1px solid var(--kin-border-quiet);
+		padding: var(--kin-space-4);
+		text-align: left;
+		vertical-align: top;
+	}
+
+	.kin-table th {
+		background: var(--kin-color-ground-deep);
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-xs);
+		font-weight: var(--kin-weight-strong);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.kin-table td {
+		color: var(--kin-color-text-subtle);
+	}
+
+	.kin-table tbody tr:last-child td {
+		border-bottom: 0;
+	}
+
+	.kin-table tbody tr:hover {
+		background: color-mix(in srgb, var(--kin-color-surface) 60%, transparent);
+	}
+
+	.kin-table[data-density="compact"] :is(th, td) {
+		padding: var(--kin-space-2) var(--kin-space-3);
+	}
+
+	.kin-empty {
+		align-items: start;
+		border: 1px dashed var(--kin-color-rule);
+		display: grid;
+		gap: var(--kin-space-3);
+		justify-items: start;
+		padding: clamp(var(--kin-space-6), 5vw, var(--kin-space-9));
+	}
+
+	.kin-empty__title {
+		color: var(--kin-color-text);
+		font-size: var(--kin-text-lg);
+		font-weight: var(--kin-weight-heading);
+		margin: 0;
+	}
+
+	.kin-empty__body {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.65;
+		margin: 0;
+		max-width: var(--kin-measure-narrow);
+	}
+
+	.kin-disclosure {
+		border-block: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-disclosure + .kin-disclosure {
+		border-top: 0;
+	}
+
+	.kin-disclosure summary {
+		align-items: center;
+		color: var(--kin-color-text);
+		cursor: pointer;
+		display: flex;
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+		gap: var(--kin-space-3);
+		justify-content: space-between;
+		list-style: none;
+		min-height: var(--kin-hit-target);
+		padding-block: var(--kin-space-3);
+	}
+
+	.kin-disclosure summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.kin-disclosure summary::after {
+		border-block-end: 1px solid var(--kin-color-primary);
+		border-inline-end: 1px solid var(--kin-color-primary);
+		color: var(--kin-color-primary);
+		content: "";
+		height: 0.45rem;
+		margin-inline-end: var(--kin-space-1);
+		transform: rotate(45deg);
+		transition: transform var(--kin-duration-normal) var(--kin-ease-standard);
+		width: 0.45rem;
+	}
+
+	.kin-disclosure[open] summary::after {
+		transform: rotate(225deg);
+	}
+
+	.kin-disclosure__body {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.65;
+		max-width: var(--kin-measure-prose);
+		padding: 0 0 var(--kin-space-5);
+	}
+
+	.kin-disclosure__body > :first-child {
+		margin-top: 0;
+	}
+
+	.kin-disclosure__body > :last-child {
+		margin-bottom: 0;
+	}
+}
+
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-badge,
+		.kin-notice,
+		:is(.kin-input, .kin-select, .kin-textarea),
+		.kin-table-wrap,
+		.kin-empty {
+			border-color: currentColor;
+		}
+	}
+}

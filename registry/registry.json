@@ -1,0 +1,55 @@
+{
+  "name": "kinra",
+  "schemaVersion": 1,
+  "items": [
+    {
+      "name": "narrative-intro",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "An unnumbered statement-led introduction with a compact evidence rail.",
+      "evidence": ["kinra-site"],
+      "requires": [
+        "@kinra/web/styles/canvas.css",
+        "@kinra/web/styles/compositions.css"
+      ],
+      "files": [
+        "registry/patterns/narrative-intro/narrative-intro.html",
+        "registry/patterns/narrative-intro/narrative-intro.css",
+        "registry/patterns/narrative-intro/README.md"
+      ]
+    },
+    {
+      "name": "editorial-feature",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "A folio-led feature for essays, releases, and other authored work.",
+      "evidence": ["kinra-site"],
+      "requires": [
+        "@kinra/web/styles/canvas.css",
+        "@kinra/web/styles/compositions.css"
+      ],
+      "files": [
+        "registry/patterns/editorial-feature/editorial-feature.html",
+        "registry/patterns/editorial-feature/editorial-feature.css",
+        "registry/patterns/editorial-feature/README.md"
+      ]
+    },
+    {
+      "name": "operations-region",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "A bounded operating region with explicit state, actions, and tabular evidence.",
+      "evidence": ["depot", "operations/inference-gateway"],
+      "requires": [
+        "@kinra/web/styles/canvas.css",
+        "@kinra/web/styles/compositions.css",
+        "@kinra/web/styles/components.css"
+      ],
+      "files": [
+        "registry/patterns/operations-region/operations-region.html",
+        "registry/patterns/operations-region/operations-region.css",
+        "registry/patterns/operations-region/README.md"
+      ]
+    }
+  ]
+}

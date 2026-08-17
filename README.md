@@ -1,64 +1,55 @@
 # Kinra design
 
-Kinra's shared design foundation for small public web surfaces. It carries the
-Graphite+ identity without coupling every site to the same generator.
+Kinra's shared, framework-light design system for web products and public
+surfaces. It carries the Graphite+ identity without coupling every product to
+one generator, framework, or page template.
 
-The foundation follows Kinra's field-guide voice: flat graphite ground, a
-quiet top wash, restrained cyan and periwinkle signals, mono interface
-hierarchy, readable prose, hairline rules, and open space. Bounded or elevated
-surfaces remain explicit exceptions.
+The system has five layers:
 
-The package is build-time only. Astro, Starlight, or another consumer imports
-the source it needs and emits a self-contained site; browsers never depend on
-this repository being available.
+- role-named foundations for colour, type, spacing, motion, depth, and measure;
+- opt-in layout compositions that establish relationships without styling
+  content;
+- accessible controls and states proven across real operating surfaces;
+- surface recipes for editorial, documentation, operational, and application
+  work; and
+- a source registry of candidate patterns that consumers copy and own.
 
-## What belongs here
-
-- role-named design tokens
-- opt-in base, canvas, prose, and primitive styles
-- the shared responsive page frame proven across public and operating surfaces
-- canonical brand assets
-- generic components once at least two real sites need the same abstraction
-- thin adapters for generators such as Starlight
-- a reference surface that makes the shared contract visible
-
-Routes, site copy, curriculum, product claims, analytics, deployment files,
-and release artifacts stay with the site that owns them.
+Routes, copy, product claims, workflows, analytics, deployment configuration,
+and release artifacts stay with the repository that owns their outcome.
 
 ## Consumer model
 
-This repository is not deployed as a shared runtime or CDN. Each site installs
-an exact release at build time, and Astro or the owning generator bundles the
-selected CSS and assets into that site's own static output. A design release
-therefore changes no live surface until that surface deliberately upgrades.
+`@kinra/web` is a build-time dependency. Each consumer pins an immutable tag
+or exact test commit and emits its own CSS and assets. Deployed products never
+depend on this repository, a CDN, or a shared runtime being available.
 
-See [`docs/adoption.md`](docs/adoption.md) for the complete consumer contract,
-the current adoption map, and the `0.2.0` migration notes.
+Stable package contracts require the same responsibility to have survived use
+in at least two consumers. A registry pattern may enter as a clearly marked
+candidate after one real consumer; copying it transfers ownership of the local
+result to the consumer.
+
+See [`docs/adoption.md`](docs/adoption.md) for the complete contract and current
+adoption map.
 
 ## Install
 
-Until an npm registry release is useful, pin the public Git repository to an
-immutable tag over HTTPS:
+The latest immutable release is `v0.2.0`:
 
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.1.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.2.0"
   }
 }
 ```
 
-`v0.1.0` remains the latest immutable release. The current source prepares the
-`0.2.0` visual contract; test it by pinning an exact commit, never `main`, until
-an approved tag exists.
-
-Run `npm install` and commit the consumer's lockfile. HTTPS keeps public build
-hosts credential-free. The package name and exports are already npm-compatible,
-so moving to a public registry later will not require changing imports.
+Run `npm install` and commit the consumer's lockfile. Pin an exact commit while
+testing unreleased source; never ship `main`, a floating range, or a live CSS
+CDN.
 
 ## Use
 
-Import the complete, opinionated foundation in an Astro layout:
+Import the complete system in a Kinra-owned surface:
 
 ```astro
 ---
@@ -66,31 +57,33 @@ import "@kinra/web/styles";
 ---
 ```
 
-Or integrate only the contract a host theme needs:
+Or choose only the contracts a host can own safely:
 
 ```css
 @import "@kinra/web/styles/tokens.css";
-@import "@kinra/web/styles/prose.css";
+@import "@kinra/web/styles/compositions.css";
+@import "@kinra/web/styles/components.css";
 ```
 
-Assets are exported too:
+Apply a surface recipe without adopting a page template:
+
+```html
+<body class="kin-canvas" data-kin-surface="operations">
+  <main class="kin-frame"><!-- product-owned composition --></main>
+</body>
+```
+
+Canonical assets and copyable registry source are exported too:
 
 ```astro
 ---
 import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
 ---
-
-<img src={wordmarkUrl} alt="Kinra" />
 ```
 
-Consumers should pin an exact tag or commit. Do not load shared CSS from a
-live CDN or use a floating Git branch: every deployed site should be
-reproducible and independently releasable.
-
-The full import applies the Kinra reset, body defaults, quiet canvas, prose,
-and primitives. Existing host themes should import only the pieces they can
-own safely. The available entry points and site-by-site guidance live in
-[`docs/adoption.md`](docs/adoption.md).
+The complete public class, token, and recipe catalog lives in
+[`docs/catalog.md`](docs/catalog.md). Registry use and ownership are documented
+in [`registry/README.md`](registry/README.md).
 
 ## Develop
 
@@ -101,16 +94,16 @@ npm run verify
 npm pack --dry-run
 ```
 
-The reference site lives in `examples/reference`. The distributable package is
-limited by `files` in `package.json`; it includes the public guides but not the
-example, toolchain, or generated output. `build:reference` is deliberately not
-called `build`: npm treats a Git dependency containing a root `build` script as
-source that must be built during every installation, while this package already
-ships consumable CSS and SVG source.
+The reference catalog lives in `examples/reference`. The distributable package
+is limited by `files` in `package.json`; it includes public styles, assets,
+guides, and registry source, but not the example, scripts, toolchain, or
+generated output. `build:reference` is deliberately not called `build` so Git
+consumers do not rebuild the catalog during installation.
 
 Read the focused guides for the work at hand:
 
 - [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine
+- [`docs/catalog.md`](docs/catalog.md) — public layers and contracts
 - [`docs/adoption.md`](docs/adoption.md) — installing and integrating a release
 - [`docs/releasing.md`](docs/releasing.md) — versioning, verification, and tags
 - [`STATUS.md`](STATUS.md) — current release and adoption state

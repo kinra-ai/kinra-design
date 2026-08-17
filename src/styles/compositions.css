@@ -1,0 +1,130 @@
+@import "./tokens.css";
+
+/*
+ * Layout compositions establish relationships without prescribing content.
+ * Override the documented custom properties on an instance before adding a
+ * product-specific wrapper.
+ */
+
+@layer kinra.compositions {
+	.kin-region {
+		padding-block: var(--kin-region-space);
+	}
+
+	.kin-stack {
+		display: flex;
+		flex-direction: column;
+		gap: var(--kin-layout-space, var(--kin-space-6));
+	}
+
+	.kin-cluster {
+		align-items: var(--kin-cluster-align, center);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-layout-space, var(--kin-space-4));
+		justify-content: var(--kin-cluster-justify, flex-start);
+	}
+
+	.kin-cluster[data-align="start"] {
+		--kin-cluster-align: flex-start;
+	}
+
+	.kin-cluster[data-align="end"] {
+		--kin-cluster-align: flex-end;
+	}
+
+	.kin-cluster[data-justify="between"] {
+		--kin-cluster-justify: space-between;
+	}
+
+	.kin-cluster[data-justify="end"] {
+		--kin-cluster-justify: flex-end;
+	}
+
+	.kin-grid {
+		display: grid;
+		gap: var(--kin-layout-space, var(--kin-layout-gap));
+		grid-template-columns: repeat(
+			auto-fit,
+			minmax(min(100%, var(--kin-grid-min, 16rem)), 1fr)
+		);
+	}
+
+	.kin-split {
+		align-items: var(--kin-split-align, start);
+		display: grid;
+		gap: var(--kin-layout-space, var(--kin-layout-gap));
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	}
+
+	.kin-split[data-align="center"] {
+		--kin-split-align: center;
+	}
+
+	.kin-split[data-align="end"] {
+		--kin-split-align: end;
+	}
+
+	.kin-split[data-ratio="lead"] {
+		grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+	}
+
+	.kin-split[data-ratio="trail"] {
+		grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+	}
+
+	.kin-sidebar {
+		display: grid;
+		gap: var(--kin-layout-space, var(--kin-layout-gap));
+		grid-template-columns:
+			minmax(0, var(--kin-sidebar-size, var(--kin-sidebar-width)))
+			minmax(0, 1fr);
+	}
+
+	.kin-sidebar[data-side="end"] {
+		grid-template-columns:
+			minmax(0, 1fr)
+			minmax(0, var(--kin-sidebar-size, var(--kin-sidebar-width)));
+	}
+
+	:is(
+		.kin-stack,
+		.kin-cluster,
+		.kin-grid,
+		.kin-split,
+		.kin-sidebar
+	)[data-space="tight"] {
+		--kin-layout-space: var(--kin-space-2);
+	}
+
+	:is(
+		.kin-stack,
+		.kin-cluster,
+		.kin-grid,
+		.kin-split,
+		.kin-sidebar
+	)[data-space="compact"] {
+		--kin-layout-space: var(--kin-space-4);
+	}
+
+	:is(
+		.kin-stack,
+		.kin-cluster,
+		.kin-grid,
+		.kin-split,
+		.kin-sidebar
+	)[data-space="loose"] {
+		--kin-layout-space: var(--kin-space-9);
+	}
+}
+
+@media (max-width: 48rem) {
+	@layer kinra.compositions {
+		.kin-split,
+		.kin-split[data-ratio],
+		.kin-sidebar,
+		.kin-sidebar[data-side="end"] {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+}

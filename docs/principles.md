@@ -32,6 +32,15 @@ can carry contrast inside a headline without turning colour into decoration.
 The shared responsive frame keeps that structure recognizable while leaving
 each consumer's composition its own.
 
+## Sequence must be real
+
+Numbers communicate order, progression, stable reference, or identity. They
+are not the default decoration for a heading or section. When a number carries
+meaning, render it in the document rather than generating it from visual CSS;
+when it carries no meaning, omit it. A surface can remain recognizably Kinra
+through measure, voice, rules, and signal without repeating one numbered
+editorial pattern.
+
 ## Motion has a cause
 
 Motion explains causality, progress, or spatial change. It does not make an
@@ -51,6 +60,17 @@ layer.
 Tokens and assets are shared immediately because drift there is already
 visible. A component moves here only after two consumer implementations reveal
 the same stable responsibility. The shared package should remove duplication,
-not centralize speculation. Kinra Site and Depot independently established the
-quiet canvas and responsive frame before those patterns moved into this
-foundation.
+not centralize speculation. A higher-level pattern may enter the source
+registry as a candidate after one real consumer proves the need, because the
+consumer copies and owns that code. Promotion to a stable package contract
+still requires two consumers and compatibility review. Kinra Site and Depot
+independently established the quiet canvas and responsive frame before those
+patterns moved into the stable foundation.
+
+## Ownership rises with specificity
+
+Foundations and accessibility contracts are shared because drift there is
+costly. Layout compositions describe relationships without content. Generic
+controls carry only stable behavior and state. Page patterns are distributed
+as source, then adapted and owned by the consumer. Routes, copy, workflows,
+and product-specific views never move here merely to create visual uniformity.

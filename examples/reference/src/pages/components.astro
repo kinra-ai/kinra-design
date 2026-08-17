@@ -1,0 +1,194 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Components"
+	description="Accessible, framework-independent components for Kinra web surfaces."
+	current="Components"
+>
+	<header class="catalog-intro">
+		<div class="catalog-intro__inner kin-frame">
+			<div>
+				<p class="kin-eyebrow">Components</p>
+				<h1>Small contracts for consequential details.</h1>
+			</div>
+			<p class="catalog-intro__copy">
+				Controls and states belong here when multiple products need the same
+				semantic responsibility, focus behavior, and responsive treatment.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame component-grid">
+		<section class="component-group" aria-labelledby="actions-heading">
+			<h2 id="actions-heading">Actions and labels</h2>
+			<div class="kin-stack">
+				<div class="kin-cluster" data-space="compact">
+					<button class="kin-button kin-button--primary" type="button">
+						Save changes
+					</button>
+					<button class="kin-button kin-button--quiet" type="button">
+						Cancel
+					</button>
+				</div>
+				<div class="kin-cluster" data-space="compact" aria-label="Badge tones">
+					<span class="kin-badge">Draft</span>
+					<span class="kin-badge" data-tone="primary">Active</span>
+					<span class="kin-badge" data-tone="reason">Review</span>
+					<span class="kin-badge" data-tone="success">Verified</span>
+					<span class="kin-badge" data-tone="warning">Attention</span>
+					<span class="kin-badge" data-tone="error">Blocked</span>
+				</div>
+				<div
+					class="kin-cluster"
+					data-space="compact"
+					aria-label="Status states"
+				>
+					<span class="kin-status">Idle</span>
+					<span class="kin-status" data-state="reason">Reasoning</span>
+					<span class="kin-status" data-state="running">Running</span>
+					<span class="kin-status" data-state="success">Complete</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-group" aria-labelledby="notices-heading">
+			<h2 id="notices-heading">Notices</h2>
+			<div class="kin-stack" data-space="compact">
+				<div class="kin-notice" data-tone="reason">
+					<p class="kin-notice__title">Human review remains required</p>
+					<p class="kin-notice__body">
+						The reasoning channel can prepare evidence, but it cannot approve
+						this release.
+					</p>
+				</div>
+				<div class="kin-notice" data-tone="warning">
+					<p class="kin-notice__title">Two repositories are behind</p>
+					<p class="kin-notice__body">
+						Version state is expressed in words; colour reinforces rather than
+						replaces the message.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-group" aria-labelledby="fields-heading">
+			<h2 id="fields-heading">Fields</h2>
+			<form
+				class="component-form kin-stack"
+				aria-label="Example repository form"
+			>
+				<div class="kin-field">
+					<label class="kin-field__label" for="repository-name">
+						Repository name
+						<span class="kin-field__required">Required</span>
+					</label>
+					<p class="kin-field__hint" id="repository-name-hint">
+						Use a short, durable project name.
+					</p>
+					<input
+						class="kin-input"
+						id="repository-name"
+						name="repository-name"
+						placeholder="project-name"
+						aria-describedby="repository-name-hint"
+						required
+					/>
+				</div>
+				<div class="kin-field">
+					<label class="kin-field__label" for="visibility">Visibility</label>
+					<select class="kin-select" id="visibility" name="visibility">
+						<option>Private</option>
+						<option>Public</option>
+					</select>
+				</div>
+				<label class="kin-check">
+					<input type="checkbox" name="readme" checked />
+					<span>Create the repository with a README</span>
+				</label>
+			</form>
+		</section>
+
+		<section class="component-group" aria-labelledby="disclosure-heading">
+			<h2 id="disclosure-heading">Native disclosure</h2>
+			<details class="kin-disclosure" open>
+				<summary>What remains source-owned?</summary>
+				<div class="kin-disclosure__body">
+					<p>
+						Routes, copy, product claims, workflows, analytics, and deployment
+						remain with the repository that owns their outcome.
+					</p>
+				</div>
+			</details>
+			<details class="kin-disclosure">
+				<summary>When does a component become stable?</summary>
+				<div class="kin-disclosure__body">
+					<p>
+						After two real consumers demonstrate the same responsibility and the
+						contract survives accessibility and responsive review.
+					</p>
+				</div>
+			</details>
+		</section>
+
+		<section
+			class="component-group component-group--wide"
+			aria-labelledby="table-heading"
+		>
+			<div class="catalog-heading">
+				<h2 id="table-heading">Inspectable data</h2>
+				<p>
+					Tables keep native semantics and horizontal containment. Consumers own
+					column priorities and any narrow-screen transformation.
+				</p>
+			</div>
+			<div class="kin-table-wrap">
+				<table class="kin-table">
+					<caption>Current package contracts</caption>
+					<thead>
+						<tr>
+							<th scope="col">Layer</th>
+							<th scope="col">Distribution</th>
+							<th scope="col">State</th>
+							<th scope="col">Owner</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Foundations</td>
+							<td>Versioned CSS</td>
+							<td><span class="kin-badge" data-tone="success">Stable</span></td>
+							<td>Kinra design</td>
+						</tr>
+						<tr>
+							<td>Patterns</td>
+							<td>Copied source</td>
+							<td
+								><span class="kin-badge" data-tone="reason">Candidate</span></td
+							>
+							<td>Consumer after copy</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section
+			class="component-group component-group--wide"
+			aria-labelledby="empty-heading"
+		>
+			<h2 id="empty-heading">Empty state</h2>
+			<div class="kin-empty">
+				<p class="kin-empty__title">No release candidates</p>
+				<p class="kin-empty__body">
+					Explain what the empty collection means and offer an action only when
+					there is a legitimate next step.
+				</p>
+				<button class="kin-button kin-button--quiet" type="button">
+					Prepare a candidate
+				</button>
+			</div>
+		</section>
+	</div>
+</ReferenceLayout>

@@ -1,0 +1,43 @@
+.kin-pattern-operations-region {
+	background: var(--kin-color-ground-deep);
+	border: 1px solid var(--kin-color-rule);
+}
+
+.kin-pattern-operations-region__header {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-6);
+	justify-content: space-between;
+	padding: var(--kin-space-5);
+}
+
+.kin-pattern-operations-region__header :is(h2, h3) {
+	color: var(--kin-color-text);
+	font-size: var(--kin-text-lg);
+	font-weight: var(--kin-weight-heading);
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+
+.kin-pattern-operations-region__header p {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-prose);
+	font-size: var(--kin-text-sm);
+	line-height: 1.55;
+	margin: var(--kin-space-2) 0 0;
+}
+
+.kin-pattern-operations-region .kin-table-wrap {
+	border-width: 1px 0 0;
+}
+
+@media (max-width: 38rem) {
+	.kin-pattern-operations-region__header {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.kin-pattern-operations-region__header .kin-button {
+		width: 100%;
+	}
+}

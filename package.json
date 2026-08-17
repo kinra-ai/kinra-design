@@ -1,14 +1,17 @@
 {
   "name": "@kinra/web",
   "version": "0.2.0",
-  "description": "Kinra's shared Graphite+ foundations for simple web surfaces.",
+  "description": "Kinra's framework-light design system for web products and public surfaces.",
   "license": "Apache-2.0",
   "type": "module",
   "files": [
     "assets",
     "docs",
+    "registry",
     "src/styles",
+    "CHANGELOG.md",
     "README.md",
+    "STATUS.md",
     "TRADEMARKS.md"
   ],
   "exports": {
@@ -16,6 +19,8 @@
     "./styles": "./src/styles/index.css",
     "./styles/*": "./src/styles/*",
     "./assets/*": "./assets/*",
+    "./registry": "./registry/registry.json",
+    "./registry/*": "./registry/*",
     "./package.json": "./package.json"
   },
   "sideEffects": [
@@ -24,7 +29,8 @@
   "scripts": {
     "dev": "astro dev --root examples/reference",
     "build:reference": "astro build --root examples/reference",
-    "check": "astro check --root examples/reference && npm run format:check",
+    "check:contract": "node scripts/check-contract.mjs",
+    "check": "npm run check:contract && astro check --root examples/reference && npm run format:check",
     "verify": "npm run check && npm run build:reference",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

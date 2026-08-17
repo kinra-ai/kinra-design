@@ -1,0 +1,31 @@
+---
+interface Props {
+	title: string;
+	contract: string;
+	description: string;
+}
+
+const { title, contract, description } = Astro.props;
+---
+
+<section class="specimen">
+	<header class="specimen__header">
+		<div>
+			<h2>{title}</h2>
+			<code>{contract}</code>
+		</div>
+		<p>{description}</p>
+	</header>
+	<div class="specimen__stage">
+		<slot />
+	</div>
+</section>
+
+<style>
+	code {
+		color: var(--kin-color-primary);
+		display: block;
+		font-size: 0.625rem;
+		margin-top: var(--kin-space-2);
+	}
+</style>

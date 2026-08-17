@@ -2,7 +2,8 @@
 
 Kind: product · Lifecycle: active · Versioning: semver
 
-Kinra's shared, framework-light visual foundation for simple web surfaces.
+Kinra's shared, framework-light design system for web products and public
+surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
 Real consumers pin an exact release or commit: `kinra-site` and `kinra-os`
 pin the exact pre-`0.2.0` commit `2089818`, and `depot` vendors the `v0.1.0`
@@ -13,20 +14,22 @@ for current release and adoption state.
 
 1. Check `git status --short --branch` and preserve existing work. Read
    `STATUS.md` for current release and adoption state.
-2. Read `README.md` and `docs/principles.md` before changing a public token or
-   promoting a component. Read `docs/adoption.md` or `docs/releasing.md` when
-   changing the consumer or release contract.
+2. Read `README.md`, `docs/principles.md`, and `docs/catalog.md` before changing
+   a public token, class, recipe, or registry status. Read `docs/adoption.md` or
+   `docs/releasing.md` when changing the consumer or release contract.
 3. Run `npm run verify` before handing off a change (`npm run check` alone
    for a docs-only change).
 
 ## Boundaries
 
 - This repository owns role-named tokens, brand assets, low-level styles,
-  generic components, and compatibility adapters.
+  layout compositions, generic components, surface recipes, candidate pattern
+  source, and compatibility adapters.
 - Consumer repositories own routes, copy, product claims, content, analytics,
   deployment configuration, and release artifacts.
-- Add a shared component after two real consumers demonstrate the same need.
-  Until then, keep the implementation with the consumer.
+- Add a stable shared component after two real consumers demonstrate the same
+  responsibility. One real consumer may contribute a clearly marked candidate
+  registry pattern; copying it transfers ownership of the local result.
 - Keep the CSS entry points framework-independent. Astro may provide the
   reference site and optional components, but tokens and base styles must not
   require an Astro runtime.
