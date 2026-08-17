@@ -28,6 +28,8 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   and product-specific composition.
 - Reserve numbering for real sequence, progression, reference, or identity
   rather than default section decoration.
+- Integrate form-control focus outlines with the control edge so focus remains
+  explicit without rendering a second disconnected border.
 
 ## [0.2.0] - 2026-08-16
 

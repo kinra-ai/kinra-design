@@ -155,17 +155,30 @@
 		opacity: 1;
 	}
 
-	:is(.kin-input, .kin-select, .kin-textarea):hover:not(:disabled) {
+	:is(.kin-input, .kin-select, .kin-textarea):hover:not(:disabled):not(
+			:focus-visible
+		) {
 		border-color: var(--kin-color-text-muted);
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea):focus-visible {
 		background: var(--kin-color-surface);
-		border-color: var(--kin-color-primary);
+		border-color: transparent;
+		outline: 2px solid var(--kin-color-primary);
+		outline-offset: -1px;
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea)[aria-invalid="true"] {
 		border-color: var(--kin-color-error);
+	}
+
+	:is(
+			.kin-input,
+			.kin-select,
+			.kin-textarea
+		)[aria-invalid="true"]:focus-visible {
+		border-color: transparent;
+		outline-color: var(--kin-color-error);
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea):disabled {
