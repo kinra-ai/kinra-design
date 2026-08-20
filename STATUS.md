@@ -10,6 +10,9 @@ adoption map; this file only tracks current state, not process.
 - Latest immutable tag: `v0.2.0` (2026-08-16, Graphite+ alignment with Kinra
   Site; approved by Blake). `package.json` matches the tag.
 - Prior release: `v0.1.0` (`7a367ac`).
+- A release is a tag, not a deployment: no build output, host, route, or
+  registry publication sits behind it, so this repository owns no deploy
+  command. Each consumer deploys its own site from the version it pins.
 
 ## Development
 
