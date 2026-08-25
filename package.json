@@ -46,6 +46,18 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26.x",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "11.17.0",
+      "onFail": "error"
+    }
+  },
   "packageManager": "npm@11.17.0",
   "publishConfig": {
     "access": "public"

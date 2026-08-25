@@ -87,7 +87,12 @@ in [`registry/README.md`](registry/README.md).
 
 ## Develop
 
+With mise activated, `mise install` selects the repository's locked Node 26
+and npm 11.17 toolchain. The native `devEngines` contract rejects an incorrect
+development runtime before npm installs, runs, or verifies the package.
+
 ```bash
+mise install
 npm ci
 npm run dev
 npm run verify

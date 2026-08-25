@@ -20,6 +20,11 @@ for current release and adoption state.
 3. Run `npm run verify` before handing off a change (`npm run check` alone
    for a docs-only change).
 
+Tool selection is `mise.toml` plus `mise.lock`: Node 26 and npm 11.17.0.
+`package.json` retains the native compatibility and `devEngines` contract,
+`package-lock.json` remains dependency truth, and npm scripts remain the
+command surface. Run `mise install` and `npm ci` on a fresh mise workstation.
+
 ## Boundaries
 
 - This repository owns role-named tokens, brand assets, low-level styles,
