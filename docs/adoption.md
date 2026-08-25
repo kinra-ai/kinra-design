@@ -130,8 +130,10 @@ consumers for as long as each product needs.
 - **Depot** vendors `v0.1.0` so its self-contained Go binary acquires no
   runtime dependency. Its `depot-` layer owns forge-specific views and
   interaction.
-- **Kinra OS** pins the same pre-`0.2.0` commit for roles and primitives while
-  retaining an immersive application shell.
+  No consumer has adopted `v0.2.0` or the unreleased expansion yet. Each upgrade
+  belongs to the consuming repository's own change process.
 
-No consumer has adopted `v0.2.0` or the unreleased expansion yet. Each upgrade
-belongs to the consuming repository's own change process.
+Retiring Kinra OS retains its exact pre-`0.2.0` lockfile pin in its own source
+as historical and recovery evidence, but accepted PP-0020 removes it from this
+current adoption map. Retirement requires no mutation of an immutable Design
+release.

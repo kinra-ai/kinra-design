@@ -24,11 +24,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Adoption
 
-- **kinra-site** and **kinra-os** each pin the exact pre-`0.2.0` commit
-  `2089818` — a deliberate test pin, not `main`.
+- **kinra-site** pins the exact pre-`0.2.0` commit `2089818` — a deliberate
+  test pin, not `main`.
 - **depot** vendors the released `v0.1.0` tag verbatim into
   `internal/server/static/kinra/`, with provenance recorded in that
   directory's `VENDORED.md`.
+- Retiring **kinra-os** retains its exact historical lockfile pin in its own
+  source as recovery evidence, but is no longer a current consumer under
+  accepted PP-0020. No package release or byte change is required.
 - No consumer has adopted `v0.2.0` yet; each upgrade is that consumer's
   deliberate action.
 

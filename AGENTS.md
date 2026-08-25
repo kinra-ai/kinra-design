@@ -5,10 +5,11 @@ Kind: product · Lifecycle: active · Versioning: semver
 Kinra's shared, framework-light design system for web products and public
 surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
-Real consumers pin an exact release or commit: `kinra-site` and `kinra-os`
-pin the exact pre-`0.2.0` commit `2089818`, and `depot` vendors the `v0.1.0`
-tag (see `depot/internal/server/static/kinra/VENDORED.md`); see `STATUS.md`
-for current release and adoption state.
+Real consumers pin an exact release or commit: `kinra-site` pins the exact
+pre-`0.2.0` commit `2089818`, and `depot` vendors the `v0.1.0` tag (see
+`depot/internal/server/static/kinra/VENDORED.md`); see `STATUS.md` for current
+release and adoption state. Retiring Kinra OS retains its historical pin in
+its own source but is no longer a current consumer.
 
 ## Start here
 
