@@ -21,6 +21,8 @@ adoption map; this file only tracks current state, not process.
   candidate registry, and a multi-page reference catalog.
 - `package.json` remains at the latest released version until a maintainer
   explicitly approves the next release identity and tag.
+- `assets/spaces-wordmark.svg` adds the Spaces wordmark on the canonical Kinra
+  grid. The asset is unreleased; consumer adoption remains a separate change.
 
 ## Adoption
 

@@ -9,6 +9,8 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
+- Add the Spaces wordmark using the canonical Kinra letterforms, spacing, and
+  blue gradient.
 - Add framework-independent stack, cluster, grid, split, sidebar, and region
   compositions.
 - Add shared badges, notices, form fields, controls, tables, empty states, and
