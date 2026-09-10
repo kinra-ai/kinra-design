@@ -1,0 +1,182 @@
+---
+// Reference-only review composition, with illustrative evidence.
+const checks = [
+	[
+		"Readable on both grounds",
+		"Graphite and paper share the same colour roles.",
+	],
+	[
+		"Comfortable at narrow widths",
+		"The content keeps its order as the layout changes.",
+	],
+	["Clear without motion", "Labels and focus carry the state."],
+];
+---
+
+<section class="example-review" aria-labelledby="review-example-title">
+	<div class="example-panel__heading">
+		<div class="kin-stack" data-space="tight">
+			<p class="kin-label">Sample review</p>
+			<h3 class="kin-headline" id="review-example-title">Design review</h3>
+		</div>
+		<span class="kin-status" data-state="reason" id="review-state"
+			>Awaiting review</span
+		>
+	</div>
+	<div class="example-review__body">
+		<div class="kin-stack">
+			<div class="kin-notice" data-tone="reason" id="review-notice">
+				<p class="kin-notice__title" id="review-notice-title">
+					The details are ready.
+				</p>
+				<p class="kin-notice__body" id="review-notice-body">
+					Use the checklist to keep the decision close to its evidence.
+				</p>
+			</div>
+			<ul class="kin-list" data-wrap>
+				{
+					checks.map(([title, description]) => (
+						<li class="kin-list__item">
+							<span class="example-check" aria-hidden="true">
+								✓
+							</span>
+							<div class="kin-list__body">
+								<>
+									<h4 class="kin-list__title">{title}</h4>
+									<p class="kin-list__meta">{description}</p>
+								</>
+							</div>
+							<span class="kin-status" data-state="success">
+								Checked
+							</span>
+						</li>
+					))
+				}
+			</ul>
+			<details class="kin-disclosure">
+				<summary>What to look for in a review</summary>
+				<div class="kin-disclosure__body">
+					<p>
+						Try long labels, keyboard navigation, both colour schemes, and a
+						narrow viewport. Look at the relationships between elements as
+						closely as the elements themselves.
+					</p>
+				</div>
+			</details>
+		</div>
+		<aside class="example-review__aside kin-stack" aria-label="Review details">
+			<h4 class="kin-heading">At a glance</h4>
+			<dl class="kin-kv" data-layout="stacked">
+				<div><dt>Scope</dt><dd>Reference examples</dd></div>
+				<div><dt>Coverage</dt><dd>Both colour schemes</dd></div>
+				<div>
+					<dt>Reviewers</dt><dd>
+						<div
+							class="kin-avatar-group"
+							aria-label="Sample reviewers AL and BM"
+						>
+							<span class="kin-avatar">AL</span><span class="kin-avatar"
+								>BM</span
+							>
+						</div>
+					</dd>
+				</div>
+			</dl>
+			<p class="kin-caption">Illustrative evidence for this example.</p>
+		</aside>
+	</div>
+	<div class="example-panel__footer">
+		<p
+			class="kin-caption"
+			role="status"
+			aria-atomic="true"
+			id="review-feedback"
+		>
+			Try the review interaction.
+		</p>
+		<div class="kin-cluster" data-space="tight">
+			<button
+				class="kin-button kin-button--ghost"
+				type="button"
+				id="review-reset">Reset example</button
+			>
+			<button
+				class="kin-button kin-button--primary"
+				type="button"
+				id="review-open">Mark reviewed</button
+			>
+		</div>
+	</div>
+	<dialog
+		class="kin-dialog"
+		data-size="narrow"
+		id="review-dialog"
+		aria-labelledby="review-dialog-title"
+		aria-describedby="review-dialog-description"
+	>
+		<div class="kin-dialog__header">
+			<h3 class="kin-dialog__title" id="review-dialog-title">
+				Mark this example reviewed?
+			</h3>
+		</div>
+		<div class="kin-dialog__body">
+			<p id="review-dialog-description">
+				This updates the sample review so you can see the completed state.
+			</p>
+		</div>
+		<form class="kin-dialog__footer" method="dialog">
+			<button class="kin-button kin-button--ghost" type="submit" value="cancel"
+				>Keep reviewing</button
+			>
+			<button
+				class="kin-button kin-button--primary"
+				type="submit"
+				value="reviewed">Mark reviewed</button
+			>
+		</form>
+	</dialog>
+</section>
+
+<script>
+	const dialog = document.querySelector<HTMLDialogElement>("#review-dialog");
+	const trigger = document.querySelector<HTMLButtonElement>("#review-open");
+	const state = document.getElementById("review-state");
+	const notice = document.getElementById("review-notice");
+	const title = document.getElementById("review-notice-title");
+	const body = document.getElementById("review-notice-body");
+	const feedback = document.getElementById("review-feedback");
+	function reflectReview(reviewed: boolean) {
+		if (state) {
+			state.dataset.state = reviewed ? "success" : "reason";
+			state.textContent = reviewed ? "Reviewed" : "Awaiting review";
+		}
+		if (notice) notice.dataset.tone = reviewed ? "success" : "reason";
+		if (title)
+			title.textContent = reviewed
+				? "Review complete."
+				: "The details are ready.";
+		if (body)
+			body.textContent = reviewed
+				? "The sample has been marked reviewed. Reset the example to try again."
+				: "Use the checklist to keep the decision close to its evidence.";
+		if (trigger) trigger.disabled = reviewed;
+		if (feedback)
+			feedback.textContent = reviewed
+				? "Example marked reviewed."
+				: "Try the review interaction.";
+	}
+	trigger?.addEventListener("click", () => {
+		if (!dialog) return;
+		dialog.returnValue = "";
+		dialog.showModal();
+	});
+	dialog?.addEventListener("close", () => {
+		if (dialog.returnValue === "reviewed") {
+			reflectReview(true);
+			document.getElementById("review-reset")?.focus();
+		}
+	});
+	document
+		.getElementById("review-reset")
+		?.addEventListener("click", () => reflectReview(false));
+</script>

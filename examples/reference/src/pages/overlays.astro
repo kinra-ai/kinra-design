@@ -1,0 +1,399 @@
+---
+import Specimen from "../components/Specimen.astro";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Overlays"
+	description="Native dialog, drawer, popover, and menu treatment for Kinra web surfaces."
+	current="Overlays"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Overlays</h1>
+			<p class="catalog-header__summary">
+				Native dialog, drawer, popover, and menu treatment. Focus, dismissal,
+				and the top layer come from the platform; positioning comes from the
+				consumer.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Dialog"
+			contract=".kin-dialog · __header · __title · __close · __body · __footer · data-size"
+			description="A modal <dialog> opened with showModal(). The footer holds actions, primary last; the close button is a ghost icon button in the header."
+		>
+			<div class="kin-cluster" data-space="compact">
+				<button class="kin-button" type="button" data-open="dialog-confirm">
+					Open confirm dialog
+				</button>
+				<button class="kin-button" type="button" data-open="dialog-form">
+					Open form dialog
+				</button>
+			</div>
+
+			<dialog
+				class="kin-dialog"
+				data-size="narrow"
+				id="dialog-confirm"
+				aria-labelledby="confirm-title"
+			>
+				<div class="kin-dialog__header">
+					<h2 class="kin-dialog__title" id="confirm-title">
+						Delete this repository?
+					</h2>
+				</div>
+				<div class="kin-dialog__body">
+					<p>
+						This removes <strong>blake/kin</strong> and its 214 sessions from Depot.
+						The action cannot be undone.
+					</p>
+				</div>
+				<form class="kin-dialog__footer" method="dialog">
+					<button class="kin-button kin-button--ghost" type="submit"
+						>Cancel</button
+					>
+					<button class="kin-button kin-button--danger" type="submit"
+						>Delete repository</button
+					>
+				</form>
+			</dialog>
+
+			<dialog class="kin-dialog" id="dialog-form" aria-labelledby="form-title">
+				<div class="kin-dialog__header">
+					<h2 class="kin-dialog__title" id="form-title">New session</h2>
+					<form method="dialog">
+						<button
+							class="kin-button kin-button--ghost kin-button--icon kin-dialog__close"
+							data-size="compact"
+							type="submit"
+							aria-label="Close"
+						>
+							✕
+						</button>
+					</form>
+				</div>
+				<div class="kin-dialog__body">
+					<form
+						class="kin-stack"
+						data-space="compact"
+						id="session-form"
+						method="dialog"
+					>
+						<div class="kin-field">
+							<label class="kin-field__label" for="session-goal">Goal</label>
+							<input
+								class="kin-input"
+								id="session-goal"
+								placeholder="Describe the bounded task"
+							/>
+						</div>
+						<div class="kin-field">
+							<label class="kin-field__label" for="session-branch">Branch</label
+							>
+							<select class="kin-select" id="session-branch">
+								<option>main</option>
+								<option>release/0.3</option>
+							</select>
+						</div>
+						<label class="kin-switch">
+							<input type="checkbox" role="switch" checked />
+							<span>Allow the peer to open a pull request</span>
+						</label>
+					</form>
+				</div>
+				<div class="kin-dialog__footer">
+					<button
+						class="kin-button kin-button--ghost"
+						type="submit"
+						form="session-form">Cancel</button
+					>
+					<button
+						class="kin-button kin-button--primary"
+						type="submit"
+						form="session-form">Start session</button
+					>
+				</div>
+			</dialog>
+		</Specimen>
+
+		<Specimen
+			title="Drawer"
+			contract=".kin-drawer · data-side · --kin-drawer-width"
+			description="A <dialog> anchored to an edge for an inspector, a filter panel, or a mobile sheet. It reuses the dialog header, body, and footer."
+		>
+			<div class="kin-cluster" data-space="compact">
+				<button class="kin-button" type="button" data-open="drawer-end"
+					>Open inspector</button
+				>
+				<button class="kin-button" type="button" data-open="drawer-bottom"
+					>Open sheet</button
+				>
+			</div>
+
+			<dialog
+				class="kin-drawer"
+				id="drawer-end"
+				aria-labelledby="drawer-end-title"
+			>
+				<div class="kin-dialog__header">
+					<h2 class="kin-dialog__title" id="drawer-end-title">Session 214</h2>
+					<form method="dialog">
+						<button
+							class="kin-button kin-button--ghost kin-button--icon kin-dialog__close"
+							data-size="compact"
+							type="submit"
+							aria-label="Close"
+						>
+							✕
+						</button>
+					</form>
+				</div>
+				<div class="kin-dialog__body">
+					<dl class="kin-kv" data-density="compact">
+						<div>
+							<dt>State</dt><dd>
+								<span class="kin-status" data-state="running">Running</span>
+							</dd>
+						</div>
+						<div><dt>Branch</dt><dd><code>release/0.3</code></dd></div>
+						<div><dt>Started</dt><dd>09:10</dd></div>
+						<div><dt>Steps</dt><dd data-align="numeric">12</dd></div>
+					</dl>
+				</div>
+				<div class="kin-dialog__footer" data-justify="between">
+					<button
+						class="kin-button kin-button--danger"
+						data-size="compact"
+						type="button">Stop</button
+					>
+					<form method="dialog">
+						<button class="kin-button" data-size="compact" type="submit"
+							>Done</button
+						>
+					</form>
+				</div>
+			</dialog>
+
+			<dialog
+				class="kin-drawer"
+				data-side="bottom"
+				id="drawer-bottom"
+				aria-labelledby="drawer-bottom-title"
+			>
+				<div class="kin-dialog__header">
+					<h2 class="kin-dialog__title" id="drawer-bottom-title">
+						Filter sessions
+					</h2>
+				</div>
+				<div class="kin-dialog__body">
+					<div class="kin-cluster" data-space="tight">
+						<button class="kin-chip" type="button" aria-pressed="true"
+							>Running</button
+						>
+						<button class="kin-chip" type="button" aria-pressed="false"
+							>Complete</button
+						>
+						<button class="kin-chip" type="button" aria-pressed="false"
+							>Failed</button
+						>
+					</div>
+				</div>
+				<form class="kin-dialog__footer" method="dialog">
+					<button
+						class="kin-button kin-button--primary"
+						type="submit"
+						data-width="full">Apply</button
+					>
+				</form>
+			</dialog>
+		</Specimen>
+
+		<Specimen
+			title="Popover and menu"
+			contract=".kin-popover · __title · __body · data-padding · .kin-menu · __item · __shortcut · __separator · __label · data-tone"
+			description="A [popover] panel positioned by the consumer, and a menu inside one. Shown statically in flow beside a live trigger."
+		>
+			<div class="kin-stack" data-space="loose">
+				<div class="kin-cluster" data-space="compact">
+					<button class="kin-button" type="button" popovertarget="popover-info">
+						Explain this state
+					</button>
+					<button
+						class="kin-button kin-button--icon"
+						type="button"
+						popovertarget="popover-menu"
+						aria-label="Session actions"
+					>
+						⋯
+					</button>
+				</div>
+				<div class="kin-popover" popover id="popover-info">
+					<p class="kin-popover__title">Awaiting review</p>
+					<p class="kin-popover__body">
+						The peer prepared evidence. A person decides whether to release.
+					</p>
+				</div>
+				<div class="kin-popover" popover data-padding="none" id="popover-menu">
+					<ul class="kin-menu" role="menu" aria-label="Session actions">
+						<li role="none">
+							<button class="kin-menu__item" role="menuitem" type="button"
+								>Open <span class="kin-menu__shortcut">↵</span></button
+							>
+						</li>
+						<li role="none">
+							<button class="kin-menu__item" role="menuitem" type="button"
+								>Copy link <span class="kin-menu__shortcut">⌘C</span></button
+							>
+						</li>
+						<li role="none">
+							<button
+								class="kin-menu__item"
+								role="menuitemcheckbox"
+								aria-checked="true"
+								type="button">Pinned</button
+							>
+						</li>
+						<li role="none"><hr class="kin-menu__separator" /></li>
+						<li role="none"><p class="kin-menu__label">Danger</p></li>
+						<li role="none">
+							<button
+								class="kin-menu__item"
+								role="menuitem"
+								data-tone="error"
+								type="button">Stop session</button
+							>
+						</li>
+					</ul>
+				</div>
+				<div
+					class="demo-inline kin-cluster"
+					data-align="start"
+					data-space="compact"
+				>
+					<div class="kin-popover">
+						<p class="kin-popover__title">In flow</p>
+						<p class="kin-popover__body">The same panel rendered statically.</p>
+					</div>
+					<div class="kin-popover" data-padding="none">
+						<ul class="kin-menu" role="menu" aria-label="Example menu">
+							<li role="none">
+								<button class="kin-menu__item" role="menuitem" type="button"
+									>Rename</button
+								>
+							</li>
+							<li role="none">
+								<button
+									class="kin-menu__item"
+									role="menuitem"
+									type="button"
+									aria-disabled="true">Move</button
+								>
+							</li>
+							<li role="none"><hr class="kin-menu__separator" /></li>
+							<li role="none">
+								<button
+									class="kin-menu__item"
+									role="menuitem"
+									data-tone="error"
+									type="button">Delete</button
+								>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</Specimen>
+	</div>
+
+	<script>
+		for (const trigger of document.querySelectorAll<HTMLButtonElement>(
+			"[data-open]",
+		)) {
+			trigger.addEventListener("click", () => {
+				const target = document.getElementById(trigger.dataset.open ?? "");
+				if (target instanceof HTMLDialogElement) target.showModal();
+			});
+		}
+
+		// Positioning belongs to the consumer; the catalog places each popover
+		// under its trigger so the demo reads correctly.
+		for (const trigger of document.querySelectorAll<HTMLButtonElement>(
+			"[popovertarget]",
+		)) {
+			const target = document.getElementById(
+				trigger.getAttribute("popovertarget") ?? "",
+			);
+			function positionPopover() {
+				if (!target?.matches(":popover-open")) return;
+				const rect = trigger.getBoundingClientRect();
+				const width = target.offsetWidth;
+				const height = target.offsetHeight;
+				const left = Math.min(rect.left, window.innerWidth - width - 16);
+				const top =
+					rect.bottom + height + 22 > window.innerHeight
+						? rect.top - height - 6
+						: rect.bottom + 6;
+				target.style.top = `${Math.max(16, Math.min(top, window.innerHeight - height - 16))}px`;
+				target.style.left = `${Math.max(16, left)}px`;
+			}
+			target?.addEventListener("toggle", (event) => {
+				if ((event as ToggleEvent).newState !== "open") return;
+				positionPopover();
+				target
+					.querySelector<HTMLElement>('[role^="menuitem"]')
+					?.focus({ preventScroll: true });
+			});
+			window.addEventListener("resize", positionPopover);
+			document.addEventListener("scroll", positionPopover, true);
+		}
+
+		for (const menu of document.querySelectorAll<HTMLElement>(
+			'[role="menu"]',
+		)) {
+			const items = [
+				...menu.querySelectorAll<HTMLButtonElement>(
+					'[role^="menuitem"]:not(:disabled)',
+				),
+			];
+			for (const [index, item] of items.entries()) {
+				item.tabIndex = index === 0 ? 0 : -1;
+				item.addEventListener("keydown", (event) => {
+					let next: number;
+					switch (event.key) {
+						case "ArrowDown":
+							next = (index + 1) % items.length;
+							break;
+						case "ArrowUp":
+							next = (index - 1 + items.length) % items.length;
+							break;
+						case "Home":
+							next = 0;
+							break;
+						case "End":
+							next = items.length - 1;
+							break;
+						default:
+							return;
+					}
+					event.preventDefault();
+					for (const candidate of items)
+						candidate.tabIndex = candidate === items[next] ? 0 : -1;
+					items[next].focus();
+				});
+				item.addEventListener("click", () => {
+					if (item.getAttribute("aria-disabled") === "true") return;
+					if (item.getAttribute("role") === "menuitemcheckbox") {
+						item.setAttribute(
+							"aria-checked",
+							String(item.getAttribute("aria-checked") !== "true"),
+						);
+					}
+					menu.closest<HTMLElement>("[popover]")?.hidePopover();
+				});
+			}
+		}
+	</script>
+</ReferenceLayout>

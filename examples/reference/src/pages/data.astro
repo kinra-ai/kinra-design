@@ -1,0 +1,314 @@
+---
+import Specimen from "../components/Specimen.astro";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Data"
+	description="Figures, key-value lists, logs, code, identity, cards, and lists for Kinra web surfaces."
+	current="Data"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Data</h1>
+			<p class="catalog-header__summary">
+				Figures, key-value lists, logs, code, identity, cards, and lists.
+				Numbers keep tabular columns; cards and lists are bounded items, not
+				decoration.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Figures"
+			contract=".kin-figure · __label · __value · __delta · __note · data-trend · data-good · data-size · data-tone"
+			description="One measured value with its label. A delta names its direction in text; the marker only echoes it. data-good='down' flips which direction is success."
+		>
+			<div class="kin-grid" data-columns="4" data-rules="deep">
+				<div class="kin-figure" style="padding: 1.25rem">
+					<p class="kin-figure__label">Sessions today</p>
+					<p class="kin-figure__value">128</p>
+					<p class="kin-figure__delta" data-trend="up">+12% vs yesterday</p>
+				</div>
+				<div class="kin-figure" style="padding: 1.25rem">
+					<p class="kin-figure__label">p95 latency</p>
+					<p class="kin-figure__value">412<small>ms</small></p>
+					<p class="kin-figure__delta" data-trend="down" data-good="down">
+						−38 ms
+					</p>
+				</div>
+				<div class="kin-figure" style="padding: 1.25rem" data-tone="warning">
+					<p class="kin-figure__label">Queue depth</p>
+					<p class="kin-figure__value">37</p>
+					<p class="kin-figure__delta" data-trend="up" data-good="down">
+						+9 waiting
+					</p>
+				</div>
+				<div class="kin-figure" style="padding: 1.25rem">
+					<p class="kin-figure__label">Uptime</p>
+					<p class="kin-figure__value">99.98<small>%</small></p>
+					<p class="kin-figure__delta" data-trend="flat">Unchanged</p>
+					<p class="kin-figure__note">30-day window</p>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Key-value"
+			contract=".kin-kv · data-layout · data-density · data-rule · --kin-kv-key"
+			description="A description list of facts. Inline rows by default; stacked for narrow rails; grid for a fact strip."
+		>
+			<div class="kin-split" data-space="loose">
+				<dl class="kin-kv">
+					<div>
+						<dt>Owner</dt>
+						<dd>Product team</dd>
+					</div>
+					<div>
+						<dt>State</dt>
+						<dd><span class="kin-status" data-state="success">Active</span></dd>
+					</div>
+					<div>
+						<dt>Commit</dt>
+						<dd><code>2089818</code></dd>
+					</div>
+					<div>
+						<dt>Size</dt>
+						<dd data-align="numeric">14.2 MB</dd>
+					</div>
+				</dl>
+				<dl class="kin-kv" data-layout="grid" style="--kin-kv-min: 7rem">
+					<div>
+						<dt>Model</dt>
+						<dd>Fable 5.1</dd>
+					</div>
+					<div>
+						<dt>Context</dt>
+						<dd>128k</dd>
+					</div>
+					<div>
+						<dt>Provider</dt>
+						<dd>Local</dd>
+					</div>
+				</dl>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Log"
+			contract=".kin-log · __entry · __time · __marker · __body · __title · __detail · data-tone · data-live · data-time"
+			description="An ordered record of events. Time is document text in a <time> element; the marker takes the tone; the newest entry may be live while work continues."
+		>
+			<ol class="kin-log">
+				<li class="kin-log__entry" data-tone="success">
+					<time class="kin-log__time" datetime="2026-09-09T10:02">10:02</time>
+					<span class="kin-log__marker" aria-hidden="true"></span>
+					<div class="kin-log__body">
+						<p class="kin-log__title">Verification passed</p>
+						<p class="kin-log__detail">
+							Contract, types, formatting, and the reference build.
+						</p>
+					</div>
+				</li>
+				<li class="kin-log__entry" data-tone="reason">
+					<time class="kin-log__time" datetime="2026-09-09T09:41">09:41</time>
+					<span class="kin-log__marker" aria-hidden="true"></span>
+					<div class="kin-log__body">
+						<p class="kin-log__title">
+							<span class="kin-log__actor">Peer</span> proposed a release note
+						</p>
+						<p class="kin-log__detail">
+							Awaiting human review before the tag is created.
+						</p>
+					</div>
+				</li>
+				<li class="kin-log__entry">
+					<time class="kin-log__time" datetime="2026-09-09T09:12">09:12</time>
+					<span class="kin-log__marker" aria-hidden="true"></span>
+					<div class="kin-log__body">
+						<p class="kin-log__title">Branch pushed</p>
+					</div>
+				</li>
+				<li class="kin-log__entry" data-tone="primary" data-live>
+					<time class="kin-log__time" datetime="2026-09-09T09:10">09:10</time>
+					<span class="kin-log__marker" aria-hidden="true"></span>
+					<div class="kin-log__body">
+						<p class="kin-log__title">Indexing repository</p>
+						<p class="kin-log__detail">In progress.</p>
+					</div>
+				</li>
+			</ol>
+		</Specimen>
+
+		<Specimen
+			title="Code"
+			contract=".kin-code · __header · __title · __actions · __line · data-wrap · data-highlight"
+			description="A bounded block of source with an optional title and actions. Line wrappers are optional; a highlighted line carries the primary edge."
+		>
+			<figure class="kin-code">
+				<div class="kin-code__header">
+					<figcaption class="kin-code__title">astro.config.mjs</figcaption>
+					<div class="kin-code__actions">
+						<button class="kin-button kin-button--ghost" type="button"
+							>Copy</button
+						>
+					</div>
+				</div>
+				<pre><code><span class="kin-code__line">import &#123; defineConfig &#125; from "astro/config";</span><span class="kin-code__line" /><span class="kin-code__line" data-highlight>export default defineConfig(&#123;</span><span class="kin-code__line">  output: "static",</span><span class="kin-code__line">&#125;);</span></code></pre>
+			</figure>
+		</Specimen>
+
+		<Specimen
+			title="Avatar"
+			contract=".kin-avatar · .kin-avatar-group · data-size · data-tone"
+			description="Identity in a square: initials by default, an image when one exists. Initials are hidden from assistive technology when the name appears beside them."
+		>
+			<div class="kin-cluster" data-space="loose">
+				<div class="kin-cluster" data-space="compact">
+					<span class="kin-avatar" data-size="sm" aria-hidden="true">BG</span>
+					<span class="kin-avatar" aria-hidden="true">BG</span>
+					<span class="kin-avatar" data-size="lg" aria-hidden="true">BG</span>
+				</div>
+				<div class="kin-cluster" data-space="compact">
+					<span class="kin-avatar" data-tone="primary" aria-hidden="true"
+						>KP</span
+					>
+					<span class="kin-avatar" data-tone="reason" aria-hidden="true"
+						>AI</span
+					>
+				</div>
+				<div class="kin-avatar-group" aria-label="Three reviewers">
+					<span class="kin-avatar" data-size="sm" aria-hidden="true">BG</span>
+					<span class="kin-avatar" data-size="sm" aria-hidden="true">JR</span>
+					<span class="kin-avatar" data-size="sm" aria-hidden="true">+1</span>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Card"
+			contract=".kin-card · __header · __title · __meta · __body · __text · __footer · __media · data-tone · data-variant · data-link · data-density"
+			description="A bounded item in a collection. Flat and line-bound by default; raised only when the card is a real layer. data-link stretches the title link over the whole card."
+		>
+			<div class="kin-grid" style="--kin-grid-min: 15rem">
+				<article class="kin-card" data-link data-tone="success">
+					<div class="kin-card__header">
+						<div>
+							<h3 class="kin-card__title"><a href="#card">kin</a></h3>
+							<p class="kin-card__meta">Updated 2 hours ago</p>
+						</div>
+						<span class="kin-badge" data-tone="success">Passing</span>
+					</div>
+					<div class="kin-card__body">
+						<p class="kin-card__text">
+							Local AI peer that works inside a bounded plan and records its
+							evidence.
+						</p>
+					</div>
+					<div class="kin-card__footer">
+						<span class="kin-status" data-state="success">main</span>
+						<span class="kin-caption">Go · 14.2 MB</span>
+					</div>
+				</article>
+				<article class="kin-card">
+					<div class="kin-card__header">
+						<div>
+							<h3 class="kin-card__title">Release v0.3.0</h3>
+							<p class="kin-card__meta">Draft</p>
+						</div>
+					</div>
+					<div class="kin-card__body">
+						<p class="kin-card__text">
+							Scheme range, three voices, and a broader component vocabulary.
+						</p>
+					</div>
+					<div class="kin-card__footer">
+						<button class="kin-button" data-size="compact" type="button"
+							>Review</button
+						>
+						<button
+							class="kin-button kin-button--ghost"
+							data-size="compact"
+							type="button"
+						>
+							Discard
+						</button>
+					</div>
+				</article>
+				<article class="kin-card" data-variant="raised" data-tone="reason">
+					<div class="kin-card__header">
+						<div>
+							<h3 class="kin-card__title">Reasoning summary</h3>
+							<p class="kin-card__meta">Peer · 12 steps</p>
+						</div>
+					</div>
+					<div class="kin-card__body">
+						<p class="kin-card__text">
+							A raised card is a real layer: a picker, an inspector, or a
+							summary that floats over work.
+						</p>
+					</div>
+				</article>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="List"
+			contract=".kin-list · __item · __lead · __body · __title · __meta · __trail · data-variant · data-link · data-density · aria-selected"
+			description="Rows of peers that are not a table. Lead holds an avatar or marker; trail holds a badge, a figure, or an action."
+		>
+			<ul class="kin-list" data-variant="bounded">
+				<li class="kin-list__item" data-link>
+					<span
+						class="kin-list__lead kin-avatar"
+						data-size="sm"
+						aria-hidden="true">BG</span
+					>
+					<div class="kin-list__body">
+						<p class="kin-list__title">
+							<a href="#list">Refactor session persistence</a>
+						</p>
+						<p class="kin-list__meta">blake · opened 3 days ago · 4 comments</p>
+					</div>
+					<div class="kin-list__trail">
+						<span class="kin-badge" data-tone="reason">Review</span>
+					</div>
+				</li>
+				<li class="kin-list__item" data-link aria-selected="true">
+					<span
+						class="kin-list__lead kin-avatar"
+						data-size="sm"
+						data-tone="reason"
+						aria-hidden="true">AI</span
+					>
+					<div class="kin-list__body">
+						<p class="kin-list__title">
+							<a href="#list">Add Spaces wordmark</a>
+						</p>
+						<p class="kin-list__meta">peer · merged yesterday</p>
+					</div>
+					<div class="kin-list__trail">
+						<span class="kin-badge" data-tone="success">Merged</span>
+					</div>
+				</li>
+				<li class="kin-list__item" data-link>
+					<span
+						class="kin-list__lead kin-avatar"
+						data-size="sm"
+						aria-hidden="true">JR</span
+					>
+					<div class="kin-list__body">
+						<p class="kin-list__title">
+							<a href="#list">Pin the Node toolchain</a>
+						</p>
+						<p class="kin-list__meta">jr · closed last week</p>
+					</div>
+					<div class="kin-list__trail">
+						<span>#118</span>
+					</div>
+				</li>
+			</ul>
+		</Specimen>
+	</div>
+</ReferenceLayout>

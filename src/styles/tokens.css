@@ -1,25 +1,50 @@
-/* Graphite+ role tokens. Public custom properties use the kin- namespace. */
+/*
+ * Graphite+ role tokens. Public custom properties use the kin- namespace.
+ *
+ * Every colour role resolves through light-dark(), so one token set serves
+ * both grounds. The default scheme is graphite (dark). Set data-kin-scheme
+ * on the document or any bounded subtree to change it:
+ *
+ *   data-kin-scheme="light"  paper ground
+ *   data-kin-scheme="dark"   graphite ground
+ *   data-kin-scheme="auto"   follow the reader's preference
+ */
 
 :root {
 	color-scheme: dark;
 
-	/* Colour roles */
-	--kin-color-ground: #101114;
-	--kin-color-ground-deep: #0c0d10;
-	--kin-color-surface: #14171d;
-	--kin-color-surface-raised: #1a1d23;
-	--kin-color-text: #e3e3e6;
-	--kin-color-text-subtle: #b4b8bf;
-	--kin-color-text-muted: #8c9099;
-	--kin-color-primary: #5fbfd6;
-	--kin-color-primary-strong: #3a9fc8;
-	--kin-color-reason: #9e97d2;
-	--kin-color-success: #5fc198;
-	--kin-color-warning: #d6a855;
-	--kin-color-error: #e5786e;
-	--kin-color-code-string: #83b692;
-	--kin-color-rule: #2a2e36;
+	/* Ground and structure */
+	--kin-color-ground: light-dark(#f6f5f2, #101114);
+	--kin-color-ground-deep: light-dark(#eeede9, #0c0d10);
+	--kin-color-surface: light-dark(#fdfcf9, #14171d);
+	--kin-color-surface-raised: light-dark(#ffffff, #1a1d23);
+	--kin-color-text: light-dark(#15171c, #e3e3e6);
+	--kin-color-text-subtle: light-dark(#3d414a, #b4b8bf);
+	--kin-color-text-muted: light-dark(#585e68, #8c9099);
+	--kin-color-text-inverse: light-dark(#ffffff, #101114);
+	--kin-color-rule: light-dark(#d3d6dc, #2a2e36);
+	--kin-color-rule-strong: light-dark(#b3b8c1, #3a3f49);
+	--kin-color-control-edge: light-dark(#7f8691, #626975);
 	--kin-color-transparent: transparent;
+
+	/* Signal roles */
+	--kin-color-primary: light-dark(#166483, #5fbfd6);
+	--kin-color-primary-strong: light-dark(#155a7a, #3a9fc8);
+	--kin-color-reason: light-dark(#554b9f, #9e97d2);
+	--kin-color-success: light-dark(#166347, #5fc198);
+	--kin-color-warning: light-dark(#8a5d0b, #d6a855);
+	--kin-color-error: light-dark(#b8382c, #e5786e);
+	--kin-color-code-string: light-dark(#2a7247, #83b692);
+
+	/* Brand */
+	--kin-gradient-brand: linear-gradient(
+		to bottom,
+		#73c6e5 0%,
+		#52b5dc 25%,
+		#3a9fc8 50%,
+		#2b82ae 75%,
+		#1a6490 100%
+	);
 
 	/* Derived surfaces */
 	--kin-border-subtle: color-mix(
@@ -45,6 +70,11 @@
 	--kin-surface-primary: color-mix(
 		in srgb,
 		var(--kin-color-primary) 8%,
+		transparent
+	);
+	--kin-surface-hover: color-mix(
+		in srgb,
+		var(--kin-color-text) 6%,
 		transparent
 	);
 	--kin-surface-reason: color-mix(
@@ -73,34 +103,89 @@
 		transparent
 	);
 
+	/* Signal tints and edges, one per role */
+	--kin-tint-primary: color-mix(
+		in srgb,
+		var(--kin-color-primary) 10%,
+		transparent
+	);
+	--kin-tint-reason: color-mix(
+		in srgb,
+		var(--kin-color-reason) 10%,
+		transparent
+	);
+	--kin-tint-success: color-mix(
+		in srgb,
+		var(--kin-color-success) 10%,
+		transparent
+	);
+	--kin-tint-warning: color-mix(
+		in srgb,
+		var(--kin-color-warning) 12%,
+		transparent
+	);
+	--kin-tint-error: color-mix(in srgb, var(--kin-color-error) 10%, transparent);
+	--kin-edge-primary: color-mix(
+		in srgb,
+		var(--kin-color-primary) 34%,
+		transparent
+	);
+	--kin-edge-reason: color-mix(
+		in srgb,
+		var(--kin-color-reason) 34%,
+		transparent
+	);
+	--kin-edge-success: color-mix(
+		in srgb,
+		var(--kin-color-success) 36%,
+		transparent
+	);
+	--kin-edge-warning: color-mix(
+		in srgb,
+		var(--kin-color-warning) 40%,
+		transparent
+	);
+	--kin-edge-error: color-mix(in srgb, var(--kin-color-error) 38%, transparent);
+
 	/* Typography roles */
 	--kin-font-sans:
 		Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
 		sans-serif;
+	--kin-font-serif:
+		"Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4",
+		"Noto Serif", "Liberation Serif", Georgia, serif;
 	--kin-font-mono:
 		"SFMono-Regular", "Cascadia Code", "Roboto Mono", "DejaVu Sans Mono",
 		"Liberation Mono", monospace;
 	--kin-font-ui: var(--kin-font-mono);
 	--kin-font-heading: var(--kin-font-ui);
+	--kin-font-display: var(--kin-font-heading);
 	--kin-font-prose: var(--kin-font-sans);
 	--kin-font-code: var(--kin-font-mono);
-	--kin-text-xs: 0.6875rem;
-	--kin-text-sm: 0.8125rem;
+	--kin-text-xs: 0.75rem;
+	--kin-text-sm: 0.875rem;
+	--kin-text-md: 0.9375rem;
 	--kin-text-base: 1rem;
 	--kin-text-lg: 1.125rem;
 	--kin-text-xl: 1.375rem;
 	--kin-text-2xl: 1.75rem;
-	--kin-text-display: clamp(2.75rem, 5vw, 4.5rem);
-	--kin-text-title: clamp(2.4rem, 4.4vw, 4rem);
-	--kin-text-section: clamp(1.9rem, 3.2vw, 3rem);
+	--kin-text-display: clamp(2.25rem, 3.5vw, 3rem);
+	--kin-text-title: clamp(1.75rem, 2.6vw, 2.25rem);
+	--kin-text-section: clamp(1.4rem, 2vw, 1.75rem);
 	--kin-weight-quiet: 430;
 	--kin-weight-heading: 580;
 	--kin-weight-display: 620;
 	--kin-weight-strong: 650;
-	--kin-leading-display: 0.98;
-	--kin-leading-heading: 1.08;
-	--kin-tracking-display: -0.065em;
-	--kin-tracking-heading: -0.052em;
+	--kin-leading-display: 1.05;
+	--kin-leading-heading: 1.15;
+	--kin-leading-ui: 1.45;
+	--kin-leading-prose: 1.7;
+	--kin-tracking-display: -0.03em;
+	--kin-tracking-heading: -0.025em;
+	--kin-tracking-label: 0.06em;
+	--kin-measure-display: 22ch;
+	--kin-measure-title: 26ch;
+	--kin-measure-headline: 32ch;
 
 	/* Spacing */
 	--kin-space-1: 0.25rem;
@@ -117,26 +202,38 @@
 	--kin-space-12: 6.5rem;
 
 	/* Shape and depth */
-	--kin-radius-sm: 0.3125rem;
+	--kin-radius-sm: 0.25rem;
 	--kin-radius-md: 0.5rem;
 	--kin-radius-lg: 0.75rem;
 	--kin-radius-xl: 1.125rem;
-	--kin-shadow-panel: 0 1rem 3rem
-		color-mix(in srgb, var(--kin-color-ground-deep) 50%, transparent);
-	--kin-shadow-float: 0 1.375rem 4.375rem
-		color-mix(in srgb, var(--kin-color-ground-deep) 70%, transparent);
+	--kin-mark-size: 0.4rem;
+	--kin-shadow-tint: light-dark(rgb(21 23 28 / 0.14), rgb(12 13 16 / 0.5));
+	--kin-shadow-tint-deep: light-dark(rgb(21 23 28 / 0.22), rgb(12 13 16 / 0.7));
+	--kin-shadow-panel: 0 1rem 3rem var(--kin-shadow-tint);
+	--kin-shadow-float: 0 1.375rem 4.375rem var(--kin-shadow-tint-deep);
 	--kin-glow-primary: 0 0 1.75rem var(--kin-primary-12);
+
+	/* Layers, lowest to highest */
+	--kin-layer-raised: 10;
+	--kin-layer-sticky: 20;
+	--kin-layer-overlay: 30;
+	--kin-layer-dialog: 40;
+	--kin-layer-toast: 50;
 
 	/* Causal motion */
 	--kin-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--kin-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 	--kin-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 	--kin-duration-fast: 120ms;
 	--kin-duration-normal: 180ms;
 	--kin-duration-slow: 320ms;
+	--kin-duration-deliberate: 480ms;
 
 	/* Controls, reading, and shell measures */
+	--kin-control-radius: var(--kin-radius-sm);
 	--kin-control-height: 2.75rem;
 	--kin-control-height-compact: 2.25rem;
+	--kin-control-height-large: 3.25rem;
 	--kin-control-padding-inline: var(--kin-space-4);
 	--kin-hit-target: 2.75rem;
 	--kin-measure-narrow: 34rem;
@@ -149,8 +246,21 @@
 	--kin-sidebar-width: 18.25rem;
 }
 
+/* Scheme switch. Applies to the document or any bounded subtree. */
+[data-kin-scheme="light"] {
+	color-scheme: light;
+}
+
+[data-kin-scheme="dark"] {
+	color-scheme: dark;
+}
+
+[data-kin-scheme="auto"] {
+	color-scheme: light dark;
+}
+
 @media (max-width: 42rem) {
 	:root {
-		--kin-text-display: clamp(2.5rem, 10vw, 3.5rem);
+		--kin-text-display: clamp(2rem, 7vw, 2.5rem);
 	}
 }

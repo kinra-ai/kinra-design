@@ -1,0 +1,269 @@
+---
+// Reference-only composition. Sample records, with no consumer or registry contract.
+const records = [
+	{
+		name: "Reading foundations",
+		category: "Foundations",
+		state: "Ready",
+		tone: "success",
+		description: "Type, measure, and rhythm for considered writing.",
+		owner: "AL",
+		date: "Sep 09",
+	},
+	{
+		name: "Forms & validation",
+		category: "Components",
+		state: "In review",
+		tone: "reason",
+		description: "Clear choices, useful hints, and recoverable errors.",
+		owner: "BM",
+		date: "Sep 08",
+	},
+	{
+		name: "Collection views",
+		category: "Components",
+		state: "Ready",
+		tone: "success",
+		description: "Find the right item without losing the surrounding context.",
+		owner: "JL",
+		date: "Sep 08",
+	},
+	{
+		name: "Command surfaces",
+		category: "Components",
+		state: "Draft",
+		tone: undefined,
+		description: "Small, focused layers for the next useful action.",
+		owner: "AL",
+		date: "Sep 07",
+	},
+];
+---
+
+<section class="example-collection" aria-label="Sample component library">
+	<div class="example-panel__heading">
+		<div class="kin-stack" data-space="tight">
+			<p class="kin-label">Sample workspace</p>
+			<h3 class="kin-headline">Component library</h3>
+			<p class="kin-body" data-size="sm">
+				Browse the current work and the details behind it.
+			</p>
+		</div>
+		<span class="kin-badge" data-numeric>4 entries</span>
+	</div>
+
+	<div class="example-collection__tools">
+		<div class="kin-input-group example-search">
+			<span class="kin-input-group__affix" aria-hidden="true">
+				<svg
+					viewBox="0 0 20 20"
+					width="18"
+					height="18"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"
+					></path></svg
+				>
+			</span>
+			<label class="kin-sr-only" for="library-query"
+				>Search the sample library</label
+			>
+			<input
+				class="kin-input"
+				id="library-query"
+				type="search"
+				placeholder="Find an entry…"
+				autocomplete="off"
+				aria-controls="library-results"
+			/>
+		</div>
+		<div
+			class="kin-cluster"
+			data-space="tight"
+			role="group"
+			aria-label="Filter library by state"
+		>
+			{
+				["All", "Ready", "In review", "Draft"].map((state) => (
+					<button
+						class="kin-chip"
+						type="button"
+						data-library-filter={state}
+						aria-pressed={state === "All" ? "true" : "false"}
+						aria-controls="library-results"
+					>
+						{state}
+					</button>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="example-library-grid" id="library-results">
+		{
+			records.map((record, i) => (
+				<article
+					class="kin-card"
+					data-library-record
+					data-search={`${record.name} ${record.category} ${record.description}`.toLowerCase()}
+					data-state={record.state}
+				>
+					<div class="kin-card__header">
+						<p class="kin-label">{record.category}</p>
+						<span class="kin-badge" data-tone={record.tone}>
+							{record.state}
+						</span>
+					</div>
+					<div class="kin-card__body kin-stack" data-space="compact">
+						<h4 class="kin-card__title">{record.name}</h4>
+						<p class="kin-card__text">{record.description}</p>
+					</div>
+					<div class="kin-card__footer">
+						<div class="kin-cluster" data-space="tight">
+							<span
+								class="kin-avatar"
+								data-size="sm"
+								aria-label={`Owner ${record.owner}`}
+							>
+								{record.owner}
+							</span>
+							<span class="kin-card__meta">{record.date}</span>
+						</div>
+						<button
+							class="kin-button kin-button--ghost"
+							type="button"
+							data-size="compact"
+							data-library-open={`library-detail-${i}`}
+							aria-label={`Inspect ${record.name}`}
+						>
+							Inspect <span aria-hidden="true">↗</span>
+						</button>
+					</div>
+				</article>
+			))
+		}
+	</div>
+
+	<div class="kin-empty" data-align="center" id="library-empty" hidden>
+		<p class="kin-empty__title">No matching entries</p>
+		<p class="kin-empty__body">
+			Try another name or clear the filters to see the whole library.
+		</p>
+		<button class="kin-button" type="button" id="library-clear"
+			>Clear filters</button
+		>
+	</div>
+	<div class="example-panel__footer">
+		<p class="kin-caption" id="library-count" role="status" aria-atomic="true">
+			Showing 4 of 4 entries
+		</p>
+		<p class="kin-caption">Illustrative data</p>
+	</div>
+
+	{
+		records.map((record, i) => (
+			<dialog
+				class="kin-dialog"
+				id={`library-detail-${i}`}
+				aria-labelledby={`library-detail-title-${i}`}
+			>
+				<div class="kin-dialog__header">
+					<h3 class="kin-dialog__title" id={`library-detail-title-${i}`}>
+						{record.name}
+					</h3>
+					<span class="kin-badge" data-tone={record.tone}>
+						{record.state}
+					</span>
+				</div>
+				<div class="kin-dialog__body kin-stack" data-space="compact">
+					<p>{record.description}</p>
+					<dl class="kin-kv">
+						<div>
+							<>
+								<dt>Category</dt>
+								<dd>{record.category}</dd>
+							</>
+						</div>
+						<div>
+							<>
+								<dt>Owner</dt>
+								<dd>{record.owner}</dd>
+							</>
+						</div>
+						<div>
+							<>
+								<dt>Updated</dt>
+								<dd>{record.date}</dd>
+							</>
+						</div>
+					</dl>
+					<p class="kin-caption">
+						A sample inspector composed from the shared dialog, badge, and
+						key-value styles.
+					</p>
+				</div>
+				<form class="kin-dialog__footer" method="dialog">
+					<button class="kin-button" type="submit">
+						Done
+					</button>
+				</form>
+			</dialog>
+		))
+	}
+</section>
+
+<script>
+	const collection = document.querySelector<HTMLElement>(".example-collection");
+	const query = document.querySelector<HTMLInputElement>("#library-query");
+	const filters = collection?.querySelectorAll<HTMLButtonElement>(
+		"[data-library-filter]",
+	);
+	const records = collection?.querySelectorAll<HTMLElement>(
+		"[data-library-record]",
+	);
+	const count = document.getElementById("library-count");
+	const empty = document.getElementById("library-empty");
+	let state = "All";
+
+	function filterLibrary() {
+		let visible = 0;
+		const term = query?.value.trim().toLowerCase() ?? "";
+		for (const record of records ?? []) {
+			record.hidden =
+				!(state === "All" || record.dataset.state === state) ||
+				!record.dataset.search?.includes(term);
+			if (!record.hidden) visible += 1;
+		}
+		if (count)
+			count.textContent = `Showing ${visible} of ${records?.length ?? 0} entries`;
+		if (empty) empty.hidden = visible !== 0;
+		for (const filter of filters ?? [])
+			filter.setAttribute(
+				"aria-pressed",
+				String(filter.dataset.libraryFilter === state),
+			);
+	}
+
+	query?.addEventListener("input", filterLibrary);
+	for (const filter of filters ?? []) {
+		filter.addEventListener("click", () => {
+			state = filter.dataset.libraryFilter ?? "All";
+			filterLibrary();
+		});
+	}
+	document.getElementById("library-clear")?.addEventListener("click", () => {
+		state = "All";
+		if (query) query.value = "";
+		filterLibrary();
+		query?.focus();
+	});
+	for (const trigger of collection?.querySelectorAll<HTMLButtonElement>(
+		"[data-library-open]",
+	) ?? []) {
+		trigger.addEventListener("click", () => {
+			const dialog = document.getElementById(trigger.dataset.libraryOpen ?? "");
+			if (dialog instanceof HTMLDialogElement) dialog.showModal();
+		});
+	}
+</script>

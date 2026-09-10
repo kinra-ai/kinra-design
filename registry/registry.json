@@ -10,7 +10,9 @@
       "evidence": ["kinra-site"],
       "requires": [
         "@kinra/web/styles/canvas.css",
-        "@kinra/web/styles/compositions.css"
+        "@kinra/web/styles/type.css",
+        "@kinra/web/styles/compositions.css",
+        "@kinra/web/styles/data.css"
       ],
       "files": [
         "registry/patterns/narrative-intro/narrative-intro.html",
@@ -26,7 +28,9 @@
       "evidence": ["kinra-site"],
       "requires": [
         "@kinra/web/styles/canvas.css",
-        "@kinra/web/styles/compositions.css"
+        "@kinra/web/styles/type.css",
+        "@kinra/web/styles/compositions.css",
+        "@kinra/web/styles/components.css"
       ],
       "files": [
         "registry/patterns/editorial-feature/editorial-feature.html",

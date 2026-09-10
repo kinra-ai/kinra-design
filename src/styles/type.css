@@ -1,0 +1,153 @@
+@import "./tokens.css";
+
+/*
+ * Typographic roles as classes, so a display statement or a lede does not
+ * have to be redeclared in every consumer. Each class sets voice, size,
+ * weight, tracking, and measure; it does not set margin beyond zero, so the
+ * surrounding composition owns rhythm.
+ */
+
+@layer kinra.type {
+	.kin-display,
+	.kin-title,
+	.kin-headline,
+	.kin-subhead {
+		color: var(--kin-color-text);
+		margin: 0;
+		overflow-wrap: anywhere;
+		text-wrap: balance;
+	}
+
+	.kin-display {
+		font-family: var(--kin-font-display);
+		font-size: var(--kin-text-display);
+		font-weight: var(--kin-weight-display);
+		letter-spacing: var(--kin-tracking-display);
+		line-height: var(--kin-leading-display);
+		max-width: var(--kin-measure-display);
+	}
+
+	.kin-title {
+		font-family: var(--kin-font-display);
+		font-size: var(--kin-text-title);
+		font-weight: var(--kin-weight-display);
+		letter-spacing: var(--kin-tracking-display);
+		line-height: var(--kin-leading-display);
+		max-width: var(--kin-measure-title);
+	}
+
+	.kin-headline {
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-section);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: var(--kin-tracking-heading);
+		line-height: var(--kin-leading-heading);
+		max-width: var(--kin-measure-headline);
+	}
+
+	.kin-subhead {
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-xl);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+	}
+
+	.kin-heading {
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-lg);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: -0.015em;
+		line-height: 1.3;
+		margin: 0;
+		overflow-wrap: anywhere;
+		text-wrap: balance;
+	}
+
+	:is(.kin-display, .kin-title, .kin-headline)[data-measure="none"] {
+		max-width: none;
+	}
+
+	/* The second voice inside a statement. */
+	.kin-quiet {
+		color: var(--kin-color-text-muted);
+		font-weight: var(--kin-weight-quiet);
+	}
+
+	.kin-lede {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-lg);
+		line-height: var(--kin-leading-prose);
+		margin: 0;
+		max-width: var(--kin-measure-prose);
+	}
+
+	.kin-body {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-base);
+		line-height: var(--kin-leading-prose);
+		margin: 0;
+		max-width: var(--kin-measure-prose);
+	}
+
+	.kin-body[data-size="sm"] {
+		font-size: var(--kin-text-sm);
+		line-height: 1.6;
+	}
+
+	.kin-caption {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-xs);
+		line-height: 1.55;
+		margin: 0;
+	}
+
+	:is(.kin-lede, .kin-body, .kin-caption) {
+		overflow-wrap: anywhere;
+		text-wrap: pretty;
+	}
+
+	.kin-label {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-weight: var(--kin-weight-strong);
+		letter-spacing: var(--kin-tracking-label);
+		line-height: 1.4;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.kin-mono {
+		font-family: var(--kin-font-mono);
+	}
+
+	.kin-tabular {
+		font-variant-numeric: tabular-nums;
+	}
+
+	.kin-truncate {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	/* Text alignment for a bounded statement. */
+	[data-kin-align="center"] {
+		margin-inline: auto;
+		text-align: center;
+	}
+
+	[data-kin-align="center"]
+		> :is(.kin-display, .kin-title, .kin-headline, .kin-lede, .kin-body) {
+		margin-inline: auto;
+	}
+
+	[data-kin-align="center"] > .kin-eyebrow {
+		justify-content: center;
+	}
+}

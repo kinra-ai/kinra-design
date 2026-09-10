@@ -9,10 +9,10 @@
 
 .kin-pattern-editorial-feature__folio {
 	color: var(--kin-color-text-muted);
-	font-family: var(--kin-font-heading);
+	font-family: var(--kin-font-display);
 	font-size: clamp(5rem, 14vw, 10rem);
 	font-weight: var(--kin-weight-quiet);
-	letter-spacing: -0.09em;
+	letter-spacing: -0.06em;
 	line-height: 0.75;
 }
 
@@ -25,16 +25,9 @@
 	font-size: var(--kin-text-xs);
 }
 
-.kin-pattern-editorial-feature :is(h2, h3) {
-	color: var(--kin-color-text);
-	font-family: var(--kin-font-heading);
-	font-size: var(--kin-text-section);
-	font-weight: var(--kin-weight-heading);
-	letter-spacing: var(--kin-tracking-heading);
-	line-height: var(--kin-leading-heading);
+.kin-pattern-editorial-feature__copy > .kin-headline {
 	margin: var(--kin-space-6) 0 var(--kin-space-5);
 	max-width: 21ch;
-	text-wrap: balance;
 }
 
 .kin-pattern-editorial-feature__copy > p {

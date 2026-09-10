@@ -7,25 +7,47 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 	description="The framework-light design system for Kinra web products and public surfaces."
 	current="Overview"
 >
-	<section class="overview-hero kin-frame">
-		<div>
-			<p class="kin-eyebrow">Graphite+ / shared design system</p>
-			<h1>One identity. <span>More than one visual sentence.</span></h1>
-		</div>
-		<div class="overview-hero__support">
-			<p>
-				Foundations establish Kinra's voice. Compositions, components, and
-				copy-owned patterns give each product room to answer its own job.
-			</p>
-			<div class="kin-cluster" data-space="compact">
-				<a class="kin-button kin-button--primary" href="/foundations/"
-					>Explore the system</a
-				>
-				<a
-					class="kin-button kin-button--quiet"
-					href="https://github.com/kinra-ai/kinra-design">View source</a
-				>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Kinra design</h1>
+			<div>
+				<p class="catalog-header__summary">
+					A shared visual language for Kinra. Precise tools, thoughtful writing,
+					and room for each product to have its own character.
+				</p>
+				<div class="kin-cluster catalog-header__actions" data-space="compact">
+					<a class="kin-button kin-button--primary" href="/examples/"
+						>See it in use <span aria-hidden="true">↗</span></a
+					>
+					<a class="kin-button kin-button--quiet" href="/foundations/"
+						>Explore foundations</a
+					>
+				</div>
 			</div>
+		</div>
+	</header>
+
+	<section class="range-strip" aria-label="Range of the system">
+		<div data-kin-scheme="dark">
+			<p class="kin-eyebrow">Graphite</p>
+			<h2 class="kin-headline">Working surfaces and tools.</h2>
+			<p class="kin-body" data-size="sm">
+				Quiet structure, cyan signal, mono voice. The default.
+			</p>
+		</div>
+		<div data-kin-scheme="light" data-kin-voice="serif">
+			<p class="kin-eyebrow">Paper, serif</p>
+			<h2 class="kin-headline">Essays, releases, and considered writing.</h2>
+			<p class="kin-body" data-size="sm">
+				The same roles on paper, with a serif display voice.
+			</p>
+		</div>
+		<div data-kin-scheme="dark" data-kin-voice="sans">
+			<p class="kin-eyebrow" data-tone="reason">Graphite, sans</p>
+			<h2 class="kin-headline">Dense application chrome.</h2>
+			<p class="kin-body" data-size="sm">
+				A sans voice for chrome where mono headings would compete with data.
+			</p>
 		</div>
 	</section>
 
@@ -37,15 +59,22 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 				Move higher-level code into the owning product.
 			</p>
 		</div>
-		<div class="layer-map">
+		<div class="kin-grid" data-rules="deep" style="--kin-grid-min: 12rem">
 			<article class="layer-card">
 				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor"
-					></circle>
-					<circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+					<rect
+						x="4"
+						y="4"
+						width="16"
+						height="16"
+						fill="none"
+						stroke="currentColor"></rect>
+					<rect x="9" y="9" width="6" height="6" fill="currentColor"></rect>
 				</svg>
 				<h2>Foundations</h2>
-				<p>Roles for colour, type, space, motion, depth, and accessibility.</p>
+				<p>
+					Roles for colour, scheme, voice, space, motion, depth, and access.
+				</p>
 				<a href="/foundations/">Inspect tokens</a>
 			</article>
 			<article class="layer-card">
@@ -71,7 +100,10 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<path d="M3 9h18M9 9v11" fill="none" stroke="currentColor"></path>
 				</svg>
 				<h2>Components</h2>
-				<p>Accessible controls and states with stable semantic contracts.</p>
+				<p>
+					Controls, wayfinding, feedback, evidence, and layers with stable
+					contracts.
+				</p>
 				<a href="/components/">Review components</a>
 			</article>
 			<article class="layer-card">
@@ -96,8 +128,8 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 				</svg>
 				<h2>Surface recipes</h2>
 				<p>
-					Role adjustments for editorial, docs, operations, and application
-					work.
+					Role adjustments for editorial, docs, learning, operations, and
+					application work.
 				</p>
 				<a href="/surfaces/">Compare jobs</a>
 			</article>
@@ -110,11 +142,12 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 			<h2>Responsibilities that must not drift</h2>
 			<p>
 				Tokens, accessible control behavior, layout primitives, assets, and
-				compatibility promises belong to the package.
+				compatibility promises belong to the package. So does a vocabulary broad
+				enough that no product has to reach for the same three components.
 			</p>
 		</div>
 		<div>
-			<p class="kin-eyebrow">Copied and source-owned</p>
+			<p class="kin-eyebrow" data-tone="reason">Copied and source-owned</p>
 			<h2>Outcomes that should keep their character</h2>
 			<p>
 				Routes, product workflows, authored copy, and higher-level composition

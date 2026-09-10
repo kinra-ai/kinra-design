@@ -7,16 +7,8 @@
 	padding-block: var(--kin-region-space);
 }
 
-.kin-pattern-narrative-intro__statement :is(h1, h2, h3) {
-	color: var(--kin-color-text);
-	font-family: var(--kin-font-heading);
-	font-size: var(--kin-text-display);
-	font-weight: var(--kin-weight-display);
-	letter-spacing: var(--kin-tracking-display);
-	line-height: var(--kin-leading-display);
-	margin: var(--kin-space-6) 0 0;
-	max-width: 15ch;
-	text-wrap: balance;
+.kin-pattern-narrative-intro__statement > .kin-display {
+	margin-top: var(--kin-space-6);
 }
 
 .kin-pattern-narrative-intro__support {
@@ -30,30 +22,8 @@
 	margin: 0 0 var(--kin-space-6);
 }
 
-.kin-pattern-narrative-intro__support dl {
-	border-top: 1px solid var(--kin-color-rule);
-	margin: 0;
-}
-
-.kin-pattern-narrative-intro__support dl > div {
-	border-bottom: 1px solid var(--kin-border-quiet);
-	display: grid;
-	gap: var(--kin-space-3);
-	grid-template-columns: 5rem 1fr;
-	padding-block: var(--kin-space-3);
-}
-
-.kin-pattern-narrative-intro__support dt {
-	color: var(--kin-color-text-muted);
-	font-family: var(--kin-font-ui);
-	font-size: var(--kin-text-xs);
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-}
-
-.kin-pattern-narrative-intro__support dd {
-	color: var(--kin-color-text);
-	margin: 0;
+.kin-pattern-narrative-intro__support .kin-kv {
+	--kin-kv-key: 6rem;
 }
 
 @media (max-width: 48rem) {

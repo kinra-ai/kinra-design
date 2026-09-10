@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +16,14 @@ async function exists(relativePath) {
 	} catch {
 		return false;
 	}
+}
+
+function stripComments(css) {
+	return css.replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
+function stripStrings(css) {
+	return css.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g, '""');
 }
 
 const packageJson = JSON.parse(
@@ -109,7 +117,9 @@ for (const item of items) {
 		check(await exists(file), `${item.name}: missing ${file}`);
 
 		if (file.endsWith(".css") && (await exists(file))) {
-			const css = await readFile(path.join(root, file), "utf8");
+			const css = stripStrings(
+				stripComments(await readFile(path.join(root, file), "utf8")),
+			);
 			const classes = [...css.matchAll(/\.([a-zA-Z_][\w-]*)/g)].map(
 				(match) => match[1],
 			);
@@ -135,22 +145,75 @@ for (const item of items) {
 	}
 }
 
+/*
+ * Every shipped style entry point must be part of the complete import, and
+ * every class, custom property definition, and keyframe name it declares
+ * must live in the kin- namespace.
+ */
+const styleEntries = [
+	"./base.css",
+	"./canvas.css",
+	"./recipes.css",
+	"./type.css",
+	"./compositions.css",
+	"./components.css",
+	"./navigation.css",
+	"./feedback.css",
+	"./overlays.css",
+	"./data.css",
+	"./prose.css",
+];
 const indexCss = await readFile(
 	path.join(root, "src/styles/index.css"),
 	"utf8",
 );
-for (const entry of [
-	"./base.css",
-	"./canvas.css",
-	"./recipes.css",
-	"./compositions.css",
-	"./components.css",
-	"./prose.css",
-]) {
+for (const entry of styleEntries) {
 	check(
 		indexCss.includes(`@import \"${entry}\";`),
 		`full styles omit ${entry}`,
 	);
+}
+
+const styleFiles = (await readdir(path.join(root, "src/styles"))).filter(
+	(file) => file.endsWith(".css"),
+);
+for (const file of styleFiles) {
+	if (file !== "index.css" && file !== "tokens.css") {
+		check(
+			styleEntries.includes(`./${file}`),
+			`src/styles/${file} is shipped but not imported by index.css`,
+		);
+	}
+	const css = stripStrings(
+		stripComments(await readFile(path.join(root, "src/styles", file), "utf8")),
+	);
+	const selectors = css.replace(/@layer[^;{]*/g, "");
+	for (const match of selectors.matchAll(/\.([a-zA-Z_][\w-]*)/g)) {
+		check(
+			match[1].startsWith("kin-"),
+			`src/styles/${file}: class lacks kin- prefix: .${match[1]}`,
+		);
+	}
+	for (const match of css.matchAll(/(?:^|[\s{;])(--[a-zA-Z_][\w-]*)\s*:/g)) {
+		check(
+			match[1].startsWith("--kin-"),
+			`src/styles/${file}: custom property lacks kin- prefix: ${match[1]}`,
+		);
+	}
+	for (const match of css.matchAll(/@keyframes\s+([\w-]+)/g)) {
+		check(
+			match[1].startsWith("kin-"),
+			`src/styles/${file}: keyframes lack kin- prefix: ${match[1]}`,
+		);
+	}
+	for (const match of css.matchAll(/@layer\s+([^;{]+)/g)) {
+		for (const layer of match[1].split(",")) {
+			check(
+				layer.trim().startsWith("kinra."),
+				`src/styles/${file}: cascade layer outside kinra namespace: ${layer.trim()}`,
+			);
+		}
+	}
 }
 
 if (failures.length > 0) {
@@ -158,5 +221,7 @@ if (failures.length > 0) {
 	for (const failure of failures) console.error(`- ${failure}`);
 	process.exitCode = 1;
 } else {
-	console.log(`Design contract check passed (${items.length} registry items).`);
+	console.log(
+		`Design contract check passed (${items.length} registry items, ${styleFiles.length} style files).`,
+	);
 }

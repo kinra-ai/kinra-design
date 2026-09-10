@@ -16,9 +16,17 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
-- `main` contains an unreleased, additive design-system expansion: layout
-  compositions, generic operating components, surface recipes, a source-owned
-  candidate registry, and a multi-page reference catalog.
+- `main` contains an unreleased design-system expansion and refresh: a paper
+  scheme beside graphite, serif and sans voices beside mono, type roles,
+  layout compositions, generic control, navigation, feedback, overlay, and
+  data components, five surface recipes, a source-owned candidate registry,
+  and an eleven-page reference catalog with a scheme switch. The refresh changes
+  several defaults (square marks, sentence-case eyebrow, more open tracking,
+  serif editorial display); the migration notes live in `docs/adoption.md`.
+- The polish pass refines paper contrast, small text, control geometry,
+  hover and focus states, responsive specimens, and reduced-motion feedback.
+  Reference-only collection, preferences, and review examples demonstrate
+  the shared styles together without adding registry or stable contracts.
 - `package.json` remains at the latest released version until a maintainer
   explicitly approves the next release identity and tag.
 - `assets/spaces-wordmark.svg` adds the Spaces wordmark on the canonical Kinra

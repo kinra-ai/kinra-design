@@ -48,18 +48,23 @@ CDN.
 
 ## Choose the integration depth
 
-| Entry point                          | Provides                                                      | Best fit                                            |
-| ------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------- |
-| `@kinra/web/styles`                  | complete opinionated system                                   | a Kinra-owned surface starting from this foundation |
-| `@kinra/web/styles/tokens.css`       | custom properties only                                        | a host theme that owns reset and structure          |
-| `@kinra/web/styles/base.css`         | tokens, reset, and global defaults                            | a custom shell without shared canvas or prose       |
-| `@kinra/web/styles/canvas.css`       | quiet canvas, frame, and original primitives                  | a simple branded shell or compatibility import      |
-| `@kinra/web/styles/compositions.css` | stack, cluster, grid, split, and sidebar                      | product-owned layouts using shared relationships    |
-| `@kinra/web/styles/components.css`   | fields, notices, tables, disclosure, and empty states         | operating and application controls                  |
-| `@kinra/web/styles/recipes.css`      | editorial, docs, operations, and application role adjustments | tuning density without adopting a template          |
-| `@kinra/web/styles/prose.css`        | scoped `.kin-prose` typography                                | lessons, guides, and documentation                  |
-| `@kinra/web/assets/*`                | canonical brand assets                                        | headers, favicons, and metadata                     |
-| `@kinra/web/registry`                | pattern manifest and copyable source                          | product-owned higher-level composition              |
+| Entry point                          | Provides                                                    | Best fit                                             |
+| ------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------- |
+| `@kinra/web/styles`                  | complete opinionated system                                 | a Kinra-owned surface starting from this foundation  |
+| `@kinra/web/styles/tokens.css`       | custom properties and the scheme switch                     | a host theme that owns reset and structure           |
+| `@kinra/web/styles/base.css`         | tokens, reset, layer order, and global defaults             | a custom shell without shared canvas or prose        |
+| `@kinra/web/styles/canvas.css`       | quiet canvas, frame, surfaces, rules, buttons, and status   | a simple branded shell or compatibility import       |
+| `@kinra/web/styles/type.css`         | display, title, headline, lede, and label roles             | consistent typographic hierarchy without prose       |
+| `@kinra/web/styles/compositions.css` | stack, cluster, grid, split, sidebar, cover, bar, and more  | product-owned layouts using shared relationships     |
+| `@kinra/web/styles/components.css`   | fields, chips, switches, notices, tables, and empty states  | operating and application controls                   |
+| `@kinra/web/styles/navigation.css`   | tabs, breadcrumbs, pagination, rails, toolbars, and steps   | wayfinding inside a product shell                    |
+| `@kinra/web/styles/feedback.css`     | progress, meters, spinners, skeletons, toasts, and hints    | asynchronous and working surfaces                    |
+| `@kinra/web/styles/overlays.css`     | dialogs, drawers, popovers, and menus                       | native top-layer interaction                         |
+| `@kinra/web/styles/data.css`         | figures, key-value lists, logs, code, avatars, cards, lists | evidence and collections                             |
+| `@kinra/web/styles/recipes.css`      | surface, scheme, and voice role adjustments                 | tuning density and voice without adopting a template |
+| `@kinra/web/styles/prose.css`        | scoped `.kin-prose` typography                              | lessons, guides, and documentation                   |
+| `@kinra/web/assets/*`                | canonical brand assets                                      | headers, favicons, and metadata                      |
+| `@kinra/web/registry`                | pattern manifest and copyable source                        | product-owned higher-level composition               |
 
 For a new Astro surface, import the complete system once in its root layout:
 
@@ -74,6 +79,12 @@ import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
   <main class="kin-frame"><slot /></main>
 </body>
 ```
+
+Choose a ground with `data-kin-scheme="light|dark|auto"` on `html` or on a
+bounded subtree; the default is graphite. Choose a voice for a region with
+`data-kin-voice="serif|mono|sans"` when the surface recipe's choice is not
+right for that region. Read [`composing.md`](composing.md) before assembling
+a page.
 
 Site CSS should load after the package and override role tokens rather than
 copying values. The complete class and data-value contract lives in
@@ -104,10 +115,48 @@ and Depot:
 When upgrading, remove local canvas and frame copies only after visual review.
 Add `.kin-surface--raised` wherever the old elevation carries real meaning.
 
+## Moving from 0.2 to the unreleased expansion
+
+The expansion on `main` is additive in contract but changes several defaults.
+Expect these visual differences when upgrading past `v0.2.0`:
+
+- Every colour role resolves through `light-dark()`; the default remains
+  graphite, and `data-kin-scheme` selects paper or the reader's preference.
+- `.kin-badge` is square-cornered instead of a pill, and `.kin-status` uses a
+  square marker instead of a dot.
+- `.kin-eyebrow` is sentence case and led by a square mark;
+  `data-case="upper"` restores the uppercase treatment.
+- Display, title, and section type come down to reading scale: display is
+  now 36 to 48px instead of 44 to 72px, title 28 to 36px, section 22 to
+  28px. Tracking opens to `-0.03em` and `-0.025em`, and the headline
+  measures widen to match. A consumer that wants the old poster scale can
+  set `--kin-text-display` and `--kin-text-title` back locally.
+- `data-kin-surface="editorial"` gives display type the serif voice.
+  Set `--kin-font-display: var(--kin-font-mono)` on the surface to keep the
+  previous mono display.
+- `.kin-prose h1` uses the display voice, and `.kin-prose hr` is a short
+  mark rather than a full-width line.
+- `.kin-button` without a modifier has a stronger neutral border and a hover
+  state.
+- `base.css` declares the cascade layer order explicitly.
+- The paper ground has a warmer neutral cast, with deeper signal and muted
+  text for contrast inside selected rows and tinted labels.
+- Small text roles increase from 11/13px to 12/14px. Controls share a 4px
+  default corner through `--kin-control-radius`; override that role when a
+  consumer needs a different control shape. Input boundaries use
+  `--kin-color-control-edge`, independently of structural rules.
+- `data-kin-voice="sans"` changes display and heading roles only, matching
+  the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
+- Prose line height follows `--kin-leading-prose`, including the learning
+  recipe's wider leading.
+
+Consumers target browsers released from mid-2024 onward because of
+`light-dark()`, `color-mix()`, `:has()`, and native `popover`.
+
 ## Testing unreleased expansion
 
-The composition, component, recipe, and registry layers on `main` are not part
-of `v0.2.0`. Test them only through a full immutable commit SHA. Their eventual
+The type, composition, component, navigation, feedback, overlay, data, recipe,
+and registry layers on `main` are not part of `v0.2.0`. Test them only through a full immutable commit SHA. Their eventual
 release version and consumer upgrades remain separate maintainer decisions.
 
 ## Update a consumer

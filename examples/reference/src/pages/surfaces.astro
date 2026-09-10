@@ -4,25 +4,23 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 <ReferenceLayout
 	title="Surfaces"
-	description="Kinra surface recipes for editorial, documentation, operations, and application work."
+	description="Kinra surface recipes for editorial, documentation, learning, operations, and application work, plus scheme and voice axes."
 	current="Surfaces"
 >
-	<header class="catalog-intro">
-		<div class="catalog-intro__inner kin-frame">
-			<div>
-				<p class="kin-eyebrow">Surface recipes</p>
-				<h1>Shared roles tuned to different jobs.</h1>
-			</div>
-			<p class="catalog-intro__copy">
-				A recipe adjusts measure, density, and typographic roles. It does not
-				provide a route shell or turn unlike products into the same template.
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Surfaces</h1>
+			<p class="catalog-header__summary">
+				Recipes that tune measure, density, and voice for a job. Scheme and
+				voice are independent axes, so one identity yields many pages without a
+				theme switcher.
 			</p>
 		</div>
 	</header>
 
 	<section class="catalog-section kin-frame" aria-labelledby="surface-heading">
 		<div class="catalog-heading">
-			<h2 id="surface-heading">Four focal distances</h2>
+			<h2 id="surface-heading">Five focal distances</h2>
 			<p>
 				Apply <code>data-kin-surface</code> to a document or a bounded region, then
 				compose the actual experience locally.
@@ -35,12 +33,15 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<code>editorial</code>
 				</header>
 				<p class="kin-eyebrow">Field note</p>
-				<h3 class="surface-sample__title">
-					Give an idea enough room to alter pace.
+				<h3
+					class="kin-title"
+					style="margin-top: 0.75rem; --kin-measure-title: 14ch"
+				>
+					On bounded autonomy
 				</h3>
-				<p class="surface-sample__body">
+				<p class="kin-body" data-size="sm">
 					Long-form reading favors generous regions, a restrained measure, and a
-					clear difference between interface and prose voices.
+					serif display voice over sans prose.
 				</p>
 			</article>
 
@@ -50,17 +51,45 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<code>documentation</code>
 				</header>
 				<div class="surface-docs">
-					<nav aria-label="Example documentation navigation">
-						Overview<br />Install<br />Concepts<br />Reference
+					<nav
+						class="kin-nav"
+						data-density="compact"
+						aria-label="Example documentation navigation"
+					>
+						<ul>
+							<li><a href="#docs">Overview</a></li>
+							<li><a href="#docs" aria-current="page">Install</a></li>
+							<li><a href="#docs">Concepts</a></li>
+							<li><a href="#docs">Reference</a></li>
+						</ul>
 					</nav>
 					<div>
-						<h3 class="surface-sample__title">Install the package</h3>
-						<p class="surface-sample__body">
+						<h3 class="kin-headline">Install the package</h3>
+						<p class="kin-body" data-size="sm">
 							Dense navigation and readable prose can coexist without adopting a
 							marketing-page rhythm.
 						</p>
 					</div>
 				</div>
+			</article>
+
+			<article
+				class="surface-sample surface-learning"
+				data-kin-surface="learning"
+			>
+				<header class="surface-sample__header">
+					<h2>Learning</h2>
+					<code>learning</code>
+				</header>
+				<p class="kin-eyebrow">Lesson 4</p>
+				<h3 class="kin-headline" style="margin-top: 0.75rem">
+					Bound the task before starting it.
+				</h3>
+				<p class="kin-body" data-size="sm">
+					A mono reading environment for focused, sequential learning where
+					prose and code share one voice.
+				</p>
+				<pre>kin session start --goal "Add a README" --branch main</pre>
 			</article>
 
 			<article class="surface-sample" data-kin-surface="operations">
@@ -69,22 +98,34 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<code>operations</code>
 				</header>
 				<div class="kin-cluster" data-justify="between">
-					<h3 class="surface-sample__title">Inference endpoints</h3>
+					<h3 class="kin-headline">Inference endpoints</h3>
 					<span class="kin-status" data-state="success">Healthy</span>
 				</div>
-				<div class="surface-operation-row">
-					<span>kloud-a</span><span class="kin-badge" data-tone="success"
-						>Ready</span
-					>
-				</div>
-				<div class="surface-operation-row">
-					<span>local-vision</span><span class="kin-badge" data-tone="reason"
-						>Standby</span
-					>
-				</div>
+				<ul class="kin-list" data-density="compact" style="margin-top: 1rem">
+					<li class="kin-list__item">
+						<div class="kin-list__body">
+							<p class="kin-list__title">kloud-a</p>
+						</div>
+						<div class="kin-list__trail">
+							<span class="kin-badge" data-tone="success">Ready</span>
+						</div>
+					</li>
+					<li class="kin-list__item">
+						<div class="kin-list__body">
+							<p class="kin-list__title">local-vision</p>
+						</div>
+						<div class="kin-list__trail">
+							<span class="kin-badge" data-tone="reason">Standby</span>
+						</div>
+					</li>
+				</ul>
 			</article>
 
-			<article class="surface-sample" data-kin-surface="application">
+			<article
+				class="surface-sample"
+				data-kin-surface="application"
+				data-kin-voice="sans"
+			>
 				<header class="surface-sample__header">
 					<h2>Application</h2>
 					<code>application</code>
@@ -98,6 +139,55 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					</div>
 				</div>
 			</article>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="axes-heading">
+		<div class="catalog-heading">
+			<h2 id="axes-heading">Scheme and voice are independent axes</h2>
+			<p>
+				<code>data-kin-scheme</code> picks the ground; <code
+					>data-kin-voice</code
+				>
+				picks the display and heading voice. Both apply to any bounded subtree.
+			</p>
+		</div>
+		<div class="kin-grid" data-columns="3" data-rules>
+			<div
+				class="kin-stack"
+				data-space="compact"
+				data-kin-scheme="light"
+				data-kin-voice="serif"
+				style="padding: 1.5rem"
+			>
+				<p class="kin-eyebrow">Paper · serif</p>
+				<p class="kin-headline">An essay on paper.</p>
+				<p class="kin-body" data-size="sm">
+					Editorial writing on the public site.
+				</p>
+			</div>
+			<div
+				class="kin-stack"
+				data-space="compact"
+				data-kin-scheme="dark"
+				data-kin-voice="mono"
+				style="padding: 1.5rem"
+			>
+				<p class="kin-eyebrow">Graphite · mono</p>
+				<p class="kin-headline">A console on graphite.</p>
+				<p class="kin-body" data-size="sm">Operations, gateways, and forges.</p>
+			</div>
+			<div
+				class="kin-stack"
+				data-space="compact"
+				data-kin-scheme="light"
+				data-kin-voice="sans"
+				style="padding: 1.5rem"
+			>
+				<p class="kin-eyebrow" data-tone="reason">Paper · sans</p>
+				<p class="kin-headline">An application on paper.</p>
+				<p class="kin-body" data-size="sm">Dense product chrome in daylight.</p>
+			</div>
 		</div>
 	</section>
 

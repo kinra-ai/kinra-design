@@ -7,15 +7,12 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 	description="Copy-owned candidate patterns in the Kinra source registry."
 	current="Patterns"
 >
-	<header class="catalog-intro">
-		<div class="catalog-intro__inner kin-frame">
-			<div>
-				<p class="kin-eyebrow">Source registry</p>
-				<h1>Start from evidence. Keep ownership local.</h1>
-			</div>
-			<p class="catalog-intro__copy">
-				Candidate patterns begin with a real product and are copied into the
-				consumer. They are examples to adapt, not a second page generator.
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Patterns</h1>
+			<p class="catalog-header__summary">
+				Candidate compositions from real products, distributed as source to copy
+				and own. They are examples to adapt, not a second page generator.
 			</p>
 		</div>
 	</header>
@@ -29,20 +26,23 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 				</div>
 				<p>
 					An unnumbered statement-led opening with a compact evidence rail. Use
-					it when a page must establish a position before presenting detail.
+					it when a page must establish a position before presenting detail. The
+					statement follows the surface's display voice.
 				</p>
 			</header>
-			<div class="kin-pattern-narrative-intro">
+			<div class="kin-pattern-narrative-intro" data-kin-voice="serif">
 				<div class="kin-pattern-narrative-intro__statement">
 					<p class="kin-eyebrow">Product position</p>
-					<h3>Software should leave its operator with more agency.</h3>
+					<h3 class="kin-display">
+						Software should leave its operator with more agency.
+					</h3>
 				</div>
 				<div class="kin-pattern-narrative-intro__support">
 					<p>
 						Begin with the claim that governs the page. Use the rail for
 						evidence, boundaries, or orientation.
 					</p>
-					<dl>
+					<dl class="kin-kv" data-density="compact">
 						<div><dt>Owner</dt><dd>Product team</dd></div>
 						<div><dt>State</dt><dd>Active</dd></div>
 					</dl>
@@ -70,7 +70,9 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 						<span class="kin-badge" data-tone="reason">Essay</span>
 						<span class="kin-pattern-editorial-feature__meta">12 min read</span>
 					</div>
-					<h3>A machine can be capable without becoming sovereign.</h3>
+					<h3 class="kin-headline">
+						A machine can be capable without becoming sovereign.
+					</h3>
 					<p>
 						Use one restrained feature to give an authored idea room to breathe.
 					</p>
@@ -115,7 +117,7 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 							<tr>
 								<th scope="col">Job</th>
 								<th scope="col">State</th>
-								<th scope="col">Duration</th>
+								<th scope="col" data-align="numeric">Duration</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -125,13 +127,13 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 									><span class="kin-badge" data-tone="success">Complete</span
 									></td
 								>
-								<td>12.4 s</td>
+								<td data-align="numeric">12.4 s</td>
 							</tr>
 							<tr>
 								<td>Verify release</td>
 								<td><span class="kin-badge" data-tone="reason">Review</span></td
 								>
-								<td>48.1 s</td>
+								<td data-align="numeric">48.1 s</td>
 							</tr>
 						</tbody>
 					</table>
@@ -146,9 +148,7 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 		>
 			<div>
 				<p class="kin-eyebrow">Promotion rule</p>
-				<h2 class="surface-sample__title">
-					Candidate after one. Stable after two.
-				</h2>
+				<h2 class="kin-headline">Promotion requires two consumers.</h2>
 			</div>
 			<div class="kin-notice" data-tone="primary">
 				<p class="kin-notice__title">Copy before adapting</p>

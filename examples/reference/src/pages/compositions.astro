@@ -8,15 +8,12 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 	description="Framework-independent layout compositions for Kinra web surfaces."
 	current="Compositions"
 >
-	<header class="catalog-intro">
-		<div class="catalog-intro__inner kin-frame">
-			<div>
-				<p class="kin-eyebrow">Compositions</p>
-				<h1>Arrange relationships, not page templates.</h1>
-			</div>
-			<p class="catalog-intro__copy">
-				These classes solve recurring spatial responsibilities. Content,
-				semantics, and visual emphasis still belong to the consumer.
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Compositions</h1>
+			<p class="catalog-header__summary">
+				Layout relationships that organize content without styling it. Content,
+				semantics, and emphasis stay with the consumer.
 			</p>
 		</div>
 	</header>
@@ -24,8 +21,8 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 	<div class="catalog-section kin-frame">
 		<Specimen
 			title="Stack"
-			contract=".kin-stack · data-space"
-			description="A vertical rhythm for related children. Select a named density or override --kin-layout-space locally."
+			contract=".kin-stack · data-space · data-split"
+			description="A vertical rhythm for related children. Select a named density or override --kin-layout-space locally. data-split='last' pushes the final child to the end."
 		>
 			<div class="kin-stack" data-space="compact">
 				<div class="demo-block">
@@ -40,7 +37,7 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 		<Specimen
 			title="Cluster"
-			contract=".kin-cluster · data-align · data-justify"
+			contract=".kin-cluster · data-align · data-justify · data-wrap"
 			description="A wrapping row for actions, metadata, and small peer elements."
 		>
 			<div class="kin-cluster" data-justify="between">
@@ -61,21 +58,41 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 		<Specimen
 			title="Fluid grid"
-			contract=".kin-grid · --kin-grid-min"
-			description="An auto-fitting grid that wraps without page-specific breakpoints."
+			contract=".kin-grid · --kin-grid-min · data-columns · data-rules"
+			description="An auto-fitting grid that wraps without page-specific breakpoints. data-columns fixes a count that collapses on narrow screens; data-rules separates cells with the hairline instead of open space."
 		>
-			<div class="kin-grid" style="--kin-grid-min: 12rem">
-				<div class="demo-block"><strong>Kin</strong>Local AI peer</div>
-				<div class="demo-block"><strong>Depot</strong>Git forge</div>
-				<div class="demo-block"><strong>Flow</strong>Coordination truth</div>
-				<div class="demo-block"><strong>Scope</strong>CAD inspection</div>
+			<div class="kin-stack">
+				<div class="kin-grid" style="--kin-grid-min: 12rem">
+					<div class="demo-block"><strong>Kin</strong>Local AI peer</div>
+					<div class="demo-block"><strong>Depot</strong>Git forge</div>
+					<div class="demo-block"><strong>Flow</strong>Coordination truth</div>
+					<div class="demo-block"><strong>Scope</strong>CAD inspection</div>
+				</div>
+				<div class="kin-grid" data-columns="4" data-rules>
+					<div style="padding: 1rem">
+						<p class="kin-label">Requests</p>
+						<p class="kin-figure__value">1,204</p>
+					</div>
+					<div style="padding: 1rem">
+						<p class="kin-label">Errors</p>
+						<p class="kin-figure__value">3</p>
+					</div>
+					<div style="padding: 1rem">
+						<p class="kin-label">Latency</p>
+						<p class="kin-figure__value">42<small>ms</small></p>
+					</div>
+					<div style="padding: 1rem">
+						<p class="kin-label">Uptime</p>
+						<p class="kin-figure__value">99.98<small>%</small></p>
+					</div>
+				</div>
 			</div>
 		</Specimen>
 
 		<Specimen
 			title="Split"
 			contract=".kin-split · data-ratio · data-align"
-			description="Two peer regions with optional lead or trail emphasis; collapses to source order on narrow screens."
+			description="Two peer regions with lead, trail, or golden emphasis; collapses to source order on narrow screens."
 		>
 			<div class="kin-split" data-ratio="lead" data-align="center">
 				<div class="demo-block">
@@ -102,6 +119,109 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 				<div class="demo-block demo-sidebar">
 					<strong>Work region</strong>The owning product decides whether this is
 					prose, data, a canvas, or an interactive workflow.
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Switcher"
+			contract=".kin-switcher · --kin-switch-at"
+			description="Peers sit in one row until the container is narrower than the switch point, then stack. No media query, so it works inside any column."
+		>
+			<div class="kin-switcher" style="--kin-switch-at: 36rem">
+				<div class="demo-block"><strong>Plan</strong>Decide the bound.</div>
+				<div class="demo-block"><strong>Do</strong>Run inside it.</div>
+				<div class="demo-block"><strong>Record</strong>Keep the evidence.</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Center"
+			contract=".kin-center · data-measure · data-text"
+			description="Centres a bounded measure inside a wider region. Pair with .kin-frame for a narrow reading column on a wide shell."
+		>
+			<div class="kin-center" data-measure="narrow" data-text="center">
+				<p class="kin-eyebrow" style="justify-content: center">
+					Centred measure
+				</p>
+				<p class="kin-headline" style="margin: 0.75rem auto 0">
+					Install Kin on this workstation.
+				</p>
+				<div
+					class="kin-cluster"
+					data-justify="center"
+					style="margin-top: 1.25rem"
+				>
+					<button class="kin-button kin-button--primary" type="button">
+						Install Kin
+					</button>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Cover"
+			contract=".kin-cover · [data-principal] · --kin-cover-min"
+			description="A minimum-height region with header and footer at the edges and one principal child in the middle. The default minimum is 70svh; this specimen shortens it."
+		>
+			<div class="kin-cover" style="--kin-cover-min: 18rem">
+				<div class="kin-cluster" data-justify="between">
+					<span class="kin-label">Header</span>
+					<span class="kin-status" data-state="success">Ready</span>
+				</div>
+				<div data-principal>
+					<p class="kin-headline">The principal child rests in the middle.</p>
+				</div>
+				<p class="kin-caption">Footer stays at the end.</p>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Reel"
+			contract=".kin-reel · --kin-reel-item"
+			description="A horizontal row that scrolls and snaps rather than wrapping. Use it for peers where order matters more than fitting the viewport."
+		>
+			<div class="kin-reel" style="--kin-reel-item: 14rem">
+				<div class="demo-block"><strong>Session 1</strong>Index repository</div>
+				<div class="demo-block"><strong>Session 2</strong>Verify release</div>
+				<div class="demo-block"><strong>Session 3</strong>Review handoff</div>
+				<div class="demo-block"><strong>Session 4</strong>Publish notes</div>
+				<div class="demo-block"><strong>Session 5</strong>Archive</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Bar"
+			contract=".kin-bar · data-slot · data-rule · data-collapse"
+			description="Start, centre, and end slots for an app bar, a title row, or a footer. data-collapse stacks the slots on narrow screens."
+		>
+			<div class="kin-bar" data-rule="bottom" data-collapse>
+				<div class="kin-cluster" data-space="compact">
+					<span class="kin-avatar" data-size="sm" aria-hidden="true">KD</span>
+					<span class="kin-heading">Depot</span>
+				</div>
+				<nav data-slot="center" aria-label="Example sections">
+					<div class="kin-tabs" data-variant="boxed">
+						<a class="kin-tabs__tab" href="#bar" aria-current="page">Code</a>
+						<a class="kin-tabs__tab" href="#bar">Reviews</a>
+						<a class="kin-tabs__tab" href="#bar">Releases</a>
+					</div>
+				</nav>
+				<div data-slot="end" class="kin-cluster" data-space="tight">
+					<button
+						class="kin-button kin-button--ghost"
+						data-size="compact"
+						type="button"
+					>
+						Sign out
+					</button>
+					<button
+						class="kin-button kin-button--primary"
+						data-size="compact"
+						type="button"
+					>
+						New
+					</button>
 				</div>
 			</div>
 		</Specimen>

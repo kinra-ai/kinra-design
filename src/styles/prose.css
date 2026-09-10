@@ -5,7 +5,7 @@
 		color: var(--kin-color-text-subtle);
 		font-family: var(--kin-font-prose);
 		font-size: var(--kin-text-base);
-		line-height: 1.75;
+		line-height: var(--kin-leading-prose);
 		max-width: var(--kin-measure-prose);
 		overflow-wrap: break-word;
 	}
@@ -19,16 +19,18 @@
 	}
 
 	.kin-prose h1 {
+		font-family: var(--kin-font-display);
 		font-size: var(--kin-text-title);
 		font-weight: var(--kin-weight-display);
 		letter-spacing: var(--kin-tracking-display);
+		line-height: var(--kin-leading-display);
 		margin: 0 0 var(--kin-space-8);
 	}
 
 	.kin-prose h2 {
-		font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+		font-size: clamp(1.5rem, 2.2vw, 1.75rem);
 		font-weight: var(--kin-weight-heading);
-		letter-spacing: -0.035em;
+		letter-spacing: var(--kin-tracking-heading);
 		margin: var(--kin-space-11) 0 var(--kin-space-5);
 	}
 
@@ -48,12 +50,19 @@
 
 	.kin-prose p {
 		margin: 0 0 var(--kin-space-5);
+		text-wrap: pretty;
 	}
 
 	.kin-prose > p:first-of-type {
 		color: var(--kin-color-text);
 		font-size: var(--kin-text-lg);
 		line-height: 1.7;
+	}
+
+	.kin-prose[data-lede="none"] > p:first-of-type {
+		color: inherit;
+		font-size: inherit;
+		line-height: inherit;
 	}
 
 	.kin-prose strong {
@@ -75,6 +84,26 @@
 		color: var(--kin-primary-60);
 	}
 
+	.kin-prose ol li::marker {
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.kin-prose dl {
+		margin: 0 0 var(--kin-space-6);
+	}
+
+	.kin-prose dt {
+		color: var(--kin-color-text);
+		font-weight: var(--kin-weight-strong);
+		margin-top: var(--kin-space-4);
+	}
+
+	.kin-prose dd {
+		margin: var(--kin-space-1) 0 0 var(--kin-space-6);
+	}
+
 	.kin-prose blockquote {
 		border-left: 2px solid var(--kin-color-reason);
 		margin: var(--kin-space-8) 0;
@@ -88,6 +117,20 @@
 		margin: 0;
 	}
 
+	.kin-prose blockquote p + p {
+		margin-top: var(--kin-space-4);
+	}
+
+	.kin-prose blockquote cite,
+	.kin-prose blockquote footer {
+		color: var(--kin-color-text-muted);
+		display: block;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-style: normal;
+		margin-top: var(--kin-space-3);
+	}
+
 	.kin-prose :not(pre) > code {
 		background: var(--kin-color-ground-deep);
 		border: 1px solid var(--kin-border-quiet);
@@ -96,6 +139,31 @@
 		font-family: var(--kin-font-code);
 		font-size: 0.875em;
 		padding: 0.12em 0.38em;
+	}
+
+	.kin-prose kbd {
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+		border-bottom-width: 2px;
+		border-radius: var(--kin-radius-sm);
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-mono);
+		font-size: 0.75em;
+		font-weight: var(--kin-weight-strong);
+		padding: 0.2em 0.45em;
+	}
+
+	.kin-prose mark {
+		background: var(--kin-tint-warning);
+		box-shadow: 0 0 0 1px var(--kin-edge-warning);
+		color: inherit;
+		padding-inline: 0.1em;
+	}
+
+	.kin-prose abbr[title] {
+		text-decoration-color: var(--kin-color-text-muted);
+		text-decoration-style: dotted;
+		text-underline-offset: 0.2em;
 	}
 
 	.kin-prose pre {
@@ -114,9 +182,31 @@
 		line-height: 1.7;
 	}
 
+	.kin-prose figure {
+		margin: var(--kin-space-8) 0;
+	}
+
+	.kin-prose figure > img,
+	.kin-prose figure > picture {
+		border: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-prose figcaption {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		line-height: 1.55;
+		margin-top: var(--kin-space-3);
+	}
+
+	.kin-prose > img {
+		margin: var(--kin-space-7) 0;
+	}
+
 	.kin-prose table {
 		border-collapse: collapse;
 		display: block;
+		font-variant-numeric: tabular-nums;
 		margin: var(--kin-space-7) 0;
 		max-width: 100%;
 		overflow-x: auto;
@@ -138,10 +228,30 @@
 		font-weight: var(--kin-weight-strong);
 	}
 
+	/* A section break is a short mark, not a full-width line. */
 	.kin-prose hr {
-		background: var(--kin-color-rule);
+		background: var(--kin-color-text-muted);
 		border: 0;
-		height: 1px;
+		height: 2px;
 		margin: var(--kin-space-11) 0;
+		width: 3rem;
+	}
+
+	.kin-prose small {
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-sm);
+	}
+
+	.kin-prose :is(sup, sub) {
+		font-size: 0.7em;
+		line-height: 0;
+	}
+
+	.kin-prose a:not([class]) {
+		color: var(--kin-color-primary);
+	}
+
+	.kin-prose a:not([class]):hover {
+		color: var(--kin-color-text);
 	}
 }

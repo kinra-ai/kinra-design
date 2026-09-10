@@ -3,13 +3,18 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 const colours = [
 	["Ground", "--kin-color-ground"],
+	["Ground, deep", "--kin-color-ground-deep"],
 	["Surface", "--kin-color-surface"],
+	["Rule", "--kin-color-rule"],
+	["Control edge", "--kin-color-control-edge"],
 	["Text", "--kin-color-text"],
+	["Text, muted", "--kin-color-text-muted"],
 	["Primary", "--kin-color-primary"],
 	["Reason", "--kin-color-reason"],
 	["Success", "--kin-color-success"],
 	["Warning", "--kin-color-warning"],
 	["Error", "--kin-color-error"],
+	["Brand gradient", "--kin-gradient-brand"],
 ];
 
 const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -17,31 +22,74 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 <ReferenceLayout
 	title="Foundations"
-	description="Kinra design tokens for colour, typography, spacing, and motion."
+	description="Kinra design tokens for colour, scheme, voice, spacing, and motion."
 	current="Foundations"
 >
-	<header class="catalog-intro">
-		<div class="catalog-intro__inner kin-frame">
-			<div>
-				<p class="kin-eyebrow">Foundations</p>
-				<h1>Quiet structure makes real signal legible.</h1>
-			</div>
-			<p class="catalog-intro__copy">
-				Role-named values keep Kinra recognizable while allowing product
-				surfaces to change composition, density, and reading voice.
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Foundations</h1>
+			<p class="catalog-header__summary">
+				Role-named tokens for colour on two grounds, three typographic voices,
+				spacing, motion, depth, and measure.
 			</p>
 		</div>
 	</header>
+
+	<section class="catalog-section kin-frame" aria-labelledby="scheme-heading">
+		<div class="catalog-heading">
+			<h2 id="scheme-heading">Scheme</h2>
+			<p>
+				Every colour role resolves through <code>light-dark()</code>. Set
+				<code>data-kin-scheme</code> on the document or on any bounded subtree; a
+				paper panel can sit inside a graphite page.
+			</p>
+		</div>
+		<div class="scheme-pair">
+			<div class="kin-surface" data-kin-scheme="dark">
+				<p class="kin-eyebrow">Graphite</p>
+				<h3 class="kin-headline">For operating surfaces and tools.</h3>
+				<p class="kin-body" data-size="sm">
+					The default. Ground and structure stay quiet so cyan, periwinkle, and
+					status colour carry contrast.
+				</p>
+				<div class="kin-cluster" data-space="compact">
+					<button class="kin-button kin-button--primary" type="button">
+						Primary
+					</button>
+					<button class="kin-button" type="button">Neutral</button>
+					<span class="kin-badge" data-tone="success">Verified</span>
+					<span class="kin-status" data-state="running">Running</span>
+				</div>
+			</div>
+			<div class="kin-surface" data-kin-scheme="light">
+				<p class="kin-eyebrow">Paper</p>
+				<h3 class="kin-headline">For reading and authored work.</h3>
+				<p class="kin-body" data-size="sm">
+					The same roles resolved for paper. Signal colours deepen to keep 4.5:1
+					contrast; nothing is renamed.
+				</p>
+				<div class="kin-cluster" data-space="compact">
+					<button class="kin-button kin-button--primary" type="button">
+						Primary
+					</button>
+					<button class="kin-button" type="button">Neutral</button>
+					<span class="kin-badge" data-tone="success">Verified</span>
+					<span class="kin-status" data-state="running">Running</span>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<section class="catalog-section kin-frame" aria-labelledby="colour-heading">
 		<div class="catalog-heading">
 			<h2 id="colour-heading">Colour roles</h2>
 			<p>
-				Ground and structure stay quiet. Cyan is public or live signal;
-				periwinkle is reasoning. Status colours report actual state.
+				Cyan is public or live signal; periwinkle is reasoning. Status colours
+				report actual state. Use the scheme switch in the header to see each
+				role resolve on the other ground.
 			</p>
 		</div>
-		<div class="swatches">
+		<div class="kin-grid" data-rules="deep" style="--kin-grid-min: 11rem">
 			{
 				colours.map(([label, token]) => (
 					<article class="swatch">
@@ -54,35 +102,144 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 		</div>
 	</section>
 
-	<section class="catalog-section kin-frame" aria-labelledby="type-heading">
+	<section class="catalog-section kin-frame" aria-labelledby="mark-heading">
 		<div class="catalog-heading">
-			<h2 id="type-heading">Two voices, one hierarchy</h2>
+			<h2 id="mark-heading">The mark</h2>
 			<p>
-				Monospace carries interface and authored structure. Sans-serif prose
-				keeps extended reading calm and legible.
+				Kinra's wordmark is built from square blocks. The same square is the
+				system's only ornament: it says "state lives here" while colour names
+				the state.
 			</p>
 		</div>
-		<div class="kin-split" data-ratio="lead" data-space="loose">
-			<div class="type-specimen">
-				<p class="kin-eyebrow">Display / interface</p>
-				<p class="type-specimen__display">
-					Structure first. <span>Signal second.</span>
+		<div class="kin-stack" data-space="loose">
+			<div class="mark-row">
+				<p class="kin-eyebrow">Eyebrow with mark</p>
+				<span class="kin-status" data-state="success">Status marker</span>
+				<span class="kin-spinner" role="status">Spinner marks</span>
+			</div>
+			<div class="kin-grid" style="--kin-grid-min: 14rem">
+				<div class="kin-surface" data-tone="primary" style="padding: 1.25rem">
+					<p class="kin-label">Corner mark</p>
+					<p class="kin-body" data-size="sm">
+						A toned surface carries the square at its origin.
+					</p>
+				</div>
+				<div class="kin-surface" data-tone="warning" style="padding: 1.25rem">
+					<p class="kin-label">Warning</p>
+					<p class="kin-body" data-size="sm">Same surface, different state.</p>
+				</div>
+				<div
+					class="kin-surface kin-surface--raised"
+					data-tone="reason"
+					style="padding: 1.25rem"
+				>
+					<p class="kin-label">Raised, reasoning</p>
+					<p class="kin-body" data-size="sm">
+						The mark follows the radius on a raised layer.
+					</p>
+				</div>
+			</div>
+			<div class="kin-stack" data-space="compact">
+				<p class="kin-label">Ledger rules</p>
+				<hr class="kin-rule" />
+				<hr class="kin-rule" data-tone="primary" />
+				<hr class="kin-rule" data-tone="brand" />
+				<div class="kin-rule kin-rule--labeled" role="separator">
+					<span>Labeled</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="voice-heading">
+		<div class="catalog-heading">
+			<h2 id="voice-heading">Voices</h2>
+			<p>
+				Mono carries interface and operating structure. Serif carries authored
+				thought. Sans carries dense product chrome. Set
+				<code>data-kin-voice</code> on a region or let a surface recipe choose.
+			</p>
+		</div>
+		<div class="voice-grid">
+			<div data-kin-voice="mono">
+				<p class="kin-eyebrow">Mono</p>
+				<p class="kin-title">
+					Install the peer <span class="kin-quiet">on a workstation.</span>
+				</p>
+				<p class="kin-caption">
+					Default for operations, documentation, application, and learning.
 				</p>
 			</div>
-			<article class="kin-prose">
-				<h3>Work at the right focal distance</h3>
-				<p>
-					A shared system should make common choices easy without erasing the
-					character of the thing being built.
+			<div data-kin-voice="serif">
+				<p class="kin-eyebrow">Serif</p>
+				<p class="kin-title">
+					Install the peer <span class="kin-quiet">on a workstation.</span>
 				</p>
-				<blockquote>
-					<p>Abstraction is earned by repeated responsibility.</p>
-				</blockquote>
-				<p>
+				<p class="kin-caption">
+					Default display voice for the editorial recipe. Headings keep serif;
+					interface stays mono.
+				</p>
+			</div>
+			<div data-kin-voice="sans">
+				<p class="kin-eyebrow">Sans</p>
+				<p class="kin-title">
+					Install the peer <span class="kin-quiet">on a workstation.</span>
+				</p>
+				<p class="kin-caption">
+					For product chrome where mono headings would compete with data.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="type-heading">
+		<div class="catalog-heading">
+			<h2 id="type-heading">Type roles</h2>
+			<p>
+				Each role sets voice, size, weight, tracking, and measure. The
+				surrounding composition owns rhythm, so every role starts with zero
+				margin.
+			</p>
+		</div>
+		<div class="type-ladder">
+			<div>
+				<p class="kin-caption">.kin-display</p>
+				<p class="kin-display">Release notes for Depot 0.4</p>
+			</div>
+			<div>
+				<p class="kin-caption">.kin-title</p>
+				<p class="kin-title">Install the peer on a workstation</p>
+			</div>
+			<div>
+				<p class="kin-caption">.kin-headline</p>
+				<p class="kin-headline">
+					Sessions record their evidence before they end
+				</p>
+			</div>
+			<div>
+				<p class="kin-caption">.kin-subhead · .kin-heading</p>
+				<p class="kin-subhead">Work at the right focal distance</p>
+				<p class="kin-heading" style="margin-top: 0.75rem">
+					Abstraction is earned by repeated responsibility
+				</p>
+			</div>
+			<div>
+				<p class="kin-caption">
+					.kin-lede · .kin-body · .kin-caption · .kin-label
+				</p>
+				<p class="kin-lede">
 					Product copy remains with the product. The system provides measure,
 					hierarchy, and durable defaults.
 				</p>
-			</article>
+				<p class="kin-body" style="margin-top: 0.75rem">
+					Body prose reads in the sans voice at a comfortable measure, with
+					enough leading to survive long documents and text zoom.
+				</p>
+				<p class="kin-caption" style="margin-top: 0.75rem">
+					A caption explains a figure or a control in a quiet voice.
+				</p>
+				<p class="kin-label" style="margin-top: 0.75rem">Label for a group</p>
+			</div>
 		</div>
 	</section>
 
@@ -109,9 +266,9 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	<section class="catalog-section kin-frame" aria-labelledby="motion-heading">
 		<div class="kin-split" data-ratio="trail">
 			<div>
-				<p class="kin-eyebrow">Motion</p>
-				<h2 id="motion-heading" class="surface-sample__title">
-					Settled things stay settled.
+				<p class="kin-eyebrow">Motion and layers</p>
+				<h2 id="motion-heading" class="kin-headline">
+					Causal motion and named layers
 				</h2>
 			</div>
 			<div class="kin-stack">
@@ -119,10 +276,14 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 					<p class="kin-notice__title">Causal by default</p>
 					<p class="kin-notice__body">
 						Motion may explain progress, spatial change, or a completed action.
-						It does not decorate idle state.
+						It does not decorate idle state. Layers use named z-index tokens
+						from raised to toast so overlays never fight.
 					</p>
 				</div>
-				<span class="kin-status" data-state="running">Verifying package</span>
+				<div class="kin-cluster" data-space="compact">
+					<span class="kin-status" data-state="running">Verifying package</span>
+					<span class="kin-spinner" role="status">Indexing</span>
+				</div>
 			</div>
 		</div>
 	</section>

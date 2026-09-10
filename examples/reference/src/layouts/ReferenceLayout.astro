@@ -16,11 +16,21 @@ interface Props {
 const { title, description, current } = Astro.props;
 const navigation = [
 	["Overview", "/"],
+	["Examples", "/examples/"],
 	["Foundations", "/foundations/"],
 	["Compositions", "/compositions/"],
 	["Components", "/components/"],
+	["Navigation", "/navigation/"],
+	["Feedback", "/feedback/"],
+	["Data", "/data/"],
+	["Overlays", "/overlays/"],
 	["Patterns", "/patterns/"],
 	["Surfaces", "/surfaces/"],
+];
+const schemes = [
+	["dark", "Graphite"],
+	["light", "Paper"],
+	["auto", "Auto"],
 ];
 const documentTitle =
 	current === "Overview" ? title : `${title} · Kinra design`;
@@ -35,16 +45,41 @@ const documentTitle =
 		<link rel="icon" type="image/svg+xml" href={markUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{documentTitle}</title>
+		<script is:inline>
+			try {
+				const scheme = localStorage.getItem("kin-scheme");
+				if (scheme) document.documentElement.dataset.kinScheme = scheme;
+			} catch {}
+		</script>
 	</head>
-	<body class="kin-canvas" data-kin-surface="documentation">
+	<body class="kin-canvas reference-body" data-kin-surface="documentation">
 		<a class="kin-sr-only" href="#main">Skip to content</a>
 		<header class="reference-header">
 			<div class="reference-header__top kin-frame">
 				<a class="reference-brand" href="/" aria-label="Kinra design home">
-					<img src={wordmarkUrl} alt="Kinra" />
+					<img src={wordmarkUrl} alt="Kinra" width="118" height="24" />
 					<span>design</span>
 				</a>
-				<span class="kin-badge" data-tone="reason">Unreleased catalog</span>
+				<div class="reference-header__tools">
+					<span class="kin-badge" data-tone="reason">Unreleased catalog</span>
+					<div
+						class="kin-segmented reference-scheme"
+						role="group"
+						aria-label="Colour scheme"
+					>
+						{
+							schemes.map(([value, label]) => (
+								<button
+									type="button"
+									data-scheme={value}
+									aria-pressed={value === "dark" ? "true" : "false"}
+								>
+									{label}
+								</button>
+							))
+						}
+					</div>
+				</div>
 			</div>
 			<nav class="reference-nav" aria-label="Reference sections">
 				<ul class="kin-frame">
@@ -74,5 +109,47 @@ const documentTitle =
 				<span>Shared contracts. Source-owned outcomes.</span>
 			</div>
 		</footer>
+
+		<script>
+			const root = document.documentElement;
+			const buttons = document.querySelectorAll<HTMLButtonElement>(
+				".reference-scheme [data-scheme]",
+			);
+
+			function reflect() {
+				const current = root.dataset.kinScheme ?? "dark";
+				for (const button of buttons) {
+					button.setAttribute(
+						"aria-pressed",
+						button.dataset.scheme === current ? "true" : "false",
+					);
+				}
+			}
+
+			for (const button of buttons) {
+				button.addEventListener("click", () => {
+					const scheme = button.dataset.scheme ?? "dark";
+					root.dataset.kinScheme = scheme;
+					try {
+						localStorage.setItem("kin-scheme", scheme);
+					} catch {}
+					reflect();
+				});
+			}
+
+			reflect();
+
+			// Keep the current section in view on the horizontally scrolling rail.
+			const activeLink = document.querySelector<HTMLElement>(
+				'.reference-nav [aria-current="page"]',
+			);
+			const nav = document.querySelector<HTMLElement>(".reference-nav");
+			if (activeLink && nav && nav.scrollWidth > nav.clientWidth) {
+				const offset =
+					activeLink.getBoundingClientRect().left -
+					nav.getBoundingClientRect().left;
+				nav.scrollLeft = Math.max(0, offset - 24);
+			}
+		</script>
 	</body>
 </html>

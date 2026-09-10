@@ -1,0 +1,233 @@
+---
+import Specimen from "../components/Specimen.astro";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Feedback"
+	description="Progress, presence, and short messages for Kinra web surfaces."
+	current="Feedback"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Feedback</h1>
+			<p class="catalog-header__summary">
+				Progress, presence, and short messages. Motion appears only while work
+				is in flight, and text carries the meaning when motion is reduced.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Progress"
+			contract=".kin-progress · .kin-progress-group · data-tone · data-size"
+			description="Native <progress>. With a value it fills; without one it sweeps. Wrap it in a group when the label and figure should be visible."
+		>
+			<div class="kin-stack">
+				<div class="kin-progress-group">
+					<div class="kin-progress-group__label">
+						<span>Indexing repository</span>
+						<span class="kin-progress-group__value">62%</span>
+					</div>
+					<progress
+						class="kin-progress"
+						value="62"
+						max="100"
+						aria-label="Indexing repository">62%</progress
+					>
+				</div>
+				<div class="kin-progress-group">
+					<div class="kin-progress-group__label">
+						<span>Verifying release</span>
+						<span class="kin-progress-group__value">In progress</span>
+					</div>
+					<progress class="kin-progress" aria-label="Verifying release"
+					></progress>
+				</div>
+				<div class="kin-progress-group">
+					<div class="kin-progress-group__label">
+						<span>Disk</span>
+						<span class="kin-progress-group__value">91%</span>
+					</div>
+					<progress
+						class="kin-progress"
+						data-tone="warning"
+						data-size="thin"
+						value="91"
+						max="100"
+						aria-label="Disk used">91%</progress
+					>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Meter"
+			contract=".kin-meter · data-tone"
+			description="Native <meter> for a measured level with known bounds. Optimum, low, and high thresholds pick the colour; the value text remains the source of truth."
+		>
+			<div class="kin-stack" data-space="compact">
+				<div class="kin-progress-group">
+					<div class="kin-progress-group__label">
+						<span>GPU memory</span>
+						<span class="kin-progress-group__value">7.2 of 24 GB</span>
+					</div>
+					<meter
+						class="kin-meter"
+						aria-label="GPU memory used"
+						min="0"
+						max="24"
+						low="16"
+						high="21"
+						optimum="4"
+						value="7.2">7.2 of 24 GB</meter
+					>
+				</div>
+				<div class="kin-progress-group">
+					<div class="kin-progress-group__label">
+						<span>Context</span>
+						<span class="kin-progress-group__value">118k of 128k</span>
+					</div>
+					<meter
+						class="kin-meter"
+						aria-label="Context used"
+						min="0"
+						max="128"
+						low="96"
+						high="120"
+						optimum="20"
+						value="118">118k of 128k</meter
+					>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Spinner"
+			contract=".kin-spinner · role='status' · data-size · data-tone"
+			description="Three marks passing a signal along, in steps rather than a spin. Always give it words."
+		>
+			<div class="kin-cluster" data-space="loose">
+				<span class="kin-spinner" role="status">Indexing</span>
+				<span class="kin-spinner" role="status" data-tone="reason"
+					>Reasoning</span
+				>
+				<span class="kin-spinner" role="status" data-size="large"
+					>Building reference</span
+				>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Skeleton"
+			contract=".kin-skeleton · data-shape · --kin-skeleton-width"
+			description="A placeholder for content that is on its way. Mark the group aria-busy and hide skeletons from assistive technology."
+		>
+			<div class="kin-split" aria-busy="true">
+				<div class="kin-stack" data-space="compact" aria-hidden="true">
+					<span class="kin-skeleton" data-shape="heading"></span>
+					<span class="kin-skeleton" data-shape="text"></span>
+					<span class="kin-skeleton" data-shape="text"></span>
+					<span
+						class="kin-skeleton"
+						data-shape="text"
+						style="--kin-skeleton-width: 60%"></span>
+				</div>
+				<div class="kin-cluster" data-align="start" aria-hidden="true">
+					<span class="kin-skeleton" data-shape="square"></span>
+					<span class="kin-skeleton" data-shape="block" style="flex: 1"></span>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Toast"
+			contract=".kin-toast-region · .kin-toast · data-tone · data-placement · data-leaving"
+			description="A brief message that arrives and leaves. The region is fixed; each toast uses role='status' for information or role='alert' for failure. Shown here in flow; the button raises a live one."
+		>
+			<div class="kin-stack">
+				<div class="kin-stack" data-space="compact" style="max-width: 24rem">
+					<div class="kin-toast" data-tone="success" role="status">
+						<p class="kin-toast__title">Release v0.3.0 tagged</p>
+						<p class="kin-toast__body">
+							The annotated tag matches the package version.
+						</p>
+						<div class="kin-toast__actions">
+							<button class="kin-button kin-button--ghost" type="button"
+								>View</button
+							>
+						</div>
+					</div>
+					<div class="kin-toast" data-tone="error" role="alert">
+						<p class="kin-toast__title">Push rejected</p>
+						<p class="kin-toast__body">
+							The remote has commits you do not have locally.
+						</p>
+					</div>
+				</div>
+				<div>
+					<button class="kin-button" type="button" id="raise-toast"
+						>Raise a live toast</button
+					>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Keyboard hint"
+			contract=".kin-kbd"
+			description="A key or chord. Stack keys as siblings; the text is the real name of the key."
+		>
+			<p class="kin-body" data-size="sm">
+				Press <kbd class="kin-kbd">Ctrl</kbd><kbd class="kin-kbd">K</kbd> to open
+				the command palette, or <kbd class="kin-kbd">?</kbd> for help.
+			</p>
+		</Specimen>
+
+		<Specimen
+			title="Tooltip"
+			contract=".kin-tooltip · .kin-tooltip__hint · role='tooltip'"
+			description="A short label the consumer positions and toggles. The tooltip supplements an accessible name; it never replaces one."
+		>
+			<div
+				class="demo-inline kin-cluster"
+				data-space="compact"
+				data-align="start"
+			>
+				<div class="kin-tooltip" role="tooltip" id="tip-1">Undo</div>
+				<div class="kin-tooltip" role="tooltip" id="tip-2">
+					Measure distance
+					<span class="kin-tooltip__hint">Between two picked points</span>
+				</div>
+				<div class="kin-tooltip" role="tooltip" id="tip-3">
+					Section view <kbd class="kin-kbd">S</kbd>
+				</div>
+			</div>
+		</Specimen>
+	</div>
+
+	<div class="kin-toast-region" id="toast-region"></div>
+
+	<script>
+		const region = document.getElementById("toast-region");
+		const trigger = document.getElementById("raise-toast");
+
+		trigger?.addEventListener("click", () => {
+			if (!region) return;
+			const toast = document.createElement("div");
+			toast.className = "kin-toast";
+			toast.dataset.tone = "primary";
+			toast.setAttribute("role", "status");
+			toast.innerHTML =
+				'<p class="kin-toast__title">Session started</p><p class="kin-toast__body">The peer is indexing the repository.</p>';
+			region.append(toast);
+			setTimeout(() => {
+				toast.dataset.leaving = "";
+				toast.addEventListener("animationend", () => toast.remove(), {
+					once: true,
+				});
+			}, 3200);
+		});
+	</script>
+</ReferenceLayout>

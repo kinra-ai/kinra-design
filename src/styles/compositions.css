@@ -7,14 +7,40 @@
  */
 
 @layer kinra.compositions {
+	/* Children can shrink to their column instead of widening the page. */
+	:is(.kin-stack, .kin-cluster, .kin-grid, .kin-split, .kin-sidebar, .kin-bar)
+		> * {
+		min-width: 0;
+	}
+
 	.kin-region {
 		padding-block: var(--kin-region-space);
+	}
+
+	.kin-region[data-space="compact"] {
+		padding-block: calc(var(--kin-region-space) * 0.6);
+	}
+
+	.kin-region[data-rule="top"] {
+		border-top: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-region[data-rule="bottom"] {
+		border-bottom: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-region[data-rule="both"] {
+		border-block: 1px solid var(--kin-color-rule);
 	}
 
 	.kin-stack {
 		display: flex;
 		flex-direction: column;
 		gap: var(--kin-layout-space, var(--kin-space-6));
+	}
+
+	.kin-stack[data-split="last"] > :last-child {
+		margin-block-start: auto;
 	}
 
 	.kin-cluster {
@@ -33,12 +59,24 @@
 		--kin-cluster-align: flex-end;
 	}
 
+	.kin-cluster[data-align="baseline"] {
+		--kin-cluster-align: baseline;
+	}
+
 	.kin-cluster[data-justify="between"] {
 		--kin-cluster-justify: space-between;
 	}
 
 	.kin-cluster[data-justify="end"] {
 		--kin-cluster-justify: flex-end;
+	}
+
+	.kin-cluster[data-justify="center"] {
+		--kin-cluster-justify: center;
+	}
+
+	.kin-cluster[data-wrap="none"] {
+		flex-wrap: nowrap;
 	}
 
 	.kin-grid {
@@ -48,6 +86,35 @@
 			auto-fit,
 			minmax(min(100%, var(--kin-grid-min, 16rem)), 1fr)
 		);
+	}
+
+	.kin-grid[data-columns="2"] {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.kin-grid[data-columns="3"] {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.kin-grid[data-columns="4"] {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	/* Hairline grid: cells are separated by the rule instead of open space. */
+	.kin-grid[data-rules] {
+		border-block-start: 1px solid var(--kin-color-rule);
+		border-inline-start: 1px solid var(--kin-color-rule);
+		gap: 0;
+	}
+
+	.kin-grid[data-rules] > * {
+		border-block-end: 1px solid var(--kin-color-rule);
+		border-inline-end: 1px solid var(--kin-color-rule);
+		min-width: 0;
+	}
+
+	.kin-grid[data-rules="deep"] > * {
+		background: var(--kin-color-ground-deep);
 	}
 
 	.kin-split {
@@ -73,6 +140,10 @@
 		grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
 	}
 
+	.kin-split[data-ratio="golden"] {
+		grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
+	}
+
 	.kin-sidebar {
 		display: grid;
 		gap: var(--kin-layout-space, var(--kin-layout-gap));
@@ -87,12 +158,113 @@
 			minmax(0, var(--kin-sidebar-size, var(--kin-sidebar-width)));
 	}
 
+	/* Centre a bounded measure inside a wider region. */
+	.kin-center {
+		box-sizing: content-box;
+		margin-inline: auto;
+		max-width: var(--kin-center-measure, var(--kin-measure-prose));
+	}
+
+	.kin-center[data-measure="narrow"] {
+		--kin-center-measure: var(--kin-measure-narrow);
+	}
+
+	.kin-center[data-measure="content"] {
+		--kin-center-measure: var(--kin-measure-content);
+	}
+
+	.kin-center[data-measure="wide"] {
+		--kin-center-measure: var(--kin-measure-wide);
+	}
+
+	.kin-center[data-text="center"] {
+		text-align: center;
+	}
+
+	/* A minimum-height region whose principal child sits in the middle. */
+	.kin-cover {
+		display: flex;
+		flex-direction: column;
+		gap: var(--kin-layout-space, var(--kin-space-6));
+		min-height: var(--kin-cover-min, 70svh);
+		padding-block: var(--kin-layout-space, var(--kin-space-6));
+	}
+
+	.kin-cover > [data-principal] {
+		margin-block: auto;
+	}
+
+	/* A row that switches to a column when it can no longer fit. */
+	.kin-switcher {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-layout-space, var(--kin-layout-gap));
+	}
+
+	.kin-switcher > * {
+		flex-basis: calc((var(--kin-switch-at, 40rem) - 100%) * 999);
+		flex-grow: 1;
+		min-width: 0;
+	}
+
+	/* A horizontal reel that scrolls and snaps instead of wrapping. */
+	.kin-reel {
+		display: flex;
+		gap: var(--kin-layout-space, var(--kin-space-4));
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		padding-block-end: var(--kin-space-3);
+		scroll-snap-type: x proximity;
+	}
+
+	.kin-reel > * {
+		flex: 0 0 var(--kin-reel-item, 18rem);
+		min-width: 0;
+		scroll-snap-align: start;
+	}
+
+	/* A bar with start, centre, and end slots. */
+	.kin-bar {
+		align-items: center;
+		display: grid;
+		gap: var(--kin-layout-space, var(--kin-space-4));
+		grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+		min-height: var(--kin-bar-height, 3.5rem);
+	}
+
+	.kin-bar > :first-child {
+		grid-column: 1;
+	}
+
+	.kin-bar > [data-slot="center"] {
+		grid-column: 2;
+		justify-self: center;
+		min-width: 0;
+	}
+
+	.kin-bar > [data-slot="end"] {
+		grid-column: 3;
+		justify-self: end;
+	}
+
+	.kin-bar[data-rule="bottom"] {
+		border-bottom: 1px solid var(--kin-color-rule);
+	}
+
+	.kin-bar[data-rule="top"] {
+		border-top: 1px solid var(--kin-color-rule);
+	}
+
 	:is(
 		.kin-stack,
 		.kin-cluster,
 		.kin-grid,
 		.kin-split,
-		.kin-sidebar
+		.kin-sidebar,
+		.kin-switcher,
+		.kin-reel,
+		.kin-bar,
+		.kin-cover
 	)[data-space="tight"] {
 		--kin-layout-space: var(--kin-space-2);
 	}
@@ -102,7 +274,11 @@
 		.kin-cluster,
 		.kin-grid,
 		.kin-split,
-		.kin-sidebar
+		.kin-sidebar,
+		.kin-switcher,
+		.kin-reel,
+		.kin-bar,
+		.kin-cover
 	)[data-space="compact"] {
 		--kin-layout-space: var(--kin-space-4);
 	}
@@ -112,9 +288,17 @@
 		.kin-cluster,
 		.kin-grid,
 		.kin-split,
-		.kin-sidebar
+		.kin-sidebar,
+		.kin-switcher,
+		.kin-reel,
+		.kin-bar,
+		.kin-cover
 	)[data-space="loose"] {
 		--kin-layout-space: var(--kin-space-9);
+	}
+
+	:is(.kin-grid, .kin-split, .kin-sidebar, .kin-cover)[data-space="none"] {
+		--kin-layout-space: 0;
 	}
 }
 
@@ -123,7 +307,31 @@
 		.kin-split,
 		.kin-split[data-ratio],
 		.kin-sidebar,
-		.kin-sidebar[data-side="end"] {
+		.kin-sidebar[data-side="end"],
+		.kin-grid[data-columns="3"],
+		.kin-grid[data-columns="4"] {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.kin-grid[data-columns="4"] {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.kin-bar[data-collapse] {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.kin-bar[data-collapse] > * {
+			grid-column: auto;
+			justify-self: start;
+		}
+	}
+}
+
+@media (max-width: 32rem) {
+	@layer kinra.compositions {
+		.kin-grid[data-columns="2"],
+		.kin-grid[data-columns="4"] {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

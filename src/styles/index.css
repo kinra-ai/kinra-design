@@ -1,6 +1,11 @@
 @import "./base.css";
 @import "./canvas.css";
 @import "./recipes.css";
+@import "./type.css";
 @import "./compositions.css";
 @import "./components.css";
+@import "./navigation.css";
+@import "./feedback.css";
+@import "./overlays.css";
+@import "./data.css";
 @import "./prose.css";

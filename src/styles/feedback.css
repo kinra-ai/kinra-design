@@ -1,0 +1,522 @@
+@import "./tokens.css";
+
+/*
+ * Progress, presence, and short messages. Motion here always corresponds
+ * to work in flight: a spinner or indeterminate bar may only be rendered
+ * while something is actually happening, and its text carries the meaning
+ * when motion is reduced.
+ */
+
+@layer kinra.components {
+	/* Progress: native <progress> with a known or unknown extent. */
+
+	.kin-progress {
+		appearance: none;
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+		border-radius: 0;
+		display: block;
+		height: 0.5rem;
+		overflow: hidden;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.kin-progress::-webkit-progress-bar {
+		background: transparent;
+	}
+
+	.kin-progress::-webkit-progress-value {
+		background: var(--kin-progress-signal, var(--kin-color-primary));
+		transition: width var(--kin-duration-slow) var(--kin-ease-out);
+	}
+
+	.kin-progress::-moz-progress-bar {
+		background: var(--kin-progress-signal, var(--kin-color-primary));
+	}
+
+	.kin-progress[data-tone="success"] {
+		--kin-progress-signal: var(--kin-color-success);
+	}
+
+	.kin-progress[data-tone="warning"] {
+		--kin-progress-signal: var(--kin-color-warning);
+	}
+
+	.kin-progress[data-tone="error"] {
+		--kin-progress-signal: var(--kin-color-error);
+	}
+
+	.kin-progress[data-tone="reason"] {
+		--kin-progress-signal: var(--kin-color-reason);
+	}
+
+	.kin-progress:indeterminate {
+		background-image: linear-gradient(
+			to right,
+			transparent 0%,
+			var(--kin-progress-signal, var(--kin-color-primary)) 50%,
+			transparent 100%
+		);
+		background-repeat: no-repeat;
+		background-size: 40% 100%;
+		animation: kin-progress-sweep 1.4s var(--kin-ease-standard) infinite;
+	}
+
+	.kin-progress:indeterminate::-webkit-progress-bar {
+		background: transparent;
+	}
+
+	.kin-progress:indeterminate::-moz-progress-bar {
+		background: transparent;
+	}
+
+	.kin-progress[data-size="thin"] {
+		height: 0.25rem;
+	}
+
+	.kin-progress-group {
+		display: grid;
+		gap: var(--kin-space-2);
+	}
+
+	.kin-progress-group__label {
+		align-items: baseline;
+		color: var(--kin-color-text-subtle);
+		display: flex;
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+		gap: var(--kin-space-3);
+		justify-content: space-between;
+	}
+
+	.kin-progress-group__value {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-variant-numeric: tabular-nums;
+		font-weight: var(--kin-weight-quiet);
+	}
+
+	/* Meter: native <meter> for a measured level with known bounds. */
+
+	.kin-meter {
+		appearance: none;
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+		display: block;
+		height: 0.5rem;
+		width: 100%;
+	}
+
+	.kin-meter::-webkit-meter-bar {
+		background: transparent;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.kin-meter::-webkit-meter-optimum-value {
+		background: var(--kin-color-success);
+	}
+
+	.kin-meter::-webkit-meter-suboptimum-value {
+		background: var(--kin-color-warning);
+	}
+
+	.kin-meter::-webkit-meter-even-less-good-value {
+		background: var(--kin-color-error);
+	}
+
+	.kin-meter::-moz-meter-bar {
+		background: var(--kin-color-success);
+	}
+
+	.kin-meter:-moz-meter-sub-optimum::-moz-meter-bar {
+		background: var(--kin-color-warning);
+	}
+
+	.kin-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+		background: var(--kin-color-error);
+	}
+
+	.kin-meter[data-tone="neutral"]::-webkit-meter-optimum-value,
+	.kin-meter[data-tone="neutral"]::-moz-meter-bar {
+		background: var(--kin-color-primary);
+	}
+
+	/* Spinner: three marks passing a signal along. Render only while working. */
+
+	.kin-spinner {
+		align-items: center;
+		color: var(--kin-color-text-muted);
+		display: inline-flex;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		gap: var(--kin-space-3);
+		letter-spacing: 0.03em;
+	}
+
+	.kin-spinner::before {
+		animation: kin-spinner-pass 1.05s steps(1, end) infinite;
+		background: currentColor;
+		color: var(--kin-spinner-signal, var(--kin-color-primary));
+		content: "";
+		flex: none;
+		height: var(--kin-mark-size);
+		margin-inline: 0.65rem 0.65rem;
+		width: var(--kin-mark-size);
+	}
+
+	.kin-spinner[data-tone="reason"] {
+		--kin-spinner-signal: var(--kin-color-reason);
+	}
+
+	.kin-spinner[data-tone="muted"] {
+		--kin-spinner-signal: var(--kin-color-text-muted);
+	}
+
+	.kin-spinner[data-size="large"]::before {
+		--kin-mark-size: 0.625rem;
+
+		animation-name: kin-spinner-pass-large;
+		margin-inline: 1rem 1rem;
+	}
+
+	/* Skeleton: a placeholder for content that is on its way. */
+
+	.kin-skeleton {
+		background: var(--kin-surface-hover);
+		border-radius: 2px;
+		display: block;
+		min-height: 1em;
+		overflow: hidden;
+		position: relative;
+		width: var(--kin-skeleton-width, 100%);
+	}
+
+	.kin-skeleton::after {
+		animation: kin-skeleton-sweep 1.6s var(--kin-ease-standard) infinite;
+		background: linear-gradient(
+			to right,
+			transparent,
+			color-mix(in srgb, var(--kin-color-text-muted) 12%, transparent),
+			transparent
+		);
+		content: "";
+		inset: 0;
+		position: absolute;
+		translate: -100% 0;
+	}
+
+	.kin-skeleton[data-shape="text"] {
+		height: 0.85em;
+		margin-block: 0.25em;
+	}
+
+	.kin-skeleton[data-shape="heading"] {
+		height: 1.4em;
+		width: var(--kin-skeleton-width, 60%);
+	}
+
+	.kin-skeleton[data-shape="square"] {
+		aspect-ratio: 1;
+		width: var(--kin-skeleton-width, 2.25rem);
+	}
+
+	.kin-skeleton[data-shape="block"] {
+		min-height: var(--kin-skeleton-height, 8rem);
+	}
+
+	.kin-skeleton + .kin-skeleton[data-shape="text"] {
+		width: var(--kin-skeleton-width, 85%);
+	}
+
+	/* Toast: a brief message that arrives, then leaves. */
+
+	.kin-toast-region {
+		display: flex;
+		flex-direction: column;
+		gap: var(--kin-space-2);
+		inset: auto var(--kin-space-4) var(--kin-space-4) auto;
+		max-width: min(24rem, calc(100vw - 2 * var(--kin-space-4)));
+		pointer-events: none;
+		position: fixed;
+		width: 100%;
+		z-index: var(--kin-layer-toast);
+	}
+
+	.kin-toast-region[data-placement="top"] {
+		inset: var(--kin-space-4) var(--kin-space-4) auto auto;
+	}
+
+	.kin-toast-region[data-placement="top-center"] {
+		align-items: center;
+		inset: var(--kin-space-4) auto auto 50%;
+		translate: -50% 0;
+	}
+
+	.kin-toast {
+		--kin-toast-signal: var(--kin-color-text-muted);
+
+		animation: kin-toast-arrive var(--kin-duration-slow) var(--kin-ease-out);
+		background: var(--kin-color-surface-raised);
+		border: 1px solid var(--kin-color-rule);
+		border-inline-start: 2px solid var(--kin-toast-signal);
+		border-radius: var(--kin-radius-md);
+		box-shadow: var(--kin-shadow-float);
+		color: var(--kin-color-text);
+		display: grid;
+		gap: var(--kin-space-1) var(--kin-space-4);
+		grid-template-columns: minmax(0, 1fr) auto;
+		padding: var(--kin-space-3) var(--kin-space-4);
+		pointer-events: auto;
+	}
+
+	.kin-toast[data-tone="primary"] {
+		--kin-toast-signal: var(--kin-color-primary);
+	}
+
+	.kin-toast[data-tone="reason"] {
+		--kin-toast-signal: var(--kin-color-reason);
+	}
+
+	.kin-toast[data-tone="success"] {
+		--kin-toast-signal: var(--kin-color-success);
+	}
+
+	.kin-toast[data-tone="warning"] {
+		--kin-toast-signal: var(--kin-color-warning);
+	}
+
+	.kin-toast[data-tone="error"] {
+		--kin-toast-signal: var(--kin-color-error);
+	}
+
+	.kin-toast[data-leaving] {
+		animation: kin-toast-leave var(--kin-duration-normal) var(--kin-ease-in)
+			forwards;
+	}
+
+	.kin-toast__title,
+	.kin-toast__body {
+		grid-column: 1;
+	}
+
+	.kin-toast__title {
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+		margin: 0;
+	}
+
+	.kin-toast__body {
+		color: var(--kin-color-text-subtle);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.5;
+		margin: 0;
+	}
+
+	.kin-toast__actions {
+		align-items: center;
+		align-self: center;
+		display: flex;
+		gap: var(--kin-space-1);
+		grid-column: 2;
+		grid-row: 1 / span 2;
+	}
+
+	.kin-toast__actions .kin-button {
+		font-size: var(--kin-text-xs);
+		min-height: var(--kin-control-height-compact);
+		padding-inline: var(--kin-space-3);
+	}
+
+	/* Keyboard hint */
+
+	.kin-kbd {
+		background: var(--kin-color-ground-deep);
+		border: 1px solid var(--kin-color-rule);
+		border-bottom-width: 2px;
+		border-radius: var(--kin-radius-sm);
+		color: var(--kin-color-text-subtle);
+		display: inline-block;
+		font-family: var(--kin-font-mono);
+		font-size: 0.75em;
+		font-weight: var(--kin-weight-strong);
+		line-height: 1;
+		min-width: 1.6em;
+		padding: 0.25em 0.45em;
+		text-align: center;
+		vertical-align: baseline;
+		white-space: nowrap;
+	}
+
+	.kin-kbd + .kin-kbd {
+		margin-inline-start: 0.2em;
+	}
+
+	/* Tooltip: a short label the consumer positions. */
+
+	.kin-tooltip {
+		background: var(--kin-color-text);
+		border-radius: var(--kin-radius-sm);
+		box-shadow: var(--kin-shadow-panel);
+		color: var(--kin-color-ground);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		line-height: 1.45;
+		max-width: min(18rem, 100%);
+		overflow-wrap: anywhere;
+		padding: var(--kin-space-2) var(--kin-space-3);
+		pointer-events: none;
+		width: max-content;
+		z-index: var(--kin-layer-overlay);
+	}
+
+	.kin-tooltip__hint {
+		color: color-mix(in srgb, var(--kin-color-ground) 70%, transparent);
+		display: block;
+		font-weight: var(--kin-weight-quiet);
+	}
+
+	.kin-tooltip .kin-kbd {
+		background: color-mix(in srgb, var(--kin-color-ground) 18%, transparent);
+		border-color: color-mix(in srgb, var(--kin-color-ground) 30%, transparent);
+		color: inherit;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	@layer kinra.components {
+		.kin-progress:indeterminate {
+			animation: none;
+			background-position: 50% 0;
+		}
+
+		.kin-skeleton::after {
+			animation: none;
+			display: none;
+		}
+
+		.kin-spinner::before {
+			animation: none;
+			box-shadow:
+				-0.65rem 0 0 currentColor,
+				0.65rem 0 0 currentColor;
+		}
+
+		.kin-spinner[data-size="large"]::before {
+			box-shadow:
+				-1rem 0 0 currentColor,
+				1rem 0 0 currentColor;
+		}
+
+		.kin-toast {
+			animation: none;
+		}
+
+		/* Preserve the exit event used by consumers to remove a toast. */
+		.kin-toast[data-leaving] {
+			animation-duration: 0.01ms;
+		}
+	}
+}
+
+@keyframes kin-progress-sweep {
+	from {
+		background-position: -40% 0;
+	}
+
+	to {
+		background-position: 140% 0;
+	}
+}
+
+@keyframes kin-spinner-pass {
+	0%,
+	100% {
+		box-shadow:
+			-0.65rem 0 0 currentColor,
+			0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+
+	33% {
+		box-shadow:
+			-0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: currentColor;
+	}
+
+	66% {
+		box-shadow:
+			-0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			0.65rem 0 0 currentColor;
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+}
+
+@keyframes kin-spinner-pass-large {
+	0%,
+	100% {
+		box-shadow:
+			-1rem 0 0 currentColor,
+			1rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+
+	33% {
+		box-shadow:
+			-1rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			1rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: currentColor;
+	}
+
+	66% {
+		box-shadow:
+			-1rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			1rem 0 0 currentColor;
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+}
+
+@keyframes kin-skeleton-sweep {
+	to {
+		translate: 100% 0;
+	}
+}
+
+@keyframes kin-toast-arrive {
+	from {
+		opacity: 0;
+		translate: 0 0.5rem;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes kin-toast-leave {
+	to {
+		opacity: 0;
+		translate: 0 0.25rem;
+	}
+}
+
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-progress,
+		.kin-meter,
+		.kin-toast,
+		.kin-kbd,
+		.kin-tooltip {
+			border: 1px solid currentColor;
+		}
+
+		.kin-spinner::before {
+			background: currentColor;
+		}
+	}
+}

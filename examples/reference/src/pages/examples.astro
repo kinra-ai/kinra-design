@@ -1,0 +1,68 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+import Specimen from "../components/Specimen.astro";
+import CollectionExample from "../components/CollectionExample.astro";
+import PreferencesExample from "../components/PreferencesExample.astro";
+import ReviewExample from "../components/ReviewExample.astro";
+import "../styles/examples.css";
+---
+
+<ReferenceLayout
+	title="Examples"
+	description="Interactive examples of Kinra's shared styles working together in collections, preferences, and reviews."
+	current="Examples"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Examples</h1>
+			<div>
+				<p class="catalog-header__summary">
+					Small, complete examples of the shared language. Try a filter, change
+					the reading voice, or walk through a review.
+				</p>
+				<nav
+					class="kin-cluster catalog-header__actions"
+					data-space="compact"
+					aria-label="Examples on this page"
+				>
+					<a href="#collections">Collections</a>
+					<a href="#preferences">Preferences</a>
+					<a href="#reviews">Reviews</a>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<div class="catalog-section kin-frame example-catalog">
+		<p class="kin-caption example-catalog__note">
+			Reference-only compositions with illustrative content. These experiments
+			are not registry patterns or new stable components.
+		</p>
+		<div id="collections">
+			<Specimen
+				title="A collection, with context"
+				contract="Cards · chips · search · avatars · empty state · dialog"
+				description="Search by name or filter by state, then inspect an entry. The same small vocabulary handles a full collection and an empty result."
+			>
+				<CollectionExample />
+			</Specimen>
+		</div>
+		<div id="preferences">
+			<Specimen
+				title="Preferences with a live preview"
+				contract="Fields · option cards (experiment) · switch · type roles"
+				description="A settings form pairs each choice with its effect. The option cards are a local experiment built around native radios."
+			>
+				<PreferencesExample />
+			</Specimen>
+		</div>
+		<div id="reviews">
+			<Specimen
+				title="A decision beside its evidence"
+				contract="Notice · list · status · key-value · disclosure · dialog"
+				description="Keep the checklist, supporting details, and next action together. Try marking the example reviewed, then reset it."
+			>
+				<ReviewExample />
+			</Specimen>
+		</div>
+	</div>
+</ReferenceLayout>

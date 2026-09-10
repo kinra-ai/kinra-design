@@ -6,12 +6,14 @@ one generator, framework, or page template.
 
 The system has five layers:
 
-- role-named foundations for colour, type, spacing, motion, depth, and measure;
+- role-named foundations for colour on two grounds, three typographic voices,
+  spacing, motion, depth, and measure;
 - opt-in layout compositions that establish relationships without styling
   content;
-- accessible controls and states proven across real operating surfaces;
-- surface recipes for editorial, documentation, operational, and application
-  work; and
+- accessible controls, wayfinding, feedback, evidence, and overlay components
+  proven across real operating surfaces;
+- surface recipes for editorial, documentation, learning, operational, and
+  application work, with independent scheme and voice axes; and
 - a source registry of candidate patterns that consumers copy and own.
 
 Routes, copy, product claims, workflows, analytics, deployment configuration,
@@ -63,13 +65,18 @@ Or choose only the contracts a host can own safely:
 @import "@kinra/web/styles/tokens.css";
 @import "@kinra/web/styles/compositions.css";
 @import "@kinra/web/styles/components.css";
+@import "@kinra/web/styles/overlays.css";
 ```
 
-Apply a surface recipe without adopting a page template:
+Apply a surface recipe, a ground, and a voice without adopting a page
+template:
 
 ```html
-<body class="kin-canvas" data-kin-surface="operations">
-  <main class="kin-frame"><!-- product-owned composition --></main>
+<body class="kin-canvas" data-kin-surface="operations" data-kin-scheme="auto">
+  <main class="kin-frame">
+    <section data-kin-voice="serif"><!-- authored region --></section>
+    <!-- product-owned composition -->
+  </main>
 </body>
 ```
 
@@ -105,10 +112,15 @@ guides, and registry source, but not the example, scripts, toolchain, or
 generated output. `build:reference` is deliberately not called `build` so Git
 consumers do not rebuild the catalog during installation.
 
+Open `/examples/` in the catalog for interactive collection, preferences, and
+review examples. These reference-only compositions demonstrate the shared
+styles without adding speculative package contracts.
+
 Read the focused guides for the work at hand:
 
 - [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine
 - [`docs/catalog.md`](docs/catalog.md) — public layers and contracts
+- [`docs/composing.md`](docs/composing.md) — choosing axes and elements for a page
 - [`docs/adoption.md`](docs/adoption.md) — installing and integrating a release
 - [`docs/releasing.md`](docs/releasing.md) — versioning, verification, and tags
 - [`STATUS.md`](STATUS.md) — current release and adoption state

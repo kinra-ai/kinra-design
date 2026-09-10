@@ -4,34 +4,131 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 <ReferenceLayout
 	title="Components"
-	description="Accessible, framework-independent components for Kinra web surfaces."
+	description="Accessible, framework-independent controls and states for Kinra web surfaces."
 	current="Components"
 >
-	<header class="catalog-intro">
-		<div class="catalog-intro__inner kin-frame">
-			<div>
-				<p class="kin-eyebrow">Components</p>
-				<h1>Small contracts for consequential details.</h1>
-			</div>
-			<p class="catalog-intro__copy">
-				Controls and states belong here when multiple products need the same
-				semantic responsibility, focus behavior, and responsive treatment.
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Components</h1>
+			<p class="catalog-header__summary">
+				Controls, labels, notices, fields, tables, and states with stable
+				semantic and focus contracts. Wayfinding, feedback, evidence, and layers
+				have their own pages.
 			</p>
 		</div>
 	</header>
 
 	<div class="catalog-section kin-frame component-grid">
-		<section class="component-group" aria-labelledby="actions-heading">
-			<h2 id="actions-heading">Actions and labels</h2>
+		<section
+			class="component-group component-group--wide"
+			aria-labelledby="buttons-heading"
+		>
+			<h2 id="buttons-heading">Buttons</h2>
+			<p>
+				One primary action per region. Quiet, ghost, and neutral buttons carry
+				the rest; danger is reserved for destruction that cannot be undone.
+			</p>
 			<div class="kin-stack">
 				<div class="kin-cluster" data-space="compact">
 					<button class="kin-button kin-button--primary" type="button">
 						Save changes
 					</button>
+					<button class="kin-button" type="button">Neutral</button>
 					<button class="kin-button kin-button--quiet" type="button">
-						Cancel
+						Quiet
+					</button>
+					<button class="kin-button kin-button--ghost" type="button">
+						Ghost
+					</button>
+					<button class="kin-button kin-button--danger" type="button">
+						Delete repository
+					</button>
+					<button class="kin-button kin-button--primary" type="button" disabled>
+						Disabled
 					</button>
 				</div>
+				<div class="kin-cluster" data-space="compact">
+					<button
+						class="kin-button kin-button--primary"
+						data-size="large"
+						type="button"
+					>
+						Large
+					</button>
+					<button class="kin-button" type="button">Default</button>
+					<button class="kin-button" data-size="compact" type="button">
+						Compact
+					</button>
+					<button
+						class="kin-button kin-button--icon"
+						type="button"
+						aria-label="Search"
+					>
+						<svg
+							viewBox="0 0 24 24"
+							aria-hidden="true"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<circle cx="11" cy="11" r="7"></circle>
+							<path d="M20 20l-3.5-3.5"></path>
+						</svg>
+					</button>
+					<button
+						class="kin-button kin-button--icon"
+						data-size="compact"
+						type="button"
+						aria-label="More options"
+					>
+						<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+							<circle cx="5" cy="12" r="1.5"></circle>
+							<circle cx="12" cy="12" r="1.5"></circle>
+							<circle cx="19" cy="12" r="1.5"></circle>
+						</svg>
+					</button>
+					<button class="kin-button" type="button" aria-pressed="true">
+						Pressed
+					</button>
+				</div>
+				<div class="kin-cluster" data-space="compact">
+					<div class="kin-button-group" role="group" aria-label="View">
+						<button
+							class="kin-button"
+							data-size="compact"
+							type="button"
+							aria-pressed="true"
+						>
+							List
+						</button>
+						<button
+							class="kin-button"
+							data-size="compact"
+							type="button"
+							aria-pressed="false"
+						>
+							Board
+						</button>
+						<button
+							class="kin-button"
+							data-size="compact"
+							type="button"
+							aria-pressed="false"
+						>
+							Timeline
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-group" aria-labelledby="labels-heading">
+			<h2 id="labels-heading">Badges and chips</h2>
+			<p>
+				A badge labels taxonomy or bounded state and is not interactive. A chip
+				is a control: it filters, selects, or can be removed.
+			</p>
+			<div class="kin-stack">
 				<div class="kin-cluster" data-space="compact" aria-label="Badge tones">
 					<span class="kin-badge">Draft</span>
 					<span class="kin-badge" data-tone="primary">Active</span>
@@ -39,17 +136,55 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<span class="kin-badge" data-tone="success">Verified</span>
 					<span class="kin-badge" data-tone="warning">Attention</span>
 					<span class="kin-badge" data-tone="error">Blocked</span>
+					<span class="kin-badge" data-variant="solid" data-tone="primary"
+						>Solid</span
+					>
+					<span class="kin-badge" data-numeric>v0.3.0</span>
 				</div>
-				<div
-					class="kin-cluster"
-					data-space="compact"
-					aria-label="Status states"
-				>
-					<span class="kin-status">Idle</span>
-					<span class="kin-status" data-state="reason">Reasoning</span>
-					<span class="kin-status" data-state="running">Running</span>
-					<span class="kin-status" data-state="success">Complete</span>
+				<div class="kin-cluster" data-space="tight" aria-label="Filter chips">
+					<button class="kin-chip" type="button" aria-pressed="true">All</button
+					>
+					<button class="kin-chip" type="button" aria-pressed="false"
+						>Open</button
+					>
+					<button class="kin-chip" type="button" aria-pressed="false"
+						>Merged</button
+					>
+					<span class="kin-chip">
+						author:blake
+						<button
+							class="kin-chip__remove"
+							type="button"
+							aria-label="Remove author filter"
+						>
+							<svg
+								viewBox="0 0 12 12"
+								aria-hidden="true"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+							>
+								<path d="M2 2l8 8M10 2l-8 8"></path>
+							</svg>
+						</button>
+					</span>
 				</div>
+			</div>
+		</section>
+
+		<section class="component-group" aria-labelledby="status-heading">
+			<h2 id="status-heading">Status</h2>
+			<p>
+				A square marker and a word. Running is the only state that moves,
+				because it is the only one doing something.
+			</p>
+			<div class="kin-cluster" data-space="compact" aria-label="Status states">
+				<span class="kin-status">Idle</span>
+				<span class="kin-status" data-state="reason">Reasoning</span>
+				<span class="kin-status" data-state="running">Running</span>
+				<span class="kin-status" data-state="success">Complete</span>
+				<span class="kin-status" data-state="warning">Degraded</span>
+				<span class="kin-status" data-state="error">Failed</span>
 			</div>
 		</section>
 
@@ -62,8 +197,20 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 						The reasoning channel can prepare evidence, but it cannot approve
 						this release.
 					</p>
+					<div class="kin-notice__actions">
+						<button class="kin-button" data-size="compact" type="button">
+							Open review
+						</button>
+						<button
+							class="kin-button kin-button--ghost"
+							data-size="compact"
+							type="button"
+						>
+							Dismiss
+						</button>
+					</div>
 				</div>
-				<div class="kin-notice" data-tone="warning">
+				<div class="kin-notice" data-tone="warning" data-density="compact">
 					<p class="kin-notice__title">Two repositories are behind</p>
 					<p class="kin-notice__body">
 						Version state is expressed in words; colour reinforces rather than
@@ -97,17 +244,116 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					/>
 				</div>
 				<div class="kin-field">
+					<label class="kin-field__label" for="repository-url">
+						Clone URL
+						<span class="kin-field__optional">Optional</span>
+					</label>
+					<div class="kin-input-group">
+						<span class="kin-input-group__affix">https://</span>
+						<input
+							class="kin-input"
+							id="repository-url"
+							name="url"
+							placeholder="depot.kinra.ai/blake/kin"
+						/>
+						<button class="kin-button" type="button">Copy</button>
+					</div>
+				</div>
+				<div class="kin-field">
 					<label class="kin-field__label" for="visibility">Visibility</label>
 					<select class="kin-select" id="visibility" name="visibility">
 						<option>Private</option>
 						<option>Public</option>
 					</select>
 				</div>
+				<div class="kin-field">
+					<label class="kin-field__label" for="notes">Notes</label>
+					<textarea
+						class="kin-textarea"
+						id="notes"
+						name="notes"
+						placeholder="What should a reviewer know?"></textarea>
+				</div>
+				<div class="kin-field">
+					<label class="kin-field__label" for="branch">Branch</label>
+					<input
+						class="kin-input"
+						id="branch"
+						name="branch"
+						value="main"
+						aria-invalid="true"
+						aria-describedby="branch-error"
+					/>
+					<p class="kin-field__error" id="branch-error">
+						A branch named main already exists.
+					</p>
+				</div>
 				<label class="kin-check">
 					<input type="checkbox" name="readme" checked />
-					<span>Create the repository with a README</span>
+					<span>
+						Create the repository with a README
+						<span class="kin-check__hint">You can change this later.</span>
+					</span>
 				</label>
 			</form>
+		</section>
+
+		<section class="component-group" aria-labelledby="choice-heading">
+			<h2 id="choice-heading">Switch, range, and segmented</h2>
+			<p>
+				All three wrap native inputs. The switch is a checkbox with
+				<code>role="switch"</code>; the segmented control is a radio group.
+			</p>
+			<div class="kin-stack">
+				<label class="kin-switch">
+					<input type="checkbox" role="switch" checked />
+					<span>Allow the peer to open pull requests</span>
+				</label>
+				<label class="kin-switch">
+					<input type="checkbox" role="switch" />
+					<span>Publish release notes automatically</span>
+				</label>
+				<div class="kin-field">
+					<label class="kin-field__label" for="context">Context window</label>
+					<input
+						class="kin-range"
+						id="context"
+						type="range"
+						min="4"
+						max="128"
+						value="32"
+					/>
+					<p class="kin-field__hint">32k tokens</p>
+				</div>
+				<fieldset class="kin-fieldset">
+					<legend class="kin-fieldset__legend">Density</legend>
+					<div class="kin-segmented" role="radiogroup" aria-label="Density">
+						<label>
+							<input type="radio" name="density" value="comfortable" checked />
+							<span>Comfortable</span>
+						</label>
+						<label>
+							<input type="radio" name="density" value="compact" />
+							<span>Compact</span>
+						</label>
+						<label>
+							<input type="radio" name="density" value="dense" />
+							<span>Dense</span>
+						</label>
+					</div>
+				</fieldset>
+				<fieldset class="kin-fieldset" data-variant="bounded">
+					<legend class="kin-fieldset__legend">Notify me when</legend>
+					<label class="kin-check">
+						<input type="checkbox" name="notify" checked />
+						<span>A review is requested</span>
+					</label>
+					<label class="kin-check">
+						<input type="checkbox" name="notify" />
+						<span>A release is tagged</span>
+					</label>
+				</fieldset>
+			</div>
 		</section>
 
 		<section class="component-group" aria-labelledby="disclosure-heading">
@@ -130,6 +376,14 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					</p>
 				</div>
 			</details>
+			<div style="margin-top: 1.5rem">
+				<details class="kin-disclosure" data-variant="panel">
+					<summary>Panel variant</summary>
+					<div class="kin-disclosure__body">
+						<p>A bounded box for settings groups and advanced options.</p>
+					</div>
+				</details>
+			</div>
 		</section>
 
 		<section
@@ -139,8 +393,9 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 			<div class="catalog-heading">
 				<h2 id="table-heading">Inspectable data</h2>
 				<p>
-					Tables keep native semantics and horizontal containment. Consumers own
-					column priorities and any narrow-screen transformation.
+					Tables keep native semantics and horizontal containment. Numeric
+					columns align right with tabular figures; a selected row carries the
+					primary edge.
 				</p>
 			</div>
 			<div class="kin-table-wrap">
@@ -151,25 +406,39 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 							<th scope="col">Layer</th>
 							<th scope="col">Distribution</th>
 							<th scope="col">State</th>
-							<th scope="col">Owner</th>
+							<th scope="col" data-align="numeric">Classes</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>Foundations</td>
+							<td data-emphasis>Foundations</td>
 							<td>Versioned CSS</td>
 							<td><span class="kin-badge" data-tone="success">Stable</span></td>
-							<td>Kinra design</td>
+							<td data-align="numeric">14</td>
+						</tr>
+						<tr aria-selected="true">
+							<td data-emphasis>Components</td>
+							<td>Versioned CSS</td>
+							<td
+								><span class="kin-badge" data-tone="primary">Expanded</span></td
+							>
+							<td data-align="numeric">41</td>
 						</tr>
 						<tr>
-							<td>Patterns</td>
+							<td data-emphasis>Patterns</td>
 							<td>Copied source</td>
 							<td
 								><span class="kin-badge" data-tone="reason">Candidate</span></td
 							>
-							<td>Consumer after copy</td>
+							<td data-align="numeric">3</td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3">Total</td>
+							<td data-align="numeric">58</td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</section>

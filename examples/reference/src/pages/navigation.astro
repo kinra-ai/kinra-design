@@ -1,0 +1,379 @@
+---
+import Specimen from "../components/Specimen.astro";
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+---
+
+<ReferenceLayout
+	title="Navigation"
+	description="Tabs, breadcrumbs, pagination, rails, toolbars, and real sequences for Kinra web surfaces."
+	current="Navigation"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Navigation</h1>
+			<p class="catalog-header__summary">
+				Tabs, breadcrumbs, pagination, rails, toolbars, and real sequences. The
+				document carries the meaning; the classes style the relationship.
+			</p>
+		</div>
+	</header>
+
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Tabs"
+			contract=".kin-tabs · .kin-tabs__tab · .kin-tabs__panel · data-variant"
+			description="Underline tabs for peer views; boxed tabs for a compact switcher; rail tabs for a vertical list. Use role='tablist' with buttons, or plain links with aria-current for route-backed tabs."
+		>
+			<div class="kin-stack" data-space="loose">
+				<div>
+					<div
+						class="kin-tabs"
+						role="tablist"
+						aria-label="Repository views"
+						data-example-tabs
+					>
+						{
+							["Code", "Reviews", "Releases"].map((label, i) => (
+								<button
+									class="kin-tabs__tab"
+									role="tab"
+									type="button"
+									id={`repository-tab-${i}`}
+									aria-selected={i === 0 ? "true" : "false"}
+									aria-controls={`repository-panel-${i}`}
+									tabindex={i === 0 ? 0 : -1}
+								>
+									{label}
+									{i === 1 && (
+										<span class="kin-badge" data-numeric>
+											4
+										</span>
+									)}
+								</button>
+							))
+						}
+						<button
+							class="kin-tabs__tab"
+							role="tab"
+							type="button"
+							aria-selected="false"
+							disabled>Insights</button
+						>
+					</div>
+					{
+						[
+							"Browse the files and folders in this example repository.",
+							"Four sample reviews are waiting for a closer look.",
+							"Release notes collect the changes that are ready to share.",
+						].map((text, i) => (
+							<div
+								class="kin-tabs__panel"
+								role="tabpanel"
+								id={`repository-panel-${i}`}
+								aria-labelledby={`repository-tab-${i}`}
+								tabindex="0"
+								hidden={i !== 0}
+							>
+								<p class="kin-body" data-size="sm">
+									{text}
+								</p>
+							</div>
+						))
+					}
+				</div>
+				<div>
+					<div
+						class="kin-tabs"
+						data-variant="boxed"
+						role="tablist"
+						aria-label="Activity period"
+						data-example-tabs
+					>
+						{
+							["Day", "Week", "Month"].map((label, i) => (
+								<button
+									class="kin-tabs__tab"
+									role="tab"
+									type="button"
+									id={`period-tab-${i}`}
+									aria-selected={i === 1 ? "true" : "false"}
+									aria-controls={`period-panel-${i}`}
+									tabindex={i === 1 ? 0 : -1}
+								>
+									{label}
+								</button>
+							))
+						}
+					</div>
+					{
+						[
+							"Today: 3 sessions completed.",
+							"This week: 18 sessions completed.",
+							"This month: 64 sessions completed.",
+						].map((text, i) => (
+							<div
+								class="kin-tabs__panel"
+								role="tabpanel"
+								id={`period-panel-${i}`}
+								aria-labelledby={`period-tab-${i}`}
+								tabindex="0"
+								hidden={i !== 1}
+							>
+								<p class="kin-body" data-size="sm">
+									{text}
+								</p>
+							</div>
+						))
+					}
+				</div>
+				<div class="kin-split" data-ratio="trail">
+					<nav
+						class="kin-tabs"
+						data-variant="rail"
+						aria-label="Settings sections"
+					>
+						<a class="kin-tabs__tab" href="#tabs" aria-current="page">General</a
+						>
+						<a class="kin-tabs__tab" href="#tabs">Peers</a>
+						<a class="kin-tabs__tab" href="#tabs">Providers</a>
+						<a class="kin-tabs__tab" href="#tabs">Danger zone</a>
+					</nav>
+					<div class="demo-block">
+						<strong>General</strong>Rail tabs for a settings page or a long
+						reference.
+					</div>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Breadcrumb"
+			contract=".kin-breadcrumb · --kin-breadcrumb-separator"
+			description="An ordered list inside a labeled nav. The current page is text with aria-current, not a link."
+		>
+			<nav class="kin-breadcrumb" aria-label="Breadcrumb">
+				<ol>
+					<li><a href="#crumbs">Depot</a></li>
+					<li><a href="#crumbs">blake</a></li>
+					<li><a href="#crumbs">kin</a></li>
+					<li><span aria-current="page">src/peer/session.go</span></li>
+				</ol>
+			</nav>
+		</Specimen>
+
+		<Specimen
+			title="Pagination"
+			contract=".kin-pagination · .kin-pagination__gap · .kin-pagination__summary"
+			description="Links for pages, aria-current on the present one, and a summary in words for the total."
+		>
+			<nav class="kin-pagination" aria-label="Sessions pagination">
+				<ul>
+					<li><a href="#page" aria-label="Previous page">‹</a></li>
+					<li><a href="#page">1</a></li>
+					<li><a href="#page" aria-current="page">2</a></li>
+					<li><a href="#page">3</a></li>
+					<li><span class="kin-pagination__gap" aria-hidden="true">…</span></li>
+					<li><a href="#page">12</a></li>
+					<li><a href="#page" aria-label="Next page">›</a></li>
+					<li><span class="kin-pagination__summary">Page 2 of 12</span></li>
+				</ul>
+			</nav>
+		</Specimen>
+
+		<Specimen
+			title="Rail navigation"
+			contract=".kin-nav · .kin-nav__group · .kin-nav__trail · data-density"
+			description="A vertical list for a documentation sidebar or an application rail. Nested lists indent; the current item carries the primary edge."
+		>
+			<div class="kin-sidebar" style="--kin-sidebar-size: 15rem">
+				<nav class="kin-nav" aria-label="Documentation">
+					<p class="kin-nav__group">Start</p>
+					<ul>
+						<li><a href="#nav">Overview</a></li>
+						<li><a href="#nav" aria-current="page">Install</a></li>
+						<li>
+							<a href="#nav">Concepts</a>
+							<ul>
+								<li><a href="#nav">Peers</a></li>
+								<li><a href="#nav">Sessions</a></li>
+							</ul>
+						</li>
+					</ul>
+					<p class="kin-nav__group">Reference</p>
+					<ul>
+						<li>
+							<a href="#nav">Commands <span class="kin-nav__trail">24</span></a>
+						</li>
+						<li><a href="#nav">Configuration</a></li>
+						<li><a href="#nav">Changelog</a></li>
+					</ul>
+				</nav>
+				<div class="demo-block demo-sidebar">
+					<strong>Install</strong>The work region beside the rail.
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Toolbar"
+			contract=".kin-toolbar · .kin-toolbar__group · .kin-toolbar__title · data-variant · data-wrap"
+			description="A strip of grouped controls. Groups are separated by the hairline; data-grow lets one absorb slack and data-end pushes one to the far side."
+		>
+			<div class="kin-stack">
+				<div class="kin-toolbar" role="toolbar" aria-label="Editor tools">
+					<div class="kin-toolbar__group">
+						<button
+							class="kin-button kin-button--icon"
+							type="button"
+							aria-label="Undo">↶</button
+						>
+						<button
+							class="kin-button kin-button--icon"
+							type="button"
+							aria-label="Redo">↷</button
+						>
+					</div>
+					<div class="kin-toolbar__group">
+						<button class="kin-button" type="button" aria-pressed="true"
+							>Select</button
+						>
+						<button class="kin-button" type="button" aria-pressed="false"
+							>Measure</button
+						>
+						<button class="kin-button" type="button" aria-pressed="false"
+							>Section</button
+						>
+					</div>
+					<div class="kin-toolbar__group" data-grow>
+						<p class="kin-toolbar__title">bracket-rev4.step</p>
+					</div>
+					<div class="kin-toolbar__group" data-end>
+						<select class="kin-select" aria-label="Units">
+							<option>mm</option>
+							<option>in</option>
+						</select>
+						<button class="kin-button kin-button--primary" type="button"
+							>Export</button
+						>
+					</div>
+				</div>
+				<div
+					class="kin-toolbar"
+					data-variant="bare"
+					role="toolbar"
+					aria-label="List tools"
+				>
+					<div class="kin-toolbar__group">
+						<input
+							class="kin-input"
+							type="search"
+							placeholder="Filter sessions"
+							aria-label="Filter sessions"
+						/>
+					</div>
+					<div class="kin-toolbar__group" data-end>
+						<button class="kin-button kin-button--ghost" type="button"
+							>Sort</button
+						>
+						<button class="kin-button" type="button">New session</button>
+					</div>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Steps"
+			contract=".kin-steps · .kin-steps__step · .kin-steps__index · data-state · data-orientation"
+			description="A real sequence. The index is document text; aria-current='step' marks where the reader is. Horizontal steps hide the body and keep titles."
+		>
+			<div class="kin-stack" data-space="loose">
+				<ol class="kin-steps">
+					<li class="kin-steps__step" data-state="done">
+						<span class="kin-steps__index" aria-hidden="true">1</span>
+						<p class="kin-steps__title">Connect a provider</p>
+						<p class="kin-steps__body">Sign in with GitHub or a local key.</p>
+					</li>
+					<li class="kin-steps__step" aria-current="step">
+						<span class="kin-steps__index" aria-hidden="true">2</span>
+						<p class="kin-steps__title">Choose a workspace</p>
+						<p class="kin-steps__body">
+							Pick the repository the peer should work inside and the branch it
+							may write to.
+						</p>
+					</li>
+					<li class="kin-steps__step">
+						<span class="kin-steps__index" aria-hidden="true">3</span>
+						<p class="kin-steps__title">Start the session</p>
+						<p class="kin-steps__body">The peer begins with a bounded plan.</p>
+					</li>
+				</ol>
+				<ol class="kin-steps" data-orientation="horizontal">
+					<li class="kin-steps__step" data-state="done">
+						<span class="kin-steps__index" aria-hidden="true">1</span>
+						<p class="kin-steps__title">Intake</p>
+					</li>
+					<li class="kin-steps__step" data-state="done">
+						<span class="kin-steps__index" aria-hidden="true">2</span>
+						<p class="kin-steps__title">Quote</p>
+					</li>
+					<li class="kin-steps__step" aria-current="step">
+						<span class="kin-steps__index" aria-hidden="true">3</span>
+						<p class="kin-steps__title">Review</p>
+					</li>
+					<li class="kin-steps__step">
+						<span class="kin-steps__index" aria-hidden="true">4</span>
+						<p class="kin-steps__title">Release</p>
+					</li>
+				</ol>
+			</div>
+		</Specimen>
+	</div>
+	<script>
+		for (const tablist of document.querySelectorAll<HTMLElement>(
+			"[data-example-tabs]",
+		)) {
+			const tabs = [
+				...tablist.querySelectorAll<HTMLButtonElement>(
+					'[role="tab"]:not(:disabled)',
+				),
+			];
+			function selectTab(selected: HTMLButtonElement) {
+				for (const tab of tabs) {
+					const active = tab === selected;
+					tab.setAttribute("aria-selected", String(active));
+					tab.tabIndex = active ? 0 : -1;
+					const panel = document.getElementById(
+						tab.getAttribute("aria-controls") ?? "",
+					);
+					if (panel) panel.hidden = !active;
+				}
+			}
+			for (const tab of tabs) {
+				tab.addEventListener("click", () => selectTab(tab));
+				tab.addEventListener("keydown", (event) => {
+					const index = tabs.indexOf(tab);
+					let next: number;
+					switch (event.key) {
+						case "ArrowRight":
+							next = (index + 1) % tabs.length;
+							break;
+						case "ArrowLeft":
+							next = (index - 1 + tabs.length) % tabs.length;
+							break;
+						case "Home":
+							next = 0;
+							break;
+						case "End":
+							next = tabs.length - 1;
+							break;
+						default:
+							return;
+					}
+					event.preventDefault();
+					selectTab(tabs[next]);
+					tabs[next].focus();
+				});
+			}
+		}
+	</script>
+</ReferenceLayout>

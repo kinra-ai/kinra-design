@@ -1,0 +1,161 @@
+---
+// Reference-only option cards and settings composition.
+---
+
+<div class="example-preferences">
+	<form class="example-preferences__form kin-stack" id="preferences-form">
+		<div class="kin-stack" data-space="tight">
+			<p class="kin-label">Personal preferences</p>
+			<h3 class="kin-subhead">Reading preferences</h3>
+			<p class="kin-body" data-size="sm">
+				Choose a voice and see it in context.
+			</p>
+		</div>
+		<fieldset class="kin-fieldset">
+			<legend class="kin-fieldset__legend">Reading voice</legend>
+			<div class="example-choices">
+				<label class="example-choice">
+					<input type="radio" name="voice" value="serif" checked />
+					<span
+						><strong>Editorial</strong><span class="kin-caption"
+							>A little room to reflect.</span
+						></span
+					>
+					<span
+						class="example-choice__sample"
+						data-kin-voice="serif"
+						aria-hidden="true">Aa</span
+					>
+				</label>
+				<label class="example-choice">
+					<input type="radio" name="voice" value="sans" />
+					<span
+						><strong>Everyday</strong><span class="kin-caption"
+							>Direct and easy to scan.</span
+						></span
+					>
+					<span
+						class="example-choice__sample"
+						data-kin-voice="sans"
+						aria-hidden="true">Aa</span
+					>
+				</label>
+				<label class="example-choice">
+					<input type="radio" name="voice" value="mono" />
+					<span
+						><strong>Technical</strong><span class="kin-caption"
+							>Deliberate, with a steady rhythm.</span
+						></span
+					>
+					<span
+						class="example-choice__sample"
+						data-kin-voice="mono"
+						aria-hidden="true">Aa</span
+					>
+				</label>
+			</div>
+		</fieldset>
+		<div class="kin-field">
+			<label class="kin-field__label" for="reading-name">Collection name</label>
+			<input
+				class="kin-input"
+				id="reading-name"
+				name="collection"
+				value="Field notes"
+				required
+				maxlength="60"
+				aria-describedby="reading-name-hint"
+			/>
+			<p class="kin-field__hint" id="reading-name-hint">
+				Give your reading collection a name.
+			</p>
+		</div>
+		<label class="kin-switch">
+			<input type="checkbox" role="switch" name="details" checked />
+			<span>Show reading details</span>
+		</label>
+		<div class="example-preferences__actions">
+			<button
+				class="kin-button kin-button--primary"
+				type="submit"
+				id="preferences-save"
+				disabled>Save preferences</button
+			>
+			<button class="kin-button kin-button--ghost" type="reset">Reset</button>
+		</div>
+		<p
+			class="kin-caption"
+			id="preferences-status"
+			role="status"
+			aria-atomic="true"
+		>
+			Changes apply to this preview.
+		</p>
+	</form>
+
+	<div class="example-reading" id="reading-preview" data-kin-voice="serif">
+		<div class="example-reading__top">
+			<p class="kin-label" id="reading-collection">Field notes</p>
+			<span class="kin-badge">Preview</span>
+		</div>
+		<div class="example-reading__content kin-stack">
+			<h3 class="kin-title">A quieter reading experience</h3>
+			<p class="kin-lede">Good tools leave space for the work that matters.</p>
+			<div class="kin-prose" data-lede="none">
+				<p>
+					A label in the right place. A clear next step. Enough space between
+					two ideas to understand how they relate.
+				</p>
+				<p>
+					These choices are small on their own. Repeated with care, they give a
+					product its character.
+				</p>
+			</div>
+			<hr class="kin-rule" data-tick="none" />
+			<p class="kin-caption" id="reading-details">Design notes · 3 min read</p>
+		</div>
+		<p class="example-reading__foot kin-caption">
+			An example of shared type and prose styles.
+		</p>
+	</div>
+</div>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>("#preferences-form");
+	const preview = document.getElementById("reading-preview");
+	const collection = document.getElementById("reading-collection");
+	const details = document.getElementById("reading-details");
+	const status = document.getElementById("preferences-status");
+	const save = document.querySelector<HTMLButtonElement>("#preferences-save");
+
+	function reflectPreferences() {
+		if (!form) return;
+		const values = new FormData(form);
+		if (preview)
+			preview.dataset.kinVoice = String(values.get("voice") ?? "serif");
+		if (collection)
+			collection.textContent =
+				String(values.get("collection") ?? "").trim() || "Untitled collection";
+		if (details) details.hidden = !values.has("details");
+	}
+	form?.addEventListener("input", () => {
+		reflectPreferences();
+		if (save) save.disabled = false;
+		if (status) status.textContent = "Unsaved changes in this preview.";
+	});
+	form?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		if (save) save.disabled = true;
+		if (status)
+			status.textContent =
+				"Preferences saved for this preview. Reloading restores the defaults.";
+	});
+	form?.addEventListener("reset", () => {
+		requestAnimationFrame(() => {
+			reflectPreferences();
+			if (save) save.disabled = true;
+			if (status) status.textContent = "Default preferences restored.";
+		});
+	});
+	reflectPreferences();
+</script>

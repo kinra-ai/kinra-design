@@ -5,12 +5,22 @@
  * template, and may be applied to a whole document or a bounded specimen.
  * They remain unlayered so their scoped roles override the unlayered root
  * tokens; consumer CSS loaded afterward can still override either.
+ *
+ * Two axes are available. data-kin-surface tunes measure, density, and the
+ * reading voice for a job. data-kin-voice changes only the display and
+ * heading voice for a bounded region, so one page can carry more than one
+ * typographic sentence without changing its job.
  */
 
 [data-kin-surface="editorial"] {
 	--kin-font-ui: var(--kin-font-mono);
 	--kin-font-heading: var(--kin-font-mono);
+	--kin-font-display: var(--kin-font-serif);
 	--kin-font-prose: var(--kin-font-sans);
+	--kin-weight-display: 500;
+	--kin-tracking-display: -0.015em;
+	--kin-leading-display: 1.1;
+	--kin-measure-display: 24ch;
 	--kin-measure-prose: 48rem;
 	--kin-region-space: clamp(4.5rem, 9vw, 8rem);
 }
@@ -18,11 +28,24 @@
 [data-kin-surface="documentation"] {
 	--kin-font-ui: var(--kin-font-mono);
 	--kin-font-heading: var(--kin-font-mono);
+	--kin-font-display: var(--kin-font-mono);
 	--kin-font-prose: var(--kin-font-sans);
 	--kin-measure-wide: 96rem;
 	--kin-page-gutter: clamp(1rem, 3vw, 2.5rem);
 	--kin-region-space: clamp(3rem, 6vw, 5rem);
 	--kin-sidebar-width: 17rem;
+}
+
+[data-kin-surface="learning"] {
+	--kin-font-ui: var(--kin-font-mono);
+	--kin-font-heading: var(--kin-font-mono);
+	--kin-font-display: var(--kin-font-mono);
+	--kin-font-prose: var(--kin-font-mono);
+	--kin-leading-prose: 1.8;
+	--kin-measure-prose: 42rem;
+	--kin-measure-wide: 72rem;
+	--kin-region-space: clamp(3rem, 6vw, 5.5rem);
+	--kin-text-base: 0.9375rem;
 }
 
 [data-kin-surface="operations"] {
@@ -40,4 +63,37 @@
 	--kin-measure-wide: 120rem;
 	--kin-page-gutter: clamp(0.875rem, 2vw, 2rem);
 	--kin-region-space: clamp(2rem, 4vw, 3.5rem);
+}
+
+[data-kin-voice="serif"] {
+	--kin-font-display: var(--kin-font-serif);
+	--kin-font-heading: var(--kin-font-serif);
+	--kin-weight-display: 500;
+	--kin-weight-heading: 520;
+	--kin-tracking-display: -0.015em;
+	--kin-tracking-heading: -0.01em;
+	--kin-leading-display: 1.1;
+	--kin-leading-heading: 1.2;
+}
+
+[data-kin-voice="mono"] {
+	--kin-font-display: var(--kin-font-mono);
+	--kin-font-heading: var(--kin-font-mono);
+	--kin-weight-display: 620;
+	--kin-weight-heading: 580;
+	--kin-tracking-display: -0.03em;
+	--kin-tracking-heading: -0.025em;
+	--kin-leading-display: 1.05;
+	--kin-leading-heading: 1.15;
+}
+
+[data-kin-voice="sans"] {
+	--kin-font-display: var(--kin-font-sans);
+	--kin-font-heading: var(--kin-font-sans);
+	--kin-weight-display: 640;
+	--kin-weight-heading: 600;
+	--kin-tracking-display: -0.025em;
+	--kin-tracking-heading: -0.02em;
+	--kin-leading-display: 1.08;
+	--kin-leading-heading: 1.2;
 }

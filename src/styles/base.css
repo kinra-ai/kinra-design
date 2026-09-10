@@ -1,6 +1,7 @@
 @import "./tokens.css";
 
-@layer kinra.reset, kinra.base;
+@layer kinra.reset, kinra.base, kinra.type, kinra.compositions, kinra.components,
+	kinra.prose;
 
 @layer kinra.reset {
 	*,
@@ -49,6 +50,15 @@
 		-webkit-font-smoothing: antialiased;
 	}
 
+	/*
+	 * A bounded subtree that changes scheme must re-establish its own ground
+	 * and ink, because inherited colour has already been resolved above it.
+	 */
+	:not(html, body)[data-kin-scheme] {
+		background: var(--kin-color-ground);
+		color: var(--kin-color-text);
+	}
+
 	a {
 		color: var(--kin-color-primary);
 		text-decoration-color: var(--kin-primary-30);
@@ -63,12 +73,16 @@
 
 	::selection {
 		background: var(--kin-color-primary);
-		color: var(--kin-color-ground);
+		color: var(--kin-color-text-inverse);
 	}
 
 	:focus-visible {
 		outline: 2px solid var(--kin-color-primary);
 		outline-offset: 3px;
+	}
+
+	:target {
+		scroll-margin-block-start: var(--kin-space-7);
 	}
 
 	* {
@@ -121,7 +135,7 @@
 		top: var(--kin-space-3);
 		white-space: normal;
 		width: auto;
-		z-index: 100;
+		z-index: var(--kin-layer-toast);
 	}
 }
 

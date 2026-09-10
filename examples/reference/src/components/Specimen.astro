@@ -23,9 +23,11 @@ const { title, contract, description } = Astro.props;
 
 <style>
 	code {
-		color: var(--kin-color-primary);
+		color: var(--kin-color-text-muted);
 		display: block;
-		font-size: 0.625rem;
+		font-size: var(--kin-text-xs);
+		line-height: 1.65;
 		margin-top: var(--kin-space-2);
+		overflow-wrap: anywhere;
 	}
 </style>
