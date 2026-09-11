@@ -1,0 +1,11 @@
+Generated with the built-in image_gen tool.
+Actual output: 1254 x 1254 pixels.
+The canonical assets/wordmark.svg is composited separately at 226 pixels wide.
+
+Use case: photorealistic-natural
+Asset type: atmospheric landscape artwork for a Kinra-branded Pocket ID sign-in background. Square 1:1 composition, high resolution, preferably 2048x2048. Square is deliberate: this image will be cropped into a tall narrow desktop side panel, wider desktop panels, and a full-screen phone background.
+Primary request: An exquisite photographic landscape of remote alpine ridges disappearing into drifting mountain mist at dusk. Calm, spacious, quietly awe-inspiring. Realistic fine detail and natural atmospheric depth, not an illustration or 3D rendering.
+Scene: layered rugged mountain silhouettes sweep inward from the lower left and lower right, with a distant, softly visible central ridge and thin wisps of fog separating the layers. Subtle remaining snow in crevices, rock and cloud, no buildings or people. The lower half carries the terrain. The upper half is expansive soft overcast sky, gently darker toward the top. Keep the exact center of the canvas softly detailed and sufficiently dark, approximately charcoal #252b32, as a small blue brand wordmark will be added there later. No bright fog or sharp mountain edge across that small central space. Let the mist catch muted silver light below the center, giving the landscape dimension without making it glaring.
+Composition: compelling even when only the central 35 percent of the image width is visible. Broad natural shapes, not important objects at the edges. Generous breathing room. No single gigantic peak dominating the image. Photographic scene fills the entire rectangular canvas with no frame or rounded corners.
+Palette and mood: nearly neutral graphite, charcoal, slate and mist gray, faint natural coolness, low saturation. The blue of the later logo is the only strong accent. Soft luminous atmospheric separation, rich but readable shadows, smooth sky, no added heavy grain. Not uniformly black. Elegant landscape photography rather than a texture sample.
+Constraints: landscape only; NO logo, NO text, NO watermark, NO interface, NO graphic shapes, NO neon or aurora, NO bright sun, NO colorful sunset, NO fantasy planets, NO dramatic god rays, NO vignette frame.

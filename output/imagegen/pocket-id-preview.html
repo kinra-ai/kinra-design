@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Kinra landscape · Pocket ID layout preview</title>
+		<style>
+			/* Background geometry follows upstream 7ddc5d6. Form chrome is approximate. */
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: #0a0a0a;
+				color: #fafafa;
+				font:
+					16px Arial,
+					sans-serif;
+			}
+			main {
+				position: relative;
+				display: flex;
+				align-items: center;
+				height: 100vh;
+				overflow: hidden;
+				text-align: center;
+			}
+			.sign-in {
+				position: relative;
+				z-index: 1;
+				height: 100%;
+				width: 100%;
+				max-width: 650px;
+				padding: 64px 64px 0;
+				display: flex;
+				flex-direction: column;
+			}
+			.form {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				overflow: auto;
+				padding: 4px;
+			}
+			.mark {
+				width: 64px;
+				height: 64px;
+				padding: 12px;
+				background: #262626;
+				border-radius: 20px;
+			}
+			h1 {
+				font:
+					bold 36px Georgia,
+					serif;
+				letter-spacing: -1.2px;
+				margin: 24px 0 12px;
+			}
+			p {
+				color: #a3a3a3;
+				line-height: 1.5;
+				margin: 0;
+			}
+			button {
+				margin-top: 40px;
+				background: #e5e5e5;
+				border: none;
+				border-radius: 30px;
+				padding: 10px 46px;
+				font: inherit;
+				color: #171717;
+			}
+			.alternative {
+				color: #a3a3a3;
+				font-size: 12px;
+				margin: 16px 0;
+			}
+			.art {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 650px;
+				margin: 24px;
+				overflow: hidden;
+				border-radius: 40px;
+			}
+			.art img {
+				display: block;
+				height: 100vh;
+				width: calc(100vw - 650px);
+				object-fit: cover;
+				max-width: none;
+			}
+			body.zoom .art img {
+				transform: scale(1.3);
+				transform-origin: center;
+			}
+			@media (min-width: 1536px) {
+				.sign-in {
+					max-width: 800px;
+				}
+				.art {
+					left: 800px;
+				}
+				.art img {
+					width: calc(100vw - 800px);
+				}
+			}
+			@media (max-width: 1023px) {
+				main {
+					min-height: 100dvh;
+					height: auto;
+					justify-content: center;
+					background: center / cover url("kinra-pocketid-landscape-logo.webp");
+				}
+				.art {
+					display: none;
+				}
+				.sign-in {
+					height: auto;
+					width: calc(100% - 24px);
+					max-width: 448px;
+					padding: 40px 16px 12px;
+					background: #171717;
+					border: 1px solid #303030;
+					border-radius: 12px;
+				}
+				h1 {
+					font-size: 30px;
+				}
+				.alternative {
+					margin-top: 28px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<section class="sign-in" aria-label="Nonfunctional sign-in preview">
+				<div class="form">
+					<img class="mark" src="../../assets/mark.svg" alt="Kinra" />
+					<h1>Sign in to Pocket ID</h1>
+					<p>Authenticate yourself with your passkey to access your account.</p>
+					<button type="button" disabled>Authenticate</button>
+				</div>
+				<p class="alternative">Alternative Sign In Methods</p>
+			</section>
+			<div class="art">
+				<img
+					src="kinra-pocketid-landscape-logo.webp"
+					alt="Misty alpine landscape with a small Kinra wordmark"
+				/>
+			</div>
+		</main>
+	</body>
+</html>
