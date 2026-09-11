@@ -10,9 +10,10 @@ Backgrounds for the Kinra-operated Pocket ID sign-in surface.
 - [Desktop preview](kinra-pocketid-mycelium-preview-desktop.png)
 - [Phone preview](kinra-pocketid-mycelium-preview-phone.png)
 
-The current direction is original vector artwork: fine filaments branch and
-reconnect across the lower part of a graphite field, with intentional open
-space and the wordmark in the upper third. It draws from
+The current direction is original vector artwork: two main strands rise
+through a graphite field and share one connection beneath a centered wordmark.
+The 43 explicitly drawn paths use three line weights and connected branches,
+with open space around the wordmark. It draws from
 [The Mycelium](https://kinra.ai/learn/the-mycelium/),
 [The Fabric](https://kinra.ai/writing/the-fabric/), and
 [Negative Space](https://kinra.ai/writing/negative-space/), read from Kinra
@@ -26,8 +27,8 @@ preserves the original 1610:300 aspect ratio exactly. The PNG fallback is
 rendered directly from the vector composition at 4096 × 4096 with lossless
 encoding. The earlier landscape WebP is not the upload for this direction.
 
-The SVG uses a 2048 × 2048 viewBox; the wordmark begins at `(830.8, 620)`.
-Its higher placement was checked for full visibility both at rest and at
+The SVG uses a 2048 × 2048 viewBox; the wordmark begins at `(830.8, 988)`,
+placing its center exactly at `(1024, 1024)`. It was checked for full visibility both at rest and at
 Pocket ID's 1.3× entrance zoom at desktop widths of 1024, 1366, 1920, 2560,
 and 3440 CSS pixels. A 390 × 844 phone check confirms that the background
 wordmark sits behind the sign-in card, which retains its separate K logo.
