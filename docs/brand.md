@@ -77,9 +77,32 @@ section of the foundations page shows it on both grounds.
 
 `.kin-lockup` is the web rendering. A surface that cannot use the CSS
 follows the same geometry: the K as tall as one line of the interface text,
-a hairline, and the name in the mono face at that text size. Where the K
-cannot be drawn at all, such as a terminal, the name stands alone in the
-mono face and the wordmark, if shown, means Kinra rather than the product.
+a hairline, and the name in the mono face at that text size.
+
+A terminal draws the K where it can. Where the terminal offers an image
+protocol, the mark is placed from the asset itself. Where it does not, the
+name stands alone in the mono face, and the wordmark, if shown, means Kinra
+rather than the product. Never approximate the K with block or ASCII
+characters: its thinnest band is 28 units of a 300-unit grid, so a cell
+grid either drops that band or dithers through it, and an approximation is
+a redrawing, which no consumer makes.
+
+## The masthead
+
+The lockup marks chrome, at the size of the interface text. Where a surface
+introduces the product at rest — a cold-start banner, a splash screen, a
+page hero — the mark leads instead, at the height of the block it
+introduces.
+
+- The mark is the K, placed from the asset, and the name stays live text.
+- The K spans the full height of the text block beside it, so the two read
+  as one object. This is what the lockup's single line becomes when the
+  thing beside the mark is a block rather than a word.
+- No hairline. The gap separates, and the hairline stays the lockup's.
+- A rule may divide the masthead from a second column carrying notices, and
+  appears only when that column has something in it. That rule is a content
+  divider and is not the lockup's hairline.
+- A surface introduces itself once. Its chrome keeps the lockup.
 
 ## Getting the assets
 

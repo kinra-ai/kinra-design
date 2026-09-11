@@ -9,6 +9,10 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
+- Add the masthead treatment to `docs/brand.md`: where a surface introduces
+  the product at rest, the K leads at the height of the text block beside
+  it rather than at one line of interface text, with no hairline. The
+  lockup remains the rule for chrome.
 - Add a reference-only examples page with a filterable collection and
   inspectors, reading preferences with a live preview, and an interactive
   review checklist. Option cards remain a local experiment.
@@ -62,6 +66,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 - Add the public contract catalog and registry adoption guidance.
 
 ### Changed
+
+- The brand standard's terminal clause now draws the K from the asset where
+  the terminal offers an image protocol, instead of assuming it can never be
+  drawn, and names block and ASCII approximations as redrawings that no
+  consumer makes.
 
 - Refine the paper ground and deepen its text roles for tinted selections;
   raise small type to 12/14px and align control corners and sizing.
