@@ -1,5 +1,9 @@
 ---
 import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+import markUrl from "@kinra/web/assets/mark.svg?url";
+import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
+
+const family = ["Kin", "Spaces", "Depot", "Gateway"];
 
 const colours = [
 	["Ground", "--kin-color-ground"],
@@ -99,6 +103,49 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 					</article>
 				))
 			}
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="brand-heading">
+		<div class="catalog-heading">
+			<h2 id="brand-heading">Brand</h2>
+			<p>
+				Two assets carry the brand. The wordmark alone means Kinra itself. Every
+				product, Kin included, is marked with the lockup: the K, a hairline, and
+				its name as text in the mono voice. Names and marks are settled in <code
+					>docs/brand.md</code
+				>.
+			</p>
+		</div>
+		<div class="kin-stack" data-space="loose">
+			<div class="brand-row">
+				<img src={wordmarkUrl} alt="Kinra" width="129" height="24" />
+				<img src={markUrl} alt="The Kinra K mark" width="44" height="44" />
+			</div>
+			<div class="kin-grid" style="--kin-grid-min: 14rem">
+				<div class="brand-ground" data-kin-scheme="dark">
+					<span class="kin-lockup">
+						<img src={markUrl} alt="" width="22" height="22" />
+						<span>Spaces</span>
+					</span>
+				</div>
+				<div class="brand-ground" data-kin-scheme="light">
+					<span class="kin-lockup">
+						<img src={markUrl} alt="" width="22" height="22" />
+						<span>Spaces</span>
+					</span>
+				</div>
+			</div>
+			<div class="mark-row">
+				{
+					family.map((name) => (
+						<span class="kin-lockup">
+							<img src={markUrl} alt="" width="22" height="22" />
+							<span>{name}</span>
+						</span>
+					))
+				}
+			</div>
 		</div>
 	</section>
 

@@ -46,7 +46,8 @@ It leads an eyebrow, sits before a status word, marks the corner of a toned
 surface, ticks the start of a rule, steps through a spinner, and anchors a
 log entry. Colour names the state; the square only points at it. No other
 decoration is introduced, and the square is never used where there is no
-state to mark.
+state to mark. How the K, the wordmark, and product names are used is settled
+in [`brand.md`](brand.md).
 
 ## Structure before signal
 

@@ -29,8 +29,10 @@ adoption map; this file only tracks current state, not process.
   the shared styles together without adding registry or stable contracts.
 - `package.json` remains at the latest released version until a maintainer
   explicitly approves the next release identity and tag.
-- `assets/spaces-wordmark.svg` adds the Spaces wordmark on the canonical Kinra
-  grid. The asset is unreleased; consumer adoption remains a separate change.
+- `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
+  Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
+  product wordmarks and the Facet mark are removed from `assets/`; Kinra
+  Spaces replaces its wordmark with the lockup on its next upgrade.
 
 ## Adoption
 

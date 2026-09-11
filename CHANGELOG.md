@@ -46,8 +46,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   reference catalog.
 - Extend the contract check to enforce the `kin-` namespace on every class,
   custom property, keyframe, and cascade layer in shipped styles.
-- Add the Spaces wordmark using the canonical Kinra letterforms, spacing, and
-  blue gradient.
+- Add `docs/brand.md`, the settled naming and marking standard, and
+  `.kin-lockup`: the K, a hairline, and the product name as text, worn by
+  the reference catalog.
 - Add framework-independent stack, cluster, grid, split, sidebar, and region
   compositions.
 - Add shared badges, notices, form fields, controls, tables, empty states, and
@@ -97,6 +98,13 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   rather than default section decoration.
 - Integrate form-control focus outlines with the control edge so focus remains
   explicit without rendering a second disconnected border.
+
+### Removed
+
+- Remove the facet, flow, learn, outpost, paddock, scope, and spaces
+  wordmarks and the Facet mark from `assets/`. Products are marked with the
+  lockup; grid letterforms and the gradient are reserved for the K and the
+  Kinra wordmark.
 
 ## [0.2.0] - 2026-08-16
 

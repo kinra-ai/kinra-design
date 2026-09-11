@@ -149,6 +149,10 @@ Expect these visual differences when upgrading past `v0.2.0`:
   the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
 - Prose line height follows `--kin-leading-prose`, including the learning
   recipe's wider leading.
+- The product wordmarks and the Facet mark are gone from `assets/`. A
+  consumer that imported one, such as `spaces-wordmark.svg`, replaces it with
+  `.kin-lockup` around `mark.svg` and the product name as text, following
+  [`brand.md`](brand.md).
 
 Consumers target browsers released from mid-2024 onward because of
 `light-dark()`, `color-mix()`, `:has()`, and native `popover`.

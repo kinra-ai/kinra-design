@@ -36,28 +36,6 @@
 	gap: var(--kin-space-4);
 }
 
-.reference-brand {
-	align-items: center;
-	display: flex;
-	gap: var(--kin-space-4);
-	text-decoration: none;
-}
-
-.reference-brand img {
-	height: auto;
-	width: 7.4rem;
-}
-
-.reference-brand span {
-	border-left: 1px solid var(--kin-color-rule);
-	color: var(--kin-color-text-muted);
-	font-size: var(--kin-text-xs);
-	font-weight: var(--kin-weight-strong);
-	letter-spacing: var(--kin-tracking-label);
-	padding-left: var(--kin-space-4);
-	text-transform: uppercase;
-}
-
 .reference-nav {
 	border-top: 1px solid var(--kin-border-quiet);
 	overflow-x: auto;
@@ -377,6 +355,25 @@
 
 .mark-row > * {
 	min-width: 12rem;
+}
+
+.brand-row {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-8);
+}
+
+.brand-row img {
+	display: block;
+	height: auto;
+}
+
+.brand-ground {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	color: var(--kin-color-text);
+	padding: var(--kin-space-5);
 }
 
 .type-ladder > * + * {

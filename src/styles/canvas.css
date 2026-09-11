@@ -145,6 +145,44 @@
 		text-transform: uppercase;
 	}
 
+	/*
+	 * Lockup: the K, a hairline, and the product name as text. Always the
+	 * mono voice; --kin-lockup-size scales the whole. See docs/brand.md.
+	 */
+
+	.kin-lockup {
+		--kin-lockup-size: 1.375rem;
+		align-items: center;
+		color: var(--kin-color-text);
+		display: inline-flex;
+		font-family: var(--kin-font-mono);
+		font-size: calc(var(--kin-lockup-size) * 0.68);
+		font-weight: var(--kin-weight-heading);
+		gap: calc(var(--kin-lockup-size) * 0.55);
+		letter-spacing: -0.01em;
+		line-height: var(--kin-lockup-size);
+		text-decoration: none;
+	}
+
+	.kin-lockup > img,
+	.kin-lockup > svg {
+		block-size: var(--kin-lockup-size);
+		display: block;
+		flex: none;
+		inline-size: var(--kin-lockup-size);
+	}
+
+	.kin-lockup > span {
+		border-left: 1px solid var(--kin-color-rule);
+		line-height: calc(var(--kin-lockup-size) * 0.82);
+		padding-left: calc(var(--kin-lockup-size) * 0.55);
+	}
+
+	.kin-lockup:hover,
+	.kin-lockup:focus-visible {
+		color: var(--kin-color-text);
+	}
+
 	/* Rules */
 
 	.kin-rule {

@@ -88,6 +88,7 @@ import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
 ---
 ```
 
+Product naming and mark use are settled in [`docs/brand.md`](docs/brand.md).
 The complete public class, token, and recipe catalog lives in
 [`docs/catalog.md`](docs/catalog.md). Registry use and ownership are documented
 in [`registry/README.md`](registry/README.md).

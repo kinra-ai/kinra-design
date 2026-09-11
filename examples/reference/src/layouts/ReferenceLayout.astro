@@ -4,7 +4,6 @@ import "@kinra/web/registry/patterns/editorial-feature/editorial-feature.css";
 import "@kinra/web/registry/patterns/narrative-intro/narrative-intro.css";
 import "@kinra/web/registry/patterns/operations-region/operations-region.css";
 import markUrl from "@kinra/web/assets/mark.svg?url";
-import wordmarkUrl from "@kinra/web/assets/wordmark.svg?url";
 import "../styles/reference.css";
 
 interface Props {
@@ -56,9 +55,9 @@ const documentTitle =
 		<a class="kin-sr-only" href="#main">Skip to content</a>
 		<header class="reference-header">
 			<div class="reference-header__top kin-frame">
-				<a class="reference-brand" href="/" aria-label="Kinra design home">
-					<img src={wordmarkUrl} alt="Kinra" width="118" height="24" />
-					<span>design</span>
+				<a class="kin-lockup" href="/" aria-label="Kinra Design home">
+					<img src={markUrl} alt="" width="22" height="22" />
+					<span>Design</span>
 				</a>
 				<div class="reference-header__tools">
 					<span class="kin-badge" data-tone="reason">Unreleased catalog</span>

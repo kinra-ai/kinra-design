@@ -83,7 +83,8 @@ display type the serif voice; `data-kin-voice` changes it for any region.
 Kinra's only ornament is a small square derived from the wordmark's block
 letterforms. It appears in the eyebrow, the status marker, the corner mark on
 a toned surface or card, the ledger tick on a rule, the spinner, and the log
-marker. The square says "state lives here"; colour names the state.
+marker. The square says "state lives here"; colour names the state. The K,
+the wordmark, and the product lockup are specified in [`brand.md`](brand.md).
 
 ### Foundational classes
 
@@ -102,6 +103,8 @@ marker. The square says "state lives here"; colour names the state.
   `aria-pressed` and `aria-expanded` render the pressed state.
 - `.kin-button-group` joins sibling buttons.
 - `.kin-status` with `data-state="reason|running|success|warning|error"`.
+- `.kin-lockup` around `mark.svg` and a `span` holding the product name: the
+  K, a hairline, and the name as text; `--kin-lockup-size` scales it.
 - `.kin-prose` and `.kin-sr-only`.
 
 ## Type roles
