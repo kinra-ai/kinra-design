@@ -1,0 +1,12 @@
+Generated with the built-in image_gen tool.
+Output: kinra-pocketid-background.png (1672 x 941 pixels).
+Consumer handoff asset for PocketID; logo should be overlaid separately.
+
+Use case: stylized-concept
+Asset type: full-bleed desktop sign-in background for a Kinra-branded PocketID deployment, landscape 16:9, preferably 3840x2160.
+Primary request: Create a beautifully restrained graphite background onto which the existing Kinra logo will be placed separately. The background itself contains no logo or text.
+Scene/backdrop: a continuous matte graphite ground, with a very soft broad wash of neutral light falling from above and fading into charcoal darkness toward the bottom. Subtle tactile depth like exceptionally fine graphite-coated paper under diffuse studio light, nearly smooth at normal viewing size. Sophisticated, quiet, spacious, precise.
+Composition/framing: edge-to-edge uninterrupted ground; central 60 percent extremely calm and low contrast for an overlaid logo and sign-in panel; no focal object. Natural broad tonal variation around the outer upper edges, never a hard spotlight. Balanced composition that also works with a centered portrait crop. No visible horizon or corners.
+Color palette: near-neutral graphite #101114, deeper #0c0d10, softly lit #1a1d23 with sparse very subtle charcoal #2a2e36. Keep the image dark but retain beautiful visible tonal depth. No colored accents: the separately overlaid brand mark supplies the blue.
+Materials/textures: barely perceptible fine dry grain, elegant soft light, no heavy noise or distressed texture.
+Constraints: empty background only, no lettering, no words, no logo, no watermark, no interface, no frames, no panels, no icons, no decorative squares, no grids, no lines, no geometry, no mountains, no objects, no stars, no nebulae, no neon, no colorful gradients, no glossy folds, no rounded blobs. The result should feel like a meticulously lit physical graphite surface, not a generic technology wallpaper.
