@@ -82,10 +82,10 @@ a hairline, and the name in the mono face at that text size.
 A terminal draws the K where it can. Where the terminal offers an image
 protocol, the mark is placed from the asset itself. Where it does not, the
 name stands alone in the mono face, and the wordmark, if shown, means Kinra
-rather than the product. Never approximate the K with block or ASCII
-characters: its thinnest band is 28 units of a 300-unit grid, so a cell
-grid either drops that band or dithers through it, and an approximation is
-a redrawing, which no consumer makes.
+rather than the product. Outside the Kin terminal welcome exception below,
+do not approximate the K with block or ASCII characters. Its thinnest band
+is 28 units of a 300-unit grid, so a cell rendering quantizes the proportions
+and needs a deliberately reviewed size.
 
 ## The masthead
 
@@ -104,12 +104,32 @@ introduces.
   divider and is not the lockup's hairline.
 - A surface introduces itself once. Its chrome keeps the lockup.
 
+## Kin terminal welcome exception
+
+Kin's terminal welcome may use the reviewed six-column, four-row cell
+rendering of the shared K beside the live product name. It uses ordinary
+full and half blocks so it can appear through remote terminals and tmux
+without image passthrough. This narrow exception was approved by Blake on
+2026-09-11 after terminal review.
+
+- Derive the cells from the canonical K path and sample its blue gradient.
+  Seven vertical samples retain the thin middle band; the eighth subcell is
+  empty. Quantized proportions are accepted only at this reviewed size.
+- The banner's padding and name gap provide the horizontal clear space at
+  this size. The source SVG remains verbatim, including its inset.
+- The name remains live `Kin` text. The full-width frame may separate the
+  identity block from a notices column with the masthead's content divider.
+- Kin owns the derivation and its reproduction check. The exception is
+  limited to its terminal welcome; it creates no product wordmark or new
+  logo and does not change web lockups, application icons, or other products.
+
 ## Getting the assets
 
 A web consumer imports `mark.svg` and `wordmark.svg` from the package. Any
 other consumer vendors the two files from an exact commit or tag and records
 the source and revision beside them, as Depot does in its `VENDORED.md`. A
-consumer never redraws, re-exports, or restyles either file.
+consumer never redraws, re-exports, or restyles either file, apart from the
+specific derived terminal representation admitted above.
 
 ## Titles and metadata
 

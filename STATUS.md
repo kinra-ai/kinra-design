@@ -32,7 +32,9 @@ adoption map; this file only tracks current state, not process.
 - `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
   Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
-  Spaces replaces its wordmark with the lockup on its next upgrade.
+  Spaces replaces its wordmark with the lockup on its next upgrade. Kin's
+  terminal welcome has one reviewed exception (2026-09-11, Blake): a compact
+  cell rendering of the shared K, with live product text.
 
 ## Adoption
 
