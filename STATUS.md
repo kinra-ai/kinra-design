@@ -47,6 +47,14 @@ adoption map; this file only tracks current state, not process.
 - No consumer has adopted `v0.2.0` yet; each upgrade is that consumer's
   deliberate action.
 
+## Open for the release review
+
+- The package name `@kinra/web` predates the brand standard and undersells
+  what the repository now owns. Renaming it, likely to `@kinra/design`,
+  changes every consumer's import paths, Depot's vendoring script, and
+  Gateway's build banner, so it belongs with the next release identity as a
+  coordinated change, not with a docs edit.
+
 ## Next event
 
 Maintainer review of the unreleased package expansion and its next release

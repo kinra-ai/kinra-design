@@ -3,6 +3,11 @@
 How Kinra, its products, and its marks are named and shown. This page is
 the settled standard: consumers apply it rather than reinterpreting it, and
 a change here is a change to the design system, made once and released.
+
+It governs every Kinra surface, not only the web: a terminal interface, a
+desktop login screen, a printed drawing, a README, or a release bundle
+follows the same names and marks. `@kinra/web` is this repository's web
+distribution; the standard travels with it but is not limited to it.
 [`principles.md`](principles.md) explains the visual identity;
 [`catalog.md`](catalog.md) documents the classes this page relies on;
 [`../TRADEMARKS.md`](../TRADEMARKS.md) governs third-party use of the names
@@ -69,6 +74,19 @@ and the product name as live text.
 
 The reference catalog wears the lockup in its own header, and the brand
 section of the foundations page shows it on both grounds.
+
+`.kin-lockup` is the web rendering. A surface that cannot use the CSS
+follows the same geometry: the K as tall as one line of the interface text,
+a hairline, and the name in the mono face at that text size. Where the K
+cannot be drawn at all, such as a terminal, the name stands alone in the
+mono face and the wordmark, if shown, means Kinra rather than the product.
+
+## Getting the assets
+
+A web consumer imports `mark.svg` and `wordmark.svg` from the package. Any
+other consumer vendors the two files from an exact commit or tag and records
+the source and revision beside them, as Depot does in its `VENDORED.md`. A
+consumer never redraws, re-exports, or restyles either file.
 
 ## Titles and metadata
 
