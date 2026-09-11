@@ -2,6 +2,50 @@
 
 Backgrounds for the Kinra-operated Pocket ID sign-in surface.
 
+## Abstract mycelium
+
+- [Upload image: mycelium with the Kinra wordmark (SVG)](kinra-pocketid-mycelium-logo.svg)
+- [Lossless 4096 × 4096 PNG fallback](kinra-pocketid-mycelium-logo.png)
+- [Mycelium without the wordmark (SVG)](kinra-pocketid-mycelium.svg)
+- [Desktop preview](kinra-pocketid-mycelium-preview-desktop.png)
+- [Phone preview](kinra-pocketid-mycelium-preview-phone.png)
+
+The current direction is original vector artwork: fine filaments branch and
+reconnect across the lower part of a graphite field, with intentional open
+space and the wordmark in the upper third. It draws from
+[The Mycelium](https://kinra.ai/learn/the-mycelium/),
+[The Fabric](https://kinra.ai/writing/the-fabric/), and
+[Negative Space](https://kinra.ai/writing/negative-space/), read from Kinra
+Site's published-content source at revision `beab40c`. These are visual
+interpretations of the essays, not scientific diagrams.
+
+Use the SVG upload for vector sharpness. It embeds the canonical
+`assets/wordmark.svg` unchanged as an SVG data URI, with no external asset
+requests, raster logo, blur, or lossy encoding. Its 386.4 × 72 placement
+preserves the original 1610:300 aspect ratio exactly. The PNG fallback is
+rendered directly from the vector composition at 4096 × 4096 with lossless
+encoding. The earlier landscape WebP is not the upload for this direction.
+
+The SVG uses a 2048 × 2048 viewBox; the wordmark begins at `(830.8, 620)`.
+Its higher placement was checked for full visibility both at rest and at
+Pocket ID's 1.3× entrance zoom at desktop widths of 1024, 1366, 1920, 2560,
+and 3440 CSS pixels. A 390 × 844 phone check confirms that the background
+wordmark sits behind the sign-in card, which retains its separate K logo.
+The embedded wordmark bytes and aspect ratio were also verified.
+
+Open `pocket-id-mycelium-preview.html` locally to inspect the responsive
+composition. Preview screenshots use 2× pixel density and reproduce the
+upstream background geometry with approximate form styling; they are not
+screenshots of the deployed service. Source behavior is documented in the
+[layout notes](pocket-id-layout-notes.md).
+
+This artwork uses native SVG construction, not image generation. Reproduce
+the two SVGs and PNG with:
+
+```sh
+node output/imagegen/render-mycelium.mjs
+```
+
 ## Atmospheric landscape
 
 - [Upload image: landscape with the Kinra wordmark (WebP)](kinra-pocketid-landscape-logo.webp)
