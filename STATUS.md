@@ -34,7 +34,9 @@ adoption map; this file only tracks current state, not process.
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
   Spaces replaces its wordmark with the lockup on its next upgrade. Kin's
   terminal welcome has one reviewed exception (2026-09-11, Blake): a compact
-  cell rendering of the shared K, with live product text.
+  cell rendering of the shared K, with live product text. Kinra Space has
+  the one appointed product wordmark (2026-09-13, Blake, PP-0029):
+  `assets/wordmark-space.svg`, the wordmark continued by `.␣` on its grid.
 
 ## Adoption
 
@@ -46,6 +48,8 @@ adoption map; this file only tracks current state, not process.
 - Retiring **kinra-os** retains its exact historical lockfile pin in its own
   source as recovery evidence, but is no longer a current consumer under
   accepted PP-0020. No package release or byte change is required.
+- **kinra-space** pins exact `main` commits as test pins for the unreleased
+  expansion and consumes `wordmark-space.svg`.
 - No consumer has adopted `v0.2.0` yet; each upgrade is that consumer's
   deliberate action.
 

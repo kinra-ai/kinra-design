@@ -36,7 +36,15 @@ and marks.
 - The package ships two brand assets: `assets/mark.svg`, the K, and
   `assets/wordmark.svg`, KINRA. The grid letterforms and the blue gradient
   are reserved for these two. No product receives grid letters, a gradient
-  wordmark, or a mark of its own.
+  wordmark, or a mark of its own, with the one appointed exception below.
+- **Kinra Space is the exception**: `assets/wordmark-space.svg` is the
+  KINRA wordmark continued by `.␣` on the same 300-unit grid, with the same
+  stroke widths, letter gap, and gradient. Blake appointed it in PP-0029 as
+  that product's wordmark, spoken "kinra dot space". It is one drawn object:
+  a consumer never sets the `.␣` as text beside `wordmark.svg`, and the
+  readable and accessible name stays "Kinra Space". Kinra Space still takes
+  the K as its application icon and favicon. The exception creates no
+  pattern; every other product keeps the lockup.
 - **The wordmark alone means Kinra itself**: the kinra.ai header and footer,
   the Kinra OS login and lock screens, and other places where the brand,
   not a product, is speaking.
@@ -125,7 +133,8 @@ without image passthrough. This narrow exception was approved by Blake on
 
 ## Getting the assets
 
-A web consumer imports `mark.svg` and `wordmark.svg` from the package. Any
+A web consumer imports `mark.svg` and `wordmark.svg`, or for Kinra Space
+`wordmark-space.svg`, from the package. Any
 other consumer vendors the two files from an exact commit or tag and records
 the source and revision beside them, as Depot does in its `VENDORED.md`. A
 consumer never redraws, re-exports, or restyles either file, apart from the

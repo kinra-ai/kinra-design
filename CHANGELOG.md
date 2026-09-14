@@ -9,6 +9,10 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
+- Add `assets/wordmark-space.svg`, the Kinra wordmark continued by `.␣` on
+  its own grid, as the one appointed product wordmark (Kinra Space, PP-0029).
+  `docs/brand.md` records the exception; every other product keeps the
+  lockup.
 - Add the masthead treatment to `docs/brand.md`: where a surface introduces
   the product at rest, the K leads at the height of the text block beside
   it rather than at one line of interface text, with no hairline. The
