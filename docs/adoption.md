@@ -177,16 +177,19 @@ consumers for as long as each product needs.
 
 ## Current adoption map
 
-- **Kinra Site** pins the exact pre-`0.2.0` commit `2089818`, imports the full
-  foundation once, and owns its routes, editorial composition, documentation
-  shell, curriculum rendering, and deployment.
-- **Depot** vendors `v0.1.0` so its self-contained Go binary acquires no
-  runtime dependency. Its `depot-` layer owns forge-specific views and
-  interaction.
-  No consumer has adopted `v0.2.0` or the unreleased expansion yet. Each upgrade
-  belongs to the consuming repository's own change process.
+- **Kinra Site** and **Gateway** pin the exact expanded-system test commit
+  `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
+  URLs and package-lock integrity.
+- **Depot** vendors that same exact commit; its manifest and read-only
+  vendoring gate bind every asset. Its application layer retains ownership of
+  Forge-specific routes and interactions.
+- **Kinra Space** pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` through the
+  public GitHub Git URL, including `wordmark-space.svg`.
+- **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
+  each owning vendored manifest; neither gains a runtime dependency.
 
-Retiring Kinra OS retains its exact pre-`0.2.0` lockfile pin in its own source
-as historical and recovery evidence, but accepted PP-0020 removes it from this
-current adoption map. Retirement requires no mutation of an immutable Design
-release.
+Current consumers have adopted unreleased exact commits, not `v0.2.0`.
+Retired Spaces and Kinra OS retain earlier pins as recovery evidence.
+The [source move](space-depot-readiness.md) retains these public GitHub URLs
+after Depot becomes private canonical source. A consumer's own upgrade,
+verification and deployment remain independent.

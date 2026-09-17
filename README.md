@@ -33,6 +33,11 @@ result to the consumer.
 See [`docs/adoption.md`](docs/adoption.md) for the complete contract and current
 adoption map.
 
+The [Space/Depot preparation](docs/space-depot-readiness.md) preserves the
+public GitHub distribution and every exact consumer pin even after Depot
+becomes the private canonical source. No consumer migration or release follows
+from that source appointment.
+
 ## Install
 
 The latest immutable release is `v0.2.0`:

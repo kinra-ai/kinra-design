@@ -5,9 +5,10 @@ Kind: product · Lifecycle: active · Versioning: semver
 Kinra's shared, framework-light design system for web products and public
 surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
-Real consumers pin an exact release or commit: `kinra-site` pins the exact
-pre-`0.2.0` commit `2089818`, and `depot` vendors the `v0.1.0` tag (see
-`depot/internal/server/static/kinra/VENDORED.md`); see `STATUS.md` for current
+Real consumers pin an exact release or commit: `kinra-site` and Gateway pin
+`21327ae489243316988019e6b6ca9a7737982699`, Depot vendors that same revision,
+and Space pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` (see each owner's
+lockfile or vendored manifest); see `STATUS.md` for current
 release and adoption state. Retiring Kinra OS retains its historical pin in
 its own source but is no longer a current consumer.
 
@@ -27,6 +28,15 @@ Tool selection is `mise.toml` plus `mise.lock`: Node 26 and npm 11.17.0.
 `package.json` retains the native compatibility and `devEngines` contract,
 `package-lock.json` remains dependency truth, and npm scripts remain the
 command surface. Run `mise install` and `npm ci` on a fresh mise workstation.
+
+## Canonical Git and public distribution
+
+GitHub remains canonical until a verified portfolio receipt appoints private
+Depot. Afterwards author retained proposals and exact reviewed Depot Changes;
+GitHub stays the managed **public distribution** and incoming fork/bot PR
+destination. Keep exact public package URLs and immutable tags: private Depot
+credentials must never become a consumer installation requirement. See
+[source readiness](docs/space-depot-readiness.md) for exact refs and proof.
 
 ## Boundaries
 

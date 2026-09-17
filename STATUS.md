@@ -40,18 +40,25 @@ adoption map; this file only tracks current state, not process.
 
 ## Adoption
 
-- **kinra-site** pins the exact pre-`0.2.0` commit `2089818` — a deliberate
-  test pin, not `main`.
-- **depot** vendors the released `v0.1.0` tag verbatim into
-  `internal/server/static/kinra/`, with provenance recorded in that
-  directory's `VENDORED.md`.
-- Retiring **kinra-os** retains its exact historical lockfile pin in its own
-  source as recovery evidence, but is no longer a current consumer under
-  accepted PP-0020. No package release or byte change is required.
-- **kinra-space** pins exact `main` commits as test pins for the unreleased
-  expansion and consumes `wordmark-space.svg`.
-- No consumer has adopted `v0.2.0` yet; each upgrade is that consumer's
-  deliberate action.
+- **kinra-site** and **kinra-gateway** consume the public GitHub codeload
+  archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
+  integrity. **Depot** vendors that same exact expanded-system test pin.
+- **kinra-space** pins the exact GitHub Git dependency
+  `36b9340061fb7da32b8ed3b62dfebc13ff533cf5`, including its appointed wordmark.
+- **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
+  source copies recorded in their owning vendored manifests.
+- Retired Spaces and Kinra OS pins remain recovery evidence in their owners.
+  No current consumer selected `v0.2.0`; the expansion remains unreleased.
+
+## Space/Depot source preparation
+
+Private canonical Depot will retain public GitHub as managed distribution and
+the incoming fork/bot PR destination. Both immutable annotated release objects
+and their matching package versions are verified locally. Exact current
+Site/Gateway/Space dependency URLs and all installed style/asset bytes match
+their pinned source. [Readiness](docs/space-depot-readiness.md) records hashes,
+package checks and the held execution boundary. No public URL, consumer pin,
+tag, package version or artifact changed.
 
 ## Open for the release review
 
