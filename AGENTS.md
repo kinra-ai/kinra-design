@@ -2,6 +2,8 @@
 
 Kind: product · Lifecycle: active · Versioning: semver
 
+Follow the portfolio's [`CONVENTIONS.md`](../../CONVENTIONS.md).
+
 Kinra's shared, framework-light design system for web products and public
 surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
