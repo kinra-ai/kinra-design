@@ -1,10 +1,11 @@
 # Refresh plan: the corner key
 
-Status: exploring since 2026-09-28. Blake chose the corner key, a composer
-send control drawn for Kinra Space, as the component to model a refresh of
-Kinra's interfaces against. Nothing here is released, and no package class or
-token has changed for it. The studies live in
-[`examples/studies/`](../examples/studies/README.md).
+Status: exploring since 2026-09-28, when Blake chose the corner key, a
+composer send control drawn for Kinra Space, as the component to model a
+refresh of Kinra's interfaces against, and amended
+[`principles.md`](principles.md) to adopt its grammar the same day. Nothing
+here is released, and no package class or token has changed for it yet. The
+studies live in [`examples/studies/`](../examples/studies/README.md).
 
 ## How it got here
 
@@ -18,10 +19,13 @@ how things move, not from repeating the mark.
 
 ## The grammar
 
-- **The action lives in the corner.** The primary action of an input or
-  decision surface sits flush in its lower-right corner and shares the
-  surface's edge and outer radius. It pairs with the existing corner mark:
-  state at the origin, action at the terminus. One corner action per surface.
+- **The action lives in the corner.** Wherever a surface's context has one
+  primary action (a composer, Kin's question, a dialog's confirmation, a
+  search, a card built around one action), that action sits flush in the
+  surface's end corner, the lower right in a left-to-right language, sharing
+  the edge and outer radius. It pairs with the existing corner mark: state at
+  the origin, action at the terminus. A surface with no primary action or
+  with several equal ones has no corner action, and none has two.
 - **Light means something.** A fill means the action can happen now. A light
   running along an edge means work is in flight; when the work ends it closes
   into a ring and fades. Only one thing on a screen is filled with the primary
@@ -141,17 +145,29 @@ Changes this brings to Space:
    branch, and live with it in a real home.
 2. Carry the grammar into Space's sidebar, panels and Home.
 3. Bring back to this repository what proves itself: motion tokens, the corner
-   action and the edge light as candidate registry patterns, and the
-   principles update. The registry has held HTML and CSS only; a pattern that
-   needs script would be the first.
+   action and the edge light as candidate registry patterns, and the package
+   classes brought in line with the amended principles (tone instead of
+   dividing borders, radii that step down as layers nest).
 4. Promote nothing to a stable contract before a second consumer, likely
    Gateway's request console, uses it.
 
-## Decisions still open
+## Decisions
 
-- `docs/principles.md` says surfaces begin square and line-bound. The refresh
-  keeps marks, badges and avatars square but rounds layers and removes divider
-  lines. That is a change to the principles, not a detail of one component.
-- Whether the corner action takes the primary action of dialogs, not only of
-  composers and Kin's questions.
-- Whether the registry accepts a pattern that carries script.
+- **The principles are amended (2026-09-28, Blake).** Blake reopened
+  `docs/principles.md` so that the whole system feels cohesive and
+  integrated. It now carries soft layers with exact marks, a line as a signal
+  rather than a divider, the corner, what light means, and the five motion
+  verbs; `docs/composing.md` follows it. The package's classes predate the
+  amendment until step 3.
+- **The corner action goes wherever the context calls for it (2026-09-28,
+  Blake).** Any surface whose context has one primary action carries it in
+  its end corner: composers, Kin's questions, dialogs' confirmations, search
+  and command fields, and cards built around one action. A destructive
+  confirmation takes the error tone there.
+- **Still open: script in the registry.** The registry has held HTML and CSS
+  only, and the key's motion needs script. The recommendation is to accept a
+  pattern that carries a framework-free module when its behaviour cannot be
+  expressed in CSS, on three conditions: every state renders correctly from
+  markup and CSS alone, the module has no dependencies, globals or network
+  use, and it honours reduced motion. The question only needs an answer at
+  step 3.

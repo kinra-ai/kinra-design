@@ -74,6 +74,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Changed
 
+- Amend `docs/principles.md` for the corner key refresh: soft layers with
+  exact marks, a line as a signal rather than a divider, the corner action
+  wherever a surface has one primary action, what light means, and five motion
+  verbs. `docs/composing.md` follows it. Package classes are unchanged until
+  the refresh reaches them.
 - The brand standard's terminal clause now draws the K from the asset where
   the terminal offers an image protocol, instead of assuming it can never be
   drawn, and names block and ASCII approximations as redrawings that no

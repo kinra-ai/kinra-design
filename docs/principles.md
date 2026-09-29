@@ -1,5 +1,11 @@
 # Design principles
 
+Amended 2026-09-28 (Blake): layers, lines, the corner, light, and motion now
+follow the corner key refresh described in [`refresh-plan.md`](refresh-plan.md),
+so that every Kinra surface reads as one integrated system. The package's
+current classes predate the amendment and still draw square, line-bound
+surfaces; the plan tracks bringing them in line.
+
 ## One identity, different surfaces
 
 Consistency comes from a shared vocabulary, not identical page templates.
@@ -28,15 +34,29 @@ both grounds, so a role is a meaning, not a swatch.
 
 ## Calm by default
 
-Ground and structure stay quiet so meaningful state can carry contrast.
-Whitespace, alignment, and rules establish most hierarchy. Elevation is for
-temporary, interactive, or bounded decision surfaces rather than every block
-of content. The default canvas is flat graphite with one quiet top wash.
-Surfaces begin square and line-bound; radius and shadow must communicate a
-real layer or interaction. Badges, avatars, markers, and switches are square
-for the same reason: nothing is rounded to look friendly. Type stays at
-reading scale: a display statement is set larger than prose, not at poster
-size, and most pages open with a plain title and one sentence.
+Ground and structure stay quiet so meaningful state can carry contrast. Tone,
+whitespace, and alignment establish hierarchy. The default canvas is flat
+graphite with one quiet top wash; an application frame sets its chrome on the
+deepest ground and its work on one raised panel. Type stays at reading scale:
+a display statement is set larger than prose, not at poster size, and most
+pages open with a plain title and one sentence.
+
+## Layers are soft, marks are exact
+
+A surface's shape says which layer it is. The page panel, the cards and
+composers on it, and the rows inside them each sit a step apart in tone, and
+their radii step down as they nest. Shadow belongs only to what floats above
+the page: a composer over a scrolling conversation, a panel, a dialog. Content
+inside a layer stays flat. Marks stay exact: the mark, badges, avatars,
+markers, and switches are square, because nothing small is rounded to look
+friendly.
+
+## A line is a signal, not a divider
+
+A line is drawn only where it says something: focus, work in flight, content
+scrolled beneath a bar, a drop target, or the rules of a table read across.
+Everywhere else a step in tone or a gap in space separates things. The
+lockup's hairline is part of the mark and stays.
 
 ## The mark
 
@@ -46,8 +66,32 @@ It leads an eyebrow, sits before a status word, marks the corner of a toned
 surface, ticks the start of a rule, steps through a spinner, and anchors a
 log entry. Colour names the state; the square only points at it. No other
 decoration is introduced, and the square is never used where there is no
-state to mark. How the K, the wordmark, and product names are used is settled
-in [`brand.md`](brand.md).
+state to mark. The grid letterforms stay in the K and the wordmark: controls
+draw their icons as plain strokes rather than rebuilding them from the mark's
+blocks. How the K, the wordmark, and product names are used is settled in
+[`brand.md`](brand.md).
+
+## The corner
+
+A surface that exists to take or confirm an action carries that action in its
+end corner, where reading finishes: the lower right in a left-to-right
+language. The action sits flush, sharing the surface's edge and outer radius,
+and all of it answers a press: a square key where an icon says enough, a
+wider one where the action needs a word. It appears wherever the context has
+one primary action (a composer's send key, the answer to Kin's question, a
+dialog's confirmation, a search field's keycap, a card built around one
+action) and nowhere else: a surface with no primary action, or with several
+equal ones, has no corner action, and no surface has two. The corner mark at
+a toned surface's origin says where state lives; the corner action at its end
+says what happens next.
+
+## Light means something
+
+A fill in the primary colour means an action can happen now, and one thing on
+a screen at a time carries it. A light running along an edge means work is in
+flight; when the work ends it closes into a ring and fades. Status colours
+stay reserved for actual status, so a destructive corner action takes the
+error tone rather than the primary fill.
 
 ## Structure before signal
 
@@ -63,15 +107,20 @@ Numbers communicate order, progression, stable reference, or identity. They
 are not the default decoration for a heading or section. When a number carries
 meaning, render it in the document rather than generating it from visual CSS;
 when it carries no meaning, omit it. A surface can remain recognizably Kinra
-through measure, voice, rules, and signal without repeating one numbered
+through measure, voice, tone, and signal without repeating one numbered
 editorial pattern.
 
 ## Motion has a cause
 
 Motion explains causality, progress, or spatial change. It does not make an
-idle surface look alive. A looping animation must correspond to work that is
-currently happening. Reduced-motion users receive the same meaning through
-text, colour, shape, position, and focus.
+idle surface look alive. Kinra's motion has five verbs: bloom grows from an
+anchor when something becomes possible, lift moves toward where a thing went,
+fold changes a control's meaning in one movement, trace shows work in flight,
+and close ends it. Layers arrive from where they live and leave with a fade. A
+looping animation must correspond to work that is currently happening. Settled
+states are still, and every frame of a transition stays legible.
+Reduced-motion users receive the same meaning through text, colour, shape,
+position, and focus.
 
 ## Accessible at the foundation
 
