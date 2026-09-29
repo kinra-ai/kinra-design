@@ -1,0 +1,98 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Conversation2.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Fewer lines · conversation, sidebar fold and Kin’s panel",
+      "w": 1440,
+      "x": 0,
+      "y": 2620
+    },
+    "Decision.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Kin asks · the answer takes the corner",
+      "w": 1440,
+      "x": 0,
+      "y": 1120
+    },
+    "Home.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Home",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Home2.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Fewer lines · Home with the rail folded",
+      "w": 1440,
+      "x": 1520,
+      "y": 2620
+    },
+    "Main.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Conversation · Kin working",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Phone.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Phone · Paper · queueing while Kin works",
+      "w": 390,
+      "x": 1520,
+      "y": 1120
+    },
+    "Phone2.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Fewer lines · phone drawer",
+      "w": 390,
+      "x": 3040,
+      "y": 2620
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-28T22:10:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "heading": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Kinra Space, refreshed around the corner key",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "fewer": {
+      "kind": "title1",
+      "maxW": 3430,
+      "text": "Fewer lines · a line is a signal, not a divider",
+      "x": 0,
+      "y": 2320
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Home.dc.html",
+    "Decision.dc.html",
+    "Phone.dc.html",
+    "Conversation2.dc.html",
+    "Home2.dc.html",
+    "Phone2.dc.html"
+  ],
+  "pages": [],
+  "title": "Kinra Space Refresh"
+}

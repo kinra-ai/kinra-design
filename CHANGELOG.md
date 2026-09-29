@@ -9,6 +9,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
+- Add `docs/refresh-plan.md`, the exploratory plan for a refresh modelled on
+  Kinra Space's corner key, with reference-only studies in `examples/studies/`
+  that the package does not ship.
 - Add `assets/wordmark-space.svg`, the Kinra wordmark continued by `.␣` on
   its own grid, as the one appointed product wordmark (Kinra Space, PP-0029).
   `docs/brand.md` records the exception; every other product keeps the

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Conversation on a phone · Kinra Space</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Inter:wght@400..700&amp;display=swap">
+<style>
+body{margin:0;background:#eeede9}
+.ks{--ground:#101114;--deep:#0c0d10;--surface:#14171d;--raised:#1a1d23;--text:#e3e3e6;--subtle:#b4b8bf;--muted:#8c9099;--inverse:#101114;--rule:#2a2e36;--rule-strong:#3a3f49;--primary:#5fbfd6;--success:#5fc198;--error:#e5786e;--hover:rgba(227,227,230,.06);--add:rgba(95,193,152,.1);--del:rgba(229,120,110,.1);--key-base:#1b1e24;--sans:"Inter",ui-sans-serif,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono","SFMono-Regular","Cascadia Code","Roboto Mono",monospace;font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased}
+.ks[data-ground="paper"]{--ground:#f6f5f2;--deep:#eeede9;--surface:#fdfcf9;--raised:#ffffff;--text:#15171c;--subtle:#3d414a;--muted:#585e68;--inverse:#ffffff;--rule:#d3d6dc;--rule-strong:#b3b8c1;--primary:#166483;--success:#166347;--error:#b8382c;--hover:rgba(21,23,28,.06);--add:rgba(22,99,71,.1);--del:rgba(184,56,44,.1);--key-base:#f1f0ec}
+.ks *,.ks *::before,.ks *::after{box-sizing:border-box}
+.ks button,.ks textarea{font:inherit;color:inherit}
+.ks :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.ib:hover,.tool:hover{background:var(--hover);color:var(--text)}
+.ib{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;background:transparent;border:0;border-radius:4px;color:var(--muted);cursor:pointer}
+.tool{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;background:transparent;border:0;border-radius:4px;color:var(--subtle);font-size:12px;cursor:pointer}
+.shimmer{background:linear-gradient(90deg,var(--muted) 0 35%,var(--text) 50%,var(--muted) 65% 100%) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 1.8s linear infinite}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:0 0}}
+.pass{display:inline-flex;gap:3px;color:var(--primary)}
+.pass i{width:4px;height:4px;background:currentColor;opacity:.3;animation:pass 1.05s steps(1,end) infinite}
+.pass i:nth-child(2){animation-delay:.35s}
+.pass i:nth-child(3){animation-delay:.7s}
+@keyframes pass{0%{opacity:1}33.3%,100%{opacity:.3}}
+.ptrace path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-dasharray:43.85 138.86;animation:ptrace 1.6s linear infinite}
+@keyframes ptrace{to{stroke-dashoffset:-182.71}}
+.composer{--frame:var(--rule)}
+.composer:focus-within{--frame:var(--primary)}
+.composer textarea::placeholder{color:var(--muted)}
+.composer textarea:focus-visible{outline:0}
+@media (prefers-reduced-motion:reduce){.shimmer{animation:none;background:none;color:inherit}.pass i{animation:none;opacity:1}.ptrace path{animation:none;stroke-dasharray:none}}
+</style>
+</helmet>
+<div class="ks" data-ground="{{ ground }}" style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: var(--ground)">
+
+<header style="height: 52px; flex: none; display: flex; align-items: center; gap: 4px; padding: 0 4px; border-bottom: 1px solid var(--rule)">
+<button type="button" class="ib" aria-label="Open navigation"><svg viewBox="0 0 256 256" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path></svg></button>
+<div style="flex: 1; min-width: 0; text-align: center">
+<div style="font-size: 15px; font-weight: 600; line-height: 1.25">Corner key port</div>
+<div style="font: 11px/1.4 var(--mono); color: var(--primary)">Working · 2:31</div>
+</div>
+<button type="button" class="ib" aria-label="Search or run a command"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg></button>
+</header>
+
+<div style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px 16px 12px">
+<figure style="margin: 0; border: 1px solid var(--rule); background: var(--surface); font: 11.5px/1.6 var(--mono)">
+<figcaption style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--rule)"><span>src/lib/Composer.svelte</span><span><span style="color: var(--success)">+5</span> <span style="color: var(--error)">−24</span></span></figcaption>
+<div style="padding: 4px 0">
+<div style="display: grid; grid-template-columns: 36px 14px minmax(0, 1fr); overflow: hidden; background: var(--del); white-space: pre"><span style="padding-right: 8px; text-align: right; color: var(--muted)">686</span><span style="color: var(--error)">−</span><span>&lt;div class="composer-action"&gt;</span></div>
+<div style="display: grid; grid-template-columns: 36px 14px minmax(0, 1fr); overflow: hidden; background: var(--add); white-space: pre"><span style="padding-right: 8px; text-align: right; color: var(--muted)">686</span><span style="color: var(--success)">+</span><span>&lt;CornerKey face={keyFace}</span></div>
+<div style="display: grid; grid-template-columns: 36px 14px minmax(0, 1fr); overflow: hidden; background: var(--add); white-space: pre"><span style="padding-right: 8px; text-align: right; color: var(--muted)">687</span><span style="color: var(--success)">+</span><span>  cue={keyCue} onpress={act} /&gt;</span></div>
+</div>
+</figure>
+<p style="margin: 14px 0 0; font-size: 16px; line-height: 1.65">The key reads <code style="font: 0.875em var(--mono); padding: 1px 4px; background: var(--hover); border-radius: 3px">canSend</code>, <code style="font: 0.875em var(--mono); padding: 1px 4px; background: var(--hover); border-radius: 3px">queueing</code>, <code style="font: 0.875em var(--mono); padding: 1px 4px; background: var(--hover); border-radius: 3px">shellLine</code> and <code style="font: 0.875em var(--mono); padding: 1px 4px; background: var(--hover); border-radius: 3px">active</code>, and takes its name from the same reason text a native host shows.</p>
+<div style="margin-top: 10px; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; padding-left: 12px; border-left: 1px solid var(--rule); font-size: 14px">
+<span class="pass" aria-hidden="true"><i></i><i></i><i></i></span>
+<span class="shimmer" style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Running task test:browser</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">0:35</span>
+</div>
+</div>
+
+<div style="flex: none; padding: 0 12px 30px">
+<div style="display: flex; align-items: center; gap: 10px; height: 44px; margin-bottom: 8px; padding: 0 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px">
+<svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg>
+<span style="font-size: 14px; font-weight: 600">Todos</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">2 of 4</span>
+<span style="margin-left: auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--subtle)">Run browser acceptance</span>
+</div>
+<form class="composer" aria-label="Write to Kin" style="position: relative; background: var(--surface); border: 1px solid var(--frame); border-radius: 4px">
+<textarea value="{{ draft }}" onChange="{{ onDraft }}" rows="2" placeholder="Message Kin…" aria-label="Message Kin" style="display: block; width: 100%; height: 72px; margin: 0; padding: 12px 14px 4px; background: transparent; border: 0; outline: 0; resize: none; font: 16px/1.55 var(--sans); color: var(--text)"></textarea>
+<div style="display: flex; align-items: center; gap: 2px; height: 48px; padding: 0 56px 0 4px">
+<button type="button" class="tool" aria-label="Attach files"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path></svg></button>
+<button type="button" class="tool" aria-label="Choose Kin’s model" style="font-family: var(--mono)"><span>gpt-5 · medium</span><svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg></button>
+</div>
+<sc-if value="{{ hasDraft }}" hint-placeholder-val="{{ true }}">
+<button type="button" aria-label="Queue message" title="Queue message" style="position: absolute; right: -1px; bottom: -1px; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 0 0 4px 0; background: var(--primary); color: var(--inverse); overflow: hidden; cursor: pointer"><i style="position: absolute; left: 0; top: 0; transform: translate(24px, 26.42px) rotate(90deg)"><b style="position: absolute; left: 0; top: 0; width: 10.34px; height: 1.98px; border-radius: 0.99px; background: currentColor; transform: translate(-50%, -50%)"></b></i><i style="position: absolute; left: 0; top: 0; transform: translate(22.02px, 24.22px) rotate(-45deg)"><b style="position: absolute; left: 0; top: 0; width: 7.58px; height: 1.98px; border-radius: 0.99px; background: currentColor; transform: translate(-50%, -50%)"></b></i><i style="position: absolute; left: 0; top: 0; transform: translate(25.98px, 24.22px) rotate(45deg)"><b style="position: absolute; left: 0; top: 0; width: 7.58px; height: 1.98px; border-radius: 0.99px; background: currentColor; transform: translate(-50%, -50%)"></b></i><i style="position: absolute; left: 0; top: 0; transform: translate(24px, 17.84px) rotate(0deg)"><b style="position: absolute; left: 0; top: 0; width: 11.66px; height: 1.98px; border-radius: 0.99px; background: currentColor; transform: translate(-50%, -50%)"></b></i><svg class="ptrace" width="48" height="48" aria-hidden="true" style="position: absolute; left: 0; top: 0; overflow: visible; opacity: 0.4"><path d="M1 1H47V44A3 3 0 0 1 44 47H1Z"></path></svg></button>
+</sc-if>
+<sc-if value="{{ noDraft }}" hint-placeholder-val="{{ false }}">
+<button type="button" aria-label="Stop Kin" title="Stop Kin" style="position: absolute; right: -1px; bottom: -1px; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 0 0 4px 0; background: var(--key-base); box-shadow: inset -1px -1px 0 var(--frame); color: var(--text); overflow: hidden; cursor: pointer"><i style="position: absolute; left: 0; top: 0; transform: translate(24px, 24px) rotate(90deg)"><b style="position: absolute; left: 0; top: 0; width: 8.8px; height: 8.8px; border-radius: 2.2px; background: currentColor; transform: translate(-50%, -50%)"></b></i><svg class="ptrace" width="48" height="48" aria-hidden="true" style="position: absolute; left: 0; top: 0; overflow: visible; color: var(--primary)"><path d="M1 1H47V44A3 3 0 0 1 44 47H1Z"></path></svg></button>
+</sc-if>
+</form>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ground":{"editor":"enum","options":["graphite","paper"],"default":"paper"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+	constructor(...args) {
+		super(...args);
+		this.state = { draft: 'Then update the composer page in the manual' };
+		this.onDraft = (e) => this.setState({ draft: e.target.value });
+	}
+
+	renderVals() {
+		const draft = (this.state && this.state.draft) || '';
+		return {
+			ground: this.props.ground ?? 'paper',
+			draft: draft,
+			onDraft: this.onDraft,
+			hasDraft: draft.trim().length > 0,
+			noDraft: draft.trim().length === 0,
+		};
+	}
+}
+</script>
+</body>
+</html>

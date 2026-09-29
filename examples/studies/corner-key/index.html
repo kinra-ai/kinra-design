@@ -1,0 +1,3253 @@
+<!doctype html>
+<html lang="en">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<style>
+		body {
+			margin: 0;
+		}
+
+		[hidden] {
+			display: none !important;
+		}
+	</style>
+	<title>Corner Key</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400..700&display=swap"
+	/>
+	<style>
+		/* Layout: a test bench. The live Space composer sits on the left like a device under test, a narrow rail of controls on the right, and the key's states on a bench below. */
+		:root {
+			color-scheme: light;
+
+			/* Kinra Graphite+ roles, verbatim from @kinra/web tokens.css; light-dark() resolves each for the ground in use. */
+			--kin-color-ground: light-dark(#f6f5f2, #101114);
+			--kin-color-ground-deep: light-dark(#eeede9, #0c0d10);
+			--kin-color-surface: light-dark(#fdfcf9, #14171d);
+			--kin-color-surface-raised: light-dark(#ffffff, #1a1d23);
+			--kin-color-text: light-dark(#15171c, #e3e3e6);
+			--kin-color-text-subtle: light-dark(#3d414a, #b4b8bf);
+			--kin-color-text-muted: light-dark(#585e68, #8c9099);
+			--kin-color-text-inverse: light-dark(#ffffff, #101114);
+			--kin-color-rule: light-dark(#d3d6dc, #2a2e36);
+			--kin-color-rule-strong: light-dark(#b3b8c1, #3a3f49);
+			--kin-color-control-edge: light-dark(#7f8691, #626975);
+			--kin-color-primary: light-dark(#166483, #5fbfd6);
+			--kin-color-reason: light-dark(#554b9f, #9e97d2);
+			--kin-color-error: light-dark(#b8382c, #e5786e);
+			--kin-border-subtle: color-mix(
+				in srgb,
+				var(--kin-color-rule) 68%,
+				transparent
+			);
+			--kin-surface-hover: color-mix(
+				in srgb,
+				var(--kin-color-text) 6%,
+				transparent
+			);
+			--kin-tint-primary: color-mix(
+				in srgb,
+				var(--kin-color-primary) 10%,
+				transparent
+			);
+			--kin-tint-reason: color-mix(
+				in srgb,
+				var(--kin-color-reason) 10%,
+				transparent
+			);
+			--kin-tint-error: color-mix(
+				in srgb,
+				var(--kin-color-error) 10%,
+				transparent
+			);
+			--kin-edge-reason: color-mix(
+				in srgb,
+				var(--kin-color-reason) 34%,
+				transparent
+			);
+
+			--kin-font-sans:
+				"Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+				sans-serif;
+			--kin-font-mono:
+				"IBM Plex Mono", "SFMono-Regular", "Cascadia Code", "Roboto Mono",
+				"DejaVu Sans Mono", monospace;
+			--kin-text-xs: 0.75rem;
+			--kin-text-sm: 0.875rem;
+			--kin-text-md: 0.9375rem;
+			--kin-text-base: 1rem;
+			--kin-radius-sm: 0.25rem;
+			--kin-radius-xl: 1.125rem;
+			--kin-mark-size: 0.4rem;
+			--kin-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+			--kin-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+			--kin-duration-fast: 120ms;
+			--kin-duration-normal: 180ms;
+			--kin-control-height-compact: 2.25rem;
+
+			/* Space's product measures */
+			--space-prose-size: var(--kin-text-base);
+			--space-ui-size: var(--kin-text-sm);
+			--space-caption-size: var(--kin-text-xs);
+			--space-rail: 1px solid var(--kin-color-rule);
+
+			/* The key: the composer's lower-right square */
+			--key-size: 3rem;
+			--key-flash: #ffffff;
+			--k: 1;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root:not([data-theme="light"]) {
+				color-scheme: dark;
+			}
+		}
+
+		:root[data-theme="dark"] {
+			color-scheme: dark;
+		}
+
+		/* The study's own ground switch overrides the viewer's theme. */
+		:root[data-ground="graphite"] {
+			color-scheme: dark;
+		}
+
+		:root[data-ground="paper"] {
+			color-scheme: light;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		body {
+			background: var(--kin-color-ground-deep);
+			color: var(--kin-color-text);
+			font-family: var(--kin-font-sans);
+			font-size: var(--kin-text-md);
+			line-height: 1.6;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		button,
+		input,
+		textarea {
+			font: inherit;
+			color: inherit;
+		}
+
+		svg {
+			display: block;
+			flex: none;
+			fill: currentColor;
+		}
+
+		code {
+			font-family: var(--kin-font-mono);
+			font-size: 0.875em;
+		}
+
+		:focus-visible {
+			outline: 2px solid var(--kin-color-primary);
+			outline-offset: 2px;
+		}
+
+		::selection {
+			background: var(--kin-color-primary);
+			color: var(--kin-color-text-inverse);
+		}
+
+		/* ---------- The study ---------- */
+
+		.study {
+			display: grid;
+			gap: 3rem;
+			max-width: 80rem;
+			margin-inline: auto;
+			padding-inline: max(1rem, 3vw);
+			padding-block: 2.5rem 4rem;
+		}
+
+		.head {
+			display: grid;
+			gap: 0.75rem;
+			max-width: 48rem;
+		}
+
+		.eyebrow {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin: 0;
+			color: var(--kin-color-primary);
+			font: 600 var(--kin-text-sm) / 1.4 var(--kin-font-mono);
+			letter-spacing: 0.01em;
+		}
+
+		.eyebrow::before {
+			content: "";
+			flex: none;
+			width: var(--kin-mark-size);
+			height: var(--kin-mark-size);
+			background: currentColor;
+		}
+
+		h1,
+		h2 {
+			margin: 0;
+			font-family: var(--kin-font-mono);
+			text-wrap: balance;
+		}
+
+		h1 {
+			font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+			font-weight: 600;
+			line-height: 1.15;
+			letter-spacing: -0.025em;
+		}
+
+		h2 {
+			font-size: 1.125rem;
+			font-weight: 600;
+			line-height: 1.3;
+			letter-spacing: -0.01em;
+		}
+
+		.lede {
+			margin: 0;
+			max-width: 62ch;
+			color: var(--kin-color-text-subtle);
+			font-size: var(--kin-text-base);
+		}
+
+		.section-head {
+			display: grid;
+			gap: 0.375rem;
+			max-width: 62ch;
+			margin-bottom: 1.25rem;
+		}
+
+		.section-head p {
+			margin: 0;
+			color: var(--kin-color-text-subtle);
+		}
+
+		.bench {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 17.5rem;
+			gap: 1.25rem;
+			align-items: start;
+		}
+
+		/* ---------- The stage: an example Space conversation ---------- */
+
+		.stage {
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			height: clamp(32rem, 74vh, 42rem);
+			background: var(--kin-color-ground);
+			border: 1px solid var(--kin-color-rule);
+		}
+
+		.stage__bar {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.25rem 0.75rem;
+			padding: 0.625rem 1rem;
+			border-bottom: var(--space-rail);
+			color: var(--kin-color-text-muted);
+			font: var(--space-caption-size) / 1.4 var(--kin-font-mono);
+		}
+
+		.timeline {
+			flex: 1;
+			min-height: 0;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			padding-block: 1.5rem 0.75rem;
+			scrollbar-color: var(--kin-color-rule) transparent;
+			scrollbar-width: thin;
+		}
+
+		.turns {
+			display: grid;
+			gap: 1.5rem;
+			width: min(100% - 2rem, 44rem);
+			margin: 0 auto;
+			padding: 0;
+			list-style: none;
+		}
+
+		.turn {
+			min-width: 0;
+		}
+
+		.turn--person {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.bubble {
+			max-width: min(80%, 40rem);
+			padding: 0.5rem 1rem;
+			background: var(--kin-color-surface-raised);
+			border: 1px solid var(--kin-border-subtle);
+			border-radius: var(--kin-radius-xl);
+			font-size: var(--space-prose-size);
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+		}
+
+		.bubble__files {
+			display: block;
+			margin-top: 0.25rem;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+			white-space: normal;
+		}
+
+		.bubble__files:only-child {
+			margin-top: 0;
+		}
+
+		.kin-label {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin: 0 0 0.375rem;
+			font-size: var(--space-prose-size);
+			font-weight: 650;
+			line-height: 1.3;
+		}
+
+		.kin-label::before {
+			content: "";
+			width: 3px;
+			height: 1.05em;
+			background: var(--kin-color-primary);
+		}
+
+		.prose {
+			margin: 0;
+			font-size: var(--space-prose-size);
+			line-height: 1.7;
+			overflow-wrap: anywhere;
+		}
+
+		.prose code {
+			padding: 0.1em 0.3em;
+			background: var(--kin-surface-hover);
+			border-radius: 3px;
+		}
+
+		.caption {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin: 0.375rem 0 0;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.caption::before {
+			content: "";
+			flex: none;
+			width: var(--kin-mark-size);
+			height: var(--kin-mark-size);
+			background: currentColor;
+		}
+
+		.working {
+			margin: 0;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		/* Live text: primary tones on Kin's label while prose streams, one muted grey on captions. */
+		.kin-label[data-live] .kin-label__name,
+		.working span {
+			background: linear-gradient(
+					90deg,
+					var(--shimmer-a) 0 35%,
+					var(--shimmer-b) 50%,
+					var(--shimmer-a) 65% 100%
+				)
+				0 0 / 300% 100%;
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			animation: live-shimmer 1.8s linear infinite;
+		}
+
+		.kin-label[data-live] .kin-label__name {
+			--shimmer-a: var(--kin-color-primary);
+			--shimmer-b: var(--kin-color-text);
+		}
+
+		.working span {
+			--shimmer-a: var(--kin-color-text-muted);
+			--shimmer-b: var(--kin-color-text);
+		}
+
+		@keyframes live-shimmer {
+			from {
+				background-position: 100% 0;
+			}
+
+			to {
+				background-position: 0 0;
+			}
+		}
+
+		.block {
+			background: var(--kin-color-surface);
+			border: var(--space-rail);
+		}
+
+		.block__head {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.25rem 0.75rem;
+			padding: 0.5rem 0.75rem;
+			border-bottom: var(--space-rail);
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.block__head code {
+			color: var(--kin-color-text);
+			font-size: var(--kin-text-sm);
+			overflow-wrap: anywhere;
+		}
+
+		.block pre,
+		.block p {
+			margin: 0;
+			padding: 0.625rem 0.75rem;
+		}
+
+		.block pre {
+			color: var(--kin-color-text-subtle);
+			font: 0.8125rem / 1.6 var(--kin-font-mono);
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+		}
+
+		.block p {
+			font-size: var(--space-ui-size);
+		}
+
+		/* ---------- The composer ---------- */
+
+		.composer-wrap {
+			flex: none;
+			width: min(100% - 2rem, 44rem);
+			margin: 0.5rem auto 0.75rem;
+			container: composer / inline-size;
+		}
+
+		.queue,
+		.notice {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.75rem;
+			margin-bottom: 0.5rem;
+			padding: 0.375rem 0.375rem 0.375rem 0.75rem;
+			border-radius: var(--kin-radius-sm);
+			font-size: var(--space-ui-size);
+		}
+
+		.queue {
+			align-items: flex-start;
+			background: var(--kin-color-surface);
+			border: var(--space-rail);
+		}
+
+		.queue__body {
+			flex: 1;
+			min-width: 0;
+			padding-block: 0.25rem;
+		}
+
+		.queue__label {
+			margin: 0 0 0.125rem;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.queue ol {
+			display: grid;
+			gap: 0.125rem;
+			max-height: 4.5rem;
+			margin: 0;
+			padding: 0;
+			overflow-y: auto;
+			list-style: none;
+		}
+
+		.queue li {
+			overflow: hidden;
+			color: var(--kin-color-text-subtle);
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.queue li::before {
+			content: "";
+			display: inline-block;
+			width: var(--kin-mark-size);
+			height: var(--kin-mark-size);
+			margin-right: 0.5rem;
+			background: var(--kin-color-primary);
+			vertical-align: 0.1em;
+		}
+
+		.notice {
+			background: var(--kin-tint-reason);
+			border: 1px solid var(--kin-edge-reason);
+		}
+
+		.composer {
+			--frame: var(--kin-color-rule);
+			--r: var(--kin-radius-sm);
+
+			position: relative;
+			background: var(--kin-color-surface);
+			border: 1px solid var(--frame);
+			border-radius: var(--r);
+			transition: border-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.composer:focus-within {
+			--frame: var(--kin-color-primary);
+		}
+
+		.composer[data-disabled] {
+			background: color-mix(
+				in srgb,
+				var(--kin-color-surface) 55%,
+				var(--kin-color-ground)
+			);
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			padding: 0.625rem 0.75rem 0;
+		}
+
+		.chip {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-width: 0;
+			max-width: 100%;
+			padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+			border: var(--space-rail);
+			border-radius: var(--kin-radius-sm);
+		}
+
+		.chip > svg {
+			width: 1.25rem;
+			height: 1.25rem;
+			color: var(--kin-color-text-muted);
+		}
+
+		.chip[data-state="error"] {
+			border-color: var(--kin-color-error);
+		}
+
+		.chip[data-state="error"] > svg {
+			color: var(--kin-color-error);
+		}
+
+		.chip__text {
+			display: grid;
+			min-width: 0;
+			line-height: 1.35;
+		}
+
+		.chip__text strong {
+			overflow: hidden;
+			font-size: var(--space-ui-size);
+			font-weight: 600;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.chip__text small {
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.slash {
+			display: grid;
+			gap: 2px;
+			max-height: 11rem;
+			margin: 0;
+			padding: 0.375rem;
+			overflow-y: auto;
+			border-bottom: var(--space-rail);
+			list-style: none;
+		}
+
+		.slash li {
+			display: flex;
+			align-items: baseline;
+			gap: 0.75rem;
+			min-width: 0;
+			padding: 0.375rem 0.5rem;
+			border-radius: var(--kin-radius-sm);
+			font-size: var(--space-ui-size);
+			cursor: pointer;
+		}
+
+		.slash li[aria-selected="true"] {
+			background: var(--kin-tint-primary);
+			box-shadow: inset 0 0 0 1px var(--kin-color-primary);
+		}
+
+		.slash code {
+			flex: none;
+			font-size: var(--space-ui-size);
+		}
+
+		.slash__about {
+			flex: 1;
+			min-width: 0;
+			overflow: hidden;
+			color: var(--kin-color-text-muted);
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.slash__tag {
+			flex: none;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.composer textarea {
+			display: block;
+			width: 100%;
+			min-height: 2.875rem;
+			max-height: 14rem;
+			margin: 0;
+			padding: 0.75rem 1rem 0.25rem;
+			overflow-y: auto;
+			background: transparent;
+			border: 0;
+			outline: 0;
+			color: var(--kin-color-text);
+			font: var(--space-prose-size) / 1.6 var(--kin-font-sans);
+			resize: none;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
+		}
+
+		.composer textarea::placeholder {
+			color: var(--kin-color-text-muted);
+		}
+
+		.composer textarea:disabled {
+			cursor: default;
+		}
+
+		/* The tools row is exactly as tall as the key, and leaves the key's square free. */
+		.tools {
+			display: flex;
+			align-items: center;
+			gap: 0.25rem;
+			min-width: 0;
+			height: var(--key-size);
+			padding-inline: 0.375rem calc(var(--key-size) + 0.5rem);
+		}
+
+		.tool {
+			display: inline-flex;
+			flex: none;
+			align-items: center;
+			justify-content: center;
+			gap: 0.375rem;
+			min-width: var(--kin-control-height-compact);
+			height: var(--kin-control-height-compact);
+			padding: 0 0.5rem;
+			background: transparent;
+			border: 0;
+			border-radius: var(--kin-radius-sm);
+			color: var(--kin-color-text-subtle);
+			font-size: var(--space-caption-size);
+			cursor: pointer;
+			transition:
+				background-color var(--kin-duration-fast) var(--kin-ease-standard),
+				color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.tool > svg {
+			width: 1.25rem;
+			height: 1.25rem;
+		}
+
+		.tool:hover:not(:disabled, [aria-disabled="true"]) {
+			background: var(--kin-surface-hover);
+			color: var(--kin-color-text);
+		}
+
+		.tool:disabled {
+			cursor: default;
+			opacity: 0.45;
+		}
+
+		.tool[aria-disabled="true"] {
+			color: var(--kin-color-text-muted);
+			cursor: default;
+		}
+
+		.context {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.25rem;
+			min-width: 0;
+			padding-inline: 0.25rem;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.context > svg,
+		.tool--model > svg {
+			width: 1rem;
+			height: 1rem;
+		}
+
+		.context > span,
+		.tool--model > span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.context > span {
+			max-width: 8rem;
+		}
+
+		.tool--model {
+			flex: 0 1 auto;
+			min-width: 0;
+		}
+
+		.tool--model > svg {
+			transform: rotate(90deg);
+		}
+
+		@container composer (max-width: 22rem) {
+			.context {
+				display: none;
+			}
+		}
+
+		.meta {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.125rem 0.75rem;
+			min-height: 1.5rem;
+			padding-top: 0.25rem;
+			color: var(--kin-color-text-muted);
+			font-size: var(--space-caption-size);
+		}
+
+		.meta__state {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-width: 0;
+		}
+
+		.meta__state:not(:empty)::before {
+			content: "";
+			flex: none;
+			width: var(--kin-mark-size);
+			height: var(--kin-mark-size);
+			background: currentColor;
+		}
+
+		.meta__hint {
+			margin-left: auto;
+			text-align: end;
+		}
+
+		/* ---------- The corner key ----------
+ * A base, the composer's own edge where the key covers it, an icon layer,
+ * and the fill: a clipped layer of primary that carries its own copy of the
+ * icon in the inverse ink. Because the fill is clipped rather than moved,
+ * the icon is dark wherever it sits on the fill and light wherever it does
+ * not, at every frame of every change. Every icon is four strokes.
+ */
+
+		.key {
+			--key-base: color-mix(
+				in srgb,
+				var(--kin-color-text) 4%,
+				var(--kin-color-surface)
+			);
+			--key-fill: var(--kin-color-primary);
+			--key-ink: var(--kin-color-text-muted);
+			--key-ink-on: var(--kin-color-text-inverse);
+			--key-trace: var(--kin-color-primary);
+			--trace-w: 2px;
+
+			position: relative;
+			display: block;
+			flex: none;
+			width: var(--key-size);
+			height: var(--key-size);
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background: none;
+			border: 0;
+			color: inherit;
+			isolation: isolate;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		button.key {
+			cursor: pointer;
+		}
+
+		button.key:disabled {
+			cursor: default;
+		}
+
+		/* Flush: the key covers the composer's edge at the corner, so its fill reaches the outside. */
+		.composer > .key,
+		.crop > .key {
+			position: absolute;
+			right: -1px;
+			bottom: -1px;
+			z-index: 1;
+			border-radius: 0 0 var(--r) 0;
+		}
+
+		.key > span {
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+			pointer-events: none;
+		}
+
+		.key__base {
+			background: var(--key-base);
+			transition: background-color calc(180ms * var(--k))
+				var(--kin-ease-standard);
+		}
+
+		/* Where the key covers the composer's edge, it carries that edge itself. */
+		.key__edge {
+			border: solid var(--frame, var(--kin-color-rule));
+			border-width: 0 1px 1px 0;
+			transition: border-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.key__fill {
+			background: var(--key-fill);
+			clip-path: inset(100% 0% 0% 100%);
+			transition: background-color var(--kin-duration-fast)
+				var(--kin-ease-standard);
+		}
+
+		.key__flash {
+			position: absolute;
+			inset: 0;
+			background: var(--key-flash);
+			opacity: 0;
+		}
+
+		.key__layer {
+			position: absolute;
+			inset: 0;
+			color: var(--key-ink);
+			transition: color calc(160ms * var(--k)) linear;
+		}
+
+		.key__layer--on {
+			color: var(--key-ink-on);
+		}
+
+		.key__glyph {
+			position: absolute;
+			inset: 0;
+			transition:
+				translate var(--kin-duration-fast) var(--kin-ease-out),
+				scale var(--kin-duration-fast) var(--kin-ease-out);
+		}
+
+		.key__stroke {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		.key__stroke b {
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: currentColor;
+			transform: translate(-50%, -50%);
+		}
+
+		/* The light that runs around the key while work runs. */
+		.key__trace {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			overflow: visible;
+			opacity: 0;
+			transition: opacity calc(180ms * var(--k)) linear;
+		}
+
+		.key__trace path {
+			fill: none;
+			stroke: var(--key-trace);
+			stroke-width: var(--trace-w);
+			stroke-linecap: round;
+			stroke-dasharray: 24 76;
+			transition:
+				stroke-dasharray calc(300ms * var(--k)) var(--kin-ease-out),
+				stroke calc(160ms * var(--k)) linear;
+		}
+
+		.key__layer--on .key__trace path {
+			stroke: currentColor;
+			opacity: 0.4;
+		}
+
+		.key[data-trace] .key__trace {
+			opacity: 1;
+		}
+
+		.key[data-trace] .key__trace path {
+			animation: key-trace calc(1.6s * var(--k)) linear infinite;
+		}
+
+		.key[data-trace="muted"] {
+			--key-trace: var(--kin-color-text-muted);
+		}
+
+		/* The turn ended: the light closes into a ring before it fades. */
+		.key[data-trace="closing"] .key__trace path {
+			stroke-dasharray: 100 0;
+		}
+
+		.key--specimen .key__trace path {
+			animation: none !important;
+			stroke-dashoffset: -18;
+		}
+
+		@keyframes key-trace {
+			from {
+				stroke-dashoffset: 0;
+			}
+
+			to {
+				stroke-dashoffset: -100;
+			}
+		}
+
+		.key[data-ink="text"] {
+			--key-ink: var(--kin-color-text);
+		}
+
+		.key[data-ink="faint"] {
+			--key-ink: color-mix(
+				in srgb,
+				var(--kin-color-text-muted) 55%,
+				transparent
+			);
+		}
+
+		.key[data-ink="error"] {
+			--key-ink: var(--kin-color-error);
+		}
+
+		.key[data-tone="error"] {
+			--key-base: var(--kin-tint-error);
+		}
+
+		/* Hover and press are enhancements; the icon carries the meaning. */
+		@media (hover: hover) {
+			button.key:not(:disabled):hover {
+				--key-fill: color-mix(
+					in srgb,
+					var(--kin-color-primary) 86%,
+					var(--kin-color-text)
+				);
+			}
+
+			button.key[data-face="working"]:not(:disabled):hover {
+				--key-base: color-mix(
+					in srgb,
+					var(--kin-color-text) 9%,
+					var(--kin-color-surface)
+				);
+			}
+
+			button.key[data-lean]:not(:disabled):hover .key__glyph {
+				translate: 0 -1px;
+			}
+		}
+
+		button.key:not(:disabled):active .key__glyph {
+			scale: 0.92;
+		}
+
+		/* ---------- The rail ---------- */
+
+		.rail {
+			display: grid;
+			gap: 1.25rem;
+			align-content: start;
+			min-width: 0;
+		}
+
+		.group {
+			display: grid;
+			gap: 0.5rem;
+			min-width: 0;
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+
+		.group > legend {
+			margin-bottom: 0.5rem;
+			padding: 0;
+			color: var(--kin-color-text-muted);
+			font: 500 var(--kin-text-xs) / 1.4 var(--kin-font-mono);
+			letter-spacing: 0.04em;
+		}
+
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 2.25rem;
+			padding: 0.375rem 0.75rem;
+			background: var(--kin-color-surface);
+			border: 1px solid var(--kin-color-rule);
+			border-radius: var(--kin-radius-sm);
+			font-size: var(--kin-text-sm);
+			line-height: 1.3;
+			text-align: left;
+			cursor: pointer;
+			transition:
+				border-color var(--kin-duration-fast) var(--kin-ease-standard),
+				background-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.btn > svg {
+			width: 1rem;
+			height: 1rem;
+			color: var(--kin-color-text-muted);
+		}
+
+		.btn:hover:not(:disabled) {
+			background: color-mix(
+				in srgb,
+				var(--kin-color-text) 4%,
+				var(--kin-color-surface)
+			);
+			border-color: var(--kin-color-rule-strong);
+		}
+
+		.btn:disabled {
+			cursor: default;
+			opacity: 0.5;
+		}
+
+		.btn--quiet {
+			flex: none;
+			background: transparent;
+			border-color: transparent;
+			color: var(--kin-color-primary);
+			font-size: var(--space-ui-size);
+		}
+
+		.btn--quiet:hover:not(:disabled) {
+			background: var(--kin-tint-primary);
+			border-color: transparent;
+		}
+
+		.seg {
+			display: flex;
+			gap: 2px;
+			padding: 2px;
+			background: var(--kin-color-ground);
+			border: 1px solid var(--kin-color-rule);
+			border-radius: var(--kin-radius-sm);
+		}
+
+		.seg label {
+			position: relative;
+			flex: 1;
+			min-width: 0;
+		}
+
+		.seg input {
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			margin: 0;
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.seg span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 2rem;
+			padding: 0 0.375rem;
+			border-radius: 2px;
+			color: var(--kin-color-text-muted);
+			font: 500 var(--kin-text-xs) / 1.2 var(--kin-font-mono);
+			text-align: center;
+			transition:
+				background-color var(--kin-duration-fast) var(--kin-ease-standard),
+				color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.seg label:hover span {
+			color: var(--kin-color-text);
+		}
+
+		.seg input:checked + span {
+			background: var(--kin-tint-primary);
+			box-shadow: inset 0 0 0 1px var(--kin-color-primary);
+			color: var(--kin-color-text);
+		}
+
+		.seg input:focus-visible + span {
+			outline: 2px solid var(--kin-color-primary);
+			outline-offset: 2px;
+		}
+
+		.switch {
+			display: flex;
+			align-items: center;
+			gap: 0.625rem;
+			min-height: 2rem;
+			font-size: var(--kin-text-sm);
+			line-height: 1.3;
+			cursor: pointer;
+		}
+
+		.switch input {
+			position: relative;
+			flex: none;
+			width: 2.25rem;
+			height: 1.25rem;
+			margin: 0;
+			background: var(--kin-color-ground);
+			border: 1px solid var(--kin-color-control-edge);
+			appearance: none;
+			cursor: pointer;
+			transition:
+				background-color var(--kin-duration-fast) var(--kin-ease-standard),
+				border-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.switch input::after {
+			content: "";
+			position: absolute;
+			top: 3px;
+			left: 3px;
+			width: 0.75rem;
+			height: 0.75rem;
+			background: var(--kin-color-text-muted);
+			transition:
+				transform var(--kin-duration-fast) var(--kin-ease-out),
+				background-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.switch input:checked {
+			background: var(--kin-tint-primary);
+			border-color: var(--kin-color-primary);
+		}
+
+		.switch input:checked::after {
+			background: var(--kin-color-primary);
+			transform: translateX(1rem);
+		}
+
+		/* ---------- States ---------- */
+
+		.states__grid {
+			display: grid;
+			grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+			gap: 1.5rem;
+			align-items: start;
+		}
+
+		.crop-figure {
+			display: grid;
+			gap: 0.75rem;
+			margin: 0;
+		}
+
+		.crop {
+			--frame: var(--kin-color-rule);
+			--r: var(--kin-radius-sm);
+			--key-size: 10rem;
+
+			position: relative;
+			height: 14.5rem;
+			background: var(--kin-color-surface);
+			border: 1px solid var(--frame);
+			border-radius: var(--r);
+		}
+
+		.crop__spec {
+			margin: 0;
+			padding: 0.75rem 1rem;
+			max-width: 11rem;
+			color: var(--kin-color-text-muted);
+			font: var(--kin-text-xs) / 1.5 var(--kin-font-mono);
+		}
+
+		.crop__caption {
+			display: grid;
+			gap: 0.125rem;
+			min-height: 3rem;
+			font-size: var(--kin-text-sm);
+		}
+
+		.crop__caption strong {
+			font-family: var(--kin-font-mono);
+			font-weight: 600;
+		}
+
+		.crop__caption span {
+			color: var(--kin-color-text-muted);
+		}
+
+		.state-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+			gap: 0.5rem;
+		}
+
+		.state {
+			display: grid;
+			grid-template-columns: auto minmax(0, 1fr);
+			gap: 0.875rem;
+			align-items: center;
+			padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+			background: var(--kin-color-surface);
+			border: 1px solid var(--kin-color-rule);
+			text-align: left;
+			cursor: pointer;
+			transition:
+				border-color var(--kin-duration-fast) var(--kin-ease-standard),
+				background-color var(--kin-duration-fast) var(--kin-ease-standard);
+		}
+
+		.state:hover {
+			border-color: var(--kin-color-rule-strong);
+		}
+
+		.state[aria-pressed="true"] {
+			background: var(--kin-tint-primary);
+			border-color: var(--kin-color-primary);
+		}
+
+		.state .key {
+			--key-size: 2.75rem;
+		}
+
+		.state__text {
+			display: grid;
+			gap: 0.125rem;
+			min-width: 0;
+		}
+
+		.state__name {
+			font: 600 var(--kin-text-sm) / 1.3 var(--kin-font-mono);
+		}
+
+		.state__when {
+			color: var(--kin-color-text-muted);
+			font-size: var(--kin-text-xs);
+			line-height: 1.45;
+		}
+
+		/* ---------- Notes ---------- */
+
+		.notes {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+			gap: 2.5rem;
+			align-items: start;
+			padding-top: 2rem;
+			border-top: 1px solid var(--kin-color-rule);
+		}
+
+		.notes > div {
+			display: grid;
+			gap: 1rem;
+			min-width: 0;
+		}
+
+		.notes p {
+			margin: 0;
+			max-width: 62ch;
+			color: var(--kin-color-text-subtle);
+		}
+
+		.rules,
+		.deltas {
+			display: grid;
+			gap: 0.875rem;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.rules li,
+		.deltas li {
+			display: grid;
+			gap: 0.125rem;
+			max-width: 62ch;
+			color: var(--kin-color-text-subtle);
+		}
+
+		.rules strong {
+			color: var(--kin-color-text);
+			font: 600 var(--kin-text-sm) / 1.4 var(--kin-font-mono);
+		}
+
+		.deltas li {
+			grid-template-columns: auto minmax(0, 1fr);
+			gap: 0.625rem;
+			align-items: baseline;
+		}
+
+		.deltas li::before {
+			content: "";
+			width: var(--kin-mark-size);
+			height: var(--kin-mark-size);
+			background: var(--kin-color-primary);
+			transform: translateY(-0.1em);
+		}
+
+		.table-wrap {
+			overflow-x: auto;
+		}
+
+		.map {
+			width: 100%;
+			min-width: 30rem;
+			border-collapse: collapse;
+			font-size: var(--kin-text-sm);
+		}
+
+		.map th,
+		.map td {
+			padding: 0.5rem 0.75rem 0.5rem 0;
+			border-bottom: 1px solid var(--kin-color-rule);
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.map th {
+			color: var(--kin-color-text-muted);
+			font: 500 var(--kin-text-xs) / 1.4 var(--kin-font-mono);
+			letter-spacing: 0.04em;
+		}
+
+		.map td:first-child {
+			font-family: var(--kin-font-mono);
+			font-weight: 500;
+			white-space: nowrap;
+		}
+
+		.map td {
+			color: var(--kin-color-text-subtle);
+		}
+
+		/* ---------- Narrow screens ---------- */
+
+		@media (max-width: 64rem) {
+			.bench {
+				grid-template-columns: minmax(0, 1fr);
+			}
+
+			.rail {
+				grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+				gap: 1.25rem 1.5rem;
+			}
+		}
+
+		@media (max-width: 54rem) {
+			.states__grid,
+			.notes {
+				grid-template-columns: minmax(0, 1fr);
+			}
+		}
+
+		/* ---------- Reduced motion: the same meaning, still ---------- */
+
+		@media (prefers-reduced-motion: reduce) {
+			*,
+			*::before,
+			*::after {
+				animation-duration: 0.01ms !important;
+				animation-iteration-count: 1 !important;
+				transition-duration: 0.01ms !important;
+			}
+
+			.kin-label[data-live] .kin-label__name,
+			.working span {
+				background: none;
+				color: inherit;
+			}
+
+			.key__trace path {
+				animation: none !important;
+				stroke-dasharray: none !important;
+			}
+		}
+
+		:root[data-still] *,
+		:root[data-still] *::before,
+		:root[data-still] *::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+
+		:root[data-still] .kin-label[data-live] .kin-label__name,
+		:root[data-still] .working span {
+			background: none;
+			color: inherit;
+		}
+
+		:root[data-still] .key__trace path {
+			animation: none !important;
+			stroke-dasharray: none !important;
+		}
+
+		@media (forced-colors: active) {
+			.key__edge {
+				border-color: ButtonText;
+			}
+
+			.key__layer {
+				color: ButtonText;
+			}
+
+			.key__fill {
+				background: Highlight;
+			}
+
+			.key__layer--on {
+				color: HighlightText;
+			}
+
+			.key__trace path {
+				stroke: Highlight;
+			}
+		}
+	</style>
+
+	<main class="study">
+		<header class="head">
+			<p class="eyebrow">Kinra Space · composer study</p>
+			<h1>Corner key</h1>
+			<p class="lede">
+				The send control becomes the composer’s lower-right square, pinned into
+				the corner with no inset. It lights up from its corner when there is
+				something to send, and its icon changes shape to say what a press will
+				do: send, stop, queue or run.
+			</p>
+		</header>
+
+		<div class="bench">
+			<section
+				class="stage"
+				id="stage"
+				aria-label="Example Kinra Space conversation"
+			>
+				<div class="stage__bar">
+					<span>Kinra Space · Chat</span>
+					<span>Example conversation · type to wake the key</span>
+				</div>
+				<div class="timeline" id="timeline">
+					<ol class="turns" id="turns" aria-label="Conversation">
+						<li class="turn turn--person">
+							<div class="bubble">
+								Where does the send button live in the composer?
+							</div>
+						</li>
+						<li class="turn turn--kin">
+							<p class="kin-label"><span class="kin-label__name">Kin</span></p>
+							<p class="prose">
+								In <code>Composer.svelte</code>, at the end of the tools row: a
+								36px square in <code>.composer-action</code>. It turns into
+								Queue message while I work and you have written something, and
+								into Stop Kin while I work and you haven’t.
+							</p>
+						</li>
+					</ol>
+				</div>
+
+				<div class="composer-wrap">
+					<div
+						class="queue"
+						id="queue"
+						role="group"
+						aria-label="Queued for Kin"
+						hidden
+					>
+						<div class="queue__body">
+							<p class="queue__label">Queued for Kin</p>
+							<ol
+								id="queue-list"
+								tabindex="0"
+								aria-label="Queued messages"
+							></ol>
+						</div>
+						<button type="button" class="btn btn--quiet" id="take-back">
+							Take back
+						</button>
+					</div>
+					<div class="notice" id="observer-note" hidden>
+						<span>Watching this session.</span>
+						<button type="button" class="btn btn--quiet" id="claim">
+							Take the keyboard
+						</button>
+					</div>
+					<form class="composer" id="composer" aria-label="Write to Kin">
+						<div class="chips" id="chips" hidden></div>
+						<ul
+							class="slash"
+							id="slash"
+							role="listbox"
+							aria-label="Kin commands"
+							hidden
+						></ul>
+						<textarea
+							id="draft"
+							rows="1"
+							placeholder="Message Kin…"
+							aria-label="Message Kin"
+							aria-describedby="meta"
+							autocomplete="off"
+						></textarea>
+						<div class="tools">
+							<button
+								type="button"
+								class="tool"
+								id="attach"
+								aria-label="Attach files"
+								title="Attach files"
+							>
+								<svg viewBox="0 0 256 256" aria-hidden="true">
+									<path
+										d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"
+									/>
+								</svg>
+							</button>
+							<span class="context" title="kinra-space"
+								><svg viewBox="0 0 256 256" aria-hidden="true">
+									<path
+										d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"
+									/></svg
+								><span>kinra-space</span></span
+							>
+							<button
+								type="button"
+								class="tool tool--model"
+								id="model"
+								aria-label="Choose Kin’s model"
+							>
+								<span id="model-label">gpt-5 · medium</span
+								><svg viewBox="0 0 256 256" aria-hidden="true">
+									<path
+										d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"
+									/>
+								</svg>
+							</button>
+						</div>
+						<button
+							type="submit"
+							class="key"
+							id="key"
+							aria-label="Send message"
+							aria-describedby="meta"
+							disabled
+						></button>
+					</form>
+					<div class="meta" id="meta">
+						<span class="meta__state" id="meta-state" role="status"></span>
+						<span class="meta__hint" id="meta-hint"></span>
+					</div>
+				</div>
+			</section>
+
+			<aside class="rail" aria-label="Study controls">
+				<fieldset class="group">
+					<legend>Simulate</legend>
+					<button type="button" class="btn" id="sim-file">
+						<svg viewBox="0 0 256 256" aria-hidden="true">
+							<path
+								d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"
+							/></svg
+						>Attach a file
+					</button>
+					<button type="button" class="btn" id="sim-fail">
+						<svg viewBox="0 0 256 256" aria-hidden="true">
+							<path
+								d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"
+							/></svg
+						>Attach one that fails
+					</button>
+					<label class="switch"
+						><input type="checkbox" id="sim-steer" checked /><span
+							>Queue while Kin works</span
+						></label
+					>
+					<label class="switch"
+						><input type="checkbox" id="sim-watch" /><span
+							>Watch this session</span
+						></label
+					>
+					<label class="switch"
+						><input type="checkbox" id="sim-drop" /><span
+							>Drop the connection</span
+						></label
+					>
+				</fieldset>
+
+				<fieldset class="group">
+					<legend>Key size</legend>
+					<div class="seg">
+						<label
+							><input type="radio" name="size" value="44" /><span
+								>44px</span
+							></label
+						>
+						<label
+							><input type="radio" name="size" value="48" checked /><span
+								>48px</span
+							></label
+						>
+						<label
+							><input type="radio" name="size" value="56" /><span
+								>56px</span
+							></label
+						>
+					</div>
+				</fieldset>
+
+				<fieldset class="group">
+					<legend>Motion</legend>
+					<div class="seg">
+						<label
+							><input type="radio" name="speed" value="1" checked /><span
+								>1×</span
+							></label
+						>
+						<label
+							><input type="radio" name="speed" value="4" /><span
+								>0.25×</span
+							></label
+						>
+					</div>
+					<label class="switch"
+						><input type="checkbox" id="still" /><span
+							>Reduced motion</span
+						></label
+					>
+				</fieldset>
+
+				<fieldset class="group">
+					<legend>Ground</legend>
+					<div class="seg">
+						<label
+							><input type="radio" name="ground" value="viewer" checked /><span
+								>Viewer</span
+							></label
+						>
+						<label
+							><input type="radio" name="ground" value="graphite" /><span
+								>Graphite</span
+							></label
+						>
+						<label
+							><input type="radio" name="ground" value="paper" /><span
+								>Paper</span
+							></label
+						>
+					</div>
+				</fieldset>
+			</aside>
+		</div>
+
+		<section class="states" aria-labelledby="states-title">
+			<div class="section-head">
+				<h2 id="states-title">States</h2>
+				<p>
+					Every icon is drawn with the same four strokes, so any state can
+					become any other in one continuous motion. Choose a state to watch the
+					key change.
+				</p>
+			</div>
+			<div class="states__grid">
+				<figure class="crop-figure">
+					<div class="crop" id="crop">
+						<p class="crop__spec" id="crop-spec"></p>
+						<div id="bench-key" aria-hidden="true"></div>
+					</div>
+					<figcaption
+						class="crop__caption"
+						id="crop-caption"
+						aria-live="polite"
+					></figcaption>
+					<div>
+						<button type="button" class="btn" id="story" aria-pressed="false">
+							Play the story
+						</button>
+					</div>
+				</figure>
+				<div
+					class="state-list"
+					id="state-list"
+					role="group"
+					aria-label="Choose a state"
+				></div>
+			</div>
+		</section>
+
+		<section class="notes" aria-label="Notes">
+			<div>
+				<h2>How it behaves</h2>
+				<ul class="rules">
+					<li>
+						<strong>Pinned to the corner</strong>The key is the composer’s
+						lower-right square, flush with its edge and radius. The whole square
+						answers a press.
+					</li>
+					<li>
+						<strong>Lit only when something can go</strong>The first character
+						lights the key from its corner with one quick blink. Clearing the
+						draft lets it go dark again.
+					</li>
+					<li>
+						<strong>One motion between icons</strong>Send, Stop, Queue, Run and
+						Command share four strokes, so a change of meaning is a single
+						movement rather than a swap.
+					</li>
+					<li>
+						<strong>Sending moves up</strong>The colour lifts out of the key the
+						way the message rises into the conversation, while the arrow folds
+						into Stop.
+					</li>
+					<li>
+						<strong>A light only while work runs</strong>While Kin works or
+						files arrive, a light runs around the key’s edge. When the turn
+						finishes, it closes into a ring and fades.
+					</li>
+					<li>
+						<strong>The same meaning without motion</strong>With reduced motion
+						the icons change in place and the edge light holds still. The key’s
+						name always says what a press will do.
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h2>Bringing it to Space</h2>
+				<p>
+					In <code>kinra-space</code> the key would replace
+					<code>.composer-action</code> in <code>Composer.svelte</code>. It
+					needs no new state: every state follows from values the composer
+					already derives, and the native host contract keeps its
+					<code>send</code> and <code>turn</code> fields as they are.
+				</p>
+				<div class="table-wrap">
+					<table class="map">
+						<thead>
+							<tr>
+								<th scope="col">State</th>
+								<th scope="col">Shown when</th>
+								<th scope="col">Name</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Rest</td>
+								<td>Nothing to send</td>
+								<td>Send message, unavailable</td>
+							</tr>
+							<tr>
+								<td>Send</td>
+								<td><code>canSend</code></td>
+								<td>Send message</td>
+							</tr>
+							<tr>
+								<td>Queue</td>
+								<td><code>queueing</code></td>
+								<td>Queue message</td>
+							</tr>
+							<tr>
+								<td>Run</td>
+								<td><code>shellLine</code></td>
+								<td>Run in the workspace</td>
+							</tr>
+							<tr>
+								<td>Command</td>
+								<td><code>slashRows.length</code></td>
+								<td>Run command</td>
+							</tr>
+							<tr>
+								<td>Sending</td>
+								<td><code>sending</code></td>
+								<td>Sending…</td>
+							</tr>
+							<tr>
+								<td>Stop</td>
+								<td>
+									<code>active &amp;&amp; connected &amp;&amp; !observer</code>
+								</td>
+								<td>Stop Kin</td>
+							</tr>
+							<tr>
+								<td>Uploading</td>
+								<td><code>uploading</code></td>
+								<td>Unavailable; the status line says why</td>
+							</tr>
+							<tr>
+								<td>Can’t send</td>
+								<td><code>failed</code> or <code>!admitted</code></td>
+								<td>Unavailable; the status line says why</td>
+							</tr>
+							<tr>
+								<td>Watching</td>
+								<td><code>observer</code></td>
+								<td>Unavailable while watching</td>
+							</tr>
+							<tr>
+								<td>Reconnecting</td>
+								<td><code>reconnecting</code></td>
+								<td>Unavailable; the draft is kept</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p>Three of Space’s current choices would change with it:</p>
+				<ul class="deltas">
+					<li>
+						Stop leaves the error colour. It becomes a neutral key with a
+						running light, since stopping Kin is not a failure.
+					</li>
+					<li>
+						The tools row grows from 36px to the key’s 48px, so the composer is
+						12px taller.
+					</li>
+					<li>
+						The light while files arrive shows that work is happening, not how
+						much is left. Space has no upload progress to show today.
+					</li>
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		(() => {
+			"use strict";
+
+			const root = document.documentElement;
+			const $ = (s, r = document) => r.querySelector(s);
+			const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+			const reduceQuery = matchMedia("(prefers-reduced-motion: reduce)");
+			const coarse = matchMedia("(pointer: coarse)");
+			const store = {
+				get(k, d) {
+					try {
+						return localStorage.getItem("corner-key:" + k) ?? d;
+					} catch {
+						return d;
+					}
+				},
+				set(k, v) {
+					try {
+						localStorage.setItem("corner-key:" + k, v);
+					} catch {
+						/* Storage is a convenience; the study works without it. */
+					}
+				},
+			};
+			const env = {
+				speed: 1,
+				reduced: false,
+				slow() {
+					return this.speed;
+				},
+				still() {
+					return this.reduced || reduceQuery.matches;
+				},
+			};
+
+			const icon = (d) =>
+				`<svg viewBox="0 0 256 256" aria-hidden="true"><path d="${d}"/></svg>`;
+			const ICON = {
+				file: icon(
+					"M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z",
+				),
+				warning: icon(
+					"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z",
+				),
+				x: icon(
+					"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z",
+				),
+				retry: icon(
+					"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z",
+				),
+			};
+
+			/* ================================================================
+			 * The corner key.
+			 * Every icon is four strokes on a 24-unit grid. A stroke is a centre,
+			 * an angle, a length and a width, so the arrow's three strokes can
+			 * swing and thicken into one square, and any icon can become any other.
+			 * ================================================================ */
+
+			const SLOTS = 4;
+			const STROKE = 2.25;
+			const EASE_IN = "cubic-bezier(0.4, 0, 1, 1)";
+			const EASE_MORPH = "cubic-bezier(0.4, 0, 0, 1)";
+			const EASE_BLOOM = "cubic-bezier(0.2, 0, 0, 1)";
+			const EASE_FOLD = "cubic-bezier(0.4, 0, 0.2, 1)";
+			const CLIP_ON = "inset(0% 0% 0% 0%)";
+			const CLIP_CORNER = "inset(100% 0% 0% 100%)";
+			const clip = ([t, r, b, l]) => `inset(${t}% ${r}% ${b}% ${l}%)`;
+
+			const line = (x1, y1, x2, y2, w = STROKE, r = w / 2) => ({
+				x1,
+				y1,
+				x2,
+				y2,
+				w,
+				r,
+			});
+			const dot = (x, y, w = 2.75) => line(x, y, x, y, w, w / 2);
+			const hide = (x, y) => line(x, y, x, y, 0, 0);
+			const block = (size, r) => line(12, 12, 12, 12, size, r);
+
+			// A hidden stroke has no width and waits where it will grow from.
+			const GLYPHS = {
+				arrow: [
+					line(12, 18.5, 12, 5.5),
+					line(6.5, 11, 12, 5.5),
+					line(17.5, 11, 12, 5.5),
+					hide(12, 5.5),
+				],
+				stop: [block(10, 2.5), block(10, 2.5), block(10, 2.5), hide(12, 12)],
+				queue: [
+					line(12, 19.5, 12, 10),
+					line(7.5, 14.5, 12, 10),
+					line(16.5, 14.5, 12, 10),
+					line(6.5, 5, 17.5, 5),
+				],
+				shell: [
+					line(13.5, 17.5, 18.5, 17.5),
+					line(6, 17, 11, 12),
+					line(6, 7, 11, 12),
+					hide(16, 17.5),
+				],
+				slash: [line(15, 5, 9, 19), hide(12, 12), hide(12, 12), hide(12, 12)],
+				alert: [line(12, 6, 12, 13), dot(12, 18), hide(12, 9.5), hide(12, 9.5)],
+				dots: [dot(6.5, 12), dot(12, 12), dot(17.5, 12), hide(12, 12)],
+			};
+
+			// Between a line icon and the solid Stop, strokes first fold into one
+			// upright line and only then widen, so they never smear into a blob.
+			const SPINE = [
+				line(12, 7, 12, 17),
+				line(12, 7, 12, 17),
+				line(12, 7, 12, 17),
+				hide(12, 7),
+			];
+			const BLOCKS = new Set(["stop"]);
+
+			const FACES = {
+				rest: {
+					glyph: "arrow",
+					ink: "muted",
+					name: "Rest",
+					says: "Send message, unavailable",
+					when: "Nothing to send yet. The arrow waits, unlit.",
+				},
+				send: {
+					glyph: "arrow",
+					fill: true,
+					lean: true,
+					name: "Send",
+					says: "Send message",
+					when: "There are words or ready files. The first character lights the key from its corner.",
+				},
+				sending: {
+					glyph: "stop",
+					ink: "text",
+					trace: "muted",
+					name: "Sending",
+					says: "Sending…",
+					when: "The message is on its way and Kin has not picked it up yet.",
+				},
+				working: {
+					glyph: "stop",
+					ink: "text",
+					trace: "live",
+					name: "Stop",
+					says: "Stop Kin",
+					when: "Kin’s turn is running. A light runs around the edge until it ends.",
+				},
+				queue: {
+					glyph: "queue",
+					fill: true,
+					lean: true,
+					trace: "live",
+					name: "Queue",
+					says: "Queue message",
+					when: "Kin is working and you have written. It waits for a safe point.",
+				},
+				shell: {
+					glyph: "shell",
+					fill: true,
+					name: "Run",
+					says: "Run in the workspace",
+					when: "The draft starts with ! and runs here instead of starting a turn.",
+				},
+				command: {
+					glyph: "slash",
+					fill: true,
+					name: "Command",
+					says: "Run command",
+					when: "A bare /command is chosen in the list above the draft.",
+				},
+				uploading: {
+					glyph: "arrow",
+					ink: "muted",
+					trace: "live",
+					name: "Uploading",
+					says: "Send message, unavailable",
+					when: "Files are still arriving. The key lights once they are ready.",
+				},
+				blocked: {
+					glyph: "alert",
+					ink: "error",
+					tone: "error",
+					name: "Can’t send",
+					says: "Send message, unavailable",
+					when: "A file could not be added. The status line says how to fix it.",
+				},
+				watching: {
+					glyph: "arrow",
+					ink: "faint",
+					name: "Watching",
+					says: "Send message, unavailable",
+					when: "Someone else has the keyboard. Take it to write.",
+				},
+				waiting: {
+					glyph: "dots",
+					ink: "muted",
+					pulse: true,
+					name: "Reconnecting",
+					says: "Send message, unavailable",
+					when: "The connection dropped. The draft is kept while Space reconnects.",
+				},
+			};
+
+			const running = (el) =>
+				el.getAnimations().filter((a) => !("transitionProperty" in a));
+
+			// A stroke as a pose: centre, angle, length, width, corner radius. A line
+			// repeats every 180°. A square block stands upright like the spine it
+			// widens from, and a dot never turns.
+			function pose(s) {
+				const len = Math.hypot(s.x2 - s.x1, s.y2 - s.y1);
+				const block = !len && s.w > 0 && s.r < s.w / 2;
+				let angle = len
+					? (Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180) / Math.PI
+					: block
+						? 90
+						: 0;
+				if (len) {
+					while (angle > 90) angle -= 180;
+					while (angle <= -90) angle += 180;
+				}
+				const period = len || block ? 180 : 0;
+				return {
+					x: (s.x1 + s.x2) / 2,
+					y: (s.y1 + s.y2) / 2,
+					len,
+					angle,
+					w: s.w,
+					r: s.r,
+					period,
+				};
+			}
+
+			// The equivalent angle nearest the stroke's current one, so nothing spins.
+			function turnTo(from, to, period) {
+				if (!period) return from;
+				let a = to;
+				while (a - from > period / 2 + 0.01) a -= period;
+				while (from - a > period / 2 + 0.01) a += period;
+				return a;
+			}
+
+			class CornerKey {
+				constructor(el) {
+					this.el = el;
+					this.face = null;
+					this.glyph = null;
+					this.timers = [];
+					this.loops = [];
+					el.classList.add("key");
+					const layer = `<span class="key__glyph">${'<i class="key__stroke"><b></b></i>'.repeat(SLOTS)}</span><svg class="key__trace" aria-hidden="true"><path pathLength="100"></path></svg>`;
+					el.insertAdjacentHTML(
+						"beforeend",
+						'<span class="key__base" aria-hidden="true"></span>' +
+							'<span class="key__edge" aria-hidden="true"></span>' +
+							`<span class="key__layer" aria-hidden="true">${layer}</span>` +
+							`<span class="key__fill" aria-hidden="true"><span class="key__flash"></span><span class="key__layer key__layer--on">${layer}</span></span>`,
+					);
+					this.fill = el.querySelector(".key__fill");
+					this.flash = el.querySelector(".key__flash");
+					this.glyphs = [...el.querySelectorAll(".key__glyph")];
+					this.traces = [...el.querySelectorAll(".key__trace")];
+					const [under, over] = this.glyphs.map((g) => [
+						...g.querySelectorAll(".key__stroke"),
+					]);
+					this.strokes = under.map((node, i) => ({
+						nodes: [node, over[i]],
+						bars: [node.firstChild, over[i].firstChild],
+						pose: pose(hide(12, 12)),
+					}));
+					this.measure();
+					this.set("rest", { instant: true });
+				}
+
+				// The icon is 44% of the key: 21px with a 2px stroke in a 48px key.
+				measure() {
+					const size = this.el.offsetWidth;
+					const iconSize = size * 0.44;
+					this.size = size;
+					this.u = iconSize / 24;
+					this.o = (size - iconSize) / 2;
+					const tw = Math.max(2, Math.round(size / 24));
+					const radius =
+						parseFloat(getComputedStyle(this.el).borderBottomRightRadius) || 0;
+					const i = tw / 2;
+					const e = size - i;
+					const cr = Math.max(0, radius - i);
+					const d = `M${i} ${i}H${e}V${e - cr}${cr ? `A${cr} ${cr} 0 0 1 ${e - cr} ${e}` : ""}H${i}Z`;
+					this.el.style.setProperty("--trace-w", tw + "px");
+					this.traces.forEach((svg) => {
+						svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+						svg.firstChild.setAttribute("d", d);
+					});
+				}
+
+				resize() {
+					this.measure();
+					this.set(this.face, { force: true, instant: true });
+				}
+
+				later(fn, ms) {
+					this.timers.push(setTimeout(fn, ms));
+				}
+
+				css(p) {
+					const { u, o } = this;
+					return {
+						transform: `translate(${o + p.x * u}px, ${o + p.y * u}px) rotate(${p.angle}deg)`,
+						bar: {
+							width: `${(p.len + p.w) * u}px`,
+							height: `${p.w * u}px`,
+							borderRadius: `${p.r * u}px`,
+						},
+					};
+				}
+
+				apply(s, p) {
+					const c = this.css(p);
+					s.nodes.forEach((n) => (n.style.transform = c.transform));
+					s.bars.forEach((b) => Object.assign(b.style, c.bar));
+					s.pose = p;
+				}
+
+				// Where a stroke is right now, even halfway through a change.
+				read(s) {
+					const [node] = s.nodes;
+					const [bar] = s.bars;
+					const moving = running(node).length > 0;
+					const sizing = running(bar).length > 0;
+					if (moving || sizing) {
+						const p = { ...s.pose };
+						if (moving) {
+							const M = new DOMMatrixReadOnly(getComputedStyle(node).transform);
+							p.x = (M.e - this.o) / this.u;
+							p.y = (M.f - this.o) / this.u;
+							p.angle = (Math.atan2(M.b, M.a) * 180) / Math.PI;
+						}
+						if (sizing) {
+							const cs = getComputedStyle(bar);
+							p.w = parseFloat(cs.height) / this.u;
+							p.len = Math.max(0, parseFloat(cs.width) / this.u - p.w);
+							p.r = parseFloat(cs.borderTopLeftRadius) / this.u;
+						}
+						s.pose = p;
+					}
+					[...s.nodes, ...s.bars].forEach((n) =>
+						running(n).forEach((a) => a.cancel()),
+					);
+					this.apply(s, s.pose);
+				}
+
+				// The fill's clip right now, as [top, right, bottom, left] in percent.
+				readFill() {
+					const value = getComputedStyle(this.fill).clipPath || "";
+					running(this.fill).forEach((a) => a.cancel());
+					const match = /inset\(([^)]*)\)/.exec(value);
+					if (!match) return [100, 0, 0, 100];
+					const [t, r = t, b = t, l = r] = match[1]
+						.trim()
+						.split(/\s+/)
+						.map(parseFloat);
+					return [t, r, b, l];
+				}
+
+				morph(name, o = {}) {
+					const via =
+						o.dur &&
+						this.glyph &&
+						this.glyph !== name &&
+						BLOCKS.has(name) !== BLOCKS.has(this.glyph)
+							? SPINE
+							: null;
+					this.glyph = name;
+					GLYPHS[name].forEach((shape, i) => {
+						const s = this.strokes[i];
+						const from = s.pose;
+						const mid = via && pose(via[i]);
+						if (mid) mid.angle = turnTo(from.angle, mid.angle, mid.period);
+						const to = pose(shape);
+						to.angle = turnTo((mid || from).angle, to.angle, to.period);
+						const a = this.css(from);
+						const b = this.css(to);
+						this.apply(s, to);
+						if (!o.dur) return;
+						if (mid) {
+							const m = this.css(mid);
+							const timing = {
+								duration: o.dur * 1.25,
+								delay: o.delay || 0,
+								fill: "backwards",
+							};
+							s.nodes.forEach((n) =>
+								n.animate(
+									[
+										{ transform: a.transform, easing: EASE_FOLD },
+										{
+											transform: m.transform,
+											offset: 0.45,
+											easing: EASE_MORPH,
+										},
+										{ transform: b.transform },
+									],
+									timing,
+								),
+							);
+							s.bars.forEach((bar) =>
+								bar.animate(
+									[
+										{ ...a.bar, easing: EASE_FOLD },
+										{ ...m.bar, offset: 0.45, easing: EASE_MORPH },
+										b.bar,
+									],
+									timing,
+								),
+							);
+							return;
+						}
+						const timing = {
+							duration: o.dur,
+							delay: (o.delay || 0) + i * (o.stagger || 0),
+							easing: EASE_MORPH,
+							fill: "backwards",
+						};
+						s.nodes.forEach((n) =>
+							n.animate(
+								[{ transform: a.transform }, { transform: b.transform }],
+								timing,
+							),
+						);
+						s.bars.forEach((bar) => bar.animate([a.bar, b.bar], timing));
+					});
+				}
+
+				settleGlyphs() {
+					this.glyphs.forEach((g) => running(g).forEach((a) => a.cancel()));
+					running(this.flash).forEach((a) => a.cancel());
+				}
+
+				// Waking: the fill grows out of the pinned corner and blinks once as it lands.
+				bloom(k) {
+					const now = this.readFill();
+					this.settleGlyphs();
+					this.fill.style.clipPath = CLIP_ON;
+					this.fill.animate([{ clipPath: clip(now) }, { clipPath: CLIP_ON }], {
+						duration: 260 * k,
+						easing: EASE_BLOOM,
+					});
+					this.flash.animate(
+						[
+							{ opacity: 0.55 },
+							{ opacity: 0.08, offset: 0.2 },
+							{ opacity: 0.38, offset: 0.36 },
+							{ opacity: 0 },
+						],
+						{ duration: 480 * k, easing: "ease-out" },
+					);
+					this.glyphs.forEach((g) =>
+						g.animate(
+							[
+								{ transform: `translateY(${this.u * 4}px)` },
+								{ transform: "translateY(0px)" },
+							],
+							{
+								duration: 340 * k,
+								delay: 20 * k,
+								easing: EASE_BLOOM,
+								fill: "backwards",
+							},
+						),
+					);
+				}
+
+				// Going dark: the fill falls back into the corner it came from.
+				retract(k) {
+					const now = this.readFill();
+					this.fill.style.clipPath = CLIP_CORNER;
+					this.fill.animate(
+						[{ clipPath: clip(now) }, { clipPath: CLIP_CORNER }],
+						{ duration: 200 * k, easing: EASE_IN },
+					);
+				}
+
+				// Sending: the fill lifts out of the top, the way the message travels, and the icon kicks.
+				lift(k) {
+					const now = this.readFill();
+					this.settleGlyphs();
+					this.fill.style.clipPath = CLIP_CORNER;
+					this.fill.animate(
+						[
+							{ clipPath: clip(now) },
+							{ clipPath: clip([now[0], now[1], 100 - now[0], now[3]]) },
+						],
+						{
+							duration: 260 * k,
+							easing: EASE_IN,
+						},
+					);
+					this.glyphs.forEach((g) =>
+						g.animate(
+							[
+								{ transform: "translateY(0px)" },
+								{ transform: `translateY(${-this.u * 3}px)`, offset: 0.35 },
+								{ transform: "translateY(0px)" },
+							],
+							{ duration: 340 * k, easing: "cubic-bezier(0.3, 0, 0.2, 1)" },
+						),
+					);
+				}
+
+				trace(next, how, still) {
+					const el = this.el;
+					if (next.trace) {
+						el.dataset.trace = next.trace;
+					} else if (el.dataset.trace) {
+						if (how.completed && !still) {
+							el.dataset.trace = "closing";
+							this.later(() => delete el.dataset.trace, 320 * env.slow());
+						} else {
+							delete el.dataset.trace;
+						}
+					}
+				}
+
+				pulse(face) {
+					this.loops.forEach((a) => a.cancel());
+					this.loops = [];
+					if (!face.pulse || env.still()) return;
+					const k = env.slow();
+					this.strokes.slice(0, 3).forEach((s, i) =>
+						this.loops.push(
+							s.bars[0].animate(
+								[
+									{ opacity: 1 },
+									{ opacity: 0.25, offset: 0.45 },
+									{ opacity: 1 },
+								],
+								{
+									duration: 1050 * k,
+									delay: i * 175 * k,
+									iterations: Infinity,
+									easing: "ease-in-out",
+								},
+							),
+						),
+					);
+				}
+
+				set(face, how = {}) {
+					const prev = this.face && FACES[this.face];
+					const next = FACES[face];
+					if (this.face === face && !how.force) return;
+					this.face = face;
+					const el = this.el;
+					el.dataset.face = face;
+					el.dataset.ink = next.ink || "muted";
+					el.toggleAttribute("data-lean", !!next.lean);
+					if (next.tone) el.dataset.tone = next.tone;
+					else delete el.dataset.tone;
+
+					this.timers.forEach(clearTimeout);
+					this.timers = [];
+					this.loops.forEach((a) => a.cancel());
+					this.loops = [];
+
+					const still = how.instant || !prev || env.still();
+					this.trace(next, how, still);
+
+					if (still) {
+						this.strokes.forEach((s) => this.read(s));
+						this.settleGlyphs();
+						this.morph(next.glyph);
+						this.readFill();
+						this.fill.style.clipPath = next.fill ? CLIP_ON : CLIP_CORNER;
+						if (!how.noLoop) this.pulse(next);
+						return;
+					}
+
+					const k = env.slow();
+					let delay = 0;
+					if (next.fill && !prev.fill) {
+						this.bloom(k);
+					} else if (prev.fill && !next.fill) {
+						if (how.sent || how.dispatched) {
+							this.lift(k);
+							delay = 40 * k;
+						} else {
+							this.retract(k);
+						}
+					}
+					if (how.completed) delay = 180 * k;
+					// Only a change of icon interrupts strokes that are still moving.
+					if (prev.glyph !== next.glyph) {
+						this.strokes.forEach((s) => this.read(s));
+						this.morph(next.glyph, { dur: 320 * k, delay, stagger: 18 * k });
+					}
+					if (next.pulse)
+						this.later(() => this.pulse(FACES[this.face]), delay + 320 * k);
+				}
+
+				// A still specimen, with any running light held in place.
+				snapshot(face) {
+					this.el.classList.add("key--specimen");
+					this.set(face, { force: true, instant: true, noLoop: true });
+				}
+			}
+
+			/* ================================================================
+			 * The composer, simulated with the states Space already derives.
+			 * ================================================================ */
+
+			const stage = $("#stage");
+			const form = $("#composer");
+			const draftEl = $("#draft");
+			const timeline = $("#timeline");
+			const turns = $("#turns");
+			const keyEl = $("#key");
+			const key = new CornerKey(keyEl);
+
+			const COMMANDS = [
+				{
+					name: "compact",
+					about: "Summarize the conversation to free context",
+					result:
+						"Compacted the conversation. Eighteen turns became a summary, and 61% of the context is free.",
+				},
+				{
+					name: "help",
+					about: "Open the guide",
+					result: "Opened the guide beside this conversation.",
+				},
+				{
+					name: "model",
+					about: "Choose Kin’s model",
+					result: "Opened the model picker.",
+				},
+				{
+					name: "review",
+					about: "Review the changes in this workspace",
+					skill: true,
+					result: "Started a review of 3 changed files.",
+				},
+			];
+			const REPLIES = [
+				"Sent from the corner. While I work, the key holds Stop, and a light runs around its edge until I finish or you stop me. Type while I work and it becomes Queue, so your next message waits for a safe point in this turn.",
+				"The key reads what the composer already knows: whether there is a draft, whether files are still arriving, and whether a turn is running. Each state has a name, so a screen reader hears Send message, Queue message or Stop Kin as the icon changes.",
+				"Start a line with ! to run it in this workspace, or with / to choose one of my commands. The icon changes for each, so you can see what Enter will do before you press it.",
+				"Attach a file with the plus and watch the key while it arrives. A light runs around it until the file is ready, and then the key lights up.",
+			];
+			const SAMPLES = ["roadmap.md", "composer-notes.txt", "corner-key.png"];
+			const EFFORTS = ["low", "medium", "high"];
+			const SAYS = {
+				rest: "Send message",
+				send: "Send message",
+				queue: "Queue message",
+				shell: "Run in the workspace",
+				command: "Run command",
+				sending: "Sending…",
+				working: "Stop Kin",
+				uploading: "Send message",
+				blocked: "Send message",
+				watching: "Send message",
+				waiting: "Send message",
+			};
+			const ACTIONABLE = new Set([
+				"send",
+				"queue",
+				"shell",
+				"command",
+				"working",
+			]);
+
+			const S = {
+				draft: "",
+				files: [],
+				active: false,
+				sending: false,
+				connected: true,
+				observer: false,
+				steering: true,
+				queued: [],
+				slashIndex: 0,
+				slashClosed: null,
+				stream: null,
+				reply: 0,
+				sample: 0,
+				effort: 1,
+				id: 0,
+			};
+			let how = {};
+
+			// Simulated time slows with the key, so a quarter-speed turn still reads as one.
+			const after = (fn, ms) => setTimeout(fn, ms * env.slow());
+
+			function slashRows() {
+				if (S.observer || S.active || S.sending) return [];
+				const match = /^\/(\S*)$/.exec(S.draft);
+				if (!match || S.slashClosed === S.draft) return [];
+				const q = match[1].toLowerCase();
+				const starts = (c) => (c.name.startsWith(q) ? 0 : 1);
+				return COMMANDS.filter((c) => c.name.includes(q)).sort(
+					(a, b) => starts(a) - starts(b),
+				);
+			}
+
+			function face() {
+				if (S.observer) return "watching";
+				if (!S.connected) return "waiting";
+				if (S.sending) return "sending";
+				const text = S.draft.trim();
+				if (S.active)
+					return S.steering && text && !S.files.length ? "queue" : "working";
+				if (S.files.some((f) => f.state === "error")) return "blocked";
+				if (S.files.some((f) => f.state === "uploading")) return "uploading";
+				if (slashRows().length) return "command";
+				if (/^!!?\s*\S/.test(S.draft)) return "shell";
+				if (text || S.files.some((f) => f.state === "ready")) return "send";
+				return "rest";
+			}
+
+			function statusText() {
+				if (S.observer) return "Watching this session";
+				if (S.files.some((f) => f.state === "uploading"))
+					return "Bringing your files into the workspace…";
+				if (S.files.some((f) => f.state === "error"))
+					return "Retry or remove the file that could not be added";
+				if (S.sending) return S.connected ? "Sending…" : "Connecting to Kin…";
+				if (!S.connected) return "Reconnecting · your draft is kept";
+				if (S.files.length)
+					return S.active
+						? "Files wait for your next turn"
+						: "Files are shared with Kin when you send";
+				return "";
+			}
+
+			function hintText(f) {
+				if (f === "shell")
+					return S.draft.startsWith("!!")
+						? "Enter runs this here · it stays out of Kin’s context"
+						: "Enter runs this here · the output joins Kin’s next turn";
+				if (f === "command") return "↑↓ choose · Tab fills · Enter runs";
+				if (f === "queue") return "Enter queues this for Kin";
+				if (S.active && S.draft) return "Draft for your next turn";
+				if (!S.active && !S.observer && !S.sending && S.connected)
+					return "Enter sends · Shift+Enter for a new line";
+				return "";
+			}
+
+			function render() {
+				const f = face();
+				key.set(f, how);
+				how = {};
+				keyEl.disabled = !ACTIONABLE.has(f);
+				keyEl.setAttribute("aria-label", SAYS[f]);
+				keyEl.title = SAYS[f];
+
+				form.toggleAttribute("data-disabled", S.observer);
+				draftEl.disabled = S.observer;
+				draftEl.placeholder = S.observer
+					? "Take the keyboard to write to Kin"
+					: "Message Kin…";
+				$("#attach").disabled = S.observer || S.files.length >= 8;
+				const reason = S.observer
+					? "Take the keyboard to change settings."
+					: !S.connected
+						? "Reconnect to change settings."
+						: S.active || S.sending
+							? "Model settings are available after this turn."
+							: "";
+				const model = $("#model");
+				model.setAttribute("aria-disabled", String(!!reason));
+				model.title = reason || "Choose Kin’s model";
+				$("#model-label").textContent = `gpt-5 · ${EFFORTS[S.effort]}`;
+
+				renderChips();
+				renderSlash();
+				renderQueue();
+				$("#observer-note").hidden = !S.observer;
+				$("#meta-state").textContent = statusText();
+				$("#meta-hint").textContent = coarse.matches ? "" : hintText(f);
+			}
+
+			function iconButton(svg, label, onclick) {
+				const b = document.createElement("button");
+				b.type = "button";
+				b.className = "tool";
+				b.innerHTML = svg;
+				b.setAttribute("aria-label", label);
+				b.title = label;
+				b.disabled = S.observer;
+				b.addEventListener("click", onclick);
+				return b;
+			}
+
+			function renderChips() {
+				const box = $("#chips");
+				box.hidden = !S.files.length;
+				box.replaceChildren(
+					...S.files.map((file) => {
+						const chip = document.createElement("div");
+						chip.className = "chip";
+						chip.dataset.state = file.state;
+						chip.title = file.detail;
+						chip.innerHTML = `${file.state === "error" ? ICON.warning : ICON.file}<span class="chip__text"><strong></strong><small></small></span>`;
+						chip.querySelector("strong").textContent = file.name;
+						chip.querySelector("small").textContent = file.detail;
+						if (file.state === "error")
+							chip.append(
+								iconButton(ICON.retry, `Try ${file.name} again`, () =>
+									retry(file),
+								),
+							);
+						chip.append(
+							iconButton(ICON.x, `Remove ${file.name} from message`, () =>
+								remove(file),
+							),
+						);
+						return chip;
+					}),
+				);
+			}
+
+			function renderSlash() {
+				const rows = slashRows();
+				const list = $("#slash");
+				if (S.slashIndex >= rows.length) S.slashIndex = 0;
+				list.hidden = !rows.length;
+				list.replaceChildren(
+					...rows.map((c, i) => {
+						const li = document.createElement("li");
+						li.id = "slash-" + i;
+						li.setAttribute("role", "option");
+						li.setAttribute("aria-selected", String(i === S.slashIndex));
+						li.innerHTML = `<code></code><span class="slash__about"></span>${c.skill ? '<span class="slash__tag">skill</span>' : ""}`;
+						li.querySelector("code").textContent = "/" + c.name;
+						li.querySelector(".slash__about").textContent = c.about;
+						li.addEventListener("mousedown", (e) => e.preventDefault());
+						li.addEventListener("click", () => runCommand(c));
+						return li;
+					}),
+				);
+				if (rows.length) {
+					draftEl.setAttribute("aria-controls", "slash");
+					draftEl.setAttribute(
+						"aria-activedescendant",
+						"slash-" + S.slashIndex,
+					);
+				} else {
+					draftEl.removeAttribute("aria-controls");
+					draftEl.removeAttribute("aria-activedescendant");
+				}
+			}
+
+			function renderQueue() {
+				$("#queue").hidden = !S.queued.length;
+				$("#queue-list").replaceChildren(
+					...S.queued.map((q) => {
+						const li = document.createElement("li");
+						li.textContent = q.text;
+						li.title = q.text;
+						return li;
+					}),
+				);
+				$("#take-back").disabled = !S.connected || S.observer;
+			}
+
+			/* ---------- The conversation ---------- */
+
+			function append(li) {
+				turns.append(li);
+				timeline.scrollTop = timeline.scrollHeight;
+				return li;
+			}
+
+			function turn(kind) {
+				const li = document.createElement("li");
+				li.className = `turn turn--${kind}`;
+				return li;
+			}
+
+			function addPerson(text, files) {
+				const li = turn("person");
+				const bubble = document.createElement("div");
+				bubble.className = "bubble";
+				bubble.textContent = text;
+				if (files.length) {
+					const names = document.createElement("span");
+					names.className = "bubble__files";
+					names.textContent = files.map((f) => f.name).join(" · ");
+					bubble.append(names);
+				}
+				li.append(bubble);
+				append(li);
+			}
+
+			function addBlock(head, note, body, pre) {
+				const li = turn("block");
+				li.innerHTML = `<div class="block"><div class="block__head"><code></code><span></span></div>${pre ? "<pre></pre>" : "<p></p>"}</div>`;
+				li.querySelector("code").textContent = head;
+				li.querySelector(".block__head span").textContent = note;
+				li.querySelector(pre ? "pre" : "p").textContent = body;
+				append(li);
+			}
+
+			function startReply() {
+				const li = turn("kin");
+				li.innerHTML =
+					'<p class="working"><span>Working</span></p><p class="kin-label" data-live hidden><span class="kin-label__name">Kin</span></p><p class="prose"></p>';
+				append(li);
+				const t = {
+					li,
+					caption: li.querySelector(".working"),
+					label: li.querySelector(".kin-label"),
+					prose: li.querySelector(".prose"),
+				};
+				const words = REPLIES[S.reply++ % REPLIES.length].split(" ");
+				let i = 0;
+				const tick = () => {
+					if (!S.stream || S.stream.t !== t) return;
+					if (!S.connected) {
+						S.stream.timer = after(tick, 300);
+						return;
+					}
+					if (i === 0) {
+						t.caption.remove();
+						t.label.hidden = false;
+					}
+					t.prose.textContent += (i ? " " : "") + words[i++];
+					timeline.scrollTop = timeline.scrollHeight;
+					if (i < words.length)
+						S.stream.timer = after(tick, 60 + Math.random() * 60);
+					else finish(true);
+				};
+				S.stream = { t, timer: after(tick, 700) };
+			}
+
+			function finish(completed) {
+				if (S.stream) {
+					const { t, timer } = S.stream;
+					clearTimeout(timer);
+					t.caption.remove();
+					t.label.hidden = false;
+					t.label.removeAttribute("data-live");
+					if (!completed) {
+						if (!t.prose.textContent) t.prose.remove();
+						const note = document.createElement("p");
+						note.className = "caption";
+						note.textContent = "Stopped";
+						t.li.append(note);
+					}
+					S.stream = null;
+				}
+				S.active = false;
+				// Kin owns the queue: what waited runs as a fresh turn.
+				if (completed && S.queued.length) {
+					addPerson(S.queued.shift().text, []);
+					S.active = true;
+					render();
+					startReply();
+					return;
+				}
+				how = { completed };
+				render();
+			}
+
+			/* ---------- What the key does ---------- */
+
+			function setDraft(value) {
+				S.draft = value;
+				draftEl.value = value;
+				S.slashClosed = null;
+				S.slashIndex = 0;
+				autosize();
+			}
+
+			function refocus() {
+				if (!coarse.matches && !S.observer)
+					draftEl.focus({ preventScroll: true });
+			}
+
+			function send() {
+				const text = S.draft.trim();
+				const files = S.files.filter((f) => f.state === "ready");
+				if (!text && !files.length) return;
+				addPerson(text, files);
+				setDraft("");
+				S.files = [];
+				S.sending = true;
+				how = { sent: true };
+				render();
+				refocus();
+				after(() => {
+					S.sending = false;
+					S.active = true;
+					render();
+					startReply();
+				}, 380);
+			}
+
+			function queue() {
+				const text = S.draft.trim();
+				if (!text || !S.active) return;
+				S.queued.push({ text });
+				setDraft("");
+				how = { sent: true };
+				render();
+				refocus();
+			}
+
+			function stop() {
+				if (!S.active) return;
+				finish(false);
+				refocus();
+			}
+
+			function runShell() {
+				const line = S.draft.trim();
+				const quiet = line.startsWith("!!");
+				const cmd = line.replace(/^!!?\s*/, "");
+				const word = cmd.split(/\s+/)[0];
+				const out =
+					word === "git"
+						? " M src/lib/Composer.svelte\n M src/styles/composer.css"
+						: word === "ls"
+							? "CHANGELOG.md  README.md  docs  src  static  tests"
+							: word === "pwd"
+								? "~/Workspace/code/kinra-ai/kinra-space"
+								: "Finished with no output.";
+				addBlock(
+					"$ " + cmd,
+					quiet
+						? "exit 0 · kept out of Kin’s context"
+						: "exit 0 · joins Kin’s next turn",
+					out,
+					true,
+				);
+				setDraft("");
+				how = { dispatched: true };
+				render();
+				refocus();
+			}
+
+			function runCommand(c) {
+				if (!c) return;
+				addBlock("/" + c.name, c.skill ? "skill" : "command", c.result, false);
+				setDraft("");
+				how = { dispatched: true };
+				render();
+				refocus();
+			}
+
+			function act(f) {
+				if (f === "send") send();
+				else if (f === "queue") queue();
+				else if (f === "shell") runShell();
+				else if (f === "command") runCommand(slashRows()[S.slashIndex]);
+				else if (f === "working") stop();
+			}
+
+			function attach(fail) {
+				if (S.observer || S.files.length >= 8) return;
+				const file = {
+					id: ++S.id,
+					name: fail
+						? "screen-recording.mov"
+						: SAMPLES[S.sample++ % SAMPLES.length],
+					state: "uploading",
+					detail: "Adding…",
+					fail,
+				};
+				S.files.push(file);
+				render();
+				upload(file);
+			}
+
+			function upload(file) {
+				after(
+					() => {
+						if (!S.files.includes(file)) return;
+						if (file.fail) {
+							file.state = "error";
+							file.detail = "Too large to add. Files can be 64 MiB at most.";
+						} else {
+							file.state = "ready";
+							file.detail = "Ready to share";
+						}
+						render();
+					},
+					file.fail ? 1500 : 1700,
+				);
+			}
+
+			function retry(file) {
+				file.state = "uploading";
+				file.detail = "Adding…";
+				file.fail = false;
+				render();
+				upload(file);
+				refocus();
+			}
+
+			function remove(file) {
+				S.files = S.files.filter((f) => f !== file);
+				render();
+				refocus();
+			}
+
+			function autosize() {
+				draftEl.style.height = "auto";
+				draftEl.style.height = Math.min(draftEl.scrollHeight, 14 * 16) + "px";
+			}
+
+			draftEl.addEventListener("input", () => {
+				S.draft = draftEl.value;
+				S.slashClosed = null;
+				S.slashIndex = 0;
+				autosize();
+				render();
+			});
+
+			draftEl.addEventListener("keydown", (e) => {
+				if (e.isComposing || e.keyCode === 229) return;
+				const rows = slashRows();
+				if (rows.length) {
+					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+						e.preventDefault();
+						S.slashIndex =
+							(S.slashIndex + (e.key === "ArrowDown" ? 1 : -1) + rows.length) %
+							rows.length;
+						renderSlash();
+						return;
+					}
+					if (e.key === "Tab" && !e.shiftKey) {
+						e.preventDefault();
+						setDraft(`/${rows[S.slashIndex].name} `);
+						render();
+						return;
+					}
+					if (e.key === "Enter" && !e.shiftKey) {
+						e.preventDefault();
+						runCommand(rows[S.slashIndex]);
+						return;
+					}
+					if (e.key === "Escape") {
+						e.preventDefault();
+						S.slashClosed = S.draft;
+						render();
+						return;
+					}
+				}
+				// As in Space, a touch screen sends on Enter only with Command or Control.
+				if (
+					e.key !== "Enter" ||
+					e.shiftKey ||
+					(coarse.matches && !e.metaKey && !e.ctrlKey)
+				)
+					return;
+				const f = face();
+				if (f === "queue") {
+					e.preventDefault();
+					queue();
+					return;
+				}
+				if (S.active || S.sending) return;
+				e.preventDefault();
+				act(f);
+			});
+
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				act(face());
+			});
+
+			$("#attach").addEventListener("click", () => {
+				attach(false);
+				refocus();
+			});
+			$("#model").addEventListener("click", () => {
+				if ($("#model").getAttribute("aria-disabled") === "true") return;
+				S.effort = (S.effort + 1) % EFFORTS.length;
+				render();
+			});
+			$("#take-back").addEventListener("click", () => {
+				const text = S.queued.map((q) => q.text).join("\n\n");
+				S.queued = [];
+				setDraft(S.draft ? `${S.draft}\n\n${text}` : text);
+				render();
+				refocus();
+			});
+			$("#claim").addEventListener("click", () => {
+				S.observer = false;
+				$("#sim-watch").checked = false;
+				render();
+				refocus();
+			});
+
+			$("#sim-file").addEventListener("click", () => attach(false));
+			$("#sim-fail").addEventListener("click", () => attach(true));
+			$("#sim-steer").addEventListener("change", (e) => {
+				S.steering = e.target.checked;
+				render();
+			});
+			$("#sim-watch").addEventListener("change", (e) => {
+				S.observer = e.target.checked;
+				render();
+			});
+			$("#sim-drop").addEventListener("change", (e) => {
+				S.connected = !e.target.checked;
+				render();
+			});
+
+			/* ================================================================
+			 * The bench: one large key, and a specimen of every state.
+			 * ================================================================ */
+
+			const bench = new CornerKey($("#bench-key"));
+			const ORDER = [
+				"rest",
+				"send",
+				"sending",
+				"working",
+				"queue",
+				"shell",
+				"command",
+				"uploading",
+				"blocked",
+				"watching",
+				"waiting",
+			];
+			const list = $("#state-list");
+			const minis = ORDER.map((name) => {
+				const F = FACES[name];
+				const b = document.createElement("button");
+				b.type = "button";
+				b.className = "state";
+				b.dataset.face = name;
+				b.setAttribute("aria-pressed", "false");
+				b.innerHTML =
+					'<span class="state__key" aria-hidden="true"></span><span class="state__text"><span class="state__name"></span><span class="state__when"></span></span>';
+				b.querySelector(".state__name").textContent = F.name;
+				b.querySelector(".state__when").textContent = F.when;
+				b.addEventListener("click", () => {
+					stopStory();
+					const from = bench.face && FACES[bench.face];
+					benchTo(name, {
+						sent: !!from?.fill && (name === "working" || name === "sending"),
+					});
+				});
+				list.append(b);
+				return [new CornerKey(b.querySelector(".state__key")), name];
+			});
+
+			function snapAll() {
+				minis.forEach(([mini, name]) => {
+					mini.measure();
+					mini.snapshot(name);
+				});
+			}
+
+			function benchTo(name, opts = {}) {
+				bench.set(name, opts);
+				$$(".state", list).forEach((b) =>
+					b.setAttribute("aria-pressed", String(b.dataset.face === name)),
+				);
+				const F = FACES[name];
+				const caption = $("#crop-caption");
+				caption.innerHTML = "<strong></strong><span></span>";
+				caption.querySelector("strong").textContent = F.name;
+				caption.querySelector("span").textContent =
+					`Named “${F.says}” for assistive technology`;
+			}
+
+			function spec() {
+				const iconPx = Math.round(key.size * 0.44);
+				const strokePx = (STROKE * key.u).toFixed(1).replace(/\.0$/, "");
+				$("#crop-spec").textContent =
+					`Shown at ${bench.size}px. In the composer: a ${key.size}px key, a ${iconPx}px icon and a ${strokePx}px stroke.`;
+			}
+
+			const STORY = [
+				["send", 1300],
+				["sending", 450, { sent: true }],
+				["working", 2200],
+				["queue", 1500],
+				["working", 2200, { sent: true }],
+				["rest", 1600, { completed: true }],
+			];
+			let storyTimer = 0;
+			let storyOn = false;
+
+			function stopStory() {
+				storyOn = false;
+				clearTimeout(storyTimer);
+				$("#story").textContent = "Play the story";
+				$("#story").setAttribute("aria-pressed", "false");
+			}
+
+			$("#story").addEventListener("click", () => {
+				if (storyOn) {
+					stopStory();
+					return;
+				}
+				storyOn = true;
+				$("#story").textContent = "Stop the story";
+				$("#story").setAttribute("aria-pressed", "true");
+				benchTo("rest");
+				let i = 0;
+				const next = () => {
+					if (!storyOn) return;
+					if (i >= STORY.length) {
+						stopStory();
+						return;
+					}
+					const [name, wait, opts] = STORY[i++];
+					benchTo(name, opts || {});
+					storyTimer = after(next, wait);
+				};
+				storyTimer = after(next, 700);
+			});
+
+			/* ---------- Study controls ---------- */
+
+			function refreshAll() {
+				key.resize();
+				bench.resize();
+				snapAll();
+				spec();
+			}
+
+			function bindSeg(name, apply) {
+				const inputs = $$(`input[name="${name}"]`);
+				const saved = store.get(name, null);
+				if (saved && inputs.some((i) => i.value === saved))
+					inputs.forEach((i) => (i.checked = i.value === saved));
+				const run = () => {
+					const picked = inputs.find((i) => i.checked);
+					if (!picked) return;
+					store.set(name, picked.value);
+					apply(picked.value);
+				};
+				inputs.forEach((i) => i.addEventListener("change", run));
+				run();
+			}
+
+			bindSeg("size", (v) => {
+				stage.style.setProperty("--key-size", v + "px");
+				key.resize();
+				spec();
+			});
+			bindSeg("speed", (v) => {
+				env.speed = Number(v);
+				root.style.setProperty("--k", v);
+				refreshAll();
+			});
+			bindSeg("ground", (v) => {
+				if (v === "viewer") delete root.dataset.ground;
+				else root.dataset.ground = v;
+			});
+			$("#still").addEventListener("change", (e) => {
+				env.reduced = e.target.checked;
+				root.toggleAttribute("data-still", env.reduced);
+				refreshAll();
+			});
+			reduceQuery.addEventListener("change", refreshAll);
+
+			benchTo("send", { instant: true });
+			refreshAll();
+			render();
+			if (document.fonts) document.fonts.ready.then(autosize);
+		})();
+	</script>
+</html>

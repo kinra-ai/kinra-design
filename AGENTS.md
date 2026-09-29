@@ -22,7 +22,8 @@ its own source but is no longer a current consumer.
    a public token, class, recipe, or registry status. Read `docs/brand.md`
    before changing a brand asset or how a product is named or marked. Read
    `docs/adoption.md` or `docs/releasing.md` when changing the consumer or
-   release contract.
+   release contract. Read `docs/refresh-plan.md` before extending the corner
+   key refresh.
 3. Run `npm run verify` before handing off a change (`npm run check` alone
    for a docs-only change).
 

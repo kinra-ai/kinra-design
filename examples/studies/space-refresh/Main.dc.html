@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Conversation · Kinra Space</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Inter:wght@400..700&amp;display=swap">
+<style>
+body{margin:0;background:#0c0d10}
+.ks{--ground:#101114;--deep:#0c0d10;--surface:#14171d;--raised:#1a1d23;--text:#e3e3e6;--subtle:#b4b8bf;--muted:#8c9099;--inverse:#101114;--rule:#2a2e36;--rule-strong:#3a3f49;--primary:#5fbfd6;--reason:#9e97d2;--success:#5fc198;--error:#e5786e;--hover:rgba(227,227,230,.06);--tint:rgba(95,191,214,.1);--add:rgba(95,193,152,.1);--del:rgba(229,120,110,.1);--key-base:#1b1e24;--sans:"Inter",ui-sans-serif,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono","SFMono-Regular","Cascadia Code","Roboto Mono",monospace;font-family:var(--sans);color:var(--text);-webkit-font-smoothing:antialiased}
+.ks[data-ground="paper"]{--ground:#f6f5f2;--deep:#eeede9;--surface:#fdfcf9;--raised:#ffffff;--text:#15171c;--subtle:#3d414a;--muted:#585e68;--inverse:#ffffff;--rule:#d3d6dc;--rule-strong:#b3b8c1;--primary:#166483;--reason:#554b9f;--success:#166347;--error:#b8382c;--hover:rgba(21,23,28,.06);--tint:rgba(22,100,131,.1);--add:rgba(22,99,71,.1);--del:rgba(184,56,44,.1);--key-base:#f1f0ec}
+.ks *,.ks *::before,.ks *::after{box-sizing:border-box}
+.ks button,.ks textarea{font:inherit;color:inherit}
+.ks :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.ks ::selection{background:var(--primary);color:var(--inverse)}
+.ks a{color:inherit;text-decoration:none}
+.nav:hover,.ib:hover,.sess:hover,.tool:hover,.row-btn:hover,.search:hover{background:var(--hover);color:var(--text)}
+.quiet:hover{background:var(--tint)}
+.scroll{scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+.tool{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:36px;height:36px;padding:0 8px;background:transparent;border:0;border-radius:4px;color:var(--subtle);font-size:12px;cursor:pointer}
+.ib{display:inline-grid;place-items:center;width:32px;height:32px;padding:0;background:transparent;border:0;border-radius:4px;color:var(--muted);cursor:pointer}
+.shimmer,.shimmer-kin{background:linear-gradient(90deg,var(--sa) 0 35%,var(--sb) 50%,var(--sa) 65% 100%) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 1.8s linear infinite}
+.shimmer{--sa:var(--muted);--sb:var(--text)}
+.shimmer-kin{--sa:var(--primary);--sb:var(--text)}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:0 0}}
+.pass{display:inline-flex;gap:3px;color:var(--primary)}
+.pass i{width:4px;height:4px;background:currentColor;opacity:.3;animation:pass 1.05s steps(1,end) infinite}
+.pass i:nth-child(2){animation-delay:.35s}
+.pass i:nth-child(3){animation-delay:.7s}
+@keyframes pass{0%{opacity:1}33.3%,100%{opacity:.3}}
+.guide-light{position:absolute;left:-10px;top:6px;bottom:6px;width:1px;overflow:hidden}
+.guide-light::after{content:"";position:absolute;left:0;width:1px;height:70%;top:-70%;background:linear-gradient(to bottom,transparent,var(--primary),transparent);animation:guide 1.4s linear infinite}
+@keyframes guide{to{top:100%}}
+.composer{--frame:var(--rule);transition:border-color 120ms}
+.composer:focus-within{--frame:var(--primary)}
+.composer textarea::placeholder{color:var(--muted)}
+.composer textarea:focus-visible{outline:0}
+.key{position:absolute;right:-1px;bottom:-1px;width:48px;height:48px;margin:0;padding:0;border:0;background:none;overflow:hidden;isolation:isolate;border-radius:0 0 4px 0;cursor:pointer;--key-fill:var(--primary);--key-ink:var(--muted);--key-ink-on:var(--inverse);--key-trace:var(--primary);--trace-w:2px}
+.key:disabled{cursor:default}
+.key>span{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.key__base{background:var(--key-base);transition:background-color 180ms}
+.key__edge{border:solid var(--frame,var(--rule));border-width:0 1px 1px 0;transition:border-color 120ms}
+.key__fill{background:var(--key-fill);clip-path:inset(100% 0% 0% 100%);transition:background-color 120ms}
+.key__flash{position:absolute;inset:0;background:#ffffff;opacity:0}
+.key__layer{position:absolute;inset:0;color:var(--key-ink);transition:color 160ms linear}
+.key__layer--on{color:var(--key-ink-on)}
+.key__glyph{position:absolute;inset:0;transition:translate 120ms,scale 120ms}
+.key__stroke{position:absolute;top:0;left:0}
+.key__stroke b{position:absolute;top:0;left:0;background:currentColor;transform:translate(-50%,-50%)}
+.key__trace{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;transition:opacity 180ms linear}
+.key__trace path{fill:none;stroke:var(--key-trace);stroke-width:var(--trace-w);stroke-linecap:round;stroke-dasharray:24 76;transition:stroke-dasharray 300ms cubic-bezier(.16,1,.3,1),stroke 160ms linear}
+.key__layer--on .key__trace path{stroke:currentColor;opacity:.4}
+.key[data-trace] .key__trace{opacity:1}
+.key[data-trace] .key__trace path{animation:key-trace 1.6s linear infinite}
+.key[data-trace="muted"]{--key-trace:var(--muted)}
+.key[data-trace="closing"] .key__trace path{stroke-dasharray:100 0}
+@keyframes key-trace{from{stroke-dashoffset:0}to{stroke-dashoffset:-100}}
+.key[data-ink="text"]{--key-ink:var(--text)}
+.key[data-ink="error"]{--key-ink:var(--error)}
+@media (hover:hover){.key:not(:disabled):hover{--key-fill:color-mix(in srgb,var(--primary) 86%,var(--text))}.key[data-face="working"]:not(:disabled):hover .key__base{background:color-mix(in srgb,var(--text) 10%,var(--surface))}.key[data-lean]:not(:disabled):hover .key__glyph{translate:0 -1px}}
+.key:not(:disabled):active .key__glyph{scale:.92}
+@media (prefers-reduced-motion:reduce){.ks *,.ks *::before,.ks *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.key__trace path{animation:none!important;stroke-dasharray:none!important}.shimmer,.shimmer-kin{background:none;color:inherit}}
+</style>
+</helmet>
+<div class="ks" data-ground="{{ ground }}" style="width: 1440px; height: 1000px; display: flex; overflow: hidden; background: var(--ground)">
+
+<aside aria-label="Space" style="width: 272px; flex: none; display: flex; flex-direction: column; background: var(--deep); border-right: 1px solid var(--rule)">
+<div style="height: 56px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 20px; border-bottom: 1px solid var(--rule)">
+<img src="/_blob/2a81926055c9bfdbdbaa4e28a1ae1748" alt="Kinra Space" style="display: block; height: 17px; width: auto">
+<button type="button" class="ib" aria-label="Collapse the sidebar"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"></path></svg></button>
+</div>
+<nav aria-label="Primary" style="display: flex; flex-direction: column; gap: 2px; padding: 12px">
+<a class="nav" href="Home.dc.html" style="display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; border-radius: 4px; color: var(--muted); font-size: 14px"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"></path></svg><span>Home</span></a>
+<a class="nav" href="Main.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; border-radius: 4px; background: var(--hover); color: var(--text); font-size: 14px; font-weight: 600"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"></path></svg><span>Chat</span></a>
+<button type="button" class="nav" style="display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 14px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"></path></svg><span>Projects</span></button>
+</nav>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 6px 22px">
+<span style="font: 500 12px/1.4 var(--mono); color: var(--muted)">Workspaces</span>
+<span style="display: flex; gap: 2px">
+<button type="button" class="ib" aria-label="Session history"><svg viewBox="0 0 256 256" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm-8-48A95.44,95.44,0,0,0,60.08,60.15C52.81,67.51,46.35,74.59,40,82V64a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H72a8,8,0,0,0,0-16H49c7.15-8.42,14.27-16.35,22.39-24.57a80,80,0,1,1,1.66,114.75,8,8,0,1,0-11,11.64A96,96,0,1,0,128,32Z"></path></svg></button>
+<button type="button" class="ib" aria-label="Refresh workspaces"><svg viewBox="0 0 256 256" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"></path></svg></button>
+</span>
+</div>
+<div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; padding: 0 12px 12px">
+
+<button type="button" class="nav" style="width: 100%; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--subtle); font-size: 14px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"></path></svg><span style="flex: 1">Home</span><svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg></button>
+
+<button type="button" class="nav" aria-expanded="true" style="width: 100%; margin-top: 4px; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--text); font-size: 14px; font-weight: 600; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"></path></svg><span style="flex: 1">kinra-space</span><svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg></button>
+<div style="margin: 2px 0 0 19px; padding-left: 9px; border-left: 1px solid var(--rule)">
+<a class="sess" href="Main.dc.html" aria-current="page" style="position: relative; display: block; padding: 7px 10px; border-radius: 4px; background: var(--hover)">
+<sc-if value="{{ active }}" hint-placeholder-val="{{ true }}"><span class="guide-light" aria-hidden="true"></span></sc-if>
+<span style="display: block; font-size: 14px; font-weight: 600; color: var(--text)">Corner key port</span>
+<sc-if value="{{ active }}" hint-placeholder-val="{{ true }}"><span style="display: block; font: 12px/1.5 var(--mono); color: var(--primary)">Working · {{ sessionClock }}</span></sc-if>
+<sc-if value="{{ idle }}" hint-placeholder-val="{{ false }}"><span style="display: block; font: 12px/1.5 var(--mono); color: var(--muted)">Ready · 14 turns · now</span></sc-if>
+</a>
+<a class="sess" href="Main.dc.html" style="display: block; margin-top: 2px; padding: 7px 10px; border-radius: 4px">
+<span style="display: block; font-size: 14px; color: var(--subtle)">Release notes</span>
+<span style="display: block; font: 12px/1.5 var(--mono); color: var(--muted)">Ready · 6 turns · 1h</span>
+</a>
+<button type="button" class="sess" style="width: 100%; margin-top: 2px; display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 13px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path></svg>New session</button>
+</div>
+
+<button type="button" class="nav" style="width: 100%; margin-top: 6px; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--subtle); font-size: 14px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"></path></svg><span style="flex: 1">kinra-design</span><svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg></button>
+
+</div>
+<div style="flex: none; padding: 8px 12px 12px; border-top: 1px solid var(--rule)">
+<button type="button" class="nav" style="width: 100%; display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 14px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M128,128a8,8,0,0,1-3,6.25l-40,32a8,8,0,1,1-10-12.5L107.19,128,75,102.25a8,8,0,1,1,10-12.5l40,32A8,8,0,0,1,128,128Zm48,24H136a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm56-96V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Z"></path></svg><span>Terminal</span></button>
+<button type="button" class="nav" style="width: 100%; margin-top: 2px; display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 14px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24h72v16H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V200h72a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40ZM48,56H208a8,8,0,0,1,8,8v80H40V64A8,8,0,0,1,48,56ZM208,184H48a8,8,0,0,1-8-8V160H216v16A8,8,0,0,1,208,184Z"></path></svg><span style="flex: 1">Your machine</span><span aria-label="Connected" style="width: 6px; height: 6px; background: var(--success)"></span></button>
+<div style="display: flex; align-items: center; gap: 10px; height: 40px; margin-top: 4px; padding: 0 2px 0 10px">
+<span aria-hidden="true" style="display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--rule-strong); font: 500 11px/1 var(--mono); color: var(--subtle)">B</span>
+<span style="flex: 1; font-size: 14px; color: var(--subtle)">Blake</span>
+<button type="button" class="ib" aria-label="Account menu"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Z"></path></svg></button>
+</div>
+</div>
+</aside>
+
+<main style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<header style="height: 56px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px 0 28px; border-bottom: 1px solid var(--rule)">
+<nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 10px; min-width: 0; font: 13px/1 var(--mono)">
+<span style="color: var(--muted)">kinra-space</span><span style="color: var(--rule-strong)">/</span><span style="color: var(--text)">Corner key port</span>
+</nav>
+<div style="margin-left: auto; display: flex; align-items: center; gap: 4px">
+<button type="button" class="ib" aria-label="Files"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"></path></svg></button>
+<button type="button" class="ib" aria-label="Source"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M232,64a32,32,0,1,0-40,31v17a8,8,0,0,1-8,8H96a23.84,23.84,0,0,0-8,1.38V95a32,32,0,1,0-16,0v66a32,32,0,1,0,16,0V144a8,8,0,0,1,8-8h88a24,24,0,0,0,24-24V95A32.06,32.06,0,0,0,232,64ZM64,64A16,16,0,1,1,80,80,16,16,0,0,1,64,64ZM96,192a16,16,0,1,1-16-16A16,16,0,0,1,96,192ZM200,80a16,16,0,1,1,16-16A16,16,0,0,1,200,80Z"></path></svg></button>
+<button type="button" class="ib" aria-label="Terminal"><svg viewBox="0 0 256 256" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M128,128a8,8,0,0,1-3,6.25l-40,32a8,8,0,1,1-10-12.5L107.19,128,75,102.25a8,8,0,1,1,10-12.5l40,32A8,8,0,0,1,128,128Zm48,24H136a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm56-96V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM216,200V56H40V200H216Z"></path></svg></button>
+<span aria-hidden="true" style="width: 1px; height: 20px; margin: 0 8px; background: var(--rule)"></span>
+<button type="button" class="search" aria-label="Search or run a command" style="position: relative; display: flex; align-items: center; gap: 8px; width: 244px; height: 34px; padding: 0 46px 0 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; color: var(--muted); font-size: 13px; text-align: left; cursor: pointer"><svg viewBox="0 0 256 256" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg><span>Search or run a command</span><span aria-hidden="true" style="position: absolute; top: -1px; right: -1px; bottom: -1px; width: 36px; display: grid; place-items: center; background: var(--key-base); border: 1px solid var(--rule); border-radius: 0 4px 4px 0; font: 500 11px/1 var(--mono); color: var(--muted)">⌘K</span></button>
+<button type="button" class="ib" aria-label="Kin" style="margin-left: 4px"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM84,116a12,12,0,1,0,12,12A12,12,0,0,0,84,116Zm88,0a12,12,0,1,0,12,12A12,12,0,0,0,172,116Zm60,12A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"></path></svg></button>
+</div>
+</header>
+
+<div class="scroll" ref="{{ scrollRef }}" style="flex: 1; min-height: 0; overflow-y: auto; padding: 32px 0 20px">
+<div style="width: 704px; margin: 0 auto">
+
+<div style="display: flex; justify-content: flex-end">
+<div style="max-width: 560px; padding: 10px 16px; background: var(--raised); border: 1px solid var(--rule); border-radius: 4px; font-size: 16px; line-height: 1.6">Port the corner key from the study into Composer.svelte. Keep the native host contract exactly as it is.</div>
+</div>
+
+<div style="margin-top: 28px">
+<div style="display: flex; align-items: center; gap: 8px">
+<span aria-hidden="true" style="width: 6px; height: 6px; background: var(--primary)"></span>
+<span class="{{ firstLabelClass }}" style="font-size: 15px; font-weight: 600; line-height: 1.3">Kin</span>
+</div>
+<p style="margin: 8px 0 0; font-size: 16px; line-height: 1.7">I’ll swap <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">.composer-action</code> for a <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">CornerKey</code> component and feed it the states the composer already derives, so nothing a native host reads has to change.</p>
+
+<div style="margin-top: 14px; padding-left: 14px; border-left: 1px solid var(--rule)">
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; font-size: 14px; color: var(--subtle)">
+<svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg>
+<span>Read 2 files, searched and reasoned</span>
+<span style="margin-left: auto; font: 12px/1 var(--mono); color: var(--muted)">4 steps · 16s</span>
+</div>
+<div style="display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; font-size: 14px">
+<svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+<span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted)">Read <span style="font: 13px var(--mono); color: var(--text)">src/lib/Composer.svelte</span></span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">2s</span>
+</div>
+<div style="display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; font-size: 14px">
+<svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+<span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted)">Read <span style="font: 13px var(--mono); color: var(--text)">src/lib/nativeHost.svelte.ts</span></span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">1s</span>
+</div>
+<div style="display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; font-size: 14px">
+<svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+<span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted)">Searched <span style="font: 13px var(--mono); color: var(--text)">composer-action</span> · 4 matches</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">1s</span>
+</div>
+<div style="display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; font-size: 14px">
+<span aria-hidden="true"></span>
+<span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--reason)">Mapping each composer state to a face of the key</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">12s</span>
+</div>
+</div>
+
+<figure style="margin: 14px 0 0; border: 1px solid var(--rule); background: var(--surface); font: 12.5px/1.65 var(--mono)">
+<figcaption style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule)">
+<span style="color: var(--text)">src/lib/CornerKey.svelte</span>
+<span style="color: var(--muted)"><span style="color: var(--success)">+148</span> · new</span>
+</figcaption>
+<div style="padding: 6px 0">
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">1</span><span style="color: var(--success)">+</span><span>&lt;script lang="ts"&gt;</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">2</span><span style="color: var(--success)">+</span><span>  import { KeyEngine, type Face, type Cue } from './cornerKey';</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">3</span><span style="color: var(--success)">+</span><span>  let { face, cue, label, disabled, onpress }: KeyProps = $props();</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">4</span><span style="color: var(--success)">+</span><span>  let key: HTMLButtonElement;</span></div>
+</div>
+<div style="padding: 7px 12px; border-top: 1px solid var(--rule); font: 13px var(--sans); color: var(--primary)">Show 144 more lines</div>
+</figure>
+
+<figure style="margin: 12px 0 0; border: 1px solid var(--rule); background: var(--surface); font: 12.5px/1.65 var(--mono)">
+<figcaption style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule)">
+<span style="color: var(--text)">src/lib/Composer.svelte</span>
+<span><span style="color: var(--success)">+5</span> <span style="color: var(--error)">−24</span></span>
+</figcaption>
+<div style="padding: 6px 0">
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--del); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">686</span><span style="color: var(--error)">−</span><span>      &lt;div class="composer-action"&gt;</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--del); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">687</span><span style="color: var(--error)">−</span><span>        {#if queueing}&lt;button</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">686</span><span style="color: var(--success)">+</span><span>      &lt;CornerKey face={keyFace} cue={keyCue}</span></div>
+<div style="display: grid; grid-template-columns: 44px 18px minmax(0, 1fr); background: var(--add); white-space: pre"><span style="padding-right: 10px; text-align: right; color: var(--muted)">687</span><span style="color: var(--success)">+</span><span>        label={sendReason || keyLabel} onpress={act} /&gt;</span></div>
+</div>
+</figure>
+
+<p style="margin: 14px 0 0; font-size: 16px; line-height: 1.7">The key reads <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">canSend</code>, <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">queueing</code>, <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">shellLine</code> and <code style="font: 0.875em var(--mono); padding: 1px 5px; background: var(--hover); border-radius: 3px">active</code>, and takes its name from the same reason text a native host shows. Running browser acceptance against a disposable home now.</p>
+
+<sc-if value="{{ running }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top: 12px; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; padding-left: 14px; border-left: 1px solid var(--rule); font-size: 14px">
+<span class="pass" aria-hidden="true"><i></i><i></i><i></i></span>
+<span class="shimmer" style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Running task test:browser · Chromium and WebKit</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">{{ clock }}</span>
+</div>
+</sc-if>
+<sc-if value="{{ runDone }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 12px; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; padding-left: 14px; border-left: 1px solid var(--rule); font-size: 14px">
+<svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+<span style="color: var(--muted)">Ran <span style="font: 13px var(--mono); color: var(--text)">task test:browser</span> · 58 passed</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">{{ clock }}</span>
+</div>
+</sc-if>
+<sc-if value="{{ runStopped }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 12px; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; height: 30px; padding-left: 14px; border-left: 1px solid var(--rule); font-size: 14px">
+<span aria-hidden="true" style="width: 8px; height: 8px; background: var(--muted)"></span>
+<span style="color: var(--muted)">Stopped <span style="font: 13px var(--mono); color: var(--text)">task test:browser</span></span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">{{ clock }}</span>
+</div>
+</sc-if>
+<sc-if value="{{ hasFinal }}" hint-placeholder-val="{{ false }}">
+<p style="margin: 12px 0 0; font-size: 16px; line-height: 1.7">{{ finalText }}</p>
+</sc-if>
+<sc-if value="{{ finalStopped }}" hint-placeholder-val="{{ false }}">
+<p style="margin: 8px 0 0; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted)"><span aria-hidden="true" style="width: 6px; height: 6px; background: var(--muted)"></span>Stopped</p>
+</sc-if>
+</div>
+
+<sc-for list="{{ turns }}" as="t" hint-placeholder-count="0">
+<sc-if value="{{ t.isPerson }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 28px; display: flex; justify-content: flex-end">
+<div style="max-width: 560px; padding: 10px 16px; background: var(--raised); border: 1px solid var(--rule); border-radius: 4px; font-size: 16px; line-height: 1.6; white-space: pre-wrap">{{ t.text }}</div>
+</div>
+</sc-if>
+<sc-if value="{{ t.isKin }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 28px">
+<div style="display: flex; align-items: center; gap: 8px">
+<span aria-hidden="true" style="width: 6px; height: 6px; background: var(--primary)"></span>
+<span class="{{ t.labelClass }}" style="font-size: 15px; font-weight: 600; line-height: 1.3">Kin</span>
+</div>
+<sc-if value="{{ t.waiting }}" hint-placeholder-val="{{ false }}"><p class="shimmer" style="margin: 8px 0 0; font-size: 12px">Working</p></sc-if>
+<p style="margin: 8px 0 0; font-size: 16px; line-height: 1.7">{{ t.text }}</p>
+<sc-if value="{{ t.stopped }}" hint-placeholder-val="{{ false }}">
+<p style="margin: 8px 0 0; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted)"><span aria-hidden="true" style="width: 6px; height: 6px; background: var(--muted)"></span>Stopped</p>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ t.isBlock }}" hint-placeholder-val="{{ false }}">
+<figure style="margin: 28px 0 0; border: 1px solid var(--rule); background: var(--surface)">
+<figcaption style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font: 12.5px/1.4 var(--mono)"><span>{{ t.head }}</span><span style="color: var(--muted)">{{ t.note }}</span></figcaption>
+<div style="padding: 10px 12px; font: 12.5px/1.65 var(--mono); color: var(--subtle); white-space: pre-wrap">{{ t.body }}</div>
+</figure>
+</sc-if>
+</sc-for>
+
+</div>
+</div>
+
+<div style="flex: none; width: 704px; margin: 0 auto; padding: 8px 0 14px">
+<sc-if value="{{ hasQueue }}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Queued for Kin" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; padding: 8px 8px 8px 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px">
+<div style="flex: 1; min-width: 0">
+<div style="font-size: 12px; color: var(--muted)">Queued for Kin</div>
+<sc-for list="{{ queued }}" as="q" hint-placeholder-count="1">
+<div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 14px; color: var(--subtle)"><span aria-hidden="true" style="flex: none; width: 6px; height: 6px; background: var(--primary)"></span><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ q.text }}</span></div>
+</sc-for>
+</div>
+<button type="button" class="quiet" onClick="{{ takeBack }}" style="flex: none; height: 32px; padding: 0 10px; background: transparent; border: 0; border-radius: 4px; color: var(--primary); font-size: 14px; cursor: pointer">Take back</button>
+</div>
+</sc-if>
+
+<div style="margin-bottom: 8px; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px">
+<button type="button" class="row-btn" onClick="{{ toggleTodos }}" aria-expanded="{{ todosExpanded }}" style="width: 100%; display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px; background: transparent; border: 0; border-radius: 4px; text-align: left; cursor: pointer">
+<sc-if value="{{ todosClosed }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path></svg></sc-if>
+<sc-if value="{{ todosOpen }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true" style="color: var(--muted)"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg></sc-if>
+<span style="font-size: 14px; font-weight: 600">Todos</span>
+<span style="font: 12px/1 var(--mono); color: var(--muted)">{{ todoCount }}</span>
+<span style="margin-left: auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--subtle)">{{ todoNow }}</span>
+</button>
+<sc-if value="{{ todosOpen }}" hint-placeholder-val="{{ false }}">
+<div style="padding: 2px 12px 10px 34px; font-size: 14px">
+<div style="display: flex; align-items: center; gap: 10px; height: 28px; color: var(--muted)"><svg viewBox="0 0 256 256" width="13" height="13" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>Map each composer state to a face of the key</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 28px; color: var(--muted)"><svg viewBox="0 0 256 256" width="13" height="13" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>Build CornerKey.svelte and its engine</div>
+<sc-if value="{{ todoPending }}" hint-placeholder-val="{{ true }}"><div style="display: flex; align-items: center; gap: 10px; height: 28px; color: var(--text)"><span aria-label="In hand" style="width: 13px; display: grid; place-items: center"><span style="width: 7px; height: 7px; background: var(--primary)"></span></span>Run browser acceptance</div></sc-if>
+<sc-if value="{{ todoDone }}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: center; gap: 10px; height: 28px; color: var(--muted)"><svg viewBox="0 0 256 256" width="13" height="13" fill="currentColor" aria-label="Done" style="color: var(--success)"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>Run browser acceptance</div></sc-if>
+<div style="display: flex; align-items: center; gap: 10px; height: 28px; color: var(--subtle)"><span aria-label="Not started" style="width: 13px; display: grid; place-items: center"><span style="width: 7px; height: 7px; border: 1px solid var(--muted)"></span></span>Update the composer page in the manual</div>
+</div>
+</sc-if>
+</div>
+
+<form class="composer" onSubmit="{{ onSubmit }}" aria-label="Write to Kin" style="position: relative; background: var(--surface); border: 1px solid var(--frame); border-radius: 4px">
+<textarea ref="{{ draftRef }}" value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKeyDown }}" rows="1" placeholder="Message Kin…" aria-label="Message Kin" aria-describedby="composer-meta" style="display: block; width: 100%; min-height: 46px; max-height: 200px; margin: 0; padding: 12px 16px 4px; overflow-y: auto; background: transparent; border: 0; outline: 0; resize: none; font: 16px/1.6 var(--sans); color: var(--text)"></textarea>
+<div style="display: flex; align-items: center; gap: 4px; height: 48px; padding: 0 58px 0 6px">
+<button type="button" class="tool" aria-label="Attach files" title="Attach files"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path></svg></button>
+<button type="button" class="tool" aria-label="Tailnet devices" title="Tailnet devices"><svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M232,112H136V88h8a16,16,0,0,0,16-16V40a16,16,0,0,0-16-16H112A16,16,0,0,0,96,40V72a16,16,0,0,0,16,16h8v24H24a8,8,0,0,0,0,16H56v32H48a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16H80a16,16,0,0,0,16-16V176a16,16,0,0,0-16-16H72V128H184v32h-8a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16V176a16,16,0,0,0-16-16h-8V128h32a8,8,0,0,0,0-16ZM112,40h32V72H112ZM80,208H48V176H80Zm128,0H176V176h32Z"></path></svg></button>
+<span title="kinra-space" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 6px; font: 12px/1 var(--mono); color: var(--muted)"><svg viewBox="0 0 256 256" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"></path></svg>kinra-space</span>
+<button type="button" class="tool" aria-label="Choose Kin’s model" style="font-family: var(--mono)"><span>gpt-5 · medium</span><svg viewBox="0 0 256 256" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg></button>
+</div>
+<button type="submit" class="key" ref="{{ keyRef }}" aria-label="{{ keyLabel }}" title="{{ keyLabel }}" disabled="{{ keyDisabled }}"><span class="key__base"></span><span class="key__edge"></span><span class="key__layer"><span class="key__glyph"><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i></span><svg class="key__trace" aria-hidden="true"><path></path></svg></span><span class="key__fill"><span class="key__flash"></span><span class="key__layer key__layer--on"><span class="key__glyph"><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i><i class="key__stroke"><b></b></i></span><svg class="key__trace" aria-hidden="true"><path></path></svg></span></span></button>
+</form>
+<div id="composer-meta" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 22px; padding-top: 6px; font-size: 12px; color: var(--muted)">
+<span role="status">{{ status }}</span>
+<span>{{ hint }}</span>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ground":{"editor":"enum","options":["graphite","paper"],"default":"graphite"},"$preview":{"width":1440,"height":1000}}'>
+const STROKE = 2.25;
+const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)';
+const EASE_MORPH = 'cubic-bezier(0.4, 0, 0, 1)';
+const EASE_BLOOM = 'cubic-bezier(0.2, 0, 0, 1)';
+const EASE_FOLD = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const CLIP_ON = 'inset(0% 0% 0% 0%)';
+const CLIP_CORNER = 'inset(100% 0% 0% 100%)';
+const clipOf = (v) => 'inset(' + v[0] + '% ' + v[1] + '% ' + v[2] + '% ' + v[3] + '%)';
+
+// Every icon is four strokes on a 24-unit grid. A hidden stroke has no
+// width and waits where it will grow from.
+const seg = (x1, y1, x2, y2, w, r) => {
+	const width = w === undefined ? STROKE : w;
+	return { x1: x1, y1: y1, x2: x2, y2: y2, w: width, r: r === undefined ? width / 2 : r };
+};
+const hide = (x, y) => seg(x, y, x, y, 0, 0);
+const block = (size, r) => seg(12, 12, 12, 12, size, r);
+const GLYPHS = {
+	arrow: [seg(12, 18.5, 12, 5.5), seg(6.5, 11, 12, 5.5), seg(17.5, 11, 12, 5.5), hide(12, 5.5)],
+	stop: [block(10, 2.5), block(10, 2.5), block(10, 2.5), hide(12, 12)],
+	queue: [seg(12, 19.5, 12, 10), seg(7.5, 14.5, 12, 10), seg(16.5, 14.5, 12, 10), seg(6.5, 5, 17.5, 5)],
+	shell: [seg(13.5, 17.5, 18.5, 17.5), seg(6, 17, 11, 12), seg(6, 7, 11, 12), hide(16, 17.5)],
+	slash: [seg(15, 5, 9, 19), hide(12, 12), hide(12, 12), hide(12, 12)],
+};
+// Between a line icon and the solid Stop, strokes fold into one upright line first.
+const SPINE = [seg(12, 7, 12, 17), seg(12, 7, 12, 17), seg(12, 7, 12, 17), hide(12, 7)];
+const FACES = {
+	rest: { glyph: 'arrow' },
+	send: { glyph: 'arrow', fill: true, lean: true },
+	sending: { glyph: 'stop', ink: 'text', trace: 'muted' },
+	working: { glyph: 'stop', ink: 'text', trace: 'live' },
+	queue: { glyph: 'queue', fill: true, lean: true, trace: 'live' },
+	shell: { glyph: 'shell', fill: true },
+	command: { glyph: 'slash', fill: true },
+};
+const SAYS = { rest: 'Send message', send: 'Send message', sending: 'Sending…', working: 'Stop Kin', queue: 'Queue message', shell: 'Run in the workspace', command: 'Run command' };
+const ACTIONABLE = { send: true, working: true, queue: true, shell: true, command: true };
+const reduced = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const running = (el) => el.getAnimations().filter((a) => !('transitionProperty' in a));
+
+function pose(s) {
+	const len = Math.hypot(s.x2 - s.x1, s.y2 - s.y1);
+	const solid = !len && s.w > 0 && s.r < s.w / 2;
+	let angle = len ? (Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180) / Math.PI : solid ? 90 : 0;
+	if (len) {
+		while (angle > 90) angle -= 180;
+		while (angle <= -90) angle += 180;
+	}
+	return { x: (s.x1 + s.x2) / 2, y: (s.y1 + s.y2) / 2, len: len, angle: angle, w: s.w, r: s.r, period: len || solid ? 180 : 0 };
+}
+
+function turnTo(from, to, period) {
+	if (!period) return from;
+	let a = to;
+	while (a - from > period / 2 + 0.01) a -= period;
+	while (from - a > period / 2 + 0.01) a += period;
+	return a;
+}
+
+// The key's motion: it animates the markup above and never builds any.
+class CornerKey {
+	constructor(el) {
+		this.el = el;
+		this.face = null;
+		this.glyph = null;
+		this.timers = [];
+		this.fill = el.querySelector('.key__fill');
+		this.flash = el.querySelector('.key__flash');
+		this.glyphs = Array.prototype.slice.call(el.querySelectorAll('.key__glyph'));
+		this.traces = Array.prototype.slice.call(el.querySelectorAll('.key__trace'));
+		const under = Array.prototype.slice.call(this.glyphs[0].querySelectorAll('.key__stroke'));
+		const over = Array.prototype.slice.call(this.glyphs[1].querySelectorAll('.key__stroke'));
+		this.strokes = under.map((node, i) => ({
+			nodes: [node, over[i]],
+			bars: [node.querySelector('b'), over[i].querySelector('b')],
+			pose: pose(hide(12, 12)),
+		}));
+		this.measure();
+	}
+
+	measure() {
+		const size = this.el.offsetWidth || 48;
+		const icon = size * 0.44;
+		this.u = icon / 24;
+		this.o = (size - icon) / 2;
+		const tw = Math.max(2, Math.round(size / 24));
+		const radius = parseFloat(getComputedStyle(this.el).borderBottomRightRadius) || 0;
+		const i = tw / 2;
+		const e = size - i;
+		const cr = Math.max(0, radius - i);
+		const d = 'M' + i + ' ' + i + 'H' + e + 'V' + (e - cr) + (cr ? 'A' + cr + ' ' + cr + ' 0 0 1 ' + (e - cr) + ' ' + e : '') + 'H' + i + 'Z';
+		this.el.style.setProperty('--trace-w', tw + 'px');
+		this.traces.forEach((svg) => {
+			svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+			const path = svg.querySelector('path');
+			path.setAttribute('d', d);
+			path.setAttribute('pathLength', '100');
+		});
+	}
+
+	later(fn, ms) {
+		this.timers.push(setTimeout(fn, ms));
+	}
+
+	css(p) {
+		const u = this.u;
+		const o = this.o;
+		return {
+			transform: 'translate(' + (o + p.x * u) + 'px, ' + (o + p.y * u) + 'px) rotate(' + p.angle + 'deg)',
+			bar: { width: (p.len + p.w) * u + 'px', height: p.w * u + 'px', borderRadius: p.r * u + 'px' },
+		};
+	}
+
+	apply(s, p) {
+		const c = this.css(p);
+		s.nodes.forEach((n) => {
+			n.style.transform = c.transform;
+		});
+		s.bars.forEach((b) => Object.assign(b.style, c.bar));
+		s.pose = p;
+	}
+
+	read(s) {
+		const node = s.nodes[0];
+		const bar = s.bars[0];
+		const moving = running(node).length > 0;
+		const sizing = running(bar).length > 0;
+		if (moving || sizing) {
+			const p = Object.assign({}, s.pose);
+			if (moving) {
+				const M = new DOMMatrixReadOnly(getComputedStyle(node).transform);
+				p.x = (M.e - this.o) / this.u;
+				p.y = (M.f - this.o) / this.u;
+				p.angle = (Math.atan2(M.b, M.a) * 180) / Math.PI;
+			}
+			if (sizing) {
+				const cs = getComputedStyle(bar);
+				p.w = parseFloat(cs.height) / this.u;
+				p.len = Math.max(0, parseFloat(cs.width) / this.u - p.w);
+				p.r = parseFloat(cs.borderTopLeftRadius) / this.u;
+			}
+			s.pose = p;
+		}
+		s.nodes.concat(s.bars).forEach((n) => running(n).forEach((a) => a.cancel()));
+		this.apply(s, s.pose);
+	}
+
+	readFill() {
+		const value = getComputedStyle(this.fill).clipPath || '';
+		running(this.fill).forEach((a) => a.cancel());
+		const match = /inset\(([^)]*)\)/.exec(value);
+		if (!match) return [100, 0, 0, 100];
+		const v = match[1].trim().split(/\s+/).map(parseFloat);
+		const t = v[0];
+		const r = v.length > 1 ? v[1] : t;
+		const b = v.length > 2 ? v[2] : t;
+		const l = v.length > 3 ? v[3] : r;
+		return [t, r, b, l];
+	}
+
+	morph(name, o) {
+		o = o || {};
+		const via = o.dur && this.glyph && this.glyph !== name && (name === 'stop') !== (this.glyph === 'stop') ? SPINE : null;
+		this.glyph = name;
+		GLYPHS[name].forEach((shape, i) => {
+			const s = this.strokes[i];
+			const from = s.pose;
+			const mid = via ? pose(via[i]) : null;
+			if (mid) mid.angle = turnTo(from.angle, mid.angle, mid.period);
+			const to = pose(shape);
+			to.angle = turnTo((mid || from).angle, to.angle, to.period);
+			const a = this.css(from);
+			const b = this.css(to);
+			this.apply(s, to);
+			if (!o.dur) return;
+			if (mid) {
+				const m = this.css(mid);
+				const timing = { duration: o.dur * 1.25, delay: o.delay || 0, fill: 'backwards' };
+				s.nodes.forEach((n) => n.animate([{ transform: a.transform, easing: EASE_FOLD }, { transform: m.transform, offset: 0.45, easing: EASE_MORPH }, { transform: b.transform }], timing));
+				s.bars.forEach((bar) => bar.animate([Object.assign({ easing: EASE_FOLD }, a.bar), Object.assign({ offset: 0.45, easing: EASE_MORPH }, m.bar), b.bar], timing));
+				return;
+			}
+			const timing = { duration: o.dur, delay: (o.delay || 0) + i * (o.stagger || 0), easing: EASE_MORPH, fill: 'backwards' };
+			s.nodes.forEach((n) => n.animate([{ transform: a.transform }, { transform: b.transform }], timing));
+			s.bars.forEach((bar) => bar.animate([a.bar, b.bar], timing));
+		});
+	}
+
+	settleGlyphs() {
+		this.glyphs.forEach((g) => running(g).forEach((a) => a.cancel()));
+		running(this.flash).forEach((a) => a.cancel());
+	}
+
+	// Waking: the fill grows out of the pinned corner and blinks once as it lands.
+	bloom() {
+		const now = this.readFill();
+		this.settleGlyphs();
+		this.fill.style.clipPath = CLIP_ON;
+		this.fill.animate([{ clipPath: clipOf(now) }, { clipPath: CLIP_ON }], { duration: 260, easing: EASE_BLOOM });
+		this.flash.animate([{ opacity: 0.55 }, { opacity: 0.08, offset: 0.2 }, { opacity: 0.38, offset: 0.36 }, { opacity: 0 }], { duration: 480, easing: 'ease-out' });
+		const rise = this.u * 4;
+		this.glyphs.forEach((g) => g.animate([{ transform: 'translateY(' + rise + 'px)' }, { transform: 'translateY(0px)' }], { duration: 340, delay: 20, easing: EASE_BLOOM, fill: 'backwards' }));
+	}
+
+	retract() {
+		const now = this.readFill();
+		this.fill.style.clipPath = CLIP_CORNER;
+		this.fill.animate([{ clipPath: clipOf(now) }, { clipPath: CLIP_CORNER }], { duration: 200, easing: EASE_IN });
+	}
+
+	// Sending: the fill lifts out of the top, the way the message travels.
+	lift() {
+		const now = this.readFill();
+		this.settleGlyphs();
+		this.fill.style.clipPath = CLIP_CORNER;
+		this.fill.animate([{ clipPath: clipOf(now) }, { clipPath: clipOf([now[0], now[1], 100 - now[0], now[3]]) }], { duration: 260, easing: EASE_IN });
+		const kick = -this.u * 3;
+		this.glyphs.forEach((g) => g.animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(' + kick + 'px)', offset: 0.35 }, { transform: 'translateY(0px)' }], { duration: 340, easing: 'cubic-bezier(0.3, 0, 0.2, 1)' }));
+	}
+
+	trace(next, how, still) {
+		const el = this.el;
+		if (next.trace) {
+			el.dataset.trace = next.trace;
+			return;
+		}
+		if (!el.dataset.trace) return;
+		if (how.completed && !still) {
+			el.dataset.trace = 'closing';
+			this.later(() => {
+				delete el.dataset.trace;
+			}, 320);
+		} else {
+			delete el.dataset.trace;
+		}
+	}
+
+	set(face, how) {
+		how = how || {};
+		const prev = this.face ? FACES[this.face] : null;
+		const next = FACES[face];
+		if (!next || (this.face === face && !how.force)) return;
+		this.face = face;
+		const el = this.el;
+		el.dataset.face = face;
+		el.dataset.ink = next.ink || 'muted';
+		if (next.lean) el.setAttribute('data-lean', '');
+		else el.removeAttribute('data-lean');
+		this.timers.forEach(clearTimeout);
+		this.timers = [];
+		const still = how.instant || !prev || reduced();
+		this.trace(next, how, still);
+		if (still) {
+			this.strokes.forEach((s) => this.read(s));
+			this.settleGlyphs();
+			this.morph(next.glyph);
+			this.readFill();
+			this.fill.style.clipPath = next.fill ? CLIP_ON : CLIP_CORNER;
+			return;
+		}
+		let delay = 0;
+		if (next.fill && !prev.fill) {
+			this.bloom();
+		} else if (prev.fill && !next.fill) {
+			if (how.sent || how.dispatched) {
+				this.lift();
+				delay = 40;
+			} else {
+				this.retract();
+			}
+		}
+		if (how.completed) delay = 180;
+		// Only a change of icon interrupts strokes that are still moving.
+		if (prev.glyph !== next.glyph) {
+			this.strokes.forEach((s) => this.read(s));
+			this.morph(next.glyph, { dur: 320, delay: delay, stagger: 18 });
+		}
+	}
+}
+
+const REPLIES = [
+	'Done. The key now wakes from its corner on the first character, lifts when you send and folds its arrow into Stop. The light runs around its edge until the turn ends, then closes into a ring.',
+	'I kept Space’s rules as they were: Enter still sends, Shift+Enter still starts a line, and on a touch screen the key is how you send. A native host still reads the same send and turn fields.',
+	'Next I’d update the composer page in the manual and retake its screenshots, since the key changes what a reader sees at the bottom of every conversation.',
+];
+const FINAL = 'All 58 browser checks pass in Chromium and WebKit. The key is on the corner-key branch, ready to try in a disposable home.';
+const DEFAULTS = {
+	draft: '',
+	active: true,
+	sending: false,
+	runDone: false,
+	runStopped: false,
+	finalText: '',
+	finalStopped: false,
+	initialLive: true,
+	clock: 18,
+	turns: [],
+	queued: [],
+	todosOpen: false,
+	todoDone: false,
+	reply: 0,
+};
+const pad = (n) => (n < 10 ? '0' : '') + n;
+const fmt = (sec) => Math.floor(sec / 60) + ':' + pad(sec % 60);
+
+class Component extends DCLogic {
+	constructor(...args) {
+		super(...args);
+		this.state = Object.assign({}, DEFAULTS);
+		this.cue = null;
+		this.timers = [];
+		this.nextId = 1;
+		this.keyRef = (el) => {
+			if (el) this.keyEl = el;
+		};
+		this.scrollRef = (el) => {
+			if (el) this.scrollEl = el;
+		};
+		this.draftRef = (el) => {
+			if (el) this.draftEl = el;
+		};
+		this.onDraft = (e) => this.setState({ draft: e.target.value });
+		this.onKeyDown = (e) => {
+			if (e.key !== 'Enter' || e.shiftKey || (e.nativeEvent && e.nativeEvent.isComposing)) return;
+			e.preventDefault();
+			const f = this.face();
+			if (f === 'working' || f === 'sending') return;
+			this.act(f);
+		};
+		this.onSubmit = (e) => {
+			e.preventDefault();
+			this.act(this.face());
+		};
+		this.toggleTodos = () => this.setState({ todosOpen: !this.st().todosOpen });
+		this.takeBack = () => {
+			const s = this.st();
+			const text = s.queued.map((q) => q.text).join('\n\n');
+			this.setState({ queued: [], draft: s.draft ? s.draft + '\n\n' + text : text });
+		};
+	}
+
+	st() {
+		return Object.assign({}, DEFAULTS, this.state || {});
+	}
+
+	later(fn, ms) {
+		const id = setTimeout(fn, ms);
+		this.timers.push(id);
+		return id;
+	}
+
+	face() {
+		const s = this.st();
+		const text = s.draft.trim();
+		if (s.sending) return 'sending';
+		if (s.active) return text ? 'queue' : 'working';
+		if (/^!!?\s*\S/.test(s.draft)) return 'shell';
+		if (/^\/[a-z]*$/i.test(s.draft)) return 'command';
+		return text ? 'send' : 'rest';
+	}
+
+	componentDidMount() {
+		if (this.keyEl) {
+			this.key = new CornerKey(this.keyEl);
+			this.key.set(this.face(), { instant: true });
+		}
+		this.scrollDown();
+		this.clockTimer = setInterval(() => {
+			const s = this.st();
+			if (s.active && !s.runDone && !s.runStopped) this.setState({ clock: s.clock + 1 });
+		}, 1000);
+		this.later(() => this.finishRun(), 8000);
+	}
+
+	componentWillUnmount() {
+		this.timers.forEach(clearTimeout);
+		clearTimeout(this.streamTimer);
+		clearInterval(this.clockTimer);
+		if (this.key) this.key.timers.forEach(clearTimeout);
+	}
+
+	componentDidUpdate() {
+		const f = this.face();
+		if (this.key && f !== this.key.face) {
+			this.key.set(f, this.cue || {});
+			this.cue = null;
+		}
+		if (this.draftEl) {
+			this.draftEl.style.height = 'auto';
+			this.draftEl.style.height = Math.min(this.draftEl.scrollHeight, 200) + 'px';
+		}
+		const s = this.st();
+		const sig = [s.turns.length, s.turns.reduce((n, t) => n + (t.text || '').length, 0), s.finalText.length, s.runDone, s.runStopped, s.queued.length].join(':');
+		if (sig !== this.sig) {
+			this.sig = sig;
+			this.scrollDown();
+		}
+	}
+
+	scrollDown() {
+		if (this.scrollEl) this.scrollEl.scrollTop = this.scrollEl.scrollHeight;
+	}
+
+	stream(words, onWord, done) {
+		let i = 0;
+		const step = () => {
+			i += 1;
+			onWord(words.slice(0, i).join(' '));
+			if (i < words.length) this.streamTimer = setTimeout(step, 55 + Math.random() * 55);
+			else done();
+		};
+		this.streamTimer = setTimeout(step, 90);
+	}
+
+	finishRun() {
+		const s = this.st();
+		if (!s.active || s.runStopped || s.runDone) return;
+		this.setState({ runDone: true, todoDone: true });
+		this.stream(FINAL.split(' '), (text) => this.setState({ finalText: text }), () => this.finishTurn(true));
+	}
+
+	finishTurn(completed) {
+		clearTimeout(this.streamTimer);
+		const s = this.st();
+		const turns = s.turns.map((t) => (t.live ? Object.assign({}, t, { live: false, stopped: !completed }) : t));
+		const patch = { turns: turns, initialLive: false };
+		// Kin owns the queue: what waited runs as a fresh turn.
+		if (completed && s.queued.length) {
+			const person = { id: this.nextId++, kind: 'person', text: s.queued[0].text };
+			const kin = { id: this.nextId++, kind: 'kin', text: '', live: true };
+			patch.turns = turns.concat([person, kin]);
+			patch.queued = s.queued.slice(1);
+			this.setState(patch);
+			this.later(() => this.replyInto(kin.id), 700);
+			return;
+		}
+		patch.active = false;
+		this.cue = { completed: completed };
+		this.setState(patch);
+	}
+
+	replyInto(id) {
+		const s = this.st();
+		const text = REPLIES[s.reply % REPLIES.length];
+		this.setState({ reply: s.reply + 1 });
+		this.stream(
+			text.split(' '),
+			(partial) => {
+				const now = this.st();
+				this.setState({ turns: now.turns.map((t) => (t.id === id ? Object.assign({}, t, { text: partial }) : t)) });
+			},
+			() => this.finishTurn(true),
+		);
+	}
+
+	act(f) {
+		const s = this.st();
+		if (f === 'send') {
+			const text = s.draft.trim();
+			if (!text) return;
+			this.cue = { sent: true };
+			this.setState({ draft: '', sending: true, turns: s.turns.concat([{ id: this.nextId++, kind: 'person', text: text }]) });
+			this.later(() => {
+				const kin = { id: this.nextId++, kind: 'kin', text: '', live: true };
+				this.setState({ sending: false, active: true, turns: this.st().turns.concat([kin]) });
+				this.later(() => this.replyInto(kin.id), 700);
+			}, 380);
+		} else if (f === 'queue') {
+			this.cue = { sent: true };
+			this.setState({ draft: '', queued: s.queued.concat([{ id: this.nextId++, text: s.draft.trim() }]) });
+		} else if (f === 'working') {
+			this.stop();
+		} else if (f === 'shell') {
+			const line = s.draft.trim();
+			const cmd = line.replace(/^!!?\s*/, '');
+			const word = cmd.split(/\s+/)[0];
+			const body = word === 'git' ? ' M src/lib/Composer.svelte\n M src/styles/composer.css\n?? src/lib/CornerKey.svelte' : word === 'ls' ? 'CHANGELOG.md  README.md  docs  src  static  tests' : 'Finished with no output.';
+			const note = line.indexOf('!!') === 0 ? 'exit 0 · kept out of Kin’s context' : 'exit 0 · joins Kin’s next turn';
+			this.cue = { dispatched: true };
+			this.setState({ draft: '', turns: s.turns.concat([{ id: this.nextId++, kind: 'block', head: '$ ' + cmd, note: note, body: body }]) });
+		} else if (f === 'command') {
+			const name = s.draft.slice(1) || 'help';
+			const body = name === 'compact' ? 'Compacted the conversation. Eighteen turns became a summary, and 61% of the context is free.' : 'Opened /' + name + ' beside this conversation.';
+			this.cue = { dispatched: true };
+			this.setState({ draft: '', turns: s.turns.concat([{ id: this.nextId++, kind: 'block', head: '/' + name, note: 'command', body: body }]) });
+		}
+	}
+
+	stop() {
+		const s = this.st();
+		if (!s.active) return;
+		clearTimeout(this.streamTimer);
+		const turns = s.turns.map((t) => (t.live ? Object.assign({}, t, { live: false, stopped: true }) : t));
+		this.cue = {};
+		this.setState({
+			active: false,
+			turns: turns,
+			initialLive: false,
+			runStopped: s.runDone ? s.runStopped : true,
+			finalStopped: s.initialLive && s.runDone ? true : s.finalStopped,
+		});
+	}
+
+	renderVals() {
+		const s = this.st();
+		const f = this.face();
+		let hint = '';
+		if (f === 'queue') hint = 'Enter queues this for Kin';
+		else if (f === 'shell') hint = s.draft.indexOf('!!') === 0 ? 'Enter runs this here · it stays out of Kin’s context' : 'Enter runs this here · the output joins Kin’s next turn';
+		else if (f === 'command') hint = 'Enter runs the command';
+		else if (!s.active && !s.sending) hint = 'Enter sends · Shift+Enter for a new line';
+		return {
+			ground: this.props.ground ?? 'graphite',
+			keyRef: this.keyRef,
+			scrollRef: this.scrollRef,
+			draftRef: this.draftRef,
+			draft: s.draft,
+			onDraft: this.onDraft,
+			onKeyDown: this.onKeyDown,
+			onSubmit: this.onSubmit,
+			keyLabel: SAYS[f],
+			keyDisabled: !ACTIONABLE[f],
+			active: s.active,
+			idle: !s.active,
+			sessionClock: fmt(116 + s.clock),
+			firstLabelClass: s.initialLive ? 'shimmer-kin' : '',
+			running: !s.runDone && !s.runStopped,
+			runDone: s.runDone,
+			runStopped: s.runStopped,
+			clock: fmt(s.clock),
+			hasFinal: s.finalText.length > 0,
+			finalText: s.finalText,
+			finalStopped: s.finalStopped,
+			turns: s.turns.map((t) =>
+				Object.assign({}, t, {
+					isPerson: t.kind === 'person',
+					isKin: t.kind === 'kin',
+					isBlock: t.kind === 'block',
+					labelClass: t.live ? 'shimmer-kin' : '',
+					waiting: !!t.live && !t.text,
+					stopped: !!t.stopped,
+				}),
+			),
+			hasQueue: s.queued.length > 0,
+			queued: s.queued,
+			takeBack: this.takeBack,
+			todosOpen: s.todosOpen,
+			todosClosed: !s.todosOpen,
+			todosExpanded: s.todosOpen ? 'true' : 'false',
+			toggleTodos: this.toggleTodos,
+			todoDone: s.todoDone,
+			todoPending: !s.todoDone,
+			todoCount: s.todoDone ? '3 of 4' : '2 of 4',
+			todoNow: s.todoDone ? 'Update the composer page in the manual' : 'Run browser acceptance',
+			status: s.sending ? 'Sending…' : '',
+			hint: hint,
+		};
+	}
+}
+</script>
+</body>
+</html>

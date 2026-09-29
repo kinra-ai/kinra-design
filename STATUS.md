@@ -29,6 +29,12 @@ adoption map; this file only tracks current state, not process.
   the shared styles together without adding registry or stable contracts.
 - `package.json` remains at the latest released version until a maintainer
   explicitly approves the next release identity and tag.
+- A further refresh is being explored, modelled on the corner key, a composer
+  send control drawn for Kinra Space (2026-09-28, Blake).
+  [`docs/refresh-plan.md`](docs/refresh-plan.md) holds its grammar,
+  measurements and adoption path; `examples/studies/` holds the interactive
+  study and a snapshot of the refreshed-Space canvas. No package class or
+  token has changed for it.
 - `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
   Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
