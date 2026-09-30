@@ -214,14 +214,12 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Depot** vendors that same exact commit; its manifest and read-only
-  vendoring gate bind every asset. Its application layer retains ownership of
-  Forge-specific routes and interactions.
 - **Kinra Space** pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` through the
   public GitHub Git URL, including `wordmark-space.svg`.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
 Current consumers have adopted unreleased exact commits, not `v0.2.0`.
-Retired Spaces and Kinra OS retain earlier pins as recovery evidence.
+Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
+recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.

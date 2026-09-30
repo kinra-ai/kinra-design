@@ -50,20 +50,20 @@ adoption map; this file only tracks current state, not process.
 
 - **kinra-site** and **kinra-gateway** consume the public GitHub codeload
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
-  integrity. **Depot** vendors that same exact expanded-system test pin.
+  integrity.
 - **kinra-space** pins the exact GitHub Git dependency
   `36b9340061fb7da32b8ed3b62dfebc13ff533cf5`, including its appointed wordmark.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
-- Retired Spaces and Kinra OS pins remain recovery evidence in their owners.
-  No current consumer selected `v0.2.0`; the expansion remains unreleased.
+- Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
+  remain recovery evidence in their owners. No current consumer selected
+  `v0.2.0`; the expansion remains unreleased.
 
 ## Open for the release review
 
 - The package name `@kinra/web` predates the brand standard and undersells
   what the repository now owns. Renaming it, likely to `@kinra/design`,
-  changes every consumer's import paths, Depot's vendoring script, and
-  Gateway's build banner, so it belongs with the next release identity as a
+  changes every consumer's import paths and Gateway's build banner, so it belongs with the next release identity as a
   coordinated change, not with a docs edit.
 
 ## Next event

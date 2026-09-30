@@ -23,8 +23,8 @@ and marks.
   role that Kin or another agent can fill; _harness_ is an architecture word
   for the code Kin runs on. Neither is a product name.
 - **Every other product is formally "Kinra <Name>"**: Kinra Spaces, Kinra OS,
-  Kinra Gateway, Kinra Site, Kinra Design, Kinra Depot, Kinra Paddock, Kinra
-  Scope, Kinra Flow. Use the full form on first reference on a page and in
+  Kinra Gateway, Kinra Site, Kinra Design, Kinra Paddock, Kinra Scope,
+  Kinra Flow. Use the full form on first reference on a page and in
   metadata. Use the bare name afterwards, in commands, packages, repository
   names, and document titles. The lockup below is the full form rendered.
 - **Product names are proper nouns** in written case: Spaces, not SPACES or
@@ -136,14 +136,14 @@ without image passthrough. This narrow exception was approved by Blake on
 A web consumer imports `mark.svg` and `wordmark.svg`, or for Kinra Space
 `wordmark-space.svg`, from the package. Any
 other consumer vendors the two files from an exact commit or tag and records
-the source and revision beside them, as Depot does in its `VENDORED.md`. A
+the source and revision beside them, as Kin does in its `VENDORED.md`. A
 consumer never redraws, re-exports, or restyles either file, apart from the
 specific derived terminal representation admitted above.
 
 ## Titles and metadata
 
 - A document title inside a product is `<Page> · <Product>`, for example
-  `Repositories · Depot`. On kinra.ai it is `<Page> · Kinra`.
+  `Credentials · Gateway`. On kinra.ai it is `<Page> · Kinra`.
 - The favicon is `assets/mark.svg`.
 - Attribution and copyright lines read `© Kinra AI LLC`.
 

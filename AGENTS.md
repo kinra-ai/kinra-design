@@ -8,11 +8,10 @@ Kinra's shared, framework-light design system for web products and public
 surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
 Real consumers pin an exact release or commit: `kinra-site` and Gateway pin
-`21327ae489243316988019e6b6ca9a7737982699`, Depot vendors that same revision,
-and Space pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` (see each owner's
+`21327ae489243316988019e6b6ca9a7737982699`, and Space pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` (see each owner's
 lockfile or vendored manifest); see `STATUS.md` for current
-release and adoption state. Retiring Kinra OS retains its historical pin in
-its own source but is no longer a current consumer.
+release and adoption state. Retiring Kinra OS and Depot retain their
+historical pins in their own source but are no longer current consumers.
 
 ## Start here
 
