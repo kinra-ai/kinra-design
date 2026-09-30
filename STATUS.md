@@ -20,7 +20,7 @@ adoption map; this file only tracks current state, not process.
   scheme beside graphite, serif and sans voices beside mono, type roles,
   layout compositions, generic control, navigation, feedback, overlay, and
   data components, five surface recipes, a source-owned candidate registry,
-  and an eleven-page reference catalog with a scheme switch. The refresh changes
+  and a twelve-page reference catalog with a scheme switch. The refresh changes
   several defaults (square marks, sentence-case eyebrow, more open tracking,
   serif editorial display); the migration notes live in `docs/adoption.md`.
 - The polish pass refines paper contrast, small text, control geometry,
@@ -29,13 +29,14 @@ adoption map; this file only tracks current state, not process.
   the shared styles together without adding registry or stable contracts.
 - `package.json` remains at the latest released version until a maintainer
   explicitly approves the next release identity and tag.
-- A further refresh is being explored, modelled on the corner key, a composer
-  send control drawn for Kinra Space (2026-09-28, Blake).
-  [`docs/refresh-plan.md`](docs/refresh-plan.md) holds its grammar,
-  measurements and adoption path; `examples/studies/` holds the interactive
-  study and a snapshot of the refreshed-Space canvas. `docs/principles.md` and
-  `docs/composing.md` are amended to adopt its grammar; no package class or
-  token has changed for it yet.
+- The corner key refresh is brought back from Kinra Space at
+  `8589b8a5b04f771b5ab0a3b7b4d3fb38d66d2663` (2026-09-30): soft layer roles,
+  wells and quiet controls, sentence-case labels, signal edges, and causal
+  motion tokens now live in the shared styles. The corner action, corner key,
+  and live edge are candidate registry patterns with Space's evidence; none
+  is promoted before a second consumer. `/refresh/` demonstrates both grounds,
+  all key faces without script, and interactive motion. The grammar, source
+  boundary, and adoption state live in [`docs/refresh-plan.md`](docs/refresh-plan.md).
 - `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
   Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
@@ -79,6 +80,6 @@ version or artifact changed.
 
 ## Next event
 
-Maintainer review of the unreleased package expansion and its next release
-identity. Consumer version upgrades remain separate changes in their owning
-repositories.
+Review the Space refresh in the catalog, then settle the unreleased package's
+next release identity. Candidate promotion requires a second consumer.
+Consumer version upgrades remain separate changes in their owning repositories.

@@ -83,8 +83,17 @@ When a surface exists to take or confirm one action (a composer, a question,
 a dialog's confirmation, a search, a card built around one action), that
 action sits flush in the surface's end corner, following
 [the principles](principles.md#the-corner). A surface with several equal
-actions keeps them together in a row instead. The package has no class for
-the corner action yet; the [refresh plan](refresh-plan.md) tracks one.
+actions keeps them together in a row instead. Copy the candidate
+[corner action](../registry/patterns/corner-action/README.md) for a labelled
+confirmation, or [corner key](../registry/patterns/corner-key/README.md) for
+an action whose icon changes meaning. They are source to own, pending a
+second consumer; the [refresh plan](refresh-plan.md) records their evidence.
+
+Keep one primary fill available to the screen's one action. Shared cards,
+notices, surfaces, and disclosures render their primary buttons in the tint;
+a modal retains its fill while the page beneath it is inert. The product
+still chooses which action is primary and whether a context calls for a
+corner. Do not infer a corner confirmation from the last button in any row.
 
 ## Compose with the mark, not with colour
 

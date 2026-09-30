@@ -54,6 +54,55 @@
         "registry/patterns/operations-region/operations-region.css",
         "registry/patterns/operations-region/README.md"
       ]
+    },
+    {
+      "name": "corner-action",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "A labelled confirmation flush in a surface's end corner.",
+      "evidence": ["kinra-space"],
+      "requires": [
+        "@kinra/web/styles/canvas.css",
+        "@kinra/web/styles/components.css",
+        "@kinra/web/styles/data.css",
+        "@kinra/web/styles/overlays.css"
+      ],
+      "files": [
+        "registry/patterns/corner-action/corner-action.html",
+        "registry/patterns/corner-action/corner-action.css",
+        "registry/patterns/corner-action/README.md"
+      ]
+    },
+    {
+      "name": "corner-key",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "A morphing square action with a clipped fill and independent work light.",
+      "evidence": ["kinra-space"],
+      "requires": ["@kinra/web/styles/tokens.css"],
+      "files": [
+        "registry/patterns/corner-key/corner-key.html",
+        "registry/patterns/corner-key/corner-key.css",
+        "registry/patterns/corner-key/corner-key.js",
+        "registry/patterns/corner-key/corner-key.d.ts",
+        "registry/patterns/corner-key/README.md"
+      ]
+    },
+    {
+      "name": "live-edge",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "A leading-edge light that names foreground, background and settled work beside a caption.",
+      "evidence": ["kinra-space"],
+      "requires": [
+        "@kinra/web/styles/tokens.css",
+        "@kinra/web/styles/data.css"
+      ],
+      "files": [
+        "registry/patterns/live-edge/live-edge.html",
+        "registry/patterns/live-edge/live-edge.css",
+        "registry/patterns/live-edge/README.md"
+      ]
     }
   ]
 }

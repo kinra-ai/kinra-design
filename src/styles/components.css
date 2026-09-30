@@ -7,8 +7,6 @@
 
 	.kin-badge {
 		align-items: center;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-border-subtle);
 		border-radius: 2px;
 		color: var(--kin-color-text-subtle);
 		display: inline-flex;
@@ -22,35 +20,32 @@
 		padding: var(--kin-space-1) var(--kin-space-2);
 		white-space: nowrap;
 		width: fit-content;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	.kin-badge[data-tone="primary"] {
 		background: var(--kin-tint-primary);
-		border-color: var(--kin-edge-primary);
 		color: var(--kin-color-primary);
 	}
 
 	.kin-badge[data-tone="reason"] {
 		background: var(--kin-tint-reason);
-		border-color: var(--kin-edge-reason);
 		color: var(--kin-color-reason);
 	}
 
 	.kin-badge[data-tone="success"] {
 		background: var(--kin-tint-success);
-		border-color: var(--kin-edge-success);
 		color: var(--kin-color-success);
 	}
 
 	.kin-badge[data-tone="warning"] {
 		background: var(--kin-tint-warning);
-		border-color: var(--kin-edge-warning);
 		color: var(--kin-color-warning);
 	}
 
 	.kin-badge[data-tone="error"] {
 		background: var(--kin-tint-error);
-		border-color: var(--kin-edge-error);
 		color: var(--kin-color-error);
 	}
 
@@ -89,8 +84,6 @@
 
 	.kin-chip {
 		align-items: center;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		border-radius: var(--kin-control-radius);
 		color: var(--kin-color-text-subtle);
 		cursor: pointer;
@@ -107,19 +100,20 @@
 			background var(--kin-duration-fast) ease,
 			border-color var(--kin-duration-fast) ease,
 			color var(--kin-duration-fast) ease;
+		background: var(--kin-surface-lift);
+		border: 1px solid transparent;
 	}
 
 	.kin-chip:hover:where(:not(:disabled, [aria-disabled="true"])) {
-		background: var(--kin-surface-hover);
-		border-color: var(--kin-color-text-muted);
 		color: var(--kin-color-text);
+		background: var(--kin-surface-lift-hover);
 	}
 
 	.kin-chip[aria-pressed="true"],
 	.kin-chip[aria-current]:not([aria-current="false"]) {
 		background: var(--kin-tint-primary);
-		border-color: var(--kin-edge-primary);
 		color: var(--kin-color-primary);
+		border-color: transparent;
 	}
 
 	.kin-chip:disabled,
@@ -157,16 +151,13 @@
 	.kin-notice {
 		--kin-notice-signal: var(--kin-color-text-muted);
 
-		background: color-mix(
-			in srgb,
-			var(--kin-notice-signal) 5%,
-			var(--kin-color-ground-deep)
-		);
-		border: 1px solid var(--kin-border-subtle);
-		border-inline-start: 2px solid var(--kin-notice-signal);
 		display: grid;
 		gap: var(--kin-space-2);
 		padding: var(--kin-space-5);
+		background: color-mix(in srgb, var(--kin-notice-signal) 7%, transparent);
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
+		position: relative;
 	}
 
 	.kin-notice[data-tone="primary"] {
@@ -293,8 +284,10 @@
 	}
 
 	.kin-fieldset[data-variant="bounded"] {
-		border: 1px solid var(--kin-color-rule);
 		padding: var(--kin-space-5);
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
 	}
 
 	.kin-fieldset[data-variant="bounded"] > .kin-fieldset__legend {
@@ -303,8 +296,6 @@
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea) {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-control-edge);
 		border-radius: var(--kin-control-radius);
 		color: var(--kin-color-text);
 		font-family: var(--kin-font-ui);
@@ -316,6 +307,8 @@
 			background var(--kin-duration-fast) ease,
 			border-color var(--kin-duration-fast) ease;
 		width: 100%;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea)::placeholder {
@@ -326,7 +319,7 @@
 	:is(.kin-input, .kin-select, .kin-textarea):hover:where(
 			:not(:disabled, :focus-visible, [aria-invalid="true"])
 		) {
-		border-color: var(--kin-color-text-muted);
+		background-color: var(--kin-surface-well-hover);
 	}
 
 	:is(.kin-input, .kin-select, .kin-textarea):focus-visible {
@@ -445,8 +438,6 @@
 
 	.kin-input-group__affix {
 		align-items: center;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-control-edge);
 		color: var(--kin-color-text-muted);
 		display: inline-flex;
 		flex: none;
@@ -454,6 +445,8 @@
 		font-size: var(--kin-text-sm);
 		padding-inline: var(--kin-space-3);
 		white-space: nowrap;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	.kin-input-group > .kin-button {
@@ -510,9 +503,6 @@
 
 	.kin-switch input {
 		appearance: none;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-control-edge);
-		border-radius: var(--kin-control-radius);
 		cursor: pointer;
 		flex: none;
 		height: 1.5rem;
@@ -522,6 +512,9 @@
 			background var(--kin-duration-normal) var(--kin-ease-standard),
 			border-color var(--kin-duration-normal) var(--kin-ease-standard);
 		width: 2.625rem;
+		background: var(--kin-surface-lift-hover);
+		border: 1px solid transparent;
+		border-radius: 2px;
 	}
 
 	.kin-switch input::before {
@@ -539,7 +532,7 @@
 
 	.kin-switch input:checked {
 		background: var(--kin-color-primary);
-		border-color: var(--kin-color-primary);
+		border-color: transparent;
 	}
 
 	.kin-switch input:checked::before {
@@ -622,13 +615,13 @@
 	/* Segmented control: one choice among a few peers. */
 
 	.kin-segmented {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		border-radius: var(--kin-control-radius);
 		display: inline-flex;
 		max-width: 100%;
 		flex-wrap: wrap;
 		padding: 2px;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	.kin-segmented > * {
@@ -636,7 +629,6 @@
 		background: transparent;
 		border: 0;
 		border-radius: max(0px, calc(var(--kin-control-radius) - 2px));
-		color: var(--kin-color-text-muted);
 		cursor: pointer;
 		display: inline-flex;
 		font-family: var(--kin-font-ui);
@@ -652,6 +644,7 @@
 		transition:
 			background var(--kin-duration-fast) ease,
 			color var(--kin-duration-fast) ease;
+		color: var(--kin-color-text-subtle);
 	}
 
 	.kin-segmented
@@ -675,9 +668,8 @@
 			[aria-pressed="true"],
 			[aria-current]:not([aria-current="false"])
 		) {
-		background: var(--kin-color-surface-raised);
-		box-shadow: 0 0 0 1px var(--kin-color-rule);
 		color: var(--kin-color-text);
+		background: var(--kin-surface-lift-hover);
 	}
 
 	.kin-segmented > label:has(input:focus-visible) {
@@ -713,10 +705,10 @@
 	/* Table */
 
 	.kin-table-wrap {
-		border: 1px solid var(--kin-color-rule);
 		max-width: 100%;
 		overflow-x: auto;
 		overscroll-behavior-inline: contain;
+		border: 1px solid transparent;
 	}
 
 	.kin-table-wrap[data-sticky] {
@@ -754,12 +746,12 @@
 	}
 
 	.kin-table thead th {
-		background: var(--kin-color-ground-deep);
 		color: var(--kin-color-text-muted);
 		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: var(--kin-tracking-label);
-		text-transform: uppercase;
+		background: transparent;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-table td,
@@ -802,11 +794,11 @@
 	}
 
 	.kin-table tfoot td {
-		background: var(--kin-color-ground-deep);
 		border-bottom: 0;
 		border-top: 1px solid var(--kin-color-rule);
 		color: var(--kin-color-text);
 		font-weight: var(--kin-weight-strong);
+		background: transparent;
 	}
 
 	.kin-table[data-density="compact"] :is(th, td) {
@@ -821,11 +813,12 @@
 
 	.kin-empty {
 		align-items: start;
-		border: 1px dashed var(--kin-color-rule);
 		display: grid;
 		gap: var(--kin-space-3);
 		justify-items: start;
 		padding: clamp(var(--kin-space-6), 5vw, var(--kin-space-9));
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
 	}
 
 	.kin-empty[data-align="center"] {
@@ -852,7 +845,7 @@
 	/* Native disclosure */
 
 	.kin-disclosure {
-		border-block: 1px solid var(--kin-color-rule);
+		border-block: 1px solid transparent;
 	}
 
 	.kin-disclosure + .kin-disclosure {
@@ -922,8 +915,10 @@
 	}
 
 	.kin-disclosure[data-variant="panel"] {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
+		background: var(--kin-surface-card);
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
+		box-shadow: var(--kin-surface-card-ring);
 	}
 
 	.kin-disclosure[data-variant="panel"]
@@ -983,6 +978,63 @@
 
 		.kin-switch input::before {
 			background: currentColor;
+		}
+	}
+}
+
+@layer kinra.components {
+	.kin-notice::before {
+		content: "";
+		position: absolute;
+		inset-block: var(--kin-radius-layer);
+		inset-inline-start: -1px;
+		inline-size: 2px;
+		border-radius: 1px;
+		background: var(--kin-notice-signal);
+		pointer-events: none;
+	}
+	.kin-empty:has(> .kin-empty__title) {
+		background: var(--kin-surface-card);
+		box-shadow: var(--kin-surface-card-ring);
+	}
+	/* Sticky table headings need an opaque ground over the scrolling rows. */
+	.kin-table-wrap[data-sticky] thead th {
+		background: var(--kin-color-surface);
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-fieldset[data-variant="bounded"],
+		.kin-disclosure[data-variant="panel"] {
+			border-color: CanvasText;
+		}
+		.kin-chip:is(
+				[aria-pressed="true"],
+				[aria-current]:not([aria-current="false"])
+			):where(:not(:focus-visible)),
+		.kin-segmented
+			> :is(
+				label:has(input:checked),
+				[aria-pressed="true"],
+				[aria-current]:not([aria-current="false"])
+			):where(:not(:focus-visible, :has(:focus-visible))) {
+			outline: 2px solid Highlight;
+			outline-offset: -2px;
+		}
+		.kin-notice::before {
+			background: Highlight;
+			forced-color-adjust: none;
+		}
+		:is(
+			.kin-input,
+			.kin-select,
+			.kin-textarea,
+			.kin-chip,
+			.kin-switch input,
+			.kin-segmented > button
+		):focus-visible,
+		.kin-segmented > label:has(input:focus-visible) {
+			outline-color: Highlight;
 		}
 	}
 }

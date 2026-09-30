@@ -1,6 +1,5 @@
 .kin-pattern-editorial-feature {
 	align-items: center;
-	border-block: 1px solid var(--kin-color-rule);
 	display: grid;
 	gap: var(--kin-layout-gap);
 	grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1.55fr);

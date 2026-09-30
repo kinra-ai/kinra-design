@@ -1,0 +1,82 @@
+/* Reference compositions only. Product shells remain consumer-owned. */
+.refresh-schemes {
+	display: grid;
+	gap: var(--kin-space-5);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.refresh-shelf {
+	background: var(--kin-color-ground-deep);
+	padding: var(--kin-space-2);
+	border-radius: var(--kin-radius-sheet);
+}
+.refresh-panel {
+	background: var(--kin-color-surface);
+	padding: var(--kin-space-5);
+	border-radius: var(--kin-radius-panel);
+}
+.refresh-composer {
+	--kin-pattern-key-radius: var(--kin-radius-layer);
+	background: var(--kin-color-surface-raised);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: var(--kin-shadow-raised);
+	max-inline-size: 42rem;
+	overflow: hidden;
+}
+.refresh-composer textarea {
+	background: none;
+	border: 0;
+	color: var(--kin-color-text);
+	display: block;
+	font: inherit;
+	inline-size: 100%;
+	padding: var(--kin-space-4);
+	resize: vertical;
+}
+.refresh-composer textarea:focus-visible {
+	outline-offset: -3px;
+}
+.refresh-composer__foot {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	gap: var(--kin-space-3);
+	min-block-size: 3rem;
+	padding-inline-start: var(--kin-space-4);
+}
+.refresh-composer__foot .kin-caption {
+	min-inline-size: 0;
+}
+.refresh-faces {
+	display: grid;
+	gap: var(--kin-space-5);
+	grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+}
+.refresh-face {
+	display: grid;
+	gap: var(--kin-space-2);
+	justify-items: start;
+}
+.refresh-actions {
+	max-inline-size: 34rem;
+}
+#key-face {
+	min-inline-size: 10rem;
+}
+#edge-demo {
+	max-inline-size: 34rem;
+}
+#edge-demo .kin-list__item {
+	margin: var(--kin-space-2);
+}
+@media (max-width: 48rem) {
+	.refresh-schemes {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+@media (forced-colors: active) {
+	.refresh-panel,
+	.refresh-composer {
+		outline: 1px solid CanvasText;
+		outline-offset: -1px;
+	}
+}

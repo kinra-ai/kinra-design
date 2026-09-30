@@ -3,7 +3,10 @@
 The registry distributes source-owned compositions rather than runtime
 components. Each item begins with a real Kinra consumer, declares the stable
 styles it expects, and includes framework-neutral HTML and CSS that a consumer
-can copy, rename, and adapt.
+can copy, rename, and adapt. A pattern may also carry an optional framework-free
+JavaScript module for motion that CSS alone cannot express. All states must
+render correctly without it; it has no dependencies, automatic initialization,
+global mutation, or network use, and it honors reduced motion.
 
 Registry items are deliberately different from package classes:
 
@@ -19,7 +22,8 @@ Registry items are deliberately different from package classes:
 1. Find the item in [`registry.json`](registry.json) and read its local
    `README.md`.
 2. Import the item's declared `requires` entry points from `@kinra/web`.
-3. Copy the HTML and CSS into the owning consumer.
+3. Copy the HTML and CSS, and any optional module the item documents, into the
+   owning consumer.
 4. Replace sample copy, rename the pattern classes to the consumer's prefix if
    the implementation is becoming product-specific, and preserve the stated
    accessibility contract.
@@ -28,3 +32,7 @@ Registry items are deliberately different from package classes:
 There is intentionally no install-time generator or runtime registry client.
 The JSON manifest is small enough for tooling to consume later, while the
 source remains usable by Astro, server-rendered templates, and plain HTML.
+
+The corner action, corner key, and live edge bring back Kinra Space's refresh.
+They remain candidates with one consumer's evidence. The reference catalog's
+`/refresh/` page demonstrates their states, static rendering, and motion.

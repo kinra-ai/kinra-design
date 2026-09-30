@@ -141,10 +141,11 @@ Expect these visual differences when upgrading past `v0.2.0`:
 - `base.css` declares the cascade layer order explicitly.
 - The paper ground has a warmer neutral cast, with deeper signal and muted
   text for contrast inside selected rows and tinted labels.
-- Small text roles increase from 11/13px to 12/14px. Controls share a 4px
+- Small text roles increase from 11/13px to 12/14px. Controls share a 6px
   default corner through `--kin-control-radius`; override that role when a
-  consumer needs a different control shape. Input boundaries use
-  `--kin-color-control-edge`, independently of structural rules.
+  consumer needs a different control shape. `--kin-color-control-edge` remains
+  available for consumer-drawn boundaries, independently of structural rules;
+  the shared fields now use the wells described below.
 - `data-kin-voice="sans"` changes display and heading roles only, matching
   the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
 - Prose line height follows `--kin-leading-prose`, including the learning
@@ -153,6 +154,39 @@ Expect these visual differences when upgrading past `v0.2.0`:
   consumer that imported one, such as `spaces-wordmark.svg`, replaces it with
   `.kin-lockup` around `mark.svg` and the product name as text, following
   [`brand.md`](brand.md).
+
+### Space's soft-layer refresh
+
+The unreleased source now also carries the shared treatment brought back
+from Kinra Space. The class names and exports stay available, but an upgrade
+changes appearance:
+
+- Ordinary surfaces, cards, panel disclosures, and bounded lists are soft
+  layers without a ruled frame. Radii step down from panel to layer to row;
+  nested cards return to the panel's tone. Paper cards retain a faint ring.
+- Fields and segmented tracks are translucent wells. Quiet buttons and chips
+  rise in the text's own tone; badges, avatars, and switches stay square.
+  Invalid fields and keyboard focus retain their edges.
+- Lists, facts, toolbars, dialog chrome, and log entries separate with tone
+  and space. Tables keep row rules; sticky headers keep an opaque ground.
+  Explicit ledger rules and comparison grids remain available.
+- Labels use sentence case with normal tracking. Notices and toasts retain
+  a short signal edge clear of their corners. Menus, dialogs, and sheets
+  use the shared layer radii and shadows.
+- Primary buttons inside a card, notice, surface, or disclosure use the tint,
+  leaving the screen's fill available. Modal dialogs and drawers keep their
+  own primary fill. The consumer chooses the primary action and its position.
+
+Review local border and background overrides during adoption; Space's local
+`refresh.css` and shared-value aliases can be removed only after the owning
+consumer verifies the new exact pin. No consumer pin changes here.
+
+The [corner action](../registry/patterns/corner-action/README.md),
+[corner key](../registry/patterns/corner-key/README.md), and
+[live edge](../registry/patterns/live-edge/README.md) are candidate copy-owned
+patterns. Their modules and markup are optional source, never an automatic
+runtime dependency. The reference catalog's `/refresh/` page shows the
+states on both grounds, including declarative faces without script.
 
 Consumers target browsers released from mid-2024 onward because of
 `light-dark()`, `color-mix()`, `:has()`, and native `popover`.

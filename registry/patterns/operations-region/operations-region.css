@@ -1,6 +1,7 @@
 .kin-pattern-operations-region {
-	background: var(--kin-color-ground-deep);
-	border: 1px solid var(--kin-color-rule);
+	background: var(--kin-surface-card);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: var(--kin-surface-card-ring);
 }
 
 .kin-pattern-operations-region__header {
@@ -39,5 +40,12 @@
 
 	.kin-pattern-operations-region__header .kin-button {
 		width: 100%;
+	}
+}
+
+@media (forced-colors: active) {
+	.kin-pattern-operations-region {
+		outline: 1px solid CanvasText;
+		outline-offset: -1px;
 	}
 }

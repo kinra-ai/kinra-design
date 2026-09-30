@@ -10,12 +10,12 @@
 	/* Tabs */
 
 	.kin-tabs {
-		border-bottom: 1px solid var(--kin-color-rule);
 		display: flex;
 		gap: var(--kin-space-6);
 		overflow-x: auto;
 		overscroll-behavior-inline: contain;
 		scrollbar-width: none;
+		border-bottom: 1px solid transparent;
 	}
 
 	.kin-tabs::-webkit-scrollbar {
@@ -89,9 +89,9 @@
 
 	.kin-tabs[data-variant="boxed"] .kin-tabs__tab {
 		border: 1px solid transparent;
-		border-radius: var(--kin-radius-sm);
 		min-height: var(--kin-control-height-compact);
 		padding-inline: var(--kin-space-4);
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-tabs[data-variant="boxed"] .kin-tabs__tab::after {
@@ -103,16 +103,16 @@
 			[aria-selected="true"],
 			[aria-current]:not([aria-current="false"])
 		) {
-		background: var(--kin-color-ground-deep);
-		border-color: var(--kin-color-rule);
+		background: var(--kin-surface-lift);
+		border-color: transparent;
 	}
 
 	.kin-tabs[data-variant="rail"] {
 		border-bottom: 0;
-		border-inline-start: 1px solid var(--kin-color-rule);
 		flex-direction: column;
 		gap: 0;
 		overflow: visible;
+		border-inline-start: 1px solid transparent;
 	}
 
 	.kin-tabs[data-variant="rail"] .kin-tabs__tab {
@@ -202,7 +202,6 @@
 		align-items: center;
 		background: none;
 		border: 1px solid transparent;
-		border-radius: var(--kin-radius-sm);
 		color: var(--kin-color-text-subtle);
 		cursor: pointer;
 		display: inline-flex;
@@ -217,6 +216,7 @@
 		transition:
 			background var(--kin-duration-fast) ease,
 			border-color var(--kin-duration-fast) ease;
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-pagination
@@ -224,8 +224,8 @@
 			:not(:disabled, [aria-disabled="true"], [aria-current="page"])
 		) {
 		background: var(--kin-surface-hover);
-		border-color: var(--kin-color-rule-strong);
 		color: var(--kin-color-text);
+		border-color: transparent;
 	}
 
 	.kin-pagination [aria-current="page"] {
@@ -275,8 +275,6 @@
 		align-items: center;
 		background: none;
 		border: 0;
-		border-inline-start: 2px solid transparent;
-		border-radius: 0 var(--kin-radius-sm) var(--kin-radius-sm) 0;
 		color: var(--kin-color-text-muted);
 		cursor: pointer;
 		display: flex;
@@ -292,6 +290,7 @@
 			background var(--kin-duration-fast) ease,
 			color var(--kin-duration-fast) ease;
 		width: 100%;
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-nav :is(a, button):hover:where(:not(:disabled, [aria-disabled="true"])) {
@@ -302,7 +301,6 @@
 	.kin-nav [aria-current="page"],
 	.kin-nav [aria-current="true"] {
 		background: var(--kin-tint-primary);
-		border-inline-start-color: var(--kin-color-primary);
 		color: var(--kin-color-text);
 		font-weight: var(--kin-weight-strong);
 	}
@@ -311,11 +309,11 @@
 		color: var(--kin-color-text-muted);
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: var(--kin-tracking-label);
 		margin: var(--kin-space-5) 0 var(--kin-space-2);
 		padding-inline: var(--kin-space-3);
-		text-transform: uppercase;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-nav > .kin-nav__group:first-child,
@@ -345,12 +343,13 @@
 
 	.kin-toolbar {
 		align-items: center;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--kin-space-3);
 		padding: var(--kin-space-2) var(--kin-space-3);
+		background: var(--kin-surface-well);
+		border: 0;
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-toolbar[data-variant="bare"] {
@@ -360,7 +359,8 @@
 	}
 
 	.kin-toolbar[data-variant="bottom"] {
-		border-width: 1px 0 0;
+		background: transparent;
+		border-radius: 0;
 	}
 
 	.kin-toolbar[data-wrap="none"] {
@@ -377,8 +377,8 @@
 	}
 
 	.kin-toolbar__group + .kin-toolbar__group {
-		border-inline-start: 1px solid var(--kin-color-rule);
 		padding-inline-start: var(--kin-space-3);
+		border-inline-start: 1px solid transparent;
 	}
 
 	.kin-toolbar__group[data-grow] {
@@ -450,6 +450,7 @@
 		inset: 1.75rem auto 0 calc(0.875rem - 0.5px);
 		position: absolute;
 		width: 1px;
+		display: none;
 	}
 
 	.kin-steps__step:last-child {
@@ -462,8 +463,6 @@
 
 	.kin-steps__index {
 		align-items: center;
-		background: var(--kin-color-ground);
-		border: 1px solid var(--kin-step-signal);
 		border-radius: 2px;
 		color: var(--kin-color-text-muted);
 		display: inline-flex;
@@ -475,6 +474,8 @@
 		height: 1.75rem;
 		justify-content: center;
 		width: 1.75rem;
+		background: var(--kin-surface-lift);
+		border: 1px solid transparent;
 	}
 
 	.kin-steps__title {
@@ -502,8 +503,8 @@
 	}
 
 	.kin-steps__step[data-state="done"] .kin-steps__index {
-		background: var(--kin-color-text-muted);
-		color: var(--kin-color-text-inverse);
+		background: var(--kin-tint-success);
+		color: var(--kin-color-success);
 	}
 
 	.kin-steps__step[data-state="done"]::before {
@@ -517,8 +518,8 @@
 
 	.kin-steps__step[aria-current="step"] .kin-steps__index,
 	.kin-steps__step[data-state="current"] .kin-steps__index {
-		background: var(--kin-color-primary);
-		color: var(--kin-color-text-inverse);
+		background: var(--kin-tint-primary);
+		color: var(--kin-color-primary);
 	}
 
 	.kin-steps__step[aria-current="step"] .kin-steps__title,
@@ -532,6 +533,7 @@
 
 	.kin-steps__step[data-state="error"] .kin-steps__index {
 		color: var(--kin-color-error);
+		background: var(--kin-tint-error);
 	}
 
 	.kin-steps[data-orientation="horizontal"] {
@@ -597,6 +599,43 @@
 		.kin-segmented,
 		.kin-steps__index {
 			border-color: currentColor;
+		}
+	}
+}
+
+@layer kinra.components {
+	/* Buttons beside navigation rows retain the shared control contract. */
+	.kin-nav .kin-button {
+		border: 1px solid transparent;
+		border-radius: var(--kin-control-radius);
+		padding-inline: var(--kin-space-3);
+	}
+	.kin-nav :is(a, button):is(:disabled, [aria-disabled="true"]) {
+		cursor: not-allowed;
+		opacity: 0.55;
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-toolbar {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+		.kin-nav .kin-button {
+			border-color: ButtonText;
+		}
+		.kin-nav [aria-current]:not([aria-current="false"]):focus-visible,
+		.kin-pagination [aria-current="page"]:focus-visible {
+			outline: 2px solid Highlight;
+			outline-offset: -2px;
+		}
+		.kin-tabs[data-variant="boxed"]
+			.kin-tabs__tab:is(
+				[aria-selected="true"],
+				[aria-current]:not([aria-current="false"])
+			):where(:not(:focus-visible)) {
+			outline: 1px solid Highlight;
+			outline-offset: -1px;
 		}
 	}
 }

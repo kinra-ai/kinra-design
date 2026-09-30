@@ -115,11 +115,11 @@
 		color: var(--kin-color-text-muted);
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: var(--kin-tracking-label);
 		line-height: 1.4;
 		margin: 0;
-		text-transform: uppercase;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-mono {

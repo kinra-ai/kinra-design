@@ -1,10 +1,12 @@
 # Refresh plan: the corner key
 
-Status: exploring since 2026-09-28, when Blake chose the corner key, a
+Status: brought back from Kinra Space on 2026-09-30; unreleased. On 2026-09-28 Blake chose the corner key, a
 composer send control drawn for Kinra Space, as the component to model a
 refresh of Kinra's interfaces against, and amended
-[`principles.md`](principles.md) to adopt its grammar the same day. Nothing
-here is released, and no package class or token has changed for it yet. The
+[`principles.md`](principles.md) to adopt its grammar the same day.
+The package now carries Space's shared layer, control, label, and motion roles;
+the corner action, corner key, and live edge are candidate registry source.
+The reference catalog's `/refresh/` page demonstrates them. The original
 studies live in [`examples/studies/`](../examples/studies/README.md).
 
 ## How it got here
@@ -141,15 +143,38 @@ Changes this brings to Space:
 
 ## Adoption path
 
-1. Build `CornerKey.svelte` in kinra-space around the study's engine, on a
-   branch, and live with it in a real home.
-2. Carry the grammar into Space's sidebar, panels and Home.
-3. Bring back to this repository what proves itself: motion tokens, the corner
+1. **Done in Space.** Build `CornerKey.svelte` around the study's engine and
+   live with it in a real home.
+2. **Done in Space.** Carry the grammar into the sidebar, panels, Home,
+   controls, and decisions.
+3. **Brought back, unreleased.** Bring back what proves itself: motion tokens, the corner
    action and the edge light as candidate registry patterns, and the package
    classes brought in line with the amended principles (tone instead of
    dividing borders, radii that step down as layers nest).
-4. Promote nothing to a stable contract before a second consumer, likely
+4. **Pending.** Promote no candidate to a stable contract before a second consumer, likely
    Gateway's request console, uses it.
+
+## Source brought back
+
+The source is Kinra Space at
+`8589b8a5b04f771b5ab0a3b7b4d3fb38d66d2663`, inspected from its clean `dev`
+checkout. `src/styles/refresh.css` and the marked shared set in `tokens.css`
+provide the package defaults; `layers.css` supplies the dialog treatment.
+`cornerKey.ts`, `CornerKey.svelte`, and `corner-key.css` provide the square
+and labelled actions; `LiveEdge.svelte` and `live-edge.css` provide the work
+light. The product's decision 0053 and Live session follow-ups are the evidence.
+
+The package uses `kin-` roles rather than `space-` aliases. The engine is
+framework-free JavaScript that animates caller-owned markup, with declarative
+CSS poses for every face, size/corner/direction observation, and live
+reduced-motion handling. The copied source includes Space's inset focus and
+forced-colour stroke fixes. The original study receives the stroke fix too.
+The live edge keeps its own reduced-motion rules instead of depending on
+Space's responsive stylesheet.
+
+Space's routes, typography overrides, resizable shell, safe-area handling,
+conversation state, native-host contract, and deployment stay with Space.
+Its exact Design pin stays unchanged until a separate consumer upgrade.
 
 ## Decisions
 
@@ -157,17 +182,17 @@ Changes this brings to Space:
   `docs/principles.md` so that the whole system feels cohesive and
   integrated. It now carries soft layers with exact marks, a line as a signal
   rather than a divider, the corner, what light means, and the five motion
-  verbs; `docs/composing.md` follows it. The package's classes predate the
-  amendment until step 3.
+  verbs; `docs/composing.md` follows it. Step 3 brings the package classes
+  into that grammar in unreleased source.
 - **The corner action goes wherever the context calls for it (2026-09-28,
   Blake).** Any surface whose context has one primary action carries it in
   its end corner: composers, Kin's questions, dialogs' confirmations, search
   and command fields, and cards built around one action. A destructive
   confirmation takes the error tone there.
-- **Still open: script in the registry.** The registry has held HTML and CSS
-  only, and the key's motion needs script. The recommendation is to accept a
-  pattern that carries a framework-free module when its behaviour cannot be
-  expressed in CSS, on three conditions: every state renders correctly from
-  markup and CSS alone, the module has no dependencies, globals or network
-  use, and it honours reduced motion. The question only needs an answer at
-  step 3.
+- **Optional motion modules enter with step 3 (2026-09-30).** The corner key
+  carries a framework-free module because its interrupted stroke morphs and
+  clipped fill need script. Every face renders from markup and CSS alone;
+  the module has no dependencies, automatic initialization, global mutation,
+  or network use, and it honors reduced motion. Contract verification imports
+  it outside a browser to reject accidental startup work. It remains copied
+  candidate source, not a stable component or shared application runtime.

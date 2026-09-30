@@ -1,0 +1,381 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+import Specimen from "../components/Specimen.astro";
+import keySource from "@kinra/web/registry/patterns/corner-key/corner-key.html?raw";
+import actionSource from "@kinra/web/registry/patterns/corner-action/corner-action.html?raw";
+import {
+	faceNames,
+	pressable,
+	type Face,
+} from "@kinra/web/registry/patterns/corner-key/corner-key.js";
+import "@kinra/web/registry/patterns/corner-key/corner-key.css";
+import "@kinra/web/registry/patterns/corner-action/corner-action.css";
+import "@kinra/web/registry/patterns/live-edge/live-edge.css";
+import "../styles/refresh.css";
+
+const faces = Object.keys(faceNames) as Face[];
+const states = [
+	["ready", "Ready"],
+	["working", "Working"],
+	["agents", "Background work"],
+	["waiting", "Needs your answer"],
+	["finished", "Finished, unseen"],
+	["elsewhere", "Working elsewhere"],
+	["reconnecting", "Reconnecting"],
+];
+function keyMarkup(face: Face) {
+	const trace =
+		face === "sending"
+			? ' data-trace="muted"'
+			: ["working", "queue", "uploading"].includes(face)
+				? ' data-trace="live"'
+				: "";
+	return keySource
+		.replace(
+			'data-face="rest"',
+			`data-face="${face}"${trace}${face === "queue" ? " data-lit" : ""}`,
+		)
+		.replace('aria-label="Send message"', `aria-label="${faceNames[face]}"`)
+		.replace(" disabled", pressable.has(face) ? "" : " disabled");
+}
+---
+
+<ReferenceLayout
+	title="Space refresh"
+	description="Soft layers, corner actions, and working lights brought back from Kinra Space."
+	current="Refresh"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Space refresh</h1>
+			<p class="catalog-header__summary">
+				The shared styles now carry Space's soft layers and quieter controls.
+				Corner actions and working lights remain candidate source to copy and
+				adapt.
+			</p>
+		</div>
+	</header>
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Layers on both grounds"
+			contract="--kin-radius-panel · --kin-radius-layer · --kin-radius-row · --kin-surface-well"
+			description="A page on its shelf, a card on the page, a row inside the card, and a field below its surrounding tone. This shell is a reference composition; products own their layout."
+		>
+			<div class="refresh-schemes">
+				{
+					["dark", "light"].map((scheme) => (
+						<section
+							class="refresh-shelf"
+							data-kin-scheme={scheme}
+							aria-label={
+								scheme === "dark" ? "Graphite layers" : "Paper layers"
+							}
+						>
+							<div class="refresh-panel kin-stack">
+								<h3 class="kin-heading">
+									{scheme === "dark" ? "Graphite" : "Paper"}
+								</h3>
+								<article class="kin-card">
+									<div class="kin-card__body kin-stack" data-space="compact">
+										<h4 class="kin-label">Recent work</h4>
+										<ul class="kin-list" data-variant="bounded">
+											<li class="kin-list__item">
+												<>
+													<span class="kin-avatar" aria-hidden="true">
+														D
+													</span>
+													<div class="kin-list__body">
+														<>
+															<p class="kin-list__title">Design system</p>
+															<p class="kin-list__meta">Ready for review</p>
+														</>
+													</div>
+												</>
+											</li>
+										</ul>
+										<label class="kin-field">
+											<>
+												<span class="kin-field__label">Filter work</span>
+												<input class="kin-input" placeholder="Find an item" />
+											</>
+										</label>
+										<div class="kin-cluster" data-space="compact">
+											<>
+												<button
+													class="kin-button kin-button--quiet"
+													type="button"
+												>
+													Open history
+												</button>
+												<span class="kin-badge" data-tone="success">
+													Verified
+												</span>
+											</>
+										</div>
+									</div>
+								</article>
+								<div class="kin-notice" data-tone="reason">
+									<p class="kin-notice__body">
+										A signal keeps its edge. Tone and space carry the rest.
+									</p>
+								</div>
+							</div>
+						</section>
+					))
+				}
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Corner key"
+			contract="Candidate · corner-key.html · corner-key.css · optional corner-key.js"
+			description="Type a draft to bloom the send key, then press it to lift the fill and show Stop. Choose a face to inspect the other states; the work light follows the turn independently."
+		>
+			<div class="kin-stack" id="key-demo">
+				<div class="kin-cluster" data-space="compact">
+					<label class="kin-field"
+						><span class="kin-field__label">Key face</span><select
+							class="kin-select"
+							id="key-face"
+							>{
+								faces.map((face) => <option value={face}>{face}</option>)
+							}</select
+						></label
+					>
+					<label class="kin-check"
+						><input type="checkbox" id="key-turn" />Work in flight</label
+					>
+				</div>
+				<div class="refresh-composer">
+					<label class="kin-sr-only" for="key-draft">Example message</label>
+					<textarea
+						id="key-draft"
+						placeholder="Write an example message…"
+						rows="3"></textarea>
+					<div class="refresh-composer__foot">
+						<span class="kin-caption" id="key-state" role="status"
+							>Nothing to send</span
+						><Fragment set:html={keySource} />
+					</div>
+				</div>
+				<p class="kin-caption">
+					These controls simulate work locally. An unavailable key is described
+					by the status beside it.
+				</p>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Faces without script"
+			contract="data-face · semantic button · CSS stroke poses"
+			description="These keys use the canonical HTML and CSS alone. Their faces remain legible before an engine mounts and when a consumer chooses to render only static states."
+		>
+			<div class="refresh-faces">
+				{
+					faces.map((face) => (
+						<div class="refresh-face">
+							<>
+								<div set:html={keyMarkup(face)} />
+								<span class="kin-caption">{face}</span>
+							</>
+						</div>
+					))
+				}
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Labelled corner action"
+			contract="Candidate · corner-action.html · corner-action.css"
+			description="One confirmation ends the surface, flush with its corner. Alternatives stay before it in document order. Focus draws inside the key; a modal keeps its own fill."
+		>
+			<div class="refresh-actions kin-stack">
+				<div set:html={actionSource} />
+				<button
+					type="button"
+					class="kin-button kin-button--quiet"
+					id="open-corner-dialog">Open confirmation dialog</button
+				>
+				<p class="kin-caption" id="action-result" role="status"></p>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Live edge"
+			contract="Candidate · live-edge.html · live-edge.css · data-edge"
+			description="The leading edge follows a row's corners. Motion names work in flight, while a caption names every state. End the example work to see the light gather and clear."
+		>
+			<div class="kin-stack">
+				<ul class="kin-list" data-variant="bounded" id="edge-demo">
+					{
+						states.map(([state, label]) => (
+							<li class="kin-list__item">
+								<>
+									<span
+										class="kin-pattern-live-edge"
+										data-edge={state}
+										data-sparks={state === "agents" ? "2" : undefined}
+										aria-hidden="true"
+									>
+										<span class="kin-pattern-live-edge__line" />
+									</span>
+									<div class="kin-list__body">
+										<>
+											<p class="kin-list__title">{label}</p>
+											<p class="kin-list__meta">Example work</p>
+										</>
+									</div>
+								</>
+							</li>
+						))
+					}
+				</ul>
+				<div class="kin-cluster" data-space="compact">
+					<button
+						type="button"
+						class="kin-button kin-button--quiet"
+						id="edge-finish">End example work</button
+					><button
+						type="button"
+						class="kin-button kin-button--ghost"
+						id="edge-start">Start again</button
+					>
+				</div>
+			</div>
+		</Specimen>
+	</div>
+
+	<dialog
+		class="kin-dialog kin-pattern-corner-action"
+		id="corner-dialog"
+		aria-labelledby="corner-dialog-title"
+	>
+		<header class="kin-dialog__header">
+			<h2 class="kin-dialog__title" id="corner-dialog-title">
+				Save preferences?
+			</h2><button
+				type="button"
+				class="kin-button kin-button--ghost kin-button--icon"
+				aria-label="Close confirmation">×</button
+			>
+		</header>
+		<div class="kin-dialog__body">
+			<p>
+				The confirmation shares this dialog's end corner. The page beneath it is
+				inert.
+			</p>
+		</div>
+		<footer class="kin-dialog__footer kin-pattern-corner-action__footer">
+			<button type="button" class="kin-button kin-button--ghost">Cancel</button
+			><button
+				type="button"
+				class="kin-button kin-button--primary kin-pattern-corner-action__key"
+				>Save preferences</button
+			>
+		</footer>
+	</dialog>
+
+	<script>
+		import {
+			KeyEngine,
+			faceNames,
+			pressable,
+			type Face,
+		} from "@kinra/web/registry/patterns/corner-key/corner-key.js";
+		const demo = document.querySelector<HTMLElement>("#key-demo")!;
+		const key = demo.querySelector<HTMLButtonElement>(
+			".kin-pattern-corner-key",
+		)!;
+		const draft = demo.querySelector<HTMLTextAreaElement>("#key-draft")!;
+		const picker = demo.querySelector<HTMLSelectElement>("#key-face")!;
+		const turn = demo.querySelector<HTMLInputElement>("#key-turn")!;
+		const state = demo.querySelector<HTMLElement>("#key-state")!;
+		const engine = new KeyEngine(key, "rest");
+		const descriptions: Partial<Record<Face, string>> = {
+			rest: "Nothing to send",
+			sending: "Message on its way",
+			uploading: "Files arriving",
+			blocked: "Action unavailable; check the connection",
+			watching: "Watching another client's work",
+			waiting: "Reconnecting; the draft is kept",
+		};
+		function show(face: Face) {
+			picker.value = face;
+			key.disabled = !pressable.has(face);
+			key.setAttribute("aria-label", faceNames[face]);
+			key.setAttribute("aria-describedby", "key-state");
+			state.textContent = descriptions[face] ?? faceNames[face];
+			engine.set(face, { turn: turn.checked });
+		}
+		draft.addEventListener("input", () =>
+			show(
+				draft.value.trim()
+					? turn.checked
+						? "queue"
+						: "send"
+					: turn.checked
+						? "working"
+						: "rest",
+			),
+		);
+		picker.addEventListener("change", () => show(picker.value as Face));
+		turn.addEventListener("change", () => show(picker.value as Face));
+		key.addEventListener("click", () => {
+			if (picker.value === "working") {
+				turn.checked = false;
+				show("rest");
+			} else {
+				engine.expectSent();
+				draft.value = "";
+				turn.checked = true;
+				show("working");
+			}
+		});
+		show("rest");
+
+		const result = document.querySelector<HTMLElement>("#action-result")!;
+		document
+			.querySelector(".refresh-actions .kin-pattern-corner-action__key")!
+			.addEventListener("click", () => {
+				result.textContent = "Example preferences saved.";
+			});
+		document
+			.querySelector(".refresh-actions .kin-button--ghost")!
+			.addEventListener("click", () => {
+				result.textContent = "Example cancelled.";
+			});
+		const dialog = document.querySelector<HTMLDialogElement>("#corner-dialog")!;
+		document
+			.querySelector("#open-corner-dialog")!
+			.addEventListener("click", () => dialog.showModal());
+		for (const button of dialog.querySelectorAll("button"))
+			button.addEventListener("click", () => dialog.close());
+		const edge = document.querySelector<HTMLElement>(
+			'#edge-demo [data-edge="working"]',
+		)!;
+		const caption =
+			edge.parentElement!.querySelector<HTMLElement>(".kin-list__title")!;
+		let closing: ReturnType<typeof setTimeout> | undefined;
+		document.querySelector("#edge-finish")!.addEventListener("click", () => {
+			clearTimeout(closing);
+			caption.textContent = "Complete";
+			edge.dataset.edge = matchMedia("(prefers-reduced-motion: reduce)").matches
+				? "ready"
+				: "closing";
+			closing = setTimeout(() => {
+				edge.dataset.edge = "ready";
+			}, 1100);
+		});
+		document.querySelector("#edge-start")!.addEventListener("click", () => {
+			clearTimeout(closing);
+			caption.textContent = "Working";
+			edge.dataset.edge = "working";
+		});
+		window.addEventListener("pagehide", (event) => {
+			// A cached page resumes its existing engine and paused timers.
+			if (event.persisted) return;
+			clearTimeout(closing);
+			engine.destroy();
+		});
+	</script>
+</ReferenceLayout>

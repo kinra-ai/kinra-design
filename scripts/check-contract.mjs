@@ -1,6 +1,6 @@
 import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const failures = [];
@@ -120,13 +120,47 @@ for (const item of items) {
 			const css = stripStrings(
 				stripComments(await readFile(path.join(root, file), "utf8")),
 			);
-			const classes = [...css.matchAll(/\.([a-zA-Z_][\w-]*)/g)].map(
+			const selectors = css.replace(/@layer[^;{]*/g, "");
+			const classes = [...selectors.matchAll(/\.([a-zA-Z_][\w-]*)/g)].map(
 				(match) => match[1],
 			);
 			for (const className of classes) {
 				check(
 					className.startsWith("kin-"),
 					`${item.name}: public registry class lacks kin- prefix: ${className}`,
+				);
+			}
+			for (const match of css.matchAll(
+				/(?:^|[\s{;])(--[a-zA-Z_][\w-]*)\s*:/g,
+			)) {
+				check(
+					match[1].startsWith("--kin-"),
+					`${item.name}: unscoped property ${match[1]}`,
+				);
+			}
+			for (const match of css.matchAll(/@keyframes\s+([\w-]+)/g)) {
+				check(
+					match[1].startsWith("kin-"),
+					`${item.name}: unscoped animation ${match[1]}`,
+				);
+			}
+			for (const match of css.matchAll(/@layer\s+([^;{]+)/g)) {
+				check(
+					match[1].trim().startsWith("kinra."),
+					`${item.name}: unscoped layer ${match[1]}`,
+				);
+			}
+		}
+
+		// Optional pattern modules must parse and import outside a browser:
+		// loading source never starts DOM work before the consumer asks for it.
+		if (file.endsWith(".js") && (await exists(file))) {
+			try {
+				await import(pathToFileURL(path.join(root, file)).href);
+			} catch (error) {
+				check(
+					false,
+					`${item.name}: module must import without a browser: ${error.message}`,
 				);
 			}
 		}

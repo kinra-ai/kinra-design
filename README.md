@@ -122,6 +122,12 @@ Open `/examples/` in the catalog for interactive collection, preferences, and
 review examples. These reference-only compositions demonstrate the shared
 styles without adding speculative package contracts.
 
+Open `/refresh/` to review the styling brought back from Kinra Space: soft
+layers on both grounds, quieter controls, the corner key's states and motion,
+labelled corner confirmations, and the live edge. The three new patterns
+remain candidate source to copy and own; the shared defaults and migration
+notes are documented in [`docs/adoption.md`](docs/adoption.md).
+
 Read the focused guides for the work at hand:
 
 - [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine

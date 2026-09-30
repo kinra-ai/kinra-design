@@ -12,14 +12,14 @@
 
 	.kin-progress {
 		appearance: none;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		border-radius: 0;
 		display: block;
 		height: 0.5rem;
 		overflow: hidden;
 		width: 100%;
 		min-width: 0;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	.kin-progress::-webkit-progress-bar {
@@ -102,11 +102,11 @@
 
 	.kin-meter {
 		appearance: none;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		display: block;
 		height: 0.5rem;
 		width: 100%;
+		background: var(--kin-surface-well);
+		border: 1px solid transparent;
 	}
 
 	.kin-meter::-webkit-meter-bar {
@@ -260,16 +260,16 @@
 
 		animation: kin-toast-arrive var(--kin-duration-slow) var(--kin-ease-out);
 		background: var(--kin-color-surface-raised);
-		border: 1px solid var(--kin-color-rule);
-		border-inline-start: 2px solid var(--kin-toast-signal);
-		border-radius: var(--kin-radius-md);
-		box-shadow: var(--kin-shadow-float);
 		color: var(--kin-color-text);
 		display: grid;
 		gap: var(--kin-space-1) var(--kin-space-4);
 		grid-template-columns: minmax(0, 1fr) auto;
 		padding: var(--kin-space-3) var(--kin-space-4);
 		pointer-events: auto;
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
+		box-shadow: var(--kin-shadow-overlay);
+		position: relative;
 	}
 
 	.kin-toast[data-tone="primary"] {
@@ -334,9 +334,6 @@
 	/* Keyboard hint */
 
 	.kin-kbd {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
-		border-bottom-width: 2px;
 		border-radius: var(--kin-radius-sm);
 		color: var(--kin-color-text-subtle);
 		display: inline-block;
@@ -349,6 +346,8 @@
 		text-align: center;
 		vertical-align: baseline;
 		white-space: nowrap;
+		background: var(--kin-surface-lift);
+		border: 1px solid transparent;
 	}
 
 	.kin-kbd + .kin-kbd {
@@ -359,7 +358,6 @@
 
 	.kin-tooltip {
 		background: var(--kin-color-text);
-		border-radius: var(--kin-radius-sm);
 		box-shadow: var(--kin-shadow-panel);
 		color: var(--kin-color-ground);
 		font-family: var(--kin-font-ui);
@@ -371,6 +369,7 @@
 		pointer-events: none;
 		width: max-content;
 		z-index: var(--kin-layer-overlay);
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-tooltip__hint {
@@ -517,6 +516,27 @@
 
 		.kin-spinner::before {
 			background: currentColor;
+		}
+	}
+}
+
+@layer kinra.components {
+	.kin-toast::before {
+		content: "";
+		position: absolute;
+		inset-block: var(--kin-radius-layer);
+		inset-inline-start: -1px;
+		inline-size: 2px;
+		border-radius: 1px;
+		background: var(--kin-toast-signal);
+		pointer-events: none;
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-toast::before {
+			background: Highlight;
+			forced-color-adjust: none;
 		}
 	}
 }

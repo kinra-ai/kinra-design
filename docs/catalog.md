@@ -49,12 +49,35 @@ values:
 }
 ```
 
-Small UI text uses 12px and 14px roles at the default root size. Interactive
-edges use `--kin-color-control-edge`, separate from the quieter structural
-rules. Buttons, fields, chips, switches, and segmented controls share
-`--kin-control-radius`; `--kin-surface-hover` provides neutral hover feedback.
-Selected states retain their signal colour. Compact controls retain their
-documented heights, and touch text inputs use at least 16px to avoid focus zoom.
+Small UI text uses 12px and 14px roles at the default root size. Controls use
+`--kin-control-radius` (6px); switches, badges, and avatars keep square corners.
+Fields and segmented tracks use `--kin-surface-well` and `--kin-surface-well-hover`.
+Quiet controls use `--kin-surface-lift` and `--kin-surface-lift-hover`; neutral
+hover remains available as `--kin-surface-hover`. Lines remain for focus,
+invalid fields, selected tabs, table rows, and explicit comparison grids.
+`--kin-color-control-edge` remains available to consumers that need an edge.
+Compact controls retain their documented heights, and touch text inputs use
+at least 16px to avoid focus zoom.
+
+### Layers and motion
+
+`--kin-radius-panel`, `--kin-radius-layer`, and `--kin-radius-row` step down
+through a page (12px), its cards (8px), and their rows (6px).
+`--kin-radius-sheet` is 16px for the free corners of a sheet.
+Cards and ordinary surfaces use `--kin-surface-card`; paper keeps a faint
+`--kin-surface-card-ring` so a white card remains distinguishable from the
+panel. Nested cards return to `--kin-surface-nested`, which consumers can
+set to their page's tone. `--kin-surface-step` provides a quiet tonal step.
+`--kin-shadow-raised` is for a composer over scrolling content, and
+`--kin-shadow-overlay` combines a floating panel shadow with paper's faint
+ring. Ordinary cards have no elevation shadow.
+
+`--kin-motion-control`, `--kin-motion-surface`, and `--kin-motion-layer`
+pair the existing durations and easing. The corner key uses
+`--kin-duration-bloom|retract|lift|morph|fold|trace|close` and
+`--kin-ease-bloom|lift|morph`: respectively 260, 200, 260, 320, 400, 1600,
+and 300ms. Its optional module reads those tokens. Reduced motion renders
+the same face in place and holds the working outline still.
 
 ### Scheme
 
@@ -123,7 +146,7 @@ zero margin so the surrounding composition owns rhythm.
 | `.kin-lede`     | the opening paragraph                         |
 | `.kin-body`     | prose paragraph; `data-size="sm"`             |
 | `.kin-caption`  | a quiet explanation                           |
-| `.kin-label`    | an uppercase group label                      |
+| `.kin-label`    | a muted sentence-case group label             |
 | `.kin-mono`     | mono voice on any element                     |
 | `.kin-tabular`  | tabular figures                               |
 | `.kin-truncate` | single-line truncation                        |
@@ -295,10 +318,19 @@ navigation, editors, grids, and immersive canvases remain local.
 ## Registry patterns
 
 The exported manifest and pattern source live in [`../registry`](../registry).
-Candidates include narrative intro, editorial feature, and operations region.
+Candidates include narrative intro, editorial feature, operations region,
+corner action, corner key, and live edge. The last three bring back evidence
+from Kinra Space and remain candidates until a second consumer proves the
+same responsibility. `/refresh/` demonstrates their states and motion.
 Read [`registry/README.md`](../registry/README.md) before copying one. Registry
 classes use `kin-pattern-` only in canonical source; a consumer should rename
 them when product-specific behavior or composition enters.
+
+Patterns may include an optional, dependency-free JavaScript module when
+motion cannot be expressed in CSS. Every state must render from HTML and CSS
+alone, loading a module must not initialize a browser surface, and the module
+must honor reduced motion without changing product state. These modules are
+copied source, not a shared application runtime.
 
 ## Compatibility
 

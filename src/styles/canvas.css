@@ -48,24 +48,26 @@
 	/* Surfaces */
 
 	.kin-surface {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
+		background: var(--kin-surface-card);
+		border: 0;
+		border-radius: var(--kin-radius-layer);
+		box-shadow: var(--kin-surface-card-ring);
 	}
 
 	.kin-surface--raised {
-		background: var(--kin-surface-raised);
-		border-color: var(--kin-border-subtle);
-		border-radius: var(--kin-radius-lg);
 		box-shadow: var(--kin-shadow-panel);
+		background: var(--kin-surface-raised);
+		border-radius: var(--kin-radius-panel);
 	}
 
 	.kin-surface--sunken {
-		background: var(--kin-color-ground-deep);
-		border-color: var(--kin-border-quiet);
+		background: var(--kin-surface-well);
+		box-shadow: none;
 	}
 
 	.kin-surface--plain {
-		background: var(--kin-color-ground);
+		background: transparent;
+		box-shadow: none;
 	}
 
 	/* Corner mark: a toned surface carries a small square at its origin. */
@@ -79,13 +81,15 @@
 		background: var(--kin-surface-tone);
 		content: "";
 		height: 0.625rem;
-		inset: -1px auto auto -1px;
 		position: absolute;
 		width: 0.625rem;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		border-start-start-radius: var(--kin-radius-layer);
 	}
 
 	.kin-surface--raised[data-tone]::before {
-		border-radius: var(--kin-radius-lg) 0 var(--kin-radius-sm) 0;
+		border-start-start-radius: var(--kin-radius-panel);
 	}
 
 	.kin-surface[data-tone="primary"] {
@@ -232,8 +236,9 @@
 		font-size: var(--kin-text-xs);
 		gap: var(--kin-space-4);
 		height: auto;
-		letter-spacing: var(--kin-tracking-label);
-		text-transform: uppercase;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-rule--labeled::before {
@@ -270,8 +275,6 @@
 
 	.kin-button {
 		align-items: center;
-		background: transparent;
-		border: 1px solid var(--kin-color-control-edge);
 		border-radius: var(--kin-control-radius);
 		color: var(--kin-color-text);
 		cursor: pointer;
@@ -290,11 +293,12 @@
 			background var(--kin-duration-normal) ease,
 			border-color var(--kin-duration-normal) ease,
 			color var(--kin-duration-normal) ease;
+		background: var(--kin-surface-lift);
+		border: 1px solid transparent;
 	}
 
 	.kin-button:hover:where(:not(:disabled, [aria-disabled="true"])) {
-		background: var(--kin-surface-hover);
-		border-color: var(--kin-color-text-muted);
+		background: var(--kin-surface-lift-hover);
 	}
 
 	.kin-button:focus-visible {
@@ -304,8 +308,8 @@
 
 	.kin-button--primary {
 		background: var(--kin-color-primary);
-		border-color: var(--kin-color-primary);
 		color: var(--kin-color-text-inverse);
+		border-color: transparent;
 	}
 
 	.kin-button--primary:hover:where(:not(:disabled, [aria-disabled="true"])) {
@@ -319,20 +323,20 @@
 	}
 
 	.kin-button--quiet {
-		background: var(--kin-surface-raised);
-		border-color: var(--kin-color-rule);
 		color: var(--kin-color-text-subtle);
+		background: var(--kin-surface-lift);
+		border-color: transparent;
 	}
 
 	.kin-button--quiet:hover:where(:not(:disabled, [aria-disabled="true"])) {
-		background: var(--kin-surface-hover);
-		border-color: var(--kin-color-rule-strong);
 		color: var(--kin-color-text);
+		background: var(--kin-surface-lift-hover);
 	}
 
 	.kin-button--ghost {
 		border-color: transparent;
 		color: var(--kin-color-text-subtle);
+		background: transparent;
 	}
 
 	.kin-button--ghost:hover:where(:not(:disabled, [aria-disabled="true"])) {
@@ -342,15 +346,15 @@
 	}
 
 	.kin-button--danger {
-		background: transparent;
-		border-color: var(--kin-edge-error);
 		color: var(--kin-color-error);
+		background: var(--kin-tint-error);
+		border-color: transparent;
 	}
 
 	.kin-button--danger:hover:where(:not(:disabled, [aria-disabled="true"])) {
 		background: var(--kin-color-error);
-		border-color: var(--kin-color-error);
 		color: var(--kin-color-text-inverse);
+		border-color: transparent;
 	}
 
 	.kin-button--icon {
@@ -389,8 +393,8 @@
 	.kin-button[aria-pressed="true"],
 	.kin-button[aria-expanded="true"] {
 		background: var(--kin-tint-primary);
-		border-color: var(--kin-edge-primary);
 		color: var(--kin-color-primary);
+		border-color: transparent;
 	}
 
 	.kin-button:disabled,
@@ -519,6 +523,55 @@
 		.kin-rule::before,
 		.kin-surface[data-tone]::before {
 			background: currentColor;
+		}
+	}
+}
+
+@layer kinra.components {
+	/* Forms and offers keep the screen's one fill available to its primary action.
+       A modal owns its own action while the page beneath it is inert. */
+	:where(.kin-card, .kin-notice, .kin-surface, .kin-disclosure)
+		.kin-button--primary:where(:not(.kin-dialog *, .kin-drawer *)) {
+		background: var(--kin-tint-primary);
+		color: var(--kin-color-primary);
+	}
+	:where(.kin-card, .kin-notice, .kin-surface, .kin-disclosure)
+		.kin-button--primary:hover:where(
+			:not(:disabled, [aria-disabled="true"], .kin-dialog *, .kin-drawer *)
+		) {
+		background: color-mix(in srgb, var(--kin-color-primary) 20%, transparent);
+		color: var(--kin-color-primary);
+	}
+	.kin-surface:where(
+			:not(.kin-surface--raised, .kin-surface--sunken, .kin-surface--plain)
+		)
+		.kin-surface:where(
+			:not(.kin-surface--raised, .kin-surface--sunken, .kin-surface--plain)
+		) {
+		background: var(--kin-surface-nested);
+		box-shadow: none;
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-surface:where(:not(:focus-visible)) {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+		.kin-button:is([aria-pressed="true"], [aria-expanded="true"]):where(
+				:not(:focus-visible)
+			) {
+			outline: 2px solid Highlight;
+			outline-offset: -2px;
+		}
+		.kin-button:focus-visible {
+			outline-color: Highlight;
+		}
+		.kin-status::before,
+		.kin-eyebrow::before,
+		.kin-rule::before,
+		.kin-surface[data-tone]::before {
+			forced-color-adjust: none;
 		}
 	}
 }

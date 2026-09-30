@@ -1,0 +1,598 @@
+/* Candidate source from Kinra Space at 8589b8a. Copy and own; see README.md. */
+.kin-pattern-corner-key {
+	--kin-pattern-key-base: color-mix(
+		in srgb,
+		var(--kin-color-text) 5%,
+		var(--kin-color-surface-raised)
+	);
+	--kin-pattern-key-fill: var(--kin-color-primary);
+	--kin-pattern-key-ink: var(--kin-color-text-muted);
+	--kin-pattern-key-ink-on: var(--kin-color-text-inverse);
+	--kin-pattern-key-trace: var(--kin-color-primary);
+	--kin-pattern-key-trace-width: 2px;
+	position: relative;
+	display: block;
+	flex: none;
+	inline-size: var(--kin-pattern-key-size, 3rem);
+	block-size: var(--kin-pattern-key-size, 3rem);
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+	border-radius: 0;
+	border-end-end-radius: var(--kin-pattern-key-radius, var(--kin-radius-layer));
+	background: none;
+	color: inherit;
+	isolation: isolate;
+	cursor: pointer;
+}
+.kin-pattern-corner-key:disabled {
+	cursor: default;
+}
+.kin-pattern-corner-key > span {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+}
+/* Focus is a ring just inside the key, clear of the light on its edge, so a
+     surface that clips at the key's corner never cuts it. It bends with the
+     key's corner, in the primary where the
+     fill is not and in the fill's own ink where it is, as the icon does. The
+     key paints its own outline under its layers, so they draw the ring. */
+.kin-pattern-corner-key:focus-visible {
+	outline: none;
+}
+.kin-pattern-corner-key:focus-visible
+	> :is(.kin-pattern-corner-key__base, .kin-pattern-corner-key__fill) {
+	outline: 2px solid var(--kin-color-primary);
+	outline-offset: calc(-2px - 2 * var(--kin-pattern-key-trace-width));
+}
+.kin-pattern-corner-key:focus-visible > .kin-pattern-corner-key__fill {
+	outline-color: var(--kin-pattern-key-ink-on);
+}
+/* What the light's shape depends on besides the key's size, as a size the
+     engine's observer sees: as wide as the rounded corner, and
+     a pixel tall in a right-to-left page. */
+.kin-pattern-corner-key > .kin-pattern-corner-key__bend {
+	inset: auto;
+	inline-size: var(--kin-pattern-key-radius, var(--kin-radius-layer));
+	block-size: 0;
+	visibility: hidden;
+}
+.kin-pattern-corner-key > .kin-pattern-corner-key__bend:dir(rtl) {
+	block-size: 1px;
+}
+.kin-pattern-corner-key__base {
+	background: var(--kin-pattern-key-base);
+	transition: background-color var(--kin-motion-surface);
+}
+/* Where the key covers its surface's frame, it carries that frame itself:
+     the surface says what its `--kin-pattern-key-frame` is. */
+.kin-pattern-corner-key__edge {
+	border: 0 solid var(--kin-pattern-key-frame, transparent);
+	border-inline-end-width: 1px;
+	border-block-end-width: 1px;
+	transition: border-color var(--kin-motion-control);
+}
+.kin-pattern-corner-key__fill {
+	background: var(--kin-pattern-key-fill);
+	clip-path: inset(100% 0% 0% 100%);
+	transition: background-color var(--kin-motion-control);
+}
+.kin-pattern-corner-key__flash {
+	position: absolute;
+	inset: 0;
+	background: #fff;
+	opacity: 0;
+}
+.kin-pattern-corner-key__layer {
+	color: var(--kin-pattern-key-ink);
+	transition: color 160ms linear;
+}
+.kin-pattern-corner-key__layer--on {
+	color: var(--kin-pattern-key-ink-on);
+}
+.kin-pattern-corner-key__glyph {
+	position: absolute;
+	inset: 0;
+	transition:
+		translate var(--kin-motion-control),
+		scale var(--kin-motion-control);
+}
+.kin-pattern-corner-key__stroke,
+.kin-pattern-corner-key__stroke b {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.kin-pattern-corner-key__stroke b {
+	background: currentColor;
+	transform: translate(-50%, -50%);
+}
+/* The light that runs along the key's edge while work is in flight. */
+.kin-pattern-corner-key__trace {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	opacity: 0;
+	transition: opacity var(--kin-motion-surface);
+}
+.kin-pattern-corner-key__trace path {
+	fill: none;
+	stroke: var(--kin-pattern-key-trace);
+	stroke-width: var(--kin-pattern-key-trace-width);
+	stroke-linecap: round;
+	stroke-dasharray: 24 76;
+	transition:
+		stroke-dasharray var(--kin-duration-close) var(--kin-ease-out),
+		stroke 160ms linear;
+}
+.kin-pattern-corner-key__layer--on .kin-pattern-corner-key__trace path {
+	stroke: currentColor;
+	opacity: 0.4;
+}
+.kin-pattern-corner-key[data-trace] .kin-pattern-corner-key__trace {
+	opacity: 1;
+}
+.kin-pattern-corner-key[data-trace] .kin-pattern-corner-key__trace path {
+	animation: kin-pattern-key-trace var(--kin-duration-trace) linear infinite;
+}
+/* The fill's copy of the light shows only where the fill does, so it runs
+     only while the fill is out of its corner; the engine sets it going again
+     where the key's own copy has run to. */
+.kin-pattern-corner-key:not([data-lit])
+	.kin-pattern-corner-key__layer--on
+	.kin-pattern-corner-key__trace
+	path {
+	animation: none;
+}
+.kin-pattern-corner-key[data-trace="muted"] {
+	--kin-pattern-key-trace: var(--kin-color-text-muted);
+}
+/* The turn ended: the light closes into a ring before it fades. */
+.kin-pattern-corner-key[data-trace="closing"]
+	.kin-pattern-corner-key__trace
+	path {
+	stroke-dasharray: 100 0;
+}
+@keyframes kin-pattern-key-trace {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: -100;
+	}
+}
+.kin-pattern-corner-key[data-ink="text"] {
+	--kin-pattern-key-ink: var(--kin-color-text);
+}
+.kin-pattern-corner-key[data-ink="faint"] {
+	--kin-pattern-key-ink: color-mix(
+		in srgb,
+		var(--kin-color-text-muted) 55%,
+		transparent
+	);
+}
+.kin-pattern-corner-key[data-ink="error"] {
+	--kin-pattern-key-ink: var(--kin-color-error);
+}
+.kin-pattern-corner-key[data-tone="error"] {
+	--kin-pattern-key-base: color-mix(
+		in srgb,
+		var(--kin-color-error) 10%,
+		var(--kin-color-surface-raised)
+	);
+}
+/* Hover and press are enhancements; the icon carries the meaning. */
+@media (hover: hover) {
+	.kin-pattern-corner-key:not(:disabled):hover {
+		--kin-pattern-key-fill: color-mix(
+			in srgb,
+			var(--kin-color-primary) 86%,
+			var(--kin-color-text)
+		);
+	}
+	.kin-pattern-corner-key[data-face="working"]:not(:disabled):hover {
+		--kin-pattern-key-base: color-mix(
+			in srgb,
+			var(--kin-color-text) 11%,
+			var(--kin-color-surface-raised)
+		);
+	}
+	.kin-pattern-corner-key[data-lean]:not(:disabled):hover
+		.kin-pattern-corner-key__glyph {
+		translate: 0 -1px;
+	}
+}
+.kin-pattern-corner-key:not(:disabled):active .kin-pattern-corner-key__glyph {
+	scale: 0.92;
+}
+/* Reduced motion changes every face in place, and the light holds still as
+     a whole outline: the same meaning, without the movement. The engine reads
+     the same preference for the movements it makes itself. */
+@media (prefers-reduced-motion: reduce) {
+	.kin-pattern-corner-key *,
+	.kin-pattern-corner-key *::before,
+	.kin-pattern-corner-key *::after {
+		animation: none !important;
+		transition: none !important;
+	}
+	.kin-pattern-corner-key__trace path {
+		stroke-dasharray: none;
+	}
+}
+/* Forced colours: the icon in the button's ink, grey where the key cannot be
+     pressed now, as the system draws a disabled button, and in the
+     highlight's ink on the lit fill. The strokes are backgrounds, which the
+     mode would paint Canvas, so they keep their layer's ink.
+     Work in flight keeps its light; a message on its way
+     keeps its muted one. */
+@media (forced-colors: active) {
+	.kin-pattern-corner-key__edge {
+		outline: 1px solid ButtonText;
+		outline-offset: -1px;
+	}
+	.kin-pattern-corner-key__layer {
+		color: ButtonText;
+	}
+	.kin-pattern-corner-key:disabled > .kin-pattern-corner-key__layer {
+		color: GrayText;
+	}
+	.kin-pattern-corner-key__fill {
+		background: Highlight;
+	}
+	.kin-pattern-corner-key__layer--on {
+		color: HighlightText;
+	}
+	.kin-pattern-corner-key__stroke b {
+		forced-color-adjust: none;
+	}
+	.kin-pattern-corner-key__trace path {
+		stroke: Highlight;
+	}
+	.kin-pattern-corner-key[data-trace="muted"]
+		> .kin-pattern-corner-key__layer
+		.kin-pattern-corner-key__trace
+		path {
+		stroke: GrayText;
+	}
+	.kin-pattern-corner-key:focus-visible > .kin-pattern-corner-key__base {
+		outline-color: Highlight;
+	}
+	.kin-pattern-corner-key:focus-visible > .kin-pattern-corner-key__fill {
+		outline-color: HighlightText;
+	}
+}
+
+.kin-pattern-corner-key__stroke {
+	transform: translate(
+			calc(var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-x)),
+			calc(var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-y))
+		)
+		rotate(var(--kin-pattern-stroke-angle));
+}
+.kin-pattern-corner-key__stroke b {
+	width: calc(
+		var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-length)
+	);
+	height: calc(
+		var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-width)
+	);
+	border-radius: calc(
+		var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-radius)
+	);
+}
+.kin-pattern-corner-key:not([data-enhanced]):is(
+		[data-face="send"],
+		[data-face="queue"],
+		[data-face="shell"],
+		[data-face="command"]
+	)
+	.kin-pattern-corner-key__fill {
+	clip-path: inset(0);
+}
+.kin-pattern-corner-key:is([data-face="sending"], [data-face="working"]) {
+	--kin-pattern-key-ink: var(--kin-color-text);
+}
+.kin-pattern-corner-key[data-face="watching"] {
+	--kin-pattern-key-ink: color-mix(
+		in srgb,
+		var(--kin-color-text-muted) 55%,
+		transparent
+	);
+}
+.kin-pattern-corner-key[data-face="blocked"] {
+	--kin-pattern-key-ink: var(--kin-color-error);
+	--kin-pattern-key-base: color-mix(
+		in srgb,
+		var(--kin-color-error) 10%,
+		var(--kin-color-surface-raised)
+	);
+}
+.kin-pattern-corner-key[data-face="rest"]
+	.kin-pattern-corner-key__stroke:nth-child(1),
+.kin-pattern-corner-key[data-face="send"]
+	.kin-pattern-corner-key__stroke:nth-child(1),
+.kin-pattern-corner-key[data-face="uploading"]
+	.kin-pattern-corner-key__stroke:nth-child(1),
+.kin-pattern-corner-key[data-face="watching"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.279583;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="rest"]
+	.kin-pattern-corner-key__stroke:nth-child(2),
+.kin-pattern-corner-key[data-face="send"]
+	.kin-pattern-corner-key__stroke:nth-child(2),
+.kin-pattern-corner-key[data-face="uploading"]
+	.kin-pattern-corner-key__stroke:nth-child(2),
+.kin-pattern-corner-key[data-face="watching"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.449583;
+	--kin-pattern-stroke-y: 0.43125;
+	--kin-pattern-stroke-angle: -45deg;
+	--kin-pattern-stroke-length: 0.18385;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="rest"]
+	.kin-pattern-corner-key__stroke:nth-child(3),
+.kin-pattern-corner-key[data-face="send"]
+	.kin-pattern-corner-key__stroke:nth-child(3),
+.kin-pattern-corner-key[data-face="uploading"]
+	.kin-pattern-corner-key__stroke:nth-child(3),
+.kin-pattern-corner-key[data-face="watching"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.550417;
+	--kin-pattern-stroke-y: 0.43125;
+	--kin-pattern-stroke-angle: 45deg;
+	--kin-pattern-stroke-length: 0.18385;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="rest"]
+	.kin-pattern-corner-key__stroke:nth-child(4),
+.kin-pattern-corner-key[data-face="send"]
+	.kin-pattern-corner-key__stroke:nth-child(4),
+.kin-pattern-corner-key[data-face="uploading"]
+	.kin-pattern-corner-key__stroke:nth-child(4),
+.kin-pattern-corner-key[data-face="watching"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.380833;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="sending"]
+	.kin-pattern-corner-key__stroke:nth-child(1),
+.kin-pattern-corner-key[data-face="working"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.183333;
+	--kin-pattern-stroke-width: 0.183333;
+	--kin-pattern-stroke-radius: 0.045833;
+}
+.kin-pattern-corner-key[data-face="sending"]
+	.kin-pattern-corner-key__stroke:nth-child(2),
+.kin-pattern-corner-key[data-face="working"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.183333;
+	--kin-pattern-stroke-width: 0.183333;
+	--kin-pattern-stroke-radius: 0.045833;
+}
+.kin-pattern-corner-key[data-face="sending"]
+	.kin-pattern-corner-key__stroke:nth-child(3),
+.kin-pattern-corner-key[data-face="working"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.183333;
+	--kin-pattern-stroke-width: 0.183333;
+	--kin-pattern-stroke-radius: 0.045833;
+}
+.kin-pattern-corner-key[data-face="sending"]
+	.kin-pattern-corner-key__stroke:nth-child(4),
+.kin-pattern-corner-key[data-face="working"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="queue"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.550417;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.215417;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="queue"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.45875;
+	--kin-pattern-stroke-y: 0.504583;
+	--kin-pattern-stroke-angle: -45deg;
+	--kin-pattern-stroke-length: 0.157923;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="queue"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.54125;
+	--kin-pattern-stroke-y: 0.504583;
+	--kin-pattern-stroke-angle: 45deg;
+	--kin-pattern-stroke-length: 0.157923;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="queue"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.371667;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.242917;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="shell"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.573333;
+	--kin-pattern-stroke-y: 0.600833;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.132917;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="shell"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.435833;
+	--kin-pattern-stroke-y: 0.545833;
+	--kin-pattern-stroke-angle: -45deg;
+	--kin-pattern-stroke-length: 0.170886;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="shell"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.435833;
+	--kin-pattern-stroke-y: 0.454167;
+	--kin-pattern-stroke-angle: 45deg;
+	--kin-pattern-stroke-length: 0.170886;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="shell"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.573333;
+	--kin-pattern-stroke-y: 0.600833;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="command"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: -66.801409deg;
+	--kin-pattern-stroke-length: 0.320495;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="command"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="command"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="command"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="blocked"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.454167;
+	--kin-pattern-stroke-angle: 90deg;
+	--kin-pattern-stroke-length: 0.169583;
+	--kin-pattern-stroke-width: 0.04125;
+	--kin-pattern-stroke-radius: 0.020625;
+}
+.kin-pattern-corner-key[data-face="blocked"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.61;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.050417;
+	--kin-pattern-stroke-width: 0.050417;
+	--kin-pattern-stroke-radius: 0.025208;
+}
+.kin-pattern-corner-key[data-face="blocked"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.454167;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="blocked"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.454167;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}
+.kin-pattern-corner-key[data-face="waiting"]
+	.kin-pattern-corner-key__stroke:nth-child(1) {
+	--kin-pattern-stroke-x: 0.399167;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.050417;
+	--kin-pattern-stroke-width: 0.050417;
+	--kin-pattern-stroke-radius: 0.025208;
+}
+.kin-pattern-corner-key[data-face="waiting"]
+	.kin-pattern-corner-key__stroke:nth-child(2) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.050417;
+	--kin-pattern-stroke-width: 0.050417;
+	--kin-pattern-stroke-radius: 0.025208;
+}
+.kin-pattern-corner-key[data-face="waiting"]
+	.kin-pattern-corner-key__stroke:nth-child(3) {
+	--kin-pattern-stroke-x: 0.600833;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0.050417;
+	--kin-pattern-stroke-width: 0.050417;
+	--kin-pattern-stroke-radius: 0.025208;
+}
+.kin-pattern-corner-key[data-face="waiting"]
+	.kin-pattern-corner-key__stroke:nth-child(4) {
+	--kin-pattern-stroke-x: 0.5;
+	--kin-pattern-stroke-y: 0.5;
+	--kin-pattern-stroke-angle: 0deg;
+	--kin-pattern-stroke-length: 0;
+	--kin-pattern-stroke-width: 0;
+	--kin-pattern-stroke-radius: 0;
+}

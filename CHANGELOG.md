@@ -9,7 +9,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
-- Add `docs/refresh-plan.md`, the exploratory plan for a refresh modelled on
+- Bring back Kinra Space's soft layer, well, quiet control, nested tone,
+  radius, shadow, and causal motion roles. Add candidate corner action,
+  corner key, and live edge source, including an optional framework-free
+  motion module and static CSS faces. `/refresh/` demonstrates their states.
+- Add `docs/refresh-plan.md`, the grammar and adoption plan for a refresh modelled on
   Kinra Space's corner key, with reference-only studies in `examples/studies/`
   that the package does not ship.
 - Add `assets/wordmark-space.svg`, the Kinra wordmark continued by `.␣` on
@@ -77,8 +81,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 - Amend `docs/principles.md` for the corner key refresh: soft layers with
   exact marks, a line as a signal rather than a divider, the corner action
   wherever a surface has one primary action, what light means, and five motion
-  verbs. `docs/composing.md` follows it. Package classes are unchanged until
-  the refresh reaches them.
+  verbs. The unreleased package now follows that grammar: soft cards and
+  surfaces, wells instead of outlined fields, quieter controls, sentence-case
+  labels, and signal edges on notices and toasts. Dialog chrome, facts, lists,
+  and logs use space instead of dividing rules; tables retain their row rules.
+  Migration guidance lives in `docs/adoption.md`.
 - The brand standard's terminal clause now draws the K from the asset where
   the terminal offers an image protocol, instead of assuming it can never be
   drawn, and names block and ASCII approximations as redrawings that no
@@ -106,7 +113,7 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   [`docs/adoption.md`](docs/adoption.md).
 - Open every reference catalog page with a plain title and one sentence
   instead of an eyebrow, statement, and lede, and remove the overview hero.
-- Give the unmodified `.kin-button` a stronger neutral border and hover.
+- Give the unmodified `.kin-button` a neutral lift and hover without an outline.
 - Declare the cascade layer order explicitly in `base.css`.
 - Promote the narrative intro's evidence list to the shared `.kin-kv` and let
   registry patterns use shared type roles.

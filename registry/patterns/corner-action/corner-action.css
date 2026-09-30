@@ -1,0 +1,40 @@
+/* Candidate: the labelled corner action used by Kinra Space's decision trays
+   and dialogs at 8589b8a. Copy and own; see README.md. */
+.kin-pattern-corner-action {
+	--kin-pattern-action-radius: var(--kin-radius-layer);
+}
+
+.kin-dialog.kin-pattern-corner-action {
+	--kin-pattern-action-radius: var(--kin-radius-panel);
+}
+
+.kin-pattern-corner-action__footer {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+	min-block-size: var(--kin-control-height-large);
+	padding-block: 0;
+	padding-inline-start: var(--kin-space-5);
+	padding-inline-end: 0;
+}
+
+.kin-pattern-corner-action__key {
+	align-self: stretch;
+	margin-inline-start: auto;
+	max-inline-size: 100%;
+	min-block-size: var(--kin-control-height-large);
+	padding-inline: var(--kin-space-6);
+	border-radius: 0;
+	border-end-end-radius: var(--kin-pattern-action-radius);
+}
+
+.kin-pattern-corner-action__key:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: -6px;
+}
+
+.kin-pattern-corner-action__key.kin-button--danger {
+	background: var(--kin-color-error);
+	color: var(--kin-color-text-inverse);
+}

@@ -1,0 +1,269 @@
+/* Candidate source from Kinra Space at 8589b8a (LiveEdge.svelte and live-edge.css).
+   The container is positioned and its text names the state; the edge is hidden
+   from assistive technology. See README.md for lifecycle and ownership. */
+.kin-pattern-live-edge {
+	--kin-pattern-edge-color: var(--kin-color-primary);
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	inline-size: var(--kin-pattern-edge-radius, var(--kin-radius-row));
+	pointer-events: none;
+}
+.kin-pattern-live-edge__line {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	padding-block: 2px;
+	padding-inline-start: 2px;
+	border-start-start-radius: var(
+		--kin-pattern-edge-radius,
+		var(--kin-radius-row)
+	);
+	border-end-start-radius: var(
+		--kin-pattern-edge-radius,
+		var(--kin-radius-row)
+	);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor, source-over;
+	mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask-composite: exclude, add;
+}
+.kin-pattern-live-edge__line::before,
+.kin-pattern-live-edge__line::after {
+	content: "";
+	position: absolute;
+	inset-inline: 0;
+	opacity: 0;
+}
+/* A soft band of light that sweeps down the line and through its corners. */
+.kin-pattern-live-edge__line::before {
+	inset-block-start: 0;
+	block-size: 100%;
+	background: linear-gradient(
+		to bottom,
+		transparent,
+		var(--kin-pattern-edge-color),
+		transparent
+	);
+	transform: translateY(-100%);
+}
+/* Sparks: a small light for each background agent, up to three, drifting down. */
+.kin-pattern-live-edge__line::after {
+	inset-block: 0;
+	background: linear-gradient(
+			to bottom,
+			transparent 20%,
+			var(--kin-pattern-edge-color) 50%,
+			transparent 80%
+		)
+		0 0 / 100% var(--kin-pattern-edge-gap, 16px) repeat-y;
+}
+.kin-pattern-live-edge[data-sparks="1"] {
+	--kin-pattern-edge-gap: 30px;
+}
+.kin-pattern-live-edge[data-sparks="3"] {
+	--kin-pattern-edge-gap: 11px;
+}
+/* The light's own glow, on the dark ground only, while it moves or asks. */
+.kin-pattern-live-edge:is(
+	[data-edge="working"],
+	[data-edge="waiting"],
+	[data-edge="closing"]
+) {
+	filter: drop-shadow(
+		0 0 3px
+			light-dark(
+				transparent,
+				color-mix(in srgb, var(--kin-pattern-edge-color) 70%, transparent)
+			)
+	);
+}
+
+/* Kin's turn runs: the band sweeps over a faint trace of the line, or over
+     the sparks of the agents at work beside it. */
+.kin-pattern-live-edge[data-edge="working"] .kin-pattern-live-edge__line {
+	background: color-mix(
+		in srgb,
+		var(--kin-pattern-edge-color) 24%,
+		transparent
+	);
+}
+.kin-pattern-live-edge[data-edge="working"]
+	.kin-pattern-live-edge__line::before {
+	opacity: 1;
+	animation: kin-pattern-live-edge-sweep 2.4s ease-in-out infinite;
+}
+.kin-pattern-live-edge[data-edge="working"][data-sparks]
+	.kin-pattern-live-edge__line {
+	background: none;
+}
+.kin-pattern-live-edge[data-edge="working"][data-sparks]
+	.kin-pattern-live-edge__line::after {
+	opacity: 0.5;
+	animation: kin-pattern-live-edge-sparks var(--kin-duration-trace) linear
+		infinite;
+}
+/* The turn is over and background agents still work. */
+.kin-pattern-live-edge[data-edge="agents"] .kin-pattern-live-edge__line::after {
+	opacity: 0.9;
+	animation: kin-pattern-live-edge-sparks 1.6s linear infinite;
+}
+/* Waiting on the person: amber pours in from the top, with the corner key's
+     bloom, and breathes until they answer. */
+.kin-pattern-live-edge[data-edge="waiting"] {
+	--kin-pattern-edge-color: var(--kin-color-warning);
+}
+.kin-pattern-live-edge[data-edge="waiting"] .kin-pattern-live-edge__line {
+	background: linear-gradient(
+			var(--kin-pattern-edge-color),
+			var(--kin-pattern-edge-color)
+		)
+		0 0 / 100% 100% no-repeat;
+	animation:
+		kin-pattern-live-edge-pour var(--kin-duration-bloom) var(--kin-ease-bloom),
+		kin-pattern-live-edge-breathe 3.2s ease-in-out var(--kin-duration-bloom)
+			infinite;
+}
+/* A turn ends: its light gathers into the whole line and clears. */
+.kin-pattern-live-edge[data-edge="closing"] .kin-pattern-live-edge__line {
+	background: linear-gradient(
+			var(--kin-pattern-edge-color),
+			var(--kin-pattern-edge-color)
+		)
+		50% 50% / 100% 100% no-repeat;
+	animation: kin-pattern-live-edge-gather 1.1s var(--kin-ease-standard) forwards;
+}
+/* …or, when it ended out of sight, gathers and holds until the person looks. */
+.kin-pattern-live-edge[data-edge="finished"] .kin-pattern-live-edge__line {
+	background: linear-gradient(
+			var(--kin-pattern-edge-color),
+			var(--kin-pattern-edge-color)
+		)
+		50% 50% / 100% 100% no-repeat;
+	animation: kin-pattern-live-edge-gather-in 420ms cubic-bezier(0.2, 0, 0, 1);
+}
+/* Another client holds the session: dotted and still. */
+.kin-pattern-live-edge[data-edge="elsewhere"] {
+	--kin-pattern-edge-color: var(--kin-color-reason);
+}
+.kin-pattern-live-edge[data-edge="elsewhere"] .kin-pattern-live-edge__line {
+	background: repeating-linear-gradient(
+		to bottom,
+		var(--kin-pattern-edge-color) 0 2px,
+		transparent 2px 5px
+	);
+}
+/* This page's socket is lost: dashed, blinking while it comes back. */
+.kin-pattern-live-edge[data-edge="reconnecting"] {
+	--kin-pattern-edge-color: var(--kin-color-warning);
+}
+.kin-pattern-live-edge[data-edge="reconnecting"] .kin-pattern-live-edge__line {
+	background: repeating-linear-gradient(
+		to bottom,
+		var(--kin-pattern-edge-color) 0 6px,
+		transparent 6px 10px
+	);
+	animation: kin-pattern-live-edge-blink 1.2s ease-in-out infinite alternate;
+}
+@keyframes kin-pattern-live-edge-sweep {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(100%);
+	}
+}
+@keyframes kin-pattern-live-edge-sparks {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 0 var(--kin-pattern-edge-gap, 16px);
+	}
+}
+@keyframes kin-pattern-live-edge-pour {
+	from {
+		background-size: 100% 0%;
+	}
+}
+@keyframes kin-pattern-live-edge-breathe {
+	50% {
+		opacity: 0.35;
+	}
+}
+@keyframes kin-pattern-live-edge-gather {
+	0% {
+		background-size: 100% 30%;
+	}
+	25% {
+		background-size: 100% 100%;
+		opacity: 1;
+	}
+	100% {
+		background-size: 100% 100%;
+		opacity: 0;
+	}
+}
+@keyframes kin-pattern-live-edge-gather-in {
+	from {
+		background-size: 100% 30%;
+	}
+}
+@keyframes kin-pattern-live-edge-blink {
+	to {
+		opacity: 0.3;
+	}
+}
+/* Held still, the work in flight is a line that fades at both ends, and the
+     agents' sparks a dotted line in the primary. */
+@media (prefers-reduced-motion: reduce) {
+	.kin-pattern-live-edge *,
+	.kin-pattern-live-edge *::before,
+	.kin-pattern-live-edge *::after {
+		animation: none !important;
+	}
+	.kin-pattern-live-edge[data-edge="closing"] .kin-pattern-live-edge__line {
+		opacity: 0;
+	}
+	.kin-pattern-live-edge[data-edge="working"] .kin-pattern-live-edge__line,
+	.kin-pattern-live-edge[data-edge="working"][data-sparks]
+		.kin-pattern-live-edge__line {
+		background: linear-gradient(
+			to bottom,
+			transparent,
+			var(--kin-pattern-edge-color) 25% 75%,
+			transparent
+		);
+	}
+	.kin-pattern-live-edge[data-edge="working"]
+		.kin-pattern-live-edge__line::before,
+	.kin-pattern-live-edge[data-edge="working"][data-sparks]
+		.kin-pattern-live-edge__line::after,
+	.kin-pattern-live-edge[data-edge="agents"]
+		.kin-pattern-live-edge__line::after {
+		opacity: 0;
+	}
+	.kin-pattern-live-edge[data-edge="agents"] .kin-pattern-live-edge__line {
+		background: repeating-linear-gradient(
+			to bottom,
+			var(--kin-pattern-edge-color) 0 3px,
+			transparent 3px 7px
+		);
+	}
+}
+/* Forced colours flatten backgrounds, so the line keeps its own and every
+     state draws in Highlight; the forms still tell them apart. */
+@media (forced-colors: active) {
+	.kin-pattern-live-edge,
+	.kin-pattern-live-edge[data-edge] {
+		--kin-pattern-edge-color: Highlight;
+		filter: none;
+	}
+	.kin-pattern-live-edge__line {
+		forced-color-adjust: none;
+	}
+}

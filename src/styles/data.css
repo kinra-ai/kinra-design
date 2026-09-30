@@ -18,10 +18,10 @@
 		color: var(--kin-color-text-muted);
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: var(--kin-tracking-label);
 		margin: 0;
-		text-transform: uppercase;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-figure__value {
@@ -126,26 +126,26 @@
 	/* Key-value: a description list of facts. */
 
 	.kin-kv {
-		border-top: 1px solid var(--kin-color-rule);
 		margin: 0;
+		border-top: 1px solid transparent;
 	}
 
 	.kin-kv > div {
-		border-bottom: 1px solid var(--kin-border-quiet);
 		display: grid;
 		gap: var(--kin-space-1) var(--kin-space-4);
 		grid-template-columns: minmax(6rem, var(--kin-kv-key, 10rem)) minmax(0, 1fr);
 		padding-block: var(--kin-space-3);
+		border-bottom: 1px solid transparent;
 	}
 
 	.kin-kv dt {
 		color: var(--kin-color-text-muted);
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
-		font-weight: var(--kin-weight-strong);
-		letter-spacing: var(--kin-tracking-label);
 		line-height: 1.6;
-		text-transform: uppercase;
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.kin-kv dd {
@@ -178,8 +178,8 @@
 
 	.kin-kv[data-layout="grid"] > div {
 		border-bottom: 0;
-		border-top: 1px solid var(--kin-color-rule);
 		grid-template-columns: minmax(0, 1fr);
+		border-top: 1px solid transparent;
 	}
 
 	.kin-kv[data-density="compact"] > div {
@@ -222,6 +222,7 @@
 			calc(var(--kin-log-time, 5.5rem) + var(--kin-space-4) + 0.5rem - 0.5px);
 		position: absolute;
 		width: 1px;
+		display: none;
 	}
 
 	.kin-log__entry:first-child::before {
@@ -330,21 +331,24 @@
 
 	.kin-code {
 		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		display: grid;
 		margin: 0;
 		min-width: 0;
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
+		overflow: hidden;
 	}
 
 	.kin-code__header {
 		align-items: center;
-		border-bottom: 1px solid var(--kin-color-rule);
 		display: flex;
 		gap: var(--kin-space-3);
 		justify-content: space-between;
 		min-height: 2.5rem;
 		padding: var(--kin-space-1) var(--kin-space-2) var(--kin-space-1)
 			var(--kin-space-4);
+		background: var(--kin-surface-step);
+		border-bottom: 1px solid transparent;
 	}
 
 	.kin-code__title {
@@ -406,8 +410,6 @@
 
 	.kin-avatar {
 		align-items: center;
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		border-radius: 2px;
 		color: var(--kin-color-text-subtle);
 		display: inline-flex;
@@ -421,6 +423,8 @@
 		overflow: hidden;
 		text-transform: uppercase;
 		width: var(--kin-avatar-size, 2.25rem);
+		background: var(--kin-surface-lift);
+		border: 1px solid transparent;
 	}
 
 	.kin-avatar img {
@@ -443,13 +447,11 @@
 
 	.kin-avatar[data-tone="primary"] {
 		background: var(--kin-tint-primary);
-		border-color: var(--kin-edge-primary);
 		color: var(--kin-color-primary);
 	}
 
 	.kin-avatar[data-tone="reason"] {
 		background: var(--kin-tint-reason);
-		border-color: var(--kin-edge-reason);
 		color: var(--kin-color-reason);
 	}
 
@@ -466,21 +468,25 @@
 	.kin-card {
 		--kin-card-tone: var(--kin-color-text-muted);
 
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
 		position: relative;
+		background: var(--kin-surface-card);
+		border: 0;
+		border-radius: var(--kin-radius-layer);
+		box-shadow: var(--kin-surface-card-ring);
 	}
 
 	.kin-card[data-tone]::before {
 		background: var(--kin-card-tone);
 		content: "";
 		height: 0.625rem;
-		inset: -1px auto auto -1px;
 		position: absolute;
 		width: 0.625rem;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		border-start-start-radius: var(--kin-radius-layer);
 	}
 
 	.kin-card[data-tone="primary"] {
@@ -505,23 +511,24 @@
 
 	.kin-card[data-variant="raised"] {
 		background: var(--kin-surface-raised);
-		border-color: var(--kin-border-subtle);
-		border-radius: var(--kin-radius-lg);
 		box-shadow: var(--kin-shadow-panel);
+		border-radius: var(--kin-radius-panel);
 	}
 
 	.kin-card[data-variant="raised"][data-tone]::before {
-		border-radius: var(--kin-radius-lg) 0 var(--kin-radius-sm) 0;
+		border-start-start-radius: var(--kin-radius-panel);
 	}
 
 	.kin-card[data-variant="plain"] {
-		background: var(--kin-color-ground);
+		background: transparent;
+		box-shadow: none;
 	}
 
 	.kin-card__header,
 	.kin-card__body,
 	.kin-card__footer {
 		padding: var(--kin-space-5);
+		border-top: 0;
 	}
 
 	.kin-card__header {
@@ -550,7 +557,7 @@
 
 	.kin-card__footer {
 		align-items: center;
-		border-top: 1px solid var(--kin-border-quiet);
+		border-top: 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--kin-space-3);
@@ -596,8 +603,10 @@
 	}
 
 	.kin-card__media {
-		border-bottom: 1px solid var(--kin-color-rule);
 		overflow: hidden;
+		border-bottom: 1px solid transparent;
+		border-start-start-radius: inherit;
+		border-start-end-radius: inherit;
 	}
 
 	.kin-card__media img {
@@ -608,11 +617,11 @@
 
 	/* A whole-card link: the title link stretches over the card. */
 	.kin-card[data-link] {
-		transition: border-color var(--kin-duration-fast) ease;
+		transition: background var(--kin-motion-control);
 	}
 
 	.kin-card[data-link]:hover {
-		border-color: var(--kin-color-text-muted);
+		background: var(--kin-surface-lift);
 	}
 
 	.kin-card[data-link] .kin-card__title a::after {
@@ -655,15 +664,17 @@
 	/* List: rows of peers that are not a table. */
 
 	.kin-list {
-		border-block: 1px solid var(--kin-color-rule);
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		border-block: 0;
 	}
 
 	.kin-list[data-variant="bounded"] {
-		background: var(--kin-color-ground-deep);
-		border: 1px solid var(--kin-color-rule);
+		background: var(--kin-surface-card);
+		border: 0;
+		border-radius: var(--kin-radius-layer);
+		box-shadow: var(--kin-surface-card-ring);
 	}
 
 	.kin-list[data-variant="bare"] {
@@ -677,6 +688,7 @@
 		min-height: 3.25rem;
 		padding: var(--kin-space-3) var(--kin-space-2);
 		position: relative;
+		border-radius: var(--kin-radius-row);
 	}
 
 	.kin-list[data-variant="bounded"] .kin-list__item {
@@ -684,7 +696,7 @@
 	}
 
 	.kin-list__item + .kin-list__item {
-		border-top: 1px solid var(--kin-border-quiet);
+		border-top: 0;
 	}
 
 	.kin-list__lead {
@@ -837,6 +849,53 @@
 		.kin-card[data-tone]::before,
 		.kin-log__entry[data-tone] .kin-log__marker {
 			background: currentColor;
+		}
+	}
+}
+
+@layer kinra.components {
+	pre.kin-code {
+		overflow-x: auto;
+		padding: var(--kin-space-3) var(--kin-space-4);
+	}
+	/* A card nested in a card or surface steps back to the panel's tone. */
+	:is(
+			.kin-card:where(:not([data-variant])),
+			.kin-surface:where(
+				:not(.kin-surface--raised, .kin-surface--sunken, .kin-surface--plain)
+			)
+		)
+		:is(
+			.kin-card:where(:not([data-variant])),
+			.kin-surface:where(
+				:not(.kin-surface--raised, .kin-surface--sunken, .kin-surface--plain)
+			),
+			.kin-list[data-variant="bounded"],
+			.kin-disclosure[data-variant="panel"],
+			.kin-empty:has(> .kin-empty__title)
+		) {
+		background: var(--kin-surface-nested);
+		box-shadow: none;
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-card:where(
+			:not(:focus-visible, :has(.kin-card__title a:focus-visible))
+		),
+		.kin-list[data-variant="bounded"] {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+		.kin-list__item[aria-selected="true"]:where(
+				:not(:focus-visible, :has(:focus-visible))
+			) {
+			outline: 2px solid Highlight;
+			outline-offset: -2px;
+		}
+		.kin-card[data-tone]::before,
+		.kin-log__marker {
+			forced-color-adjust: none;
 		}
 	}
 }
