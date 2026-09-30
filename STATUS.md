@@ -58,18 +58,6 @@ adoption map; this file only tracks current state, not process.
 - Retired Spaces and Kinra OS pins remain recovery evidence in their owners.
   No current consumer selected `v0.2.0`; the expansion remains unreleased.
 
-## Space/Depot source preparation
-
-Private canonical Depot will retain public GitHub as managed distribution and
-the incoming fork/bot PR destination. Both immutable annotated release objects
-and their matching package versions are verified locally. Exact current
-Site/Gateway/Space dependency URLs and all installed style/asset bytes match
-their pinned source. [Readiness](docs/space-depot-readiness.md) records hashes,
-package checks and the held execution boundary. `npm run check` passes with
-the exact pinned Node 26.7.0 and npm 11.17.0; the local log is
-`/tmp/design-move-check.log`. No public URL, consumer pin, tag, package
-version or artifact changed.
-
 ## Open for the release review
 
 - The package name `@kinra/web` predates the brand standard and undersells

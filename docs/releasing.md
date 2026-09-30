@@ -53,14 +53,11 @@ Confirm that:
 5. the working tree is clean after the release commit; and
 6. the annotated tag matches the package version.
 
-Before cutover, push the verified commit and original annotated tag to the
-canonical GitHub origin. After the verified portfolio cutover receipt appoints
-Depot, publish only through its appointed human-authorized release policy;
-Depot synchronizes the exact original objects to retained public GitHub.
-Confirm both tag object and peeled commit at that public destination before
-calling a release consumable. Never repair a delayed mirror by creating a
-second annotation or directly publishing divergent GitHub history. Creating or pushing a
-release tag requires explicit maintainer approval. An npm publication, GitHub
+Push the verified commit and original annotated tag to the canonical GitHub
+origin. Confirm both tag object and peeled commit there before calling a
+release consumable. Never repair a published tag by creating a second
+annotation. Creating or pushing a release tag requires explicit maintainer
+approval. An npm publication, GitHub
 Release, or consumer update is a separate action and is not implied by the
 tag.
 

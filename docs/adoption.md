@@ -224,6 +224,4 @@ consumers for as long as each product needs.
 
 Current consumers have adopted unreleased exact commits, not `v0.2.0`.
 Retired Spaces and Kinra OS retain earlier pins as recovery evidence.
-The [source move](space-depot-readiness.md) retains these public GitHub URLs
-after Depot becomes private canonical source. A consumer's own upgrade,
-verification and deployment remain independent.
+A consumer's own upgrade, verification and deployment remain independent.

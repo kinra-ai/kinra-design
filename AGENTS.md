@@ -34,12 +34,9 @@ command surface. Run `mise install` and `npm ci` on a fresh mise workstation.
 
 ## Canonical Git and public distribution
 
-GitHub remains canonical until a verified portfolio receipt appoints private
-Depot. Afterwards author retained proposals and exact reviewed Depot Changes;
-GitHub stays the managed **public distribution** and incoming fork/bot PR
-destination. Keep exact public package URLs and immutable tags: private Depot
-credentials must never become a consumer installation requirement. See
-[source readiness](docs/space-depot-readiness.md) for exact refs and proof.
+GitHub is canonical and the **public distribution**, including incoming
+fork/bot PRs. Keep exact public package URLs and immutable tags; no private
+credential may become a consumer installation requirement.
 
 ## Boundaries
 
