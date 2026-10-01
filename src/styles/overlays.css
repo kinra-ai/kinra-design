@@ -452,7 +452,9 @@
 	.kin-dialog__footer .kin-button:focus-visible {
 		outline-offset: -2px;
 	}
-	.kin-dialog__body:where(:not(.kin-stack)) > :where(* + *) {
+	/* The body's rhythm outranks a child's component margin reset, including
+	   code and lists imported after overlays. Product geometry can still win. */
+	.kin-dialog__body:not(.kin-stack) > :where(* + *) {
 		margin-block-start: var(--kin-space-4);
 	}
 	.kin-dialog__body.kin-stack {
