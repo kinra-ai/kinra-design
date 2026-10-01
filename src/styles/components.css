@@ -1017,6 +1017,11 @@
 }
 @media (forced-colors: active) {
 	@layer kinra.components {
+		/* Even a compact empty line needs its boundary when its tone vanishes. */
+		.kin-empty:where(:not(:focus-visible)) {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
 		.kin-fieldset[data-variant="bounded"],
 		.kin-disclosure[data-variant="panel"] {
 			border-color: CanvasText;
