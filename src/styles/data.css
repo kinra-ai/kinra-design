@@ -899,3 +899,25 @@
 		}
 	}
 }
+
+@layer kinra.components {
+	.kin-list__trail .kin-button {
+		font-size: var(--kin-text-xs);
+		min-height: var(--kin-control-height-compact);
+		padding: var(--kin-space-1) var(--kin-space-3);
+	}
+	.kin-list__trail .kin-button--icon {
+		padding: 0;
+		width: var(--kin-control-height-compact);
+	}
+}
+@media (pointer: coarse) {
+	@layer kinra.components {
+		.kin-list__trail .kin-button {
+			min-height: var(--kin-hit-target);
+		}
+		.kin-list__trail .kin-button--icon {
+			width: var(--kin-hit-target);
+		}
+	}
+}

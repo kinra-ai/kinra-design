@@ -9,7 +9,7 @@
 	--kin-pattern-key-ink: var(--kin-color-text-muted);
 	--kin-pattern-key-ink-on: var(--kin-color-text-inverse);
 	--kin-pattern-key-trace: var(--kin-color-primary);
-	--kin-pattern-key-trace-width: 2px;
+	--kin-pattern-key-trace-width: var(--kin-edge-width);
 	position: relative;
 	display: block;
 	flex: none;

@@ -8,6 +8,9 @@
  */
 
 @layer kinra.components {
+	:where(p.kin-status) {
+		margin-block: 0;
+	}
 	.kin-canvas {
 		isolation: isolate;
 		min-height: 100vh;
@@ -49,7 +52,7 @@
 
 	.kin-surface {
 		background: var(--kin-surface-card);
-		border: 0;
+		border: 1px solid transparent;
 		border-radius: var(--kin-radius-layer);
 		box-shadow: var(--kin-surface-card-ring);
 	}
@@ -290,9 +293,9 @@
 		overflow-wrap: anywhere;
 		text-decoration: none;
 		transition:
-			background var(--kin-duration-normal) ease,
-			border-color var(--kin-duration-normal) ease,
-			color var(--kin-duration-normal) ease;
+			background var(--kin-motion-control),
+			border-color var(--kin-motion-control),
+			color var(--kin-motion-control);
 		background: var(--kin-surface-lift);
 		border: 1px solid transparent;
 	}
@@ -366,8 +369,8 @@
 	.kin-button[data-size="compact"] {
 		font-size: var(--kin-text-xs);
 		min-height: var(--kin-control-height-compact);
-		padding-block: var(--kin-space-2);
-		padding-inline: var(--kin-space-4);
+		padding-block: var(--kin-space-1);
+		padding-inline: var(--kin-space-3);
 	}
 
 	.kin-button--icon[data-size="compact"] {
@@ -447,7 +450,7 @@
 		font-size: var(--kin-text-xs);
 		font-variant-numeric: tabular-nums;
 		gap: var(--kin-space-2);
-		letter-spacing: 0.03em;
+		letter-spacing: normal;
 	}
 
 	.kin-status::before {
@@ -539,7 +542,7 @@
 		.kin-button--primary:hover:where(
 			:not(:disabled, [aria-disabled="true"], .kin-dialog *, .kin-drawer *)
 		) {
-		background: color-mix(in srgb, var(--kin-color-primary) 20%, transparent);
+		background: var(--kin-tint-primary-hover);
 		color: var(--kin-color-primary);
 	}
 	.kin-surface:where(
@@ -572,6 +575,17 @@
 		.kin-rule::before,
 		.kin-surface[data-tone]::before {
 			forced-color-adjust: none;
+		}
+	}
+}
+
+@media (pointer: coarse) {
+	@layer kinra.components {
+		.kin-button[data-size="compact"] {
+			min-height: var(--kin-hit-target);
+		}
+		.kin-button--icon[data-size="compact"] {
+			width: var(--kin-hit-target);
 		}
 	}
 }

@@ -56,14 +56,22 @@ Quiet controls use `--kin-surface-lift` and `--kin-surface-lift-hover`; neutral
 hover remains available as `--kin-surface-hover`. Lines remain for focus,
 invalid fields, selected tabs, table rows, and explicit comparison grids.
 `--kin-color-control-edge` remains available to consumers that need an edge.
-Compact controls retain their documented heights, and touch text inputs use
-at least 16px to avoid focus zoom.
+Compact buttons, list-row trailing actions, toast actions and toolbar controls
+share 36px geometry, 12px type and 4px by 12px padding. Under a coarse pointer
+they and menu rows keep the 44px `--kin-hit-target`; the application and
+operations recipes raise their default controls to the same target. Touch text
+inputs use at least 16px to avoid focus zoom. A consumer may keep product
+chrome compact where its own interaction contract calls for it.
 
 ### Layers and motion
 
 `--kin-radius-panel`, `--kin-radius-layer`, and `--kin-radius-row` step down
 through a page (12px), its cards (8px), and their rows (6px).
 `--kin-radius-sheet` is 16px for the free corners of a sheet.
+`--kin-radius-mark` keeps marks at 2px; `--kin-edge-width` is the shared 2px
+signal edge. `--kin-tint-primary-hover` deepens a tinted confirmation under
+the pointer. `--kin-backdrop` resolves on the root so an overlay's local depth
+does not lighten the backdrop.
 Cards and ordinary surfaces use `--kin-surface-card`; paper keeps a faint
 `--kin-surface-card-ring` so a white card remains distinguishable from the
 panel. Nested cards return to `--kin-surface-nested`, which consumers can
@@ -185,6 +193,10 @@ order.
 
 ## Components
 
+Paragraphs in a notice, toast, field, empty state or shared stack, cluster and
+grid have zero margins; the composition's gap owns their rhythm. Sentence-case
+labels, statuses, spinners, tabs and breadcrumbs use normal tracking.
+
 Components expect semantic HTML. Class names do not replace labels, headings,
 table scope, descriptions, roles, or native control behavior.
 
@@ -195,7 +207,9 @@ table scope, descriptions, roles, or native control behavior.
 - `.kin-chip` is an interactive tag for filters, selections, or removal;
   `aria-pressed` renders selection and `.kin-chip__remove` holds the button.
 - `.kin-notice`, `__title`, `__body`, and `__actions`; `data-tone`,
-  `data-density="compact"`.
+  `data-density="compact"`. The still signal edge follows both leading
+  corners; `--kin-notice-radius` defaults to the layer radius and steps down
+  inside a card or surface. Direct buttons keep their own width.
 - `.kin-field`, `__label`, `__hint`, `__error`, `__required`, and
   `__optional`; `data-layout="inline"`.
 - `.kin-fieldset` and `__legend`; `data-variant="bounded"`.
@@ -213,7 +227,9 @@ table scope, descriptions, roles, or native control behavior.
   `.kin-table` keeps native semantics and accepts `data-density="compact"`,
   `data-min="none"`, cell `data-align="numeric|center"`, cell
   `data-emphasis`, and row `aria-selected`.
-- `.kin-empty`, `__title`, and `__body`; `data-align="center"`.
+- `.kin-empty`, `__title`, and `__body`; `data-align="center"`. With a direct
+  title it is a full empty shape; without one it is a compact muted sentence,
+  taking only a list row's padding when placed in a list.
 - `.kin-disclosure` styles native `details` and `summary`, with content in
   `__body`; `data-variant="panel"`.
 
@@ -255,7 +271,11 @@ table scope, descriptions, roles, or native control behavior.
 
 - `.kin-dialog` on a native `dialog` with `__header`, `__title`, `__close`,
   `__body`, and `__footer`; `data-size="narrow|wide"`,
-  footer `data-justify="between"`.
+  footer `data-justify="between"`. Header and footer stay fixed around the
+  scrolling body; body children use one 1rem rhythm, including `kin-stack`.
+  Header icons are compact, footer actions use the default control height,
+  and body/footer focus rings sit inside their edges. Consumers own focus
+  placement, dismissal and any replacement for the default arrival motion.
 - `.kin-drawer` on a native `dialog` anchored to an edge; `data-side="start|bottom"`,
   `--kin-drawer-width`. It reuses the dialog parts.
 - `.kin-popover` on any `[popover]` element; `__title`, `__body`,

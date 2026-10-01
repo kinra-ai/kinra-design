@@ -127,6 +127,11 @@
 		var(--kin-color-primary) 10%,
 		transparent
 	);
+	--kin-tint-primary-hover: color-mix(
+		in srgb,
+		var(--kin-color-primary) 20%,
+		transparent
+	);
 	--kin-tint-reason: color-mix(
 		in srgb,
 		var(--kin-color-reason) 10%,
@@ -227,6 +232,9 @@
 	--kin-radius-panel: var(--kin-radius-lg);
 	--kin-radius-layer: var(--kin-radius-md);
 	--kin-radius-row: 0.375rem;
+	--kin-radius-mark: 2px;
+	--kin-edge-width: 2px;
+	--kin-flow: 1;
 	--kin-radius-sheet: 1rem;
 	--kin-mark-size: 0.4rem;
 	--kin-shadow-tint: light-dark(rgb(21 23 28 / 0.14), rgb(12 13 16 / 0.5));
@@ -239,6 +247,12 @@
 	--kin-shadow-raised:
 		0 1px 2px var(--kin-shadow-tint),
 		0 0.75rem 1.75rem -0.625rem var(--kin-shadow-tint-deep);
+	/* Resolved on the root so a dialog's local depth does not lighten its backdrop. */
+	--kin-backdrop: color-mix(
+		in srgb,
+		var(--kin-color-ground-deep) 62%,
+		transparent
+	);
 	--kin-glow-primary: 0 0 1.75rem var(--kin-primary-12);
 
 	/* Layers, lowest to highest */
@@ -305,4 +319,15 @@
 	:root {
 		--kin-text-display: clamp(2rem, 7vw, 2.5rem);
 	}
+}
+
+/* Inherit the nearest explicit direction, including a bounded subtree.
+   Attribute selectors also survive consumers that compile :dir(). */
+:root:dir(rtl),
+:root[dir="rtl"],
+:where([dir="rtl"]) {
+	--kin-flow: -1;
+}
+:where([dir="ltr"]) {
+	--kin-flow: 1;
 }

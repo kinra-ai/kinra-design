@@ -171,15 +171,25 @@ changes appearance:
   and space. Tables keep row rules; sticky headers keep an opaque ground.
   Explicit ledger rules and comparison grids remain available.
 - Labels use sentence case with normal tracking. Notices and toasts retain
-  a short signal edge clear of their corners. Menus, dialogs, and sheets
+  a still signal edge around both leading corners. Menus, dialogs, and sheets
   use the shared layer radii and shadows.
 - Primary buttons inside a card, notice, surface, or disclosure use the tint,
   leaving the screen's fill available. Modal dialogs and drawers keep their
   own primary fill. The consumer chooses the primary action and its position.
 
-Review local border and background overrides during adoption; Space's local
-`refresh.css` and shared-value aliases can be removed only after the owning
-consumer verifies the new exact pin. No consumer pin changes here.
+The second port from Space `0550b0e45c601981ebbd768d7d0d2344a9925de3`
+adds compact/touch control parity, paragraph rhythm, compact empty states,
+rounded notice/toast edges, right-to-left disclosures and dialog spacing/focus.
+It changes shared defaults without promoting any registry candidate. See the
+catalog's `/refresh/` page for the specimens.
+
+During adoption, remove local shared-class copies and aliases only after
+visual comparison on both grounds, desktop and touch, forced colours and
+reduced motion. Bind `--kin-surface-nested` on the product page to its local
+page tone. Keep product animation ownership, clipped-region focus, safe areas,
+resizable layout and intentional exceptions local. A product that animates
+native dialogs itself must disable Design's default dialog/backdrop arrival to
+avoid two movements. No consumer dependency changes in this repository.
 
 The [corner action](../registry/patterns/corner-action/README.md),
 [corner key](../registry/patterns/corner-key/README.md), and
@@ -214,8 +224,10 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Kinra Space** pins `36b9340061fb7da32b8ed3b62dfebc13ff533cf5` through the
-  public GitHub Git URL, including `wordmark-space.svg`.
+- **Kinra Space** pins an exact verified development commit through the
+  public GitHub Git URL, including `wordmark-space.svg`. Its `package.json`
+  and lockfile own the current revision; its gate and visual comparisons own
+  the upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 

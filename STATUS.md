@@ -37,6 +37,11 @@ adoption map; this file only tracks current state, not process.
   is promoted before a second consumer. `/refresh/` demonstrates both grounds,
   all key faces without script, and interactive motion. The grammar, source
   boundary, and adoption state live in [`docs/refresh-plan.md`](docs/refresh-plan.md).
+- The second Space polish port uses `0550b0e` (2026-10-01): compact touch
+  controls, paragraph rhythm, rounded notice/toast edges, RTL disclosures and
+  dialog spacing/focus are shared. Space verifies its exact consumer upgrade;
+  all three registry patterns remain candidates. Release identity,
+  tagging and other consumer upgrades remain separate.
 - `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
   Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
@@ -51,8 +56,9 @@ adoption map; this file only tracks current state, not process.
 - **kinra-site** and **kinra-gateway** consume the public GitHub codeload
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
   integrity.
-- **kinra-space** pins the exact GitHub Git dependency
-  `36b9340061fb7da32b8ed3b62dfebc13ff533cf5`, including its appointed wordmark.
+- **kinra-space** pins an exact GitHub Git dependency, including its
+  appointed wordmark. Its package and lockfile own the current commit; its
+  source gate and visual comparisons verify each upgrade.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,

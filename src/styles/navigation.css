@@ -34,7 +34,7 @@
 		font-size: var(--kin-text-sm);
 		font-weight: var(--kin-weight-strong);
 		gap: var(--kin-space-2);
-		letter-spacing: 0.02em;
+		letter-spacing: normal;
 		min-height: var(--kin-hit-target);
 		padding: var(--kin-space-2) 0;
 		position: relative;
@@ -161,7 +161,7 @@
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
 		gap: var(--kin-space-2);
-		letter-spacing: 0.02em;
+		letter-spacing: normal;
 		min-height: 1.5rem;
 	}
 
@@ -284,7 +284,7 @@
 		line-height: 1.3;
 		min-height: 2.25rem;
 		padding: var(--kin-space-2) var(--kin-space-3);
-		text-align: left;
+		text-align: start;
 		text-decoration: none;
 		transition:
 			background var(--kin-duration-fast) ease,
@@ -347,7 +347,7 @@
 		flex-wrap: wrap;
 		gap: var(--kin-space-3);
 		padding: var(--kin-space-2) var(--kin-space-3);
-		background: var(--kin-surface-well);
+		background: transparent;
 		border: 0;
 		border-radius: var(--kin-radius-row);
 	}
@@ -636,6 +636,17 @@
 			):where(:not(:focus-visible)) {
 			outline: 1px solid Highlight;
 			outline-offset: -1px;
+		}
+	}
+}
+
+@media (pointer: coarse) {
+	@layer kinra.components {
+		.kin-toolbar .kin-button {
+			min-height: var(--kin-hit-target);
+		}
+		.kin-toolbar .kin-button--icon {
+			width: var(--kin-hit-target);
 		}
 	}
 }

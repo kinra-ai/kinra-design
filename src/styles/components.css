@@ -156,7 +156,7 @@
 		padding: var(--kin-space-5);
 		background: color-mix(in srgb, var(--kin-notice-signal) 7%, transparent);
 		border: 1px solid transparent;
-		border-radius: var(--kin-radius-layer);
+		border-radius: var(--kin-notice-radius, var(--kin-radius-layer));
 		position: relative;
 	}
 
@@ -514,7 +514,7 @@
 		width: 2.625rem;
 		background: var(--kin-surface-lift-hover);
 		border: 1px solid transparent;
-		border-radius: 2px;
+		border-radius: var(--kin-radius-mark);
 	}
 
 	.kin-switch input::before {
@@ -888,13 +888,13 @@
 		flex: none;
 		height: 0.45rem;
 		margin-inline-end: var(--kin-space-1);
-		transform: rotate(45deg);
+		transform: rotate(calc(45deg * var(--kin-flow, 1)));
 		transition: transform var(--kin-duration-normal) var(--kin-ease-standard);
 		width: 0.45rem;
 	}
 
 	.kin-disclosure[open] summary::after {
-		transform: rotate(225deg);
+		transform: rotate(calc(225deg * var(--kin-flow, 1)));
 	}
 
 	.kin-disclosure__body {
@@ -918,7 +918,6 @@
 		background: var(--kin-surface-card);
 		border: 1px solid transparent;
 		border-radius: var(--kin-radius-layer);
-		box-shadow: var(--kin-surface-card-ring);
 	}
 
 	.kin-disclosure[data-variant="panel"]
@@ -986,16 +985,30 @@
 	.kin-notice::before {
 		content: "";
 		position: absolute;
-		inset-block: var(--kin-radius-layer);
+		inset-block: -1px;
 		inset-inline-start: -1px;
-		inline-size: 2px;
-		border-radius: 1px;
+		inline-size: var(--kin-notice-radius, var(--kin-radius-layer));
+		border-radius: 0;
 		background: var(--kin-notice-signal);
 		pointer-events: none;
+		padding-block: var(--kin-edge-width);
+		padding-inline-start: var(--kin-edge-width);
+		border-start-start-radius: var(
+			--kin-notice-radius,
+			var(--kin-radius-layer)
+		);
+		border-end-start-radius: var(--kin-notice-radius, var(--kin-radius-layer));
+		-webkit-mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+		-webkit-mask-composite: xor, source-over;
+		mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+		mask-composite: exclude, add;
 	}
 	.kin-empty:has(> .kin-empty__title) {
 		background: var(--kin-surface-card);
-		box-shadow: var(--kin-surface-card-ring);
 	}
 	/* Sticky table headings need an opaque ground over the scrolling rows. */
 	.kin-table-wrap[data-sticky] thead th {
@@ -1036,5 +1049,32 @@
 		.kin-segmented > label:has(input:focus-visible) {
 			outline-color: Highlight;
 		}
+	}
+}
+
+@layer kinra.components {
+	:where(p.kin-notice, p.kin-empty) {
+		margin-block: 0;
+	}
+	:where(.kin-notice, .kin-field, .kin-empty) > p {
+		margin-block: 0;
+	}
+	.kin-notice > .kin-button {
+		justify-self: start;
+	}
+	:where(.kin-card, .kin-surface) .kin-notice {
+		--kin-notice-radius: var(--kin-radius-row);
+	}
+	/* A compact empty state is only its sentence, or a list row's padding. */
+	.kin-empty:not(:has(> .kin-empty__title)) {
+		padding: 0;
+		color: var(--kin-color-text-muted);
+	}
+	.kin-list > .kin-empty:not(:has(> .kin-empty__title)) {
+		padding: var(--kin-space-3) var(--kin-space-2);
+	}
+	.kin-list[data-variant="bounded"]
+		> .kin-empty:not(:has(> .kin-empty__title)) {
+		padding-inline: var(--kin-space-4);
 	}
 }

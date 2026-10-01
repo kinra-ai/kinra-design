@@ -127,6 +127,61 @@ function keyMarkup(face: Face) {
 		</Specimen>
 
 		<Specimen
+			title="Compact controls and recovery"
+			contract="data-size=compact · kin-list__trail · kin-notice · kin-empty"
+			description="Compact controls share one padding rhythm and keep a 44px target under a coarse pointer. A paragraph takes its spacing from the surrounding composition, and a failure offers its next action beside its words."
+		>
+			<div
+				class="kin-stack"
+				data-space="compact"
+				data-kin-surface="application"
+			>
+				<div class="kin-toolbar" aria-label="Example compact controls">
+					<button
+						type="button"
+						class="kin-button kin-button--quiet"
+						data-size="compact">Refresh</button
+					>
+					<button
+						type="button"
+						class="kin-button kin-button--ghost kin-button--icon"
+						data-size="compact"
+						aria-label="More example actions">…</button
+					>
+				</div>
+				<ul class="kin-list" data-variant="bounded">
+					<li class="kin-list__item">
+						<div class="kin-list__body">
+							<p class="kin-list__title">Garden notes</p><p
+								class="kin-list__meta"
+							>
+								A local example
+							</p>
+						</div>
+						<div class="kin-list__trail">
+							<button type="button" class="kin-button kin-button--quiet"
+								>Open notes</button
+							>
+						</div>
+					</li>
+				</ul>
+				<div class="kin-notice" data-tone="error" role="status">
+					<p>The example could not be read. Try reading it again.</p>
+					<button type="button" class="kin-button kin-button--quiet"
+						>Try again</button
+					>
+				</div>
+				<p class="kin-empty">No other examples here.</p>
+				<details class="kin-disclosure" dir="rtl">
+					<summary>Right-to-left disclosure</summary>
+					<div class="kin-disclosure__body">
+						<p>The chevron still points down when closed and up when open.</p>
+					</div>
+				</details>
+			</div>
+		</Specimen>
+
+		<Specimen
 			title="Corner key"
 			contract="Candidate · corner-key.html · corner-key.css · optional corner-key.js"
 			description="Type a draft to bloom the send key, then press it to lift the fill and show Stop. Choose a face to inspect the other states; the work light follows the turn independently."
@@ -259,11 +314,25 @@ function keyMarkup(face: Face) {
 				aria-label="Close confirmation">×</button
 			>
 		</header>
-		<div class="kin-dialog__body">
+		<div
+			class="kin-dialog__body"
+			tabindex="0"
+			aria-label="Confirmation details"
+		>
 			<p>
 				The confirmation shares this dialog's end corner. The page beneath it is
 				inert.
 			</p>
+			<p class="kin-caption">
+				The body uses one 1rem rhythm; its focus ring and footer rings stay
+				inside their edges.
+			</p>
+			<div class="kin-notice" data-tone="reason">
+				<p>
+					The corner action is still candidate source. The dialog's spacing and
+					focus are shared styles.
+				</p>
+			</div>
 		</div>
 		<footer class="kin-dialog__footer kin-pattern-corner-action__footer">
 			<button type="button" class="kin-button kin-button--ghost">Cancel</button

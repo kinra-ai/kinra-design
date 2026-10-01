@@ -65,6 +65,13 @@
 	--kin-region-space: clamp(2rem, 4vw, 3.5rem);
 }
 
+@media (pointer: coarse) {
+	[data-kin-surface="application"],
+	[data-kin-surface="operations"] {
+		--kin-control-height: var(--kin-hit-target);
+	}
+}
+
 [data-kin-voice="serif"] {
 	--kin-font-display: var(--kin-font-serif);
 	--kin-font-heading: var(--kin-font-serif);

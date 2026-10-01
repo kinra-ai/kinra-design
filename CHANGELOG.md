@@ -7,6 +7,13 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Fixed
+
+- Bring back Space's second polish pass: compact controls share padding and
+  retain touch targets; paragraphs follow their composition; notices and
+  toasts carry the full rounded signal edge; disclosures follow text
+  direction; dialog bodies keep one spacing rhythm and unclipped focus.
+
 ### Added
 
 - Bring back Kinra Space's soft layer, well, quiet control, nested tone,

@@ -13,8 +13,8 @@
 	position: absolute;
 	inset: 0;
 	overflow: hidden;
-	padding-block: 2px;
-	padding-inline-start: 2px;
+	padding-block: var(--kin-edge-width);
+	padding-inline-start: var(--kin-edge-width);
 	border-start-start-radius: var(
 		--kin-pattern-edge-radius,
 		var(--kin-radius-row)

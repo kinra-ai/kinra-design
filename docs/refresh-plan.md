@@ -172,9 +172,23 @@ forced-colour stroke fixes. The original study receives the stroke fix too.
 The live edge keeps its own reduced-motion rules instead of depending on
 Space's responsive stylesheet.
 
+The second port inspects Space's clean `dev` at
+`0550b0e45c601981ebbd768d7d0d2344a9925de3` (2026-10-01), with its 0064/0065
+choices and complete polish qualification. It reconciles `refresh.css`, the
+marked token block and the related shared grammar into their owning style
+entry points: compact/touch controls, paragraph rhythm, full rounded signal
+edges, direction-aware disclosures, compact empty states and dialog rhythm,
+scrolling and inset focus. `/refresh/` includes specimens for these roles.
+
+The corner action, corner key and live edge remain candidates: this port is
+more evidence from the same consumer, not a second consumer. Their geometry
+reads the shared edge width; their source-owned lifecycle is unchanged.
 Space's routes, typography overrides, resizable shell, safe-area handling,
-conversation state, native-host contract, and deployment stay with Space.
-Its exact Design pin stays unchanged until a separate consumer upgrade.
+conversation state, native-host contract, dialog motion and deployment stay
+with Space. Space adopts a separately verified exact Design commit and removes
+only the rules and aliases that comparison proves redundant. The entrance,
+Letters, timeline error ink and corner key's white flash keep their approved
+product contracts. No package release or consumer deployment is implied.
 
 ## Decisions
 

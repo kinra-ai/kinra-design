@@ -336,3 +336,19 @@
 		}
 	}
 }
+
+@layer kinra.compositions {
+	/* The composition's gap owns paragraph rhythm. */
+	:where(.kin-stack, .kin-cluster, .kin-grid) > p {
+		margin-block: 0;
+	}
+	@media (min-width: 48rem) {
+		.kin-stack > .kin-button:not(.kin-list__item, .kin-card) {
+			align-self: flex-start;
+			justify-self: start;
+		}
+		.kin-bar > .kin-button:not(:first-child) {
+			justify-self: end;
+		}
+	}
+}
