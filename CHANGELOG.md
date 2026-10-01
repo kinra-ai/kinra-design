@@ -13,6 +13,8 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   retain touch targets; paragraphs follow their composition; notices and
   toasts carry the full rounded signal edge; disclosures follow text
   direction; dialog bodies keep one spacing rhythm and unclipped focus.
+  Transparent toolbars stay flat in forced colours while their controls keep
+  their own edges and focus.
 
 ### Added
 

@@ -617,10 +617,6 @@
 }
 @media (forced-colors: active) {
 	@layer kinra.components {
-		.kin-toolbar {
-			outline: 1px solid CanvasText;
-			outline-offset: -1px;
-		}
 		.kin-nav .kin-button {
 			border-color: ButtonText;
 		}
