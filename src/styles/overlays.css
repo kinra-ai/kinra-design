@@ -426,6 +426,10 @@
 		.kin-popover {
 			border-color: CanvasText;
 		}
+		.kin-popover:where(:not(:focus-visible)) {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
 	}
 }
 

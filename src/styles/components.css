@@ -1017,8 +1017,15 @@
 }
 @media (forced-colors: active) {
 	@layer kinra.components {
-		/* Even a compact empty line needs its boundary when its tone vanishes. */
-		.kin-empty:where(:not(:focus-visible)) {
+		/* A tone's boundary remains at rest; keyboard focus supplies its own ring. */
+		.kin-notice:where(:not(:focus-visible)),
+		.kin-empty:where(:not(:focus-visible)),
+		.kin-disclosure[data-variant="panel"]:where(:not(:focus-visible)),
+		.kin-segmented:where(:not(:focus-visible)),
+		.kin-input:where(:not(:focus-visible)),
+		.kin-select:where(:not(:focus-visible)),
+		.kin-textarea:where(:not(:focus-visible)),
+		.kin-badge:where(:not(:focus-visible)) {
 			outline: 1px solid CanvasText;
 			outline-offset: -1px;
 		}

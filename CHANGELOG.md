@@ -14,7 +14,8 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   toasts carry the full rounded signal edge; disclosures follow text
   direction; dialog bodies keep one spacing rhythm and unclipped focus.
   Transparent toolbars stay flat in forced colours while their controls keep
-  their own edges and focus; compact empty lines retain their inward outline.
+  their own edges and focus; toned fields and layers retain their inward
+  rest outline and yield to the keyboard's focus ring.
 
 ### Added
 

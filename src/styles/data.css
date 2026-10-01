@@ -883,7 +883,8 @@
 		.kin-card:where(
 			:not(:focus-visible, :has(.kin-card__title a:focus-visible))
 		),
-		.kin-list[data-variant="bounded"] {
+		.kin-list[data-variant="bounded"],
+		.kin-code:where(:not(:focus-visible)) {
 			outline: 1px solid CanvasText;
 			outline-offset: -1px;
 		}
