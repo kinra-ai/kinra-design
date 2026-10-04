@@ -7,6 +7,14 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Added
+
+- Code roles beside `--kin-color-code-string`: `--kin-color-code-keyword` for
+  a language's own words and `--kin-color-code-name` for the names a file
+  defines and calls, each with values of its own so a signal's retuning never
+  recolours code (Kinra Space's 0082, whose editor numbers and colours a
+  file's text).
+
 ### Changed
 
 - The candidate corner action takes both ends of a footer. The way back

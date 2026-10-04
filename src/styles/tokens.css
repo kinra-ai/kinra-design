@@ -35,6 +35,11 @@
 	--kin-color-warning: light-dark(#8a5d0b, #d6a855);
 	--kin-color-error: light-dark(#b8382c, #e5786e);
 	--kin-color-code-string: light-dark(#2a7247, #83b692);
+	/* What a code view colours beside its strings: the language's own words,
+	   and the names it defines and calls. Their own values, so retuning a
+	   signal never recolours code. */
+	--kin-color-code-keyword: light-dark(#554b9f, #9e97d2);
+	--kin-color-code-name: light-dark(#166483, #5fbfd6);
 
 	/* Brand */
 	--kin-gradient-brand: linear-gradient(

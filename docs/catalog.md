@@ -56,6 +56,12 @@ Quiet controls use `--kin-surface-lift` and `--kin-surface-lift-hover`; neutral
 hover remains available as `--kin-surface-hover`. Lines remain for focus,
 invalid fields, selected tabs, table rows, and explicit comparison grids.
 `--kin-color-control-edge` remains available to consumers that need an edge.
+Code views colour by role: `--kin-color-code-string` for strings,
+`--kin-color-code-keyword` for the language's own words, and
+`--kin-color-code-name` for the names a file defines and calls. Comments and
+punctuation take `--kin-color-text-muted`, and everything else the text's own
+tones; each role holds 4.5:1 on `--kin-color-ground-deep` and
+`--kin-color-surface` in both schemes.
 Compact buttons, list-row trailing actions, toast actions and toolbar controls
 share 36px geometry, 12px type and 4px by 12px padding. Under a coarse pointer
 they and menu rows keep the 44px `--kin-hit-target`; the application and
