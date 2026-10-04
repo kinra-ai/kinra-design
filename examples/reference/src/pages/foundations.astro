@@ -310,6 +310,44 @@ const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 		</div>
 	</section>
 
+	<section class="catalog-section kin-frame" aria-labelledby="depth-heading">
+		<div class="catalog-heading">
+			<h2 id="depth-heading">Depth</h2>
+			<p>
+				What floats has an edge of its own tone, <code>--kin-float-ring</code>,
+				and at most a short shadow. On graphite the shadow is black, so over
+				pure black it is never lighter than the ground.
+			</p>
+		</div>
+		<div class="depth-grounds">
+			{
+				[
+					{ name: "Graphite", scheme: "dark", black: false },
+					{ name: "Paper", scheme: "light", black: false },
+					{ name: "Over black", scheme: "dark", black: true },
+				].map((ground) => (
+					<div
+						class="depth-ground"
+						data-kin-scheme={ground.scheme}
+						data-black={ground.black ? "" : undefined}
+					>
+						<p class="kin-eyebrow">{ground.name}</p>
+						<div class="kin-toast" data-tone="primary" role="presentation">
+							<span class="kin-toast__body">
+								A notice: its edge and a short shadow.
+							</span>
+						</div>
+						<div class="kin-surface kin-surface--raised depth-layer">
+							<p class="kin-body" data-size="sm">
+								A raised layer with no border of its own.
+							</p>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
 	<section class="catalog-section kin-frame" aria-labelledby="motion-heading">
 		<div class="kin-split" data-ratio="trail">
 			<div>

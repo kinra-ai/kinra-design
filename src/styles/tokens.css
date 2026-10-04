@@ -237,16 +237,31 @@
 	--kin-flow: 1;
 	--kin-radius-sheet: 1rem;
 	--kin-mark-size: 0.4rem;
-	--kin-shadow-tint: light-dark(rgb(21 23 28 / 0.14), rgb(12 13 16 / 0.5));
-	--kin-shadow-tint-deep: light-dark(rgb(21 23 28 / 0.22), rgb(12 13 16 / 0.7));
-	--kin-shadow-panel: 0 1rem 3rem var(--kin-shadow-tint);
-	--kin-shadow-float: 0 1.375rem 4.375rem var(--kin-shadow-tint-deep);
+	/*
+	 * Depth. What floats has an edge of its own tone, a hairline dark on paper
+	 * and light on graphite, and at most a short shadow: a contact line and a
+	 * small fall below it. On graphite the shadow is black, so over the
+	 * deepest ground, or pure black, it is never lighter than what it falls
+	 * on, and no wide haze bands on an OLED screen.
+	 */
+	--kin-float-ring: light-dark(rgb(21 23 28 / 0.09), rgb(255 255 255 / 0.1));
+	--kin-shadow-tint: light-dark(rgb(21 23 28 / 0.08), rgb(0 0 0 / 0.32));
+	--kin-shadow-tint-deep: light-dark(rgb(21 23 28 / 0.12), rgb(0 0 0 / 0.5));
+	/* A floating layer with an edge of its own: a toast, a popover. */
+	--kin-shadow-panel:
+		0 1px 2px var(--kin-shadow-tint),
+		0 6px 16px -8px var(--kin-shadow-tint-deep);
+	/* A modal layer over its backdrop. */
+	--kin-shadow-float:
+		0 1px 3px var(--kin-shadow-tint),
+		0 12px 28px -14px var(--kin-shadow-tint-deep);
+	/* A floating layer with no border of its own: the edge and the panel's fall. */
 	--kin-shadow-overlay:
-		0 0 0 1px light-dark(rgb(21 23 28 / 0.07), transparent),
-		var(--kin-shadow-panel);
+		0 0 0 1px var(--kin-float-ring), var(--kin-shadow-panel);
+	/* A composer over scrolling content, whose frame draws its edge. */
 	--kin-shadow-raised:
 		0 1px 2px var(--kin-shadow-tint),
-		0 0.75rem 1.75rem -0.625rem var(--kin-shadow-tint-deep);
+		0 4px 12px -6px var(--kin-shadow-tint-deep);
 	/* Resolved on the root so a dialog's local depth does not lighten its backdrop. */
 	--kin-backdrop: color-mix(
 		in srgb,

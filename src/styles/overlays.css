@@ -9,8 +9,12 @@
 @layer kinra.components {
 	/* Dialog: native <dialog>, opened with showModal(). */
 
+	/* No border, so a corner action can stand flush: its edge is painted
+	   inside, under that action. */
 	.kin-dialog {
-		box-shadow: var(--kin-shadow-float);
+		box-shadow:
+			inset 0 0 0 1px var(--kin-float-ring),
+			var(--kin-shadow-float);
 		color: var(--kin-color-text);
 		margin: auto;
 		max-height: calc(100dvh - 2 * var(--kin-space-6));
@@ -108,11 +112,14 @@
 
 	/* Drawer: a dialog anchored to one edge. */
 
+	/* Flush with the window, it has an edge only on the side facing the page. */
 	.kin-drawer {
 		background: var(--kin-color-surface-raised);
 		border: 0;
 		border-radius: 0;
-		box-shadow: var(--kin-shadow-float);
+		box-shadow:
+			calc(-1px * var(--kin-flow, 1)) 0 0 0 var(--kin-float-ring),
+			var(--kin-shadow-float);
 		color: var(--kin-color-text);
 		display: none;
 		flex-direction: column;
@@ -134,6 +141,9 @@
 	}
 
 	.kin-drawer[data-side="start"] {
+		box-shadow:
+			calc(1px * var(--kin-flow, 1)) 0 0 0 var(--kin-float-ring),
+			var(--kin-shadow-float);
 		inset: 0 auto 0 0;
 		border-radius: 0;
 		border-start-end-radius: var(--kin-radius-sheet);
@@ -145,6 +155,9 @@
 	}
 
 	.kin-drawer[data-side="bottom"] {
+		box-shadow:
+			0 -1px 0 0 var(--kin-float-ring),
+			var(--kin-shadow-float);
 		border: 0;
 		height: auto;
 		inset: auto 0 0 0;
@@ -197,9 +210,9 @@
 		overflow-wrap: anywhere;
 		overscroll-behavior: contain;
 		width: max-content;
-		border: 1px solid transparent;
+		border: 1px solid var(--kin-float-ring);
 		border-radius: var(--kin-radius-layer);
-		box-shadow: var(--kin-shadow-overlay);
+		box-shadow: var(--kin-shadow-panel);
 		--kin-color-ground-deep: var(--kin-color-surface);
 	}
 

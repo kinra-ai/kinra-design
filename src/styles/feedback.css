@@ -266,9 +266,10 @@
 		grid-template-columns: minmax(0, 1fr) auto;
 		padding: var(--kin-space-3) var(--kin-space-4);
 		pointer-events: auto;
-		border: 1px solid transparent;
+		/* Its edge is its border, which the signal edge covers at its start. */
+		border: 1px solid var(--kin-float-ring);
 		border-radius: var(--kin-radius-layer);
-		box-shadow: var(--kin-shadow-overlay);
+		box-shadow: var(--kin-shadow-panel);
 		position: relative;
 	}
 
@@ -357,9 +358,9 @@
 
 	/* Tooltip: a short label the consumer positions. */
 
+	/* A chip in the text's own colour, apart by its tone alone. */
 	.kin-tooltip {
 		background: var(--kin-color-text);
-		box-shadow: var(--kin-shadow-panel);
 		color: var(--kin-color-ground);
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);

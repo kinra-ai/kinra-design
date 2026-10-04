@@ -773,3 +773,30 @@
 		outline-offset: -1px;
 	}
 }
+
+.depth-grounds {
+	display: grid;
+	gap: var(--kin-space-4);
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.depth-ground {
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-panel);
+	color: var(--kin-color-text);
+	display: grid;
+	gap: var(--kin-space-4);
+	padding: var(--kin-space-5);
+}
+
+.depth-ground[data-black] {
+	background: #000;
+}
+
+.depth-ground .kin-toast {
+	animation: none;
+}
+
+.depth-layer {
+	padding: var(--kin-space-4);
+}

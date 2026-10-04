@@ -511,7 +511,7 @@
 
 	.kin-card[data-variant="raised"] {
 		background: var(--kin-surface-raised);
-		box-shadow: var(--kin-shadow-panel);
+		box-shadow: var(--kin-shadow-overlay);
 		border-radius: var(--kin-radius-panel);
 	}
 

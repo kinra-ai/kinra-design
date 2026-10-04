@@ -42,6 +42,10 @@ adoption map; this file only tracks current state, not process.
   dialog spacing/focus are shared. Space verifies its exact consumer upgrade;
   all three registry patterns remain candidates. Release identity,
   tagging and other consumer upgrades remain separate.
+- Depth for what floats comes from Kinra Space's decision 0078 (2026-10-03):
+  an edge of its own tone (`--kin-float-ring`) and a short shadow, black on
+  graphite. Foundations shows it on both grounds and on pure black. Space
+  verifies its exact consumer upgrade; Site and Gateway keep their pins.
 - `docs/brand.md` settles naming and marking (2026-09-11, Blake): one brand,
   Kin as the one unprefixed name, every product marked by `.kin-lockup`. The
   product wordmarks and the Facet mark are removed from `assets/`; Kinra

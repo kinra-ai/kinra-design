@@ -7,6 +7,17 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Changed
+
+- What floats has an edge of its own tone and a short shadow. A new
+  `--kin-float-ring` is the hairline, dark on paper and light on graphite;
+  `--kin-shadow-panel`, `-float`, `-overlay` and `-raised` are short, and black
+  on graphite, in place of 48–70px blurs tinted the deepest ground, which
+  banded on OLED screens and lightened pure black. Toasts and popovers draw the
+  edge in their border, a dialog inside, a drawer on the side facing the page;
+  tooltips have no shadow. Consumers pinned to an earlier commit are unaffected
+  until they upgrade (Kinra Space's 0078).
+
 ### Fixed
 
 - Bring back Space's second polish pass: compact controls share padding and

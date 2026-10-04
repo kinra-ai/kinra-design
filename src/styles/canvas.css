@@ -58,7 +58,7 @@
 	}
 
 	.kin-surface--raised {
-		box-shadow: var(--kin-shadow-panel);
+		box-shadow: var(--kin-shadow-overlay);
 		background: var(--kin-surface-raised);
 		border-radius: var(--kin-radius-panel);
 	}

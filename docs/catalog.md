@@ -76,9 +76,16 @@ Cards and ordinary surfaces use `--kin-surface-card`; paper keeps a faint
 `--kin-surface-card-ring` so a white card remains distinguishable from the
 panel. Nested cards return to `--kin-surface-nested`, which consumers can
 set to their page's tone. `--kin-surface-step` provides a quiet tonal step.
-`--kin-shadow-raised` is for a composer over scrolling content, and
-`--kin-shadow-overlay` combines a floating panel shadow with paper's faint
-ring. Ordinary cards have no elevation shadow.
+What floats has an edge: `--kin-float-ring` is its hairline, dark on paper
+and light on graphite. Its shadows are short, a contact line and a small fall,
+black on graphite so they never lighten the ground: `--kin-shadow-panel` for
+a layer whose own border draws the edge (toasts and popovers),
+`--kin-shadow-overlay` for one with no border (the ring and the panel's fall),
+`--kin-shadow-float` for a modal layer over its backdrop, whose edge the
+dialog paints inside and a drawer only on the side facing the page, and
+`--kin-shadow-raised` for a composer over scrolling content, whose frame draws
+its edge. Tooltips, chips in the text's own colour, take neither. Ordinary
+cards have no elevation shadow.
 
 `--kin-motion-control`, `--kin-motion-surface`, and `--kin-motion-layer`
 pair the existing durations and easing. The corner key uses

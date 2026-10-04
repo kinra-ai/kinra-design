@@ -47,8 +47,11 @@ pages open with a plain title and one sentence.
 A surface's shape says which layer it is. The page panel, the cards and
 composers on it, and the rows inside them each sit a step apart in tone, and
 their radii step down as they nest. Shadow belongs only to what floats above
-the page: a composer over a scrolling conversation, a panel, a dialog. Content
-inside a layer stays flat. Marks stay exact: the mark, badges, avatars,
+the page: a composer over a scrolling conversation, a panel, a dialog. What
+floats has an edge of its own tone, a hairline dark on paper and light on
+graphite, and at most a short shadow, black on graphite, so depth reads as
+cleanly on an OLED screen or over pure black as on paper. Content inside a
+layer stays flat. Marks stay exact: the mark, badges, avatars,
 markers, and switches are square, because nothing small is rounded to look
 friendly.
 
