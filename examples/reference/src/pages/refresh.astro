@@ -242,7 +242,7 @@ function keyMarkup(face: Face) {
 		<Specimen
 			title="Labelled corner action"
 			contract="Candidate · corner-action.html · corner-action.css"
-			description="One confirmation ends the surface, flush with its corner. Alternatives stay before it in document order. Focus draws inside the key; a modal keeps its own fill."
+			description="A footer's two ends are its corners: the confirmation, or a quiet close, in the end corner, and the way back, quiet, in the start corner. What stands between them stays an ordinary button. Focus draws inside each key; a modal keeps its own fill."
 		>
 			<div class="refresh-actions kin-stack">
 				<div set:html={actionSource} />
@@ -320,8 +320,8 @@ function keyMarkup(face: Face) {
 			aria-label="Confirmation details"
 		>
 			<p>
-				The confirmation shares this dialog's end corner. The page beneath it is
-				inert.
+				The confirmation shares this dialog's end corner and Cancel its start
+				corner. The page beneath it is inert.
 			</p>
 			<p class="kin-caption">
 				The body uses one 1rem rhythm; its focus ring and footer rings stay
@@ -343,7 +343,10 @@ function keyMarkup(face: Face) {
 			</div>
 		</div>
 		<footer class="kin-dialog__footer kin-pattern-corner-action__footer">
-			<button type="button" class="kin-button kin-button--ghost">Cancel</button
+			<button
+				type="button"
+				class="kin-button kin-button--quiet kin-pattern-corner-action__key"
+				data-corner="start">Cancel</button
 			><button
 				type="button"
 				class="kin-button kin-button--primary kin-pattern-corner-action__key"

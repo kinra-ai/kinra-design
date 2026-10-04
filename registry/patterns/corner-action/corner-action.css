@@ -1,5 +1,8 @@
-/* Candidate: the labelled corner action used by Kinra Space's decision trays
-   and dialogs at 8589b8a. Copy and own; see README.md. */
+/* Candidate: the labelled corner actions used by Kinra Space's dialogs,
+   decision trays, forms and cards (its decisions 0053 and 0079). A footer's
+   two ends are its corners: the confirmation, or a quiet close where there is
+   nothing to confirm, in the end corner; the way back, quiet, in the start
+   corner. Copy and own; see README.md. */
 .kin-pattern-corner-action {
 	--kin-pattern-action-radius: var(--kin-radius-layer);
 }
@@ -19,14 +22,36 @@
 	padding-inline-end: 0;
 }
 
+.kin-pattern-corner-action__footer:has(> [data-corner="start"]) {
+	padding-inline-start: 0;
+}
+
+/* Each key grows from nothing toward its word's width, so two keys always
+   share the bottom edge and the longer word wraps only when both cannot fit. */
 .kin-pattern-corner-action__key {
 	align-self: stretch;
+	flex: 1 1 0;
 	margin-inline-start: auto;
-	max-inline-size: 100%;
+	max-inline-size: max-content;
 	min-block-size: var(--kin-control-height-large);
 	padding-inline: var(--kin-space-6);
 	border-radius: 0;
 	border-end-end-radius: var(--kin-pattern-action-radius);
+}
+
+.kin-pattern-corner-action__key[data-corner="start"] {
+	order: -1;
+	margin-inline-start: 0;
+	margin-inline-end: auto;
+	border-end-end-radius: 0;
+	border-end-start-radius: var(--kin-pattern-action-radius);
+}
+
+/* What stands between the corners stands beside the confirmation. */
+.kin-pattern-corner-action__footer
+	> :not(.kin-pattern-corner-action__key)
+	~ .kin-pattern-corner-action__key {
+	margin-inline-start: 0;
 }
 
 .kin-pattern-corner-action__key:focus-visible {

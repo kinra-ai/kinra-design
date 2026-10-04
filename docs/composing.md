@@ -82,8 +82,11 @@ person wrote them. Put the idea in the first sentence of the body instead.
 When a surface exists to take or confirm one action (a composer, a question,
 a dialog's confirmation, a search, a card built around one action), that
 action sits flush in the surface's end corner, following
-[the principles](principles.md#the-corner). A surface with several equal
-actions keeps them together in a row instead. Copy the candidate
+[the principles](principles.md#the-corner). Its way back, such as Cancel,
+takes the start corner, quiet; a footer with nothing to confirm ends in its
+close, quiet. Asides and alternatives stand between the corners as ordinary
+buttons, beside the confirmation. A surface with several equal actions keeps
+them together in a row instead. Copy the candidate
 [corner action](../registry/patterns/corner-action/README.md) for a labelled
 confirmation, or [corner key](../registry/patterns/corner-key/README.md) for
 an action whose icon changes meaning. They are source to own, pending a

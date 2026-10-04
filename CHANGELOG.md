@@ -9,6 +9,12 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Changed
 
+- The candidate corner action takes both ends of a footer. The way back
+  (Cancel, Back, Decline) stands flush and quiet in the start corner, marked
+  `data-corner="start"`, opposite the confirmation; a footer with nothing to
+  confirm ends in its close, quiet; and each key grows toward its word so two
+  keys always share the bottom edge. The principles and composing guide say
+  so, and `/refresh/` shows it (Kinra Space's 0079).
 - What floats has an edge of its own tone and a short shadow. A new
   `--kin-float-ring` is the hairline, dark on paper and light on graphite;
   `--kin-shadow-panel`, `-float`, `-overlay` and `-raised` are short, and black

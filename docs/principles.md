@@ -84,10 +84,13 @@ and all of it answers a press: a square key where an icon says enough, a
 wider one where the action needs a word. It appears wherever the context has
 one primary action (a composer's send key, the answer to Kin's question, a
 dialog's confirmation, a search field's keycap, a card built around one
-action) and nowhere else: a surface with no primary action, or with several
-equal ones, has no corner action, and no surface has two. The corner mark at
-a toned surface's origin says where state lives; the corner action at its end
-says what happens next.
+action). A footer's two ends are both corners: where nothing is left to
+confirm, the end corner holds the close, quiet, and the way back (cancel,
+back, decline) takes the start corner, quiet, as the mirror of what goes
+forward. What stands between them stays an ordinary control. A surface with
+neither a confirmation nor a close, or with several equal actions, has no
+corner action. The corner mark at a toned surface's origin says where state
+lives; the corner action at its end says what happens next.
 
 ## Light means something
 

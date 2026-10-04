@@ -26,8 +26,11 @@ how things move, not from repeating the mark.
   search, a card built around one action), that action sits flush in the
   surface's end corner, the lower right in a left-to-right language, sharing
   the edge and outer radius. It pairs with the existing corner mark: state at
-  the origin, action at the terminus. A surface with no primary action or
-  with several equal ones has no corner action, and none has two.
+  the origin, action at the terminus. A footer's two ends are both corners:
+  the way back takes the start corner, quiet, and a footer with nothing to
+  confirm ends in its close, quiet (2026-10-04). A surface with neither a
+  confirmation nor a close, or with several equal actions, has no corner
+  action.
 - **Light means something.** A fill means the action can happen now. A light
   running along an edge means work is in flight; when the work ends it closes
   into a ring and fades. Only one thing on a screen is filled with the primary
@@ -203,6 +206,14 @@ product contracts. No package release or consumer deployment is implied.
   its end corner: composers, Kin's questions, dialogs' confirmations, search
   and command fields, and cards built around one action. A destructive
   confirmation takes the error tone there.
+- **Both ends of a footer are corners (2026-10-04, Blake).** Cancel beside a
+  flush confirmation read as another design. The way back now mirrors the
+  confirmation, quiet and flush in the start corner; a footer with nothing to
+  confirm ends in its close, quiet, in the end corner; framed forms and cards
+  on a page take the corners too, in the tint; and a phone's dialog rests on
+  the screen's foot with its keys reaching the edge. What stands between the
+  corners stays an ordinary button. Kinra Space's decision 0079 is the
+  evidence, and the candidate corner action carries it.
 - **Optional motion modules enter with step 3 (2026-09-30).** The corner key
   carries a framework-free module because its interrupted stroke morphs and
   clipped fill need script. Every face renders from markup and CSS alone;
