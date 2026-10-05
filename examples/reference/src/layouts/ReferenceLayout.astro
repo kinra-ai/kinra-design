@@ -4,6 +4,7 @@ import "@kinra/web/registry/patterns/editorial-feature/editorial-feature.css";
 import "@kinra/web/registry/patterns/narrative-intro/narrative-intro.css";
 import "@kinra/web/registry/patterns/operations-region/operations-region.css";
 import markUrl from "@kinra/web/assets/mark.svg?url";
+import { version } from "@kinra/web/package.json";
 import "../styles/reference.css";
 
 interface Props {
@@ -61,7 +62,7 @@ const documentTitle =
 					<span>Design</span>
 				</a>
 				<div class="reference-header__tools">
-					<span class="kin-badge" data-tone="reason">Unreleased catalog</span>
+					<span class="kin-badge" data-tone="reason">v{version} catalog</span>
 					<div
 						class="kin-segmented reference-scheme"
 						role="group"

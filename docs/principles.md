@@ -2,8 +2,8 @@
 
 Amended 2026-09-28 (Blake): layers, lines, the corner, light, and motion now
 follow the corner key refresh described in [`refresh-plan.md`](refresh-plan.md),
-so that every Kinra surface reads as one integrated system. The unreleased
-package now carries Space's soft layers and controls. Corner actions and
+so that every Kinra surface reads as one integrated system. Version 0.3 carries
+Space's soft layers and controls. Corner actions and
 the live edge remain candidate registry source; the plan records their
 consumer evidence and promotion boundary.
 

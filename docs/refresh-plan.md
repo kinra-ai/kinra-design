@@ -1,6 +1,7 @@
 # Refresh plan: the corner key
 
-Status: brought back from Kinra Space on 2026-09-30; unreleased. On 2026-09-28 Blake chose the corner key, a
+Status: brought back from Kinra Space on 2026-09-30; released in `v0.3.0` on
+2026-10-05. On 2026-09-28 Blake chose the corner key, a
 composer send control drawn for Kinra Space, as the component to model a
 refresh of Kinra's interfaces against, and amended
 [`principles.md`](principles.md) to adopt its grammar the same day.
@@ -150,7 +151,7 @@ Changes this brings to Space:
    live with it in a real home.
 2. **Done in Space.** Carry the grammar into the sidebar, panels, Home,
    controls, and decisions.
-3. **Brought back, unreleased.** Bring back what proves itself: motion tokens, the corner
+3. **Released in 0.3.** Bring back what proves itself: motion tokens, the corner
    action and the edge light as candidate registry patterns, and the package
    classes brought in line with the amended principles (tone instead of
    dividing borders, radii that step down as layers nest).

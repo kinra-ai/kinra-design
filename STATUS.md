@@ -7,16 +7,19 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.2.0` (2026-08-16, Graphite+ alignment with Kinra
-  Site; approved by Blake). `package.json` matches the tag.
-- Prior release: `v0.1.0` (`7a367ac`).
+- Latest immutable tag: `v0.3.0` (2026-10-05, design-system expansion and
+  Space refresh; coordinated release authorized by Blake). `package.json`
+  and both root lockfile versions match the tag. The authored notes name
+  removed assets and changed defaults; consumer upgrades remain separate.
+- Prior releases: `v0.2.0` (2026-08-16, Graphite+ alignment with Kinra Site;
+  approved by Blake) and `v0.1.0` (`7a367ac`).
 - A release is a tag, not a deployment: no build output, host, route, or
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
 
 ## Development
 
-- `main` contains an unreleased design-system expansion and refresh: a paper
+- `main` contains the released design-system expansion and refresh: a paper
   scheme beside graphite, serif and sans voices beside mono, type roles,
   layout compositions, generic control, navigation, feedback, overlay, and
   data components, five surface recipes, a source-owned candidate registry,
@@ -27,8 +30,9 @@ adoption map; this file only tracks current state, not process.
   hover and focus states, responsive specimens, and reduced-motion feedback.
   Reference-only collection, preferences, and review examples demonstrate
   the shared styles together without adding registry or stable contracts.
-- `package.json` remains at the latest released version until a maintainer
-  explicitly approves the next release identity and tag.
+- The coordinated review released the expansion as `0.3.0`. Font assets
+  remain unchanged; Kinra Type’s first release and adoption require their
+  own approval.
 - The corner key refresh is brought back from Kinra Space at
   `8589b8a5b04f771b5ab0a3b7b4d3fb38d66d2663` (2026-09-30): soft layer roles,
   wells and quiet controls, sentence-case labels, signal edges, and causal
@@ -66,18 +70,19 @@ adoption map; this file only tracks current state, not process.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
-  remain recovery evidence in their owners. No current consumer selected
-  `v0.2.0`; the expansion remains unreleased.
+  remain recovery evidence in their owners. Current consumer pins predate
+  `v0.3.0`; adoption follows each owner’s deliberate upgrade.
 
 ## Open for the release review
 
 - The package name `@kinra/web` predates the brand standard and undersells
   what the repository now owns. Renaming it, likely to `@kinra/design`,
-  changes every consumer's import paths and Gateway's build banner, so it belongs with the next release identity as a
-  coordinated change, not with a docs edit.
+  changes every consumer's import paths and Gateway's build banner. The `0.3.0`
+  release keeps `@kinra/web`; a later rename requires its own coordinated
+  migration.
 
 ## Next event
 
-Review the Space refresh in the catalog, then settle the unreleased package's
-next release identity. Candidate promotion requires a second consumer.
-Consumer version upgrades remain separate changes in their owning repositories.
+Upgrade consumers to the verified `v0.3.0` release in their owning repositories.
+Candidate registry promotion still requires a second consumer. Font release
+and adoption remain separate decisions.

@@ -415,12 +415,16 @@ function keyMarkup(face: Face) {
 
 		const result = document.querySelector<HTMLElement>("#action-result")!;
 		document
-			.querySelector(".refresh-actions .kin-pattern-corner-action__key")!
+			.querySelector(
+				'.refresh-actions .kin-pattern-corner-action__key:not([data-corner="start"])',
+			)!
 			.addEventListener("click", () => {
 				result.textContent = "Example preferences saved.";
 			});
 		document
-			.querySelector(".refresh-actions .kin-button--ghost")!
+			.querySelector(
+				'.refresh-actions .kin-pattern-corner-action__key[data-corner="start"]',
+			)!
 			.addEventListener("click", () => {
 				result.textContent = "Example cancelled.";
 			});

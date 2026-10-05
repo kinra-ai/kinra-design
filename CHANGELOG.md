@@ -7,6 +7,13 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-05
+
+**Breaking:** removed product wordmarks and the Facet mark; use the lockup
+and Kinra Space’s appointed wordmark. Existing classes and role tokens remain,
+but their defaults change. Read [the 0.3 migration notes](docs/adoption.md#moving-from-02-to-03)
+before upgrading. This release keeps the existing font families.
+
 ### Added
 
 - Code roles beside `--kin-color-code-string`: `--kin-color-code-keyword` for
@@ -34,6 +41,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Fixed
 
+- The refresh catalog saves from its end corner and cancels from its start
+  corner; both actions, the confirmation dialog, and live-edge examples
+  remain interactive after the corner-action update.
 - Bring back Space's second polish pass: compact controls share padding and
   retain touch targets; paragraphs follow their composition; notices and
   toasts carry the full rounded signal edge; disclosures follow text
@@ -185,6 +195,7 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.2.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.3.0...main
+[0.3.0]: https://github.com/kinra-ai/kinra-design/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/kinra-ai/kinra-design/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/kinra-ai/kinra-design/releases/tag/v0.1.0

@@ -36,7 +36,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.2.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.3.0"
   }
 }
 ```
@@ -115,9 +115,10 @@ and Depot:
 When upgrading, remove local canvas and frame copies only after visual review.
 Add `.kin-surface--raised` wherever the old elevation carries real meaning.
 
-## Moving from 0.2 to the unreleased expansion
+## Moving from 0.2 to 0.3
 
-The expansion on `main` is additive in contract but changes several defaults.
+The 0.3 expansion adds classes and roles and changes several defaults. Removing
+product wordmarks is an incompatible asset change; the replacement is below.
 Expect these visual differences when upgrading past `v0.2.0`:
 
 - Every colour role resolves through `light-dark()`; the default remains
@@ -157,7 +158,7 @@ Expect these visual differences when upgrading past `v0.2.0`:
 
 ### Space's soft-layer refresh
 
-The unreleased source now also carries the shared treatment brought back
+Version 0.3 also carries the shared treatment brought back
 from Kinra Space. The class names and exports stay available, but an upgrade
 changes appearance:
 
@@ -201,11 +202,12 @@ states on both grounds, including declarative faces without script.
 Consumers target browsers released from mid-2024 onward because of
 `light-dark()`, `color-mix()`, `:has()`, and native `popover`.
 
-## Testing unreleased expansion
+## Testing exact source
 
 The type, composition, component, navigation, feedback, overlay, data, recipe,
-and registry layers on `main` are not part of `v0.2.0`. Test them only through a full immutable commit SHA. Their eventual
-release version and consumer upgrades remain separate maintainer decisions.
+and registry layers ship in `v0.3.0`. Prefer the immutable release tag; test
+later unreleased source only through a full immutable commit SHA. Consumer
+upgrades remain separate maintainer decisions.
 
 ## Update a consumer
 
@@ -231,7 +233,8 @@ consumers for as long as each product needs.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Current consumers have adopted unreleased exact commits, not `v0.2.0`.
+Current consumer pins predate `v0.3.0`; their exact development commits remain
+valid until each owner reviews its upgrade.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.
