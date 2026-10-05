@@ -41,6 +41,8 @@ before upgrading. This release keeps the existing font families.
 
 ### Fixed
 
+- Update the reference-catalog tooling to patched Astro and transitive
+  dependencies, resolving the seven dependency audit findings.
 - The refresh catalog saves from its end corner and cancels from its start
   corner; both actions, the confirmation dialog, and live-edge examples
   remain interactive after the corner-action update.
