@@ -16,6 +16,8 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 - Tables, prose tables and a narrow key–value list align their text to the
   start of the line rather than the left, so right-to-left pages read from
   their own edge.
+- A keyboard hint is never smaller than the smallest text: inside a caption its
+  0.75em came to about 9px, and now it keeps `--kin-text-xs`.
 
 ## [0.3.0] - 2026-10-05
 

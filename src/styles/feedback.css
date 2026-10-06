@@ -340,7 +340,9 @@
 		color: var(--kin-color-text-subtle);
 		display: inline-block;
 		font-family: var(--kin-font-mono);
-		font-size: 0.75em;
+		/* A step below the words around it, but never below the smallest
+		   text: in a caption, 0.75em alone was about 9px. */
+		font-size: max(0.75em, var(--kin-text-xs));
 		font-weight: var(--kin-weight-strong);
 		line-height: 1;
 		min-width: 1.6em;
