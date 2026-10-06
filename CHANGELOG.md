@@ -7,6 +7,16 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Changed
+
+- A selected list item or table row is a tint alone. The 2px edge each drew
+  at its start contradicted the principle that a line is a signal (focus,
+  work in flight, a drop target), never a choice (Kinra Space's third polish
+  pass, which draws every choice as a tint).
+- Tables, prose tables and a narrow key–value list align their text to the
+  start of the line rather than the left, so right-to-left pages read from
+  their own edge.
+
 ## [0.3.0] - 2026-10-05
 
 **Breaking:** removed product wordmarks and the Facet mark; use the lockup

@@ -766,9 +766,9 @@
 		outline: 0;
 	}
 
+	/* A choice is a tint; a line is a signal (principles). */
 	.kin-list__item[aria-selected="true"] {
 		background: var(--kin-tint-primary);
-		box-shadow: inset 2px 0 0 var(--kin-color-primary);
 	}
 
 	.kin-list[data-density="compact"] .kin-list__item {
@@ -829,7 +829,7 @@
 		}
 
 		.kin-kv dd[data-align="numeric"] {
-			text-align: left;
+			text-align: start;
 		}
 	}
 }

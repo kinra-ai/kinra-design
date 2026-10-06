@@ -218,7 +218,7 @@
 		font-size: var(--kin-text-sm);
 		min-width: 9rem;
 		padding: var(--kin-space-3) var(--kin-space-4);
-		text-align: left;
+		text-align: start;
 		vertical-align: top;
 	}
 
