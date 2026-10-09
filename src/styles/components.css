@@ -889,7 +889,8 @@
 		width: 0.45rem;
 	}
 
-	.kin-disclosure[open] summary::after {
+	/* Only its own summary turns: a closed disclosure inside an open one keeps its arrow down. */
+	.kin-disclosure[open] > summary::after {
 		transform: rotate(calc(225deg * var(--kin-flow, 1)));
 	}
 

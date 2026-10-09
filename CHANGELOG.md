@@ -19,6 +19,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 - A keyboard hint is never smaller than the smallest text: inside a caption its
   0.75em came to about 9px, and now it keeps `--kin-text-xs`.
 
+### Fixed
+
+- A closed disclosure inside an open one keeps its arrow pointing down; it
+  took its parent's open arrow (Kinra Space's release history).
+
 ## [0.3.0] - 2026-10-05
 
 **Breaking:** removed product wordmarks and the Facet mark; use the lockup
