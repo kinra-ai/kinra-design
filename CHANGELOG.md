@@ -7,6 +7,14 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Added
+
+- `.kin-grid[data-rules="between"]` draws the hairline only between cells, at
+  any count of columns, with no frame round them; `data-flush` sets the outer
+  cells' content on the text's own edge, and `--kin-grid-cell-pad` sets the
+  cells' padding across (Kinra Space's Your machine, which redrew the frame
+  away by hand).
+
 ### Changed
 
 - A selected list item or table row is a tint alone. The 2px edge each drew

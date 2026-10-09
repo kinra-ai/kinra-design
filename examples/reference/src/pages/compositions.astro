@@ -58,8 +58,8 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 
 		<Specimen
 			title="Fluid grid"
-			contract=".kin-grid · --kin-grid-min · data-columns · data-rules"
-			description="An auto-fitting grid that wraps without page-specific breakpoints. data-columns fixes a count that collapses on narrow screens; data-rules separates cells with the hairline instead of open space."
+			contract=".kin-grid · --kin-grid-min · data-columns · data-rules · data-flush · --kin-grid-cell-pad"
+			description='An auto-fitting grid that wraps without page-specific breakpoints. data-columns fixes a count that collapses on narrow screens; data-rules separates cells with the hairline instead of open space, and data-rules="between" draws it only between cells, its outer cells on the text&apos;s edge with data-flush.'
 		>
 			<div class="kin-stack">
 				<div class="kin-grid" style="--kin-grid-min: 12rem">
@@ -84,6 +84,23 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 					<div style="padding: 1rem">
 						<p class="kin-label">Uptime</p>
 						<p class="kin-figure__value">99.98<small>%</small></p>
+					</div>
+				</div>
+				<div class="kin-grid" data-columns="3" data-rules="between" data-flush>
+					<div class="kin-figure" data-size="compact">
+						<span class="kin-figure__label">Available storage</span>
+						<strong class="kin-figure__value">55.0 GB</strong>
+						<small class="kin-figure__note">of 100.0 GB</small>
+					</div>
+					<div class="kin-figure" data-size="compact">
+						<span class="kin-figure__label">Docker</span>
+						<strong class="kin-figure__value">Ready</strong>
+						<small class="kin-figure__note">5 apps · 1 other container</small>
+					</div>
+					<div class="kin-figure" data-size="compact">
+						<span class="kin-figure__label">Uptime</span>
+						<strong class="kin-figure__value">3 d</strong>
+						<small class="kin-figure__note">since Tuesday</small>
 					</div>
 				</div>
 			</div>

@@ -117,6 +117,32 @@
 		background: var(--kin-color-ground-deep);
 	}
 
+	/* Rules only between cells, at any count of columns: no frame (a line is a
+	   signal, not a border). Each cell draws its top and start rule; the grid
+	   clips those of its first row and column, the top by one pixel more so a
+	   rule never shows at a fractional offset. `data-flush` holds the grid out
+	   by the cells' inline padding, so the outer cells' content stands on the
+	   text's own edge. */
+	.kin-grid[data-rules="between"] {
+		border: 0;
+		clip-path: inset(1px 0 0);
+		gap: 0;
+	}
+
+	.kin-grid[data-rules="between"] > * {
+		border: 0;
+		border-block-start: 1px solid var(--kin-color-rule);
+		border-inline-start: 1px solid var(--kin-color-rule);
+		margin: -1px 0 0 -1px;
+		padding-block: var(--kin-space-4);
+		padding-inline: var(--kin-grid-cell-pad, var(--kin-space-4));
+	}
+
+	.kin-grid[data-rules="between"][data-flush] {
+		clip-path: inset(1px var(--kin-grid-cell-pad, var(--kin-space-4)) 0);
+		margin-inline: calc(-1 * var(--kin-grid-cell-pad, var(--kin-space-4)));
+	}
+
 	.kin-split {
 		align-items: var(--kin-split-align, start);
 		display: grid;

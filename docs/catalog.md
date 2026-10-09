@@ -182,25 +182,28 @@ centres its statement.
 Compositions establish spatial relationships and collapse without changing
 source order.
 
-| Class           | Responsibility                                   | Options                                                       |
-| --------------- | ------------------------------------------------ | ------------------------------------------------------------- |
-| `.kin-region`   | responsive vertical region space                 | `--kin-region-space`, `data-space`, `data-rule`               |
-| `.kin-stack`    | vertical rhythm                                  | `data-space`, `data-split="last"`                             |
-| `.kin-cluster`  | wrapping peer row                                | `data-space`, `data-align`, `data-justify`, `data-wrap`       |
-| `.kin-grid`     | auto-fitting fluid grid                          | `data-space`, `--kin-grid-min`, `data-columns`, `data-rules`  |
-| `.kin-split`    | two peer regions                                 | `data-space`, `data-ratio`, `data-align`                      |
-| `.kin-sidebar`  | bounded rail plus flexible region                | `data-space`, `data-side`, `--kin-sidebar-size`               |
-| `.kin-center`   | a centred bounded measure                        | `data-measure`, `data-text`, `--kin-center-measure`           |
-| `.kin-cover`    | a minimum-height region with one principal child | `[data-principal]`, `--kin-cover-min`                         |
-| `.kin-switcher` | a row that becomes a column when it cannot fit   | `--kin-switch-at`                                             |
-| `.kin-reel`     | a horizontal scrolling, snapping row             | `--kin-reel-item`                                             |
-| `.kin-bar`      | start, centre, and end slots                     | `data-slot`, `data-rule`, `data-collapse`, `--kin-bar-height` |
+| Class           | Responsibility                                   | Options                                                                                           |
+| --------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `.kin-region`   | responsive vertical region space                 | `--kin-region-space`, `data-space`, `data-rule`                                                   |
+| `.kin-stack`    | vertical rhythm                                  | `data-space`, `data-split="last"`                                                                 |
+| `.kin-cluster`  | wrapping peer row                                | `data-space`, `data-align`, `data-justify`, `data-wrap`                                           |
+| `.kin-grid`     | auto-fitting fluid grid                          | `data-space`, `--kin-grid-min`, `data-columns`, `data-rules`, `data-flush`, `--kin-grid-cell-pad` |
+| `.kin-split`    | two peer regions                                 | `data-space`, `data-ratio`, `data-align`                                                          |
+| `.kin-sidebar`  | bounded rail plus flexible region                | `data-space`, `data-side`, `--kin-sidebar-size`                                                   |
+| `.kin-center`   | a centred bounded measure                        | `data-measure`, `data-text`, `--kin-center-measure`                                               |
+| `.kin-cover`    | a minimum-height region with one principal child | `[data-principal]`, `--kin-cover-min`                                                             |
+| `.kin-switcher` | a row that becomes a column when it cannot fit   | `--kin-switch-at`                                                                                 |
+| `.kin-reel`     | a horizontal scrolling, snapping row             | `--kin-reel-item`                                                                                 |
+| `.kin-bar`      | start, centre, and end slots                     | `data-slot`, `data-rule`, `data-collapse`, `--kin-bar-height`                                     |
 
 `data-space` accepts `tight`, `compact`, `loose`, or `none`; omitting it uses
 the composition's ordinary default. `data-ratio` accepts `lead`, `trail`, or
 `golden`. `data-columns` accepts `2`, `3`, or `4` and collapses on narrow
 screens. `data-rules` separates grid cells with the hairline instead of open
-space; `data-rules="deep"` gives cells the deep ground. Split, sidebar, and
+space; `data-rules="deep"` gives cells the deep ground; `data-rules="between"`
+draws the hairline only between cells, never round them, at any count of
+columns, padding each cell by `--kin-grid-cell-pad` across (1rem by default),
+and `data-flush` sets its outer cells' content on the text's own edge. Split, sidebar, and
 fixed column counts collapse to one column at `48rem` while preserving DOM
 order.
 

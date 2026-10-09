@@ -104,7 +104,8 @@ Signal colour is reserved for state. When a region needs emphasis without
 state, use structure: a step in tone such as a `.kin-surface--sunken` well or
 a raised layer, space, or a change of measure. Keep rules for content read
 across or down: a `.kin-rule` ledger with its tick, or a hairline
-`.kin-grid[data-rules]` of comparable cells. Add `data-tone` to a surface or
+`.kin-grid[data-rules]` of comparable cells, `data-rules="between"` where the
+cells stand in a page with no frame of their own. Add `data-tone` to a surface or
 card only when the tone reports a real state of that item.
 
 ## Keep numbers honest
