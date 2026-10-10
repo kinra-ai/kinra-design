@@ -139,3 +139,6 @@ The software and documentation are licensed under the
 [Apache License 2.0](LICENSE). The license does not grant permission to use
 Kinra's project and brand identifiers beyond the uses described in
 [`TRADEMARKS.md`](TRADEMARKS.md).
+
+The Kinra Mono font in `assets/fonts/` is licensed under the SIL Open Font
+License 1.1 ([`OFL.txt`](assets/fonts/OFL.txt)), with no Reserved Font Names.

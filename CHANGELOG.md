@@ -9,6 +9,10 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Added
 
+- `Kinra Mono`, the first face of Kinra Type 0.1.0: a variable monospace font
+  for weights 300 to 800 under SIL OFL 1.1, at
+  `assets/fonts/KinraMono[wght].woff2` with its `OFL.txt`. `src/styles/tokens.css`
+  declares it under the family name `Kinra Mono`.
 - `.kin-grid[data-rules="between"]` draws the hairline only between cells, at
   any count of columns, with no frame round them; `data-flush` sets the outer
   cells' content on the text's own edge, and `--kin-grid-cell-pad` sets the
@@ -17,6 +21,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ### Changed
 
+- `--kin-font-mono` names Kinra Mono first, so every monospace role draws it
+  where the font loads, and the system stacks remain its fallback. Consumers
+  pinned to `v0.3.0` keep their system mono until they upgrade.
 - A selected list item or table row is a tint alone. The 2px edge each drew
   at its start contradicted the principle that a line is a signal (focus,
   work in flight, a drop target), never a choice (Kinra Space's third polish

@@ -30,9 +30,13 @@ adoption map; this file only tracks current state, not process.
   hover and focus states, responsive specimens, and reduced-motion feedback.
   Reference-only collection, preferences, and review examples demonstrate
   the shared styles together without adding registry or stable contracts.
-- The coordinated review released the expansion as `0.3.0`. Font assets
-  remain unchanged; Kinra Type’s first release and adoption require their
-  own approval.
+- The coordinated review released the expansion as `0.3.0`.
+- Kinra Mono comes from Kinra Type `v0.1.0`, tagged on its `cf5bda4` commit.
+  Blake approved the release and this adoption on 2026-10-10. The variable
+  woff2 and `OFL.txt` are copied unchanged from that build into
+  `assets/fonts/`. `src/styles/tokens.css` declares the face, and
+  `--kin-font-mono` names it first. It is unreleased on main. Sans and Serif
+  are not adopted, and consumers keep their pins until they upgrade.
 - The corner key refresh is brought back from Kinra Space at
   `8589b8a5b04f771b5ab0a3b7b4d3fb38d66d2663` (2026-09-30): soft layer roles,
   wells and quiet controls, sentence-case labels, signal edges, and causal
@@ -84,5 +88,5 @@ adoption map; this file only tracks current state, not process.
 ## Next event
 
 Upgrade consumers to the verified `v0.3.0` release in their owning repositories.
-Candidate registry promotion still requires a second consumer. Font release
-and adoption remain separate decisions.
+Candidate registry promotion still requires a second consumer. Tagging the
+Kinra Mono adoption is Blake's call, separately from Sans and Serif.

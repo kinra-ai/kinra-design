@@ -33,7 +33,7 @@ and marks.
 
 ## Marks
 
-- The package ships two brand assets: `assets/mark.svg`, the K, and
+- The package ships two brand marks: `assets/mark.svg`, the K, and
   `assets/wordmark.svg`, KINRA. The grid letterforms and the blue gradient
   are reserved for these two. No product receives grid letters, a gradient
   wordmark, or a mark of its own, with the one appointed exception below.
