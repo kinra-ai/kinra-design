@@ -140,5 +140,5 @@ The software and documentation are licensed under the
 Kinra's project and brand identifiers beyond the uses described in
 [`TRADEMARKS.md`](TRADEMARKS.md).
 
-The Kinra Mono font in `assets/fonts/` is licensed under the SIL Open Font
+The Kinra Mono, Kinra Sans and Kinra Serif fonts in `assets/fonts/` are licensed under the SIL Open Font
 License 1.1 ([`OFL.txt`](assets/fonts/OFL.txt)), with no Reserved Font Names.

@@ -37,8 +37,14 @@ adoption map; this file only tracks current state, not process.
   Blake approved the release and this adoption on 2026-10-10. The variable
   woff2 and `OFL.txt` are copied unchanged from that build into
   `assets/fonts/`. `src/styles/tokens.css` declares the face, and
-  `--kin-font-mono` names it first. It is released as `0.4.0`. Sans and Serif
-  are not adopted, and consumers keep their pins until they upgrade.
+  `--kin-font-mono` names it first. It is released as `0.4.0`, and consumers
+  keep their pins until they upgrade.
+- Kinra Sans and Kinra Serif come from the same `v0.1.0` build (2026-10-10):
+  the upright and italic variable woff2 of each, copied unchanged beside Mono
+  in `assets/fonts/` and declared in `tokens.css`. `--kin-font-sans` and
+  `--kin-font-serif` name them first. This is committed on `main` and
+  unreleased: Blake has not yet reviewed it on the reference pages, and a
+  release (`0.5.0`) waits for his approval.
 - `0.4.0` also carries the grid hairlines (`data-rules="between"`), a chosen
   row drawn as a tint alone, table text aligned to the line's start, keyboard
   hints kept at the smallest text size, and a closed disclosure's arrow kept
@@ -95,4 +101,5 @@ adoption map; this file only tracks current state, not process.
 
 Upgrade consumers to a verified release, `v0.4.0` being the latest, in their
 owning repositories. Candidate registry promotion still requires a second
-consumer. Sans and Serif remain Blake's separate call; Kinra Mono is released.
+consumer. Review Kinra Sans and Kinra Serif on the reference pages, then
+release them as `0.5.0` on Blake's approval; Kinra Mono is released.

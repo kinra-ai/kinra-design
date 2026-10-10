@@ -7,6 +7,24 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Added
+
+- `Kinra Sans` and `Kinra Serif`, the other two faces of Kinra Type 0.1.0:
+  variable fonts for weights 300 to 800, each with a drawn italic, under SIL
+  OFL 1.1, at `assets/fonts/KinraSans[wght].woff2`,
+  `KinraSans-Italic[wght].woff2`, `KinraSerif[wght].woff2` and
+  `KinraSerif-Italic[wght].woff2` beside the shared `OFL.txt`.
+  `src/styles/tokens.css` declares them under the family names `Kinra Sans`
+  and `Kinra Serif`.
+
+### Changed
+
+- `--kin-font-sans` names Kinra Sans first and `--kin-font-serif` names
+  Kinra Serif first, so prose, `data-kin-voice="sans"` and the editorial
+  display draw them where the fonts load. The previous stacks remain their
+  fallback. Consumers pinned to an earlier release keep Inter and the system
+  serif until they upgrade.
+
 ## [0.4.0] - 2026-10-10
 
 Adds Kinra Mono, the first face of Kinra Type, as the monospace voice. Nothing

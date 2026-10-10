@@ -147,6 +147,13 @@ Expect these visual differences when upgrading past `v0.2.0`:
   consumer needs a different control shape. `--kin-color-control-edge` remains
   available for consumer-drawn boundaries, independently of structural rules;
   the shared fields now use the wells described below.
+- Kinra Sans and Kinra Serif lead `--kin-font-sans` and `--kin-font-serif`
+  (Kinra Type 0.1.0), so prose and the serif and sans voices change face
+  where the fonts load. Their metrics differ from Inter and the system
+  serif, so check wrapping on dense screens. A consumer that wants the old
+  face sets `--kin-font-sans` or `--kin-font-serif` back locally. Bundlers
+  that resolve `url()` in CSS emit the woff2 files; a consumer that
+  vendors the CSS alone also copies `assets/fonts/` with its `OFL.txt`.
 - `data-kin-voice="sans"` changes display and heading roles only, matching
   the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
 - Prose line height follows `--kin-leading-prose`, including the learning
