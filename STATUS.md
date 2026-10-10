@@ -7,12 +7,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.3.0` (2026-10-05, design-system expansion and
-  Space refresh; coordinated release authorized by Blake). `package.json`
-  and both root lockfile versions match the tag. The authored notes name
-  removed assets and changed defaults; consumer upgrades remain separate.
-- Prior releases: `v0.2.0` (2026-08-16, Graphite+ alignment with Kinra Site;
-  approved by Blake) and `v0.1.0` (`7a367ac`).
+- Latest immutable tag: `v0.4.0` (2026-10-10, Kinra Mono and grid hairlines;
+  release explicitly authorized by Blake). `package.json` and both root
+  lockfile versions match the tag. The authored notes name the added face and
+  the changed monospace default; consumer upgrades remain separate.
+- Prior releases: `v0.3.0` (2026-10-05, design-system expansion and Space
+  refresh; coordinated release authorized by Blake), `v0.2.0` (2026-08-16,
+  Graphite+ alignment with Kinra Site; approved by Blake) and `v0.1.0`
+  (`7a367ac`).
 - A release is a tag, not a deployment: no build output, host, route, or
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
@@ -35,8 +37,12 @@ adoption map; this file only tracks current state, not process.
   Blake approved the release and this adoption on 2026-10-10. The variable
   woff2 and `OFL.txt` are copied unchanged from that build into
   `assets/fonts/`. `src/styles/tokens.css` declares the face, and
-  `--kin-font-mono` names it first. It is unreleased on main. Sans and Serif
+  `--kin-font-mono` names it first. It is released as `0.4.0`. Sans and Serif
   are not adopted, and consumers keep their pins until they upgrade.
+- `0.4.0` also carries the grid hairlines (`data-rules="between"`), a chosen
+  row drawn as a tint alone, table text aligned to the line's start, keyboard
+  hints kept at the smallest text size, and a closed disclosure's arrow kept
+  down inside an open one.
 - The corner key refresh is brought back from Kinra Space at
   `8589b8a5b04f771b5ab0a3b7b4d3fb38d66d2663` (2026-09-30): soft layer roles,
   wells and quiet controls, sentence-case labels, signal edges, and causal
@@ -82,11 +88,11 @@ adoption map; this file only tracks current state, not process.
 - The package name `@kinra/web` predates the brand standard and undersells
   what the repository now owns. Renaming it, likely to `@kinra/design`,
   changes every consumer's import paths and Gateway's build banner. The `0.3.0`
-  release keeps `@kinra/web`; a later rename requires its own coordinated
-  migration.
+  and `0.4.0` releases keep `@kinra/web`; a later rename requires its own
+  coordinated migration.
 
 ## Next event
 
-Upgrade consumers to the verified `v0.3.0` release in their owning repositories.
-Candidate registry promotion still requires a second consumer. Tagging the
-Kinra Mono adoption is Blake's call, separately from Sans and Serif.
+Upgrade consumers to a verified release, `v0.4.0` being the latest, in their
+owning repositories. Candidate registry promotion still requires a second
+consumer. Sans and Serif remain Blake's separate call; Kinra Mono is released.

@@ -36,7 +36,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.3.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.4.0"
   }
 }
 ```
