@@ -11,15 +11,48 @@
  */
 
 /*
- * Kinra Mono, the first face of Kinra Type 0.1.0 (SIL OFL 1.1, no Reserved
- * Font Names). The variable file covers weights 300 to 800. Its licence text
- * sits beside it in assets/fonts/OFL.txt, which travels with every copy.
+ * Kinra Mono, Kinra Sans and Kinra Serif, the three faces of Kinra Type 0.1.0
+ * (SIL OFL 1.1, no Reserved Font Names). Each variable file covers weights 300
+ * to 800; Sans and Serif also have a drawn italic. Their licence text sits
+ * beside them in assets/fonts/OFL.txt, which travels with every copy.
  */
 @font-face {
 	font-family: "Kinra Mono";
 	src: url("../../assets/fonts/KinraMono[wght].woff2") format("woff2");
 	font-weight: 300 800;
 	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Kinra Sans";
+	src: url("../../assets/fonts/KinraSans[wght].woff2") format("woff2");
+	font-weight: 300 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Kinra Sans";
+	src: url("../../assets/fonts/KinraSans-Italic[wght].woff2") format("woff2");
+	font-weight: 300 800;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Kinra Serif";
+	src: url("../../assets/fonts/KinraSerif[wght].woff2") format("woff2");
+	font-weight: 300 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Kinra Serif";
+	src: url("../../assets/fonts/KinraSerif-Italic[wght].woff2") format("woff2");
+	font-weight: 300 800;
+	font-style: italic;
 	font-display: swap;
 }
 
@@ -190,11 +223,11 @@
 
 	/* Typography roles */
 	--kin-font-sans:
-		Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		sans-serif;
+		"Kinra Sans", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+		"Segoe UI", sans-serif;
 	--kin-font-serif:
-		"Iowan Old Style", "Palatino Linotype", Palatino, "Source Serif 4",
-		"Noto Serif", "Liberation Serif", Georgia, serif;
+		"Kinra Serif", "Iowan Old Style", "Palatino Linotype", Palatino,
+		"Source Serif 4", "Noto Serif", "Liberation Serif", Georgia, serif;
 	--kin-font-mono:
 		"Kinra Mono", "SFMono-Regular", "Cascadia Code", "Roboto Mono",
 		"DejaVu Sans Mono", "Liberation Mono", monospace;
