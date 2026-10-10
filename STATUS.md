@@ -7,11 +7,12 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.4.0` (2026-10-10, Kinra Mono and grid hairlines;
+- Latest immutable tag: `v0.5.0` (2026-10-10, Kinra Sans and Kinra Serif;
   release explicitly authorized by Blake). `package.json` and both root
-  lockfile versions match the tag. The authored notes name the added face and
-  the changed monospace default; consumer upgrades remain separate.
-- Prior releases: `v0.3.0` (2026-10-05, design-system expansion and Space
+  lockfile versions match the tag. The authored notes name the added faces and
+  the changed sans and serif defaults; consumer upgrades remain separate.
+- Prior releases: `v0.4.0` (2026-10-10, Kinra Mono and grid hairlines;
+  authorized by Blake), `v0.3.0` (2026-10-05, design-system expansion and Space
   refresh; coordinated release authorized by Blake), `v0.2.0` (2026-08-16,
   Graphite+ alignment with Kinra Site; approved by Blake) and `v0.1.0`
   (`7a367ac`).
@@ -42,9 +43,8 @@ adoption map; this file only tracks current state, not process.
 - Kinra Sans and Kinra Serif come from the same `v0.1.0` build (2026-10-10):
   the upright and italic variable woff2 of each, copied unchanged beside Mono
   in `assets/fonts/` and declared in `tokens.css`. `--kin-font-sans` and
-  `--kin-font-serif` name them first. This is committed on `main` and
-  unreleased: Blake has not yet reviewed it on the reference pages, and a
-  release (`0.5.0`) waits for his approval.
+  `--kin-font-serif` name them first. Blake approved the release on
+  2026-10-10 and it is `0.5.0`; consumers keep their pins until they upgrade.
 - `0.4.0` also carries the grid hairlines (`data-rules="between"`), a chosen
   row drawn as a tint alone, table text aligned to the line's start, keyboard
   hints kept at the smallest text size, and a closed disclosure's arrow kept
@@ -94,12 +94,11 @@ adoption map; this file only tracks current state, not process.
 - The package name `@kinra/web` predates the brand standard and undersells
   what the repository now owns. Renaming it, likely to `@kinra/design`,
   changes every consumer's import paths and Gateway's build banner. The `0.3.0`
-  and `0.4.0` releases keep `@kinra/web`; a later rename requires its own
+  to `0.5.0` releases keep `@kinra/web`; a later rename requires its own
   coordinated migration.
 
 ## Next event
 
-Upgrade consumers to a verified release, `v0.4.0` being the latest, in their
+Upgrade consumers to a verified release, `v0.5.0` being the latest, in their
 owning repositories. Candidate registry promotion still requires a second
-consumer. Review Kinra Sans and Kinra Serif on the reference pages, then
-release them as `0.5.0` on Blake's approval; Kinra Mono is released.
+consumer. Kinra Mono, Sans and Serif are released.

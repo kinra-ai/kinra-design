@@ -7,6 +7,12 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-10
+
+Adds Kinra Sans and Kinra Serif, the other two faces of Kinra Type, as the sans
+and serif voices. Nothing is removed; consumers keep Inter and the system serif
+until they upgrade.
+
 ### Added
 
 - `Kinra Sans` and `Kinra Serif`, the other two faces of Kinra Type 0.1.0:
@@ -252,7 +258,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.4.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...main
+[0.5.0]: https://github.com/kinra-ai/kinra-design/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/kinra-ai/kinra-design/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/kinra-ai/kinra-design/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/kinra-ai/kinra-design/compare/v0.1.0...v0.2.0
