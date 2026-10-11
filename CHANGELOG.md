@@ -7,6 +7,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-10
+
+Kinra Mono draws box drawing, block elements and braille, from Kinra Type
+0.2.0. Nothing else changes for consumers.
+
 ### Fixed
 
 - Kinra Mono draws box drawing, block elements and braille (U+2500–259F and
@@ -268,7 +273,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...main
+[0.5.1]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/kinra-ai/kinra-design/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/kinra-ai/kinra-design/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/kinra-ai/kinra-design/compare/v0.2.0...v0.3.0
