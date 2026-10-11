@@ -3,6 +3,7 @@
 /*
  * Surface recipes tune shared roles for a job. They do not provide a page
  * template, and may be applied to a whole document or a bounded specimen.
+ * The application boundary also applies the UI font to ordinary text.
  * They remain unlayered so their scoped roles override the unlayered root
  * tokens; consumer CSS loaded afterward can still override either.
  *
@@ -58,11 +59,24 @@
 }
 
 [data-kin-surface="application"] {
+	/* Bind each role here: root aliases have already resolved before a bounded
+	   recipe inherits them. Code and prose keep their independent roles. */
+	--kin-font-ui: var(--kin-font-sans);
+	--kin-font-heading: var(--kin-font-sans);
+	--kin-font-display: var(--kin-font-sans);
 	--kin-control-height: 2.5rem;
 	--kin-layout-gap: clamp(var(--kin-space-4), 2.5vw, var(--kin-space-7));
 	--kin-measure-wide: 120rem;
 	--kin-page-gutter: clamp(0.875rem, 2vw, 2rem);
 	--kin-region-space: clamp(2rem, 4vw, 3.5rem);
+}
+
+@layer kinra.base {
+	/* Ordinary text otherwise inherits the parent's computed font-family even
+	   when its UI role changes. Keep this below component and consumer styles. */
+	:where([data-kin-surface="application"]) {
+		font-family: var(--kin-font-ui);
+	}
 }
 
 @media (pointer: coarse) {

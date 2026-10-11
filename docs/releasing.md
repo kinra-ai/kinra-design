@@ -23,18 +23,36 @@ The tag and `package.json` version always match. For example, package version
 Never move or replace a released tag. If a release is wrong, fix it forward in
 a new version.
 
+## Preparation is not publication
+
+A manifest bump prepares a version; only the immutable tag releases it. Until
+publication is authorized, keep `STATUS.md` explicit about the prepared version
+and the still-latest released tag. Keep prepared changes under `[Unreleased]`
+in `CHANGELOG.md`, naming the intended version without claiming a release date.
+Do not change installation examples to an unpublished tag.
+
+At the authorized release, move those entries under the version and actual
+release date, update the changelog comparison links and installation examples,
+and reconcile status with the tag. Commit, tagging and pushing require explicit
+authorization; preparation grants none of them.
+
 ## Release gate
 
 From a clean checkout:
 
 ```bash
 npm ci
+npx playwright install chromium webkit
 npm run verify
+npm audit
 npm pack --dry-run
 ```
 
 `npm run verify` checks the registry/export contract, Astro and TypeScript,
-formatting, and the production reference build. Review the rendered catalog at
+formatting, the production reference build, and Chromium/WebKit browser checks
+for typography scope and the application examples. Install browser engines
+once per toolchain setup (and their OS dependencies where needed). The checks
+fulfill requests from local source/build bytes, without live services. Review the rendered catalog at
 desktop and mobile widths, including keyboard focus and reduced motion.
 
 Review the dry-run manifest. It should contain only public styles, assets,

@@ -1,0 +1,256 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+import CollectionExample from "../components/CollectionExample.astro";
+import "../styles/applications.css";
+import "../styles/examples.css";
+---
+
+<ReferenceLayout
+	title="Applications"
+	description="Two reference-only applications using the same typography and compositions without sharing a product shell."
+	current="Applications"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Applications</h1>
+			<p class="catalog-header__summary">
+				One language, two arrangements. Sans UI comes from the application
+				recipe; navigation, page geometry and behavior belong to the product.
+			</p>
+		</div>
+	</header>
+	<div class="catalog-section kin-frame kin-stack" data-space="loose">
+		<p class="kin-caption">
+			Illustrative, reference-only compositions, not package classes or registry
+			candidates. The page and section heads describe relationships; they do not
+			prescribe which product action goes where.
+		</p>
+		<section
+			class="application-example"
+			data-kin-surface="application"
+			aria-labelledby="collection-title"
+		>
+			<nav
+				class="kin-tabs application-example__navigation"
+				aria-label="Collection example sections"
+			>
+				<a
+					class="kin-tabs__tab"
+					href="#application-collection"
+					aria-current="location">Library</a
+				>
+				<a class="kin-tabs__tab" href="#application-status">Reading states</a>
+			</nav>
+			<div class="application-example__page kin-stack" data-space="loose">
+				<header class="application-page-head">
+					<h2 class="kin-title" id="collection-title">Library</h2>
+					<p class="application-head-summary">4 entries · sample data</p>
+					<a
+						class="kin-button kin-button--quiet application-head-actions"
+						href="#application-status">Compare states</a
+					>
+					<p class="kin-caption application-head-description">
+						Find an entry and inspect its details without leaving the
+						collection.
+					</p>
+				</header>
+				<div id="application-collection"><CollectionExample /></div>
+				<section
+					id="application-status"
+					class="kin-stack"
+					data-space="compact"
+					aria-labelledby="reading-title"
+				>
+					<header class="application-section-head">
+						<h3 class="kin-heading" id="reading-title">Reading states</h3>
+						<span class="application-head-summary">One bounded region</span>
+						<label class="kin-field application-head-actions"
+							><span class="kin-field__label">Sample state</span><select
+								class="kin-select"
+								data-size="compact"
+								id="application-state"
+								><option value="ready">Ready</option><option value="loading"
+									>Loading</option
+								><option value="empty">Empty</option><option value="error"
+									>Error</option
+								></select
+							></label
+						>
+						<p class="kin-caption application-head-description">
+							A failed read stays where it happened. This selector simulates
+							states without a service or timer.
+						</p>
+					</header>
+					<div data-sample-state="ready" class="kin-notice" data-tone="success">
+						<p class="kin-notice__body">
+							The sample library is available above.
+						</p>
+					</div>
+					<div
+						data-sample-state="loading"
+						class="kin-stack"
+						data-space="compact"
+						aria-busy="true"
+						hidden
+					>
+						<span class="kin-sr-only">Loading sample entries</span><div
+							class="kin-skeleton"
+							data-shape="heading"
+						>
+						</div><div class="kin-skeleton" data-shape="text"></div>
+					</div>
+					<div data-sample-state="empty" class="kin-empty" hidden>
+						<p class="kin-empty__title">No entries yet</p><p
+							class="kin-empty__body"
+						>
+							New entries will appear here.
+						</p>
+					</div>
+					<div
+						data-sample-state="error"
+						class="kin-notice"
+						data-tone="error"
+						hidden
+					>
+						<div class="kin-notice__body">
+							<p class="kin-notice__title">Could not read the library</p><p>
+								This is a simulated error. No information has been lost.
+							</p>
+						</div><div class="kin-notice__actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								id="application-retry">Try again</button
+							>
+						</div>
+					</div>
+					<p class="kin-sr-only" role="status" id="application-state-status">
+					</p>
+				</section>
+			</div>
+		</section>
+
+		<section
+			class="application-example application-example--panes"
+			data-kin-surface="application"
+			aria-labelledby="work-title"
+		>
+			<div class="application-example__layout">
+				<nav
+					class="kin-nav application-example__navigation"
+					aria-label="Review example sections"
+				>
+					<ul>
+						<li>
+							<a href="#application-work" aria-current="location">Overview</a>
+						</li>
+						<li><a href="#application-checklist">Checklist</a></li>
+						<li><a href="#application-details">Details</a></li>
+					</ul>
+				</nav>
+				<div
+					class="application-example__page kin-stack"
+					data-space="loose"
+					id="application-work"
+				>
+					<header class="application-page-head">
+						<h2 class="kin-title" id="work-title">Release review</h2>
+						<p class="application-head-summary">2 checks · sample data</p>
+						<a
+							class="kin-button kin-button--quiet application-head-actions"
+							href="#application-checklist">Review checklist</a
+						>
+						<p class="kin-caption application-head-description">
+							A navigation region beside a work surface. No fixed rail,
+							resizing, saved state or viewport lock is implied.
+						</p>
+					</header>
+					<div class="application-example__inspection">
+						<section
+							class="kin-stack"
+							data-space="compact"
+							id="application-checklist"
+							aria-labelledby="checklist-title"
+						>
+							<header class="application-section-head">
+								<h3 class="kin-heading" id="checklist-title">Checklist</h3><span
+									class="application-head-summary">2 items</span
+								><a
+									class="kin-button kin-button--ghost application-head-actions"
+									data-size="compact"
+									href="#application-details">Read details</a
+								><p class="kin-caption application-head-description">
+									Native controls keep their labels and keyboard behavior. These
+									sample choices are not saved.
+								</p>
+							</header>
+							<label class="kin-check"
+								><input type="checkbox" /><span>Review the wording</span></label
+							>
+							<label class="kin-check"
+								><input type="checkbox" /><span>Check both colour schemes</span
+								></label
+							>
+							<details class="kin-disclosure">
+								<summary>What this review covers</summary><div
+									class="kin-disclosure__body"
+								>
+									<p class="kin-body" data-size="sm">
+										The work region can narrow independently of the browser
+										window. Its heads and actions wrap rather than borrowing
+										Space’s pane thresholds.
+									</p>
+								</div>
+							</details>
+						</section>
+						<aside
+							class="kin-card"
+							id="application-details"
+							aria-labelledby="details-title"
+						>
+							<div class="kin-card__body kin-stack" data-space="compact">
+								<h3 class="kin-heading" id="details-title">Details</h3><dl
+									class="kin-kv"
+									data-layout="stacked"
+								>
+									<div>
+										<dt>Document</dt><dd>
+											<code class="kin-mono">release-notes.md</code>
+										</dd>
+									</div><div><dt>State</dt><dd>Awaiting review</dd></div>
+								</dl><p class="kin-caption">
+									Sans names the work. Mono preserves an identifier’s
+									characters.
+								</p>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<script>
+		const choice =
+			document.querySelector<HTMLSelectElement>("#application-state");
+		const status = document.querySelector<HTMLElement>(
+			"#application-state-status",
+		);
+		function reflect() {
+			for (const panel of document.querySelectorAll<HTMLElement>(
+				"[data-sample-state]",
+			)) {
+				panel.hidden = panel.dataset.sampleState !== choice?.value;
+			}
+			if (status && choice)
+				status.textContent = `Sample state: ${choice.value}.`;
+		}
+		choice?.addEventListener("change", reflect);
+		document
+			.querySelector("#application-retry")
+			?.addEventListener("click", () => {
+				if (choice) choice.value = "ready";
+				reflect();
+				choice?.focus();
+			});
+	</script>
+</ReferenceLayout>

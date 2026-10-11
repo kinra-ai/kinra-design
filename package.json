@@ -1,6 +1,6 @@
 {
   "name": "@kinra/web",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Kinra's framework-light design system for web products and public surfaces.",
   "license": "Apache-2.0",
   "type": "module",
@@ -31,7 +31,8 @@
     "build:reference": "astro build --root examples/reference",
     "check:contract": "node scripts/check-contract.mjs",
     "check": "npm run check:contract && astro check --root examples/reference && npm run format:check",
-    "verify": "npm run check && npm run build:reference",
+    "verify": "npm run check && npm run build:reference && npm run test:browser",
+    "test:browser": "playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.63.0",
     "astro": "7.3.5",
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",

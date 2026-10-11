@@ -35,12 +35,12 @@ adoption map.
 
 ## Install
 
-The latest immutable release is `v0.5.1`:
+The latest immutable release is `v0.6.0`:
 
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.5.1"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.6.0"
   }
 }
 ```
@@ -102,6 +102,7 @@ development runtime before npm installs, runs, or verifies the package.
 ```bash
 mise install
 npm ci
+npx playwright install chromium webkit
 npm run dev
 npm run verify
 npm pack --dry-run
@@ -116,6 +117,18 @@ consumers do not rebuild the catalog during installation.
 Open `/examples/` in the catalog for interactive collection, preferences, and
 review examples. These reference-only compositions demonstrate the shared
 styles without adding speculative package contracts.
+
+Open `/applications/` for two reference-only application compositions: a
+top-navigation collection and a navigation region beside a review surface.
+Version 0.6.0 selects sans application UI, headings and display; 0.5.1 retains
+mono UI. The [migration guide](docs/adoption.md#moving-to-06-application-typography)
+includes the explicit mono override and consumer verification boundary.
+
+`npm run verify` includes local-only Chromium and WebKit checks. After a fresh
+install, install their engines as above (and Playwright's OS dependencies where
+needed). `npm run test:browser` reruns the tests against source styles and the
+last reference build; rebuild first after changing examples. No browser tooling
+is shipped to consumers.
 
 Open `/refresh/` to review the styling brought back from Kinra Space: soft
 layers on both grounds, quieter controls, the corner key's states and motion,

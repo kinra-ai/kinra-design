@@ -86,6 +86,12 @@ full outline.
 
 ## The shell
 
+Historical Space geometry from the September 2026 refresh, not a shared shell
+contract or a description of current Space. Space now owns a rail beside a
+separately resizable column; its interface guide owns today's layout. Design's
+`/applications/` examples show alternative compositions without copying either
+version of Space's shell.
+
 - **Panel on a shelf.** The window and sidebar sit on the deepest ground; the
   page is one raised panel inset 8px, with a 12px radius and no border. Radii
   step down inside it: composer and cards 8px, rows 6px. Marks, badges and

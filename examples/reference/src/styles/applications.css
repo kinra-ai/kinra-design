@@ -1,0 +1,82 @@
+/* Reference-only relationships, deliberately outside the public class contract.
+   Both arrangements use these same heads; no Space shell geometry is copied. */
+.application-example {
+	container: application / inline-size;
+	background: var(--kin-color-ground-deep);
+	border-radius: var(--kin-radius-panel);
+	min-width: 0;
+}
+.application-example__navigation {
+	padding: var(--kin-space-4);
+}
+.application-example__page {
+	--kin-surface-nested: var(--kin-color-surface);
+	container: application-page / inline-size;
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-panel);
+	padding: clamp(1rem, 3cqi, 2rem);
+	min-width: 0;
+}
+.application-page-head,
+.application-section-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--kin-space-2) var(--kin-space-3);
+}
+.application-page-head > :first-child,
+.application-section-head > :first-child {
+	margin: 0;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+.application-head-summary {
+	margin: 0;
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-sm);
+	font-variant-numeric: tabular-nums;
+}
+.application-head-actions {
+	margin-inline-start: auto;
+	align-self: center;
+	max-width: 100%;
+	white-space: normal;
+}
+.application-head-description {
+	flex-basis: 100%;
+	margin: 0;
+}
+.application-example__layout,
+.application-example__inspection {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--kin-space-4);
+	align-items: start;
+}
+@container application (min-width: 56rem) {
+	.application-example__layout {
+		grid-template-columns: minmax(10rem, 1fr) minmax(0, 4fr);
+	}
+}
+@container application-page (min-width: 42rem) {
+	.application-example__inspection {
+		grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+	}
+}
+/* The collection must answer its available room, not only the window. */
+@container application-page (max-width: 36rem) {
+	.application-example .example-library-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.application-example .example-search {
+		min-width: 0;
+		width: 100%;
+	}
+}
+@media (forced-colors: active) {
+	.application-example,
+	.application-example__page {
+		outline: 1px solid CanvasText;
+		outline-offset: -1px;
+	}
+}

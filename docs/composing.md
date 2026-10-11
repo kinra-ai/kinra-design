@@ -20,9 +20,12 @@ Before placing a component, decide three things for the page or region:
    graphite dashboard, or a graphite console inside a paper document.
 2. **Job.** `data-kin-surface` sets measure and density: `editorial`,
    `documentation`, `learning`, `operations`, or `application`.
-3. **Voice.** The recipe picks a display voice; `data-kin-voice` overrides it
-   for a region. Serif for essays and releases, mono for consoles and
-   references, sans for dense application chrome.
+3. **Voice.** The application recipe selects sans UI, headings and display;
+   code remains mono. Other recipes retain their own defaults. `data-kin-voice`
+   changes heading and display roles only, never UI: serif for essays and
+   releases, mono for consoles and references. To keep an entire application's
+   UI and headings mono, use the explicit role override in
+   [adoption](adoption.md#moving-to-06-application-typography).
 
 Two products that share all three choices should still differ in composition
 and content. Two products that differ in even one look related without looking
@@ -46,6 +49,29 @@ scale. Alternatives that stay in the identity:
 
 Use the eyebrow when a kicker adds information, not as a ritual above every
 heading.
+
+## Compose an application without copying its shell
+
+The `/applications/` reference page puts the same page and section heads into
+both a top-navigation collection and a navigation region beside a work surface.
+Start from existing type roles, stacks, clusters and controls:
+
+- A page head names the work, optionally adds a quiet summary, places its action
+  group at the end and puts one description on the next line.
+- A section head uses a smaller heading, an optional count and compact actions,
+  with the description beneath. Let wrapping follow available room and keep
+  DOM reading order; do not require a particular sidebar width.
+- A collection keeps search, filters, results and an inspector together. Loading,
+  empty and failed reads are different states; the example lets you inspect
+  each without a service.
+- Bind nested surfaces to their actual page tone. Keep the content inset even
+  when a product's media intentionally reaches the edge.
+
+These relationships are reference-only, not exported application-head classes.
+Navigation topology, page measures, resizing, scroll ownership, saved state,
+action placement policy, safe areas and native-host behavior stay local. A
+second product that looks similar is not evidence for promoting a registry
+candidate unless it proves the same responsibility.
 
 ## Write titles as descriptions
 

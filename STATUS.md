@@ -7,11 +7,13 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing
-  from Kinra Type 0.2.0; release explicitly authorized by Blake).
-  `package.json` and both root lockfile versions match the tag. The authored
-  notes name the added characters; consumer upgrades remain separate.
-- Prior releases: `v0.5.0` (2026-10-10, Kinra Sans and Kinra Serif;
+- Latest immutable tag: `v0.6.0` (2026-10-11, sans application language,
+  reference-only compositions and development dependency remediation; commit,
+  push and release explicitly authorized by Blake).
+  `package.json` and both root lockfile versions match 0.6.0. Consumer upgrades
+  remain separate; no npm registry publication or deployment is implied.
+- Prior releases: `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing from
+  Kinra Type 0.2.0; authorized by Blake), `v0.5.0` (2026-10-10, Kinra Sans and Kinra Serif;
   authorized by Blake), `v0.4.0` (2026-10-10, Kinra Mono and grid hairlines;
   authorized by Blake), `v0.3.0` (2026-10-05, design-system expansion and Space
   refresh; coordinated release authorized by Blake), `v0.2.0` (2026-08-16,
@@ -23,11 +25,30 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Application update (0.6.0):** Blake approved sans by default and the minor
+  release on 2026-10-11. Application UI, headings and display select sans, with
+  a documented mono override; sizes, weights, other recipe defaults and registry
+  statuses are unchanged. Two reference-only compositions at `/applications/`
+  demonstrate page/section heads and collection states. Consumer verification
+  remains separate; no consumer rollout is authorized.
+- **Design verification (2026-10-11, prepared 0.6.0 working tree):** after the
+  dependency patch and version bump, a fresh `npm ci`, browser-engine setup and
+  `npm run verify` passed: contract checks, Astro/TypeScript (zero diagnostics),
+  formatting, the 13-page build and 34 Chromium/WebKit cases. Browser coverage
+  includes scope, mono overrides, example interactions, both schemes at
+  desktop/phone widths, RTL/enlarged text, reduced motion and touch targets.
+  Forced-colour checks run where the engine supports the mode. Fresh reference
+  captures were inspected; `npm pack --dry-run` lists 57 public files, excluding
+  examples, tests, tooling and generated output. `npm audit` reports zero
+  vulnerabilities. The prior independent public-CSS review reported no findings;
+  the reviewed public CSS is unchanged by this preparation. This is Design
+  working-tree evidence, not a clean release-commit gate or consumer acceptance.
+
 - `main` contains the released design-system expansion and refresh: a paper
   scheme beside graphite, serif and sans voices beside mono, type roles,
   layout compositions, generic control, navigation, feedback, overlay, and
   data components, five surface recipes, a source-owned candidate registry,
-  and a twelve-page reference catalog with a scheme switch. The refresh changes
+  and a reference catalog with a scheme switch. The refresh changes
   several defaults (square marks, sentence-case eyebrow, more open tracking,
   serif editorial display); the migration notes live in `docs/adoption.md`.
 - The polish pass refines paper contrast, small text, control geometry,
@@ -86,25 +107,40 @@ adoption map; this file only tracks current state, not process.
 - **kinra-site** and **kinra-gateway** consume the public GitHub codeload
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
   integrity.
-- **kinra-space** pins an exact GitHub Git dependency, including its
-  appointed wordmark. Its package and lockfile own the current commit; its
-  source gate and visual comparisons verify each upgrade.
+- **kinra-space** pins Design 0.5.1 at `f400129c85e836a966e1097987586a9401ead829`.
+- **kinra-home** pins Design 0.5.0 at `864d538abfd66bc934c0e042374e2686c2864cff`.
+  Both were checked on 2026-10-11; their own package/lockfile and verification
+  gates remain authoritative. Neither has adopted the 0.6.0 application update.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
-  remain recovery evidence in their owners. Current consumer pins predate
-  `v0.3.0`; adoption follows each owner’s deliberate upgrade.
+  remain recovery evidence in their owners. Site and Gateway retain earlier
+  test pins; adoption follows each owner's deliberate upgrade.
+
+## Dependency audit
+
+- Remediated on 2026-10-11: transitive development dependency `source-map-js`
+  1.2.1 → 1.2.2 resolves GHSA-68fv-2mgg-jv7q (indexed source-map denial of
+  service). Astro reaches it through css-tree, magicast and PostCSS; every
+  existing parent range accepts the patch. Only this dependency's lock entry
+  changed for the remediation; no override or broad tooling upgrade was needed.
+  Version 1.2.1 also exists in the 0.5.1 baseline, before browser tooling was
+  added. A fresh `npm ci` reports zero vulnerabilities. It is not a shipped
+  runtime dependency.
 
 ## Open for the release review
 
 - The package name `@kinra/web` predates the brand standard and undersells
   what the repository now owns. Renaming it, likely to `@kinra/design`,
   changes every consumer's import paths and Gateway's build banner. The `0.3.0`
-  to `0.5.1` releases keep `@kinra/web`; a later rename requires its own
+  to `0.6.0` releases keep `@kinra/web`; a later rename requires its own
   coordinated migration.
 
 ## Next event
 
-Upgrade consumers to a verified release, `v0.5.1` being the latest, in their
-owning repositories. Candidate registry promotion still requires a second
-consumer. Kinra Mono, Sans and Serif are released.
+Adopt `v0.6.0` deliberately in separate Space and Home sessions using the
+immutable tag and its full peeled commit, after confirming both on canonical
+GitHub. Their source/browser and installed-device verification remain OPEN
+in their owners. Candidate registry promotion still requires a second consumer
+and compatibility review; package renaming and the Space shell runtime are
+outside this update.

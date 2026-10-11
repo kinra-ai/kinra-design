@@ -36,7 +36,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.5.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.6.0"
   }
 }
 ```
@@ -87,7 +87,11 @@ right for that region. Read [`composing.md`](composing.md) before assembling
 a page.
 
 Site CSS should load after the package and override role tokens rather than
-copying values. The complete class and data-value contract lives in
+copying values. Keep product rules scoped: an unlayered `main { width: 100% }`
+beats `.kin-frame` and removes its gutter on narrow screens; a later global
+paragraph rule can similarly defeat component rhythm. Do not repair a local
+override by changing the shared frame. Bind `--kin-surface-nested` to the
+actual page tone when composing a work surface. The complete class and data-value contract lives in
 [`catalog.md`](catalog.md).
 
 ## Copy a registry pattern
@@ -147,18 +151,6 @@ Expect these visual differences when upgrading past `v0.2.0`:
   consumer needs a different control shape. `--kin-color-control-edge` remains
   available for consumer-drawn boundaries, independently of structural rules;
   the shared fields now use the wells described below.
-- Kinra Sans and Kinra Serif lead `--kin-font-sans` and `--kin-font-serif`
-  (Kinra Type 0.1.0), so prose and the serif and sans voices change face
-  where the fonts load. Their metrics differ from Inter and the system
-  serif, so check wrapping on dense screens. A consumer that wants the old
-  face sets `--kin-font-sans` or `--kin-font-serif` back locally. Bundlers
-  that resolve `url()` in CSS emit the woff2 files; a consumer that
-  vendors the CSS alone also copies `assets/fonts/` with its `OFL.txt`.
-- Kinra Mono draws box drawing, block elements and braille (Kinra Type
-  0.2.0, from Design 0.5.1). They fill the cell from the line's descent to
-  its ascent, so rows join at a 1.3 line height and overlap below it; set
-  terminal-like text at 1.3 or less where its lines should be continuous.
-  Kinra Sans and Kinra Serif leave these characters out.
 - `data-kin-voice="sans"` changes display and heading roles only, matching
   the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
 - Prose line height follows `--kin-leading-prose`, including the learning
@@ -214,6 +206,85 @@ states on both grounds, including declarative faces without script.
 Consumers target browsers released from mid-2024 onward because of
 `light-dark()`, `color-mix()`, `:has()`, and native `popover`.
 
+## Moving through 0.4 and 0.5
+
+Design 0.4.0 adds Kinra Mono, grid hairlines between cells, tint-only selected
+rows, start-aligned table text and consistent keyboard hints. Design 0.5.0
+adds Kinra Sans and Kinra Serif; 0.5.1 adds terminal characters to Mono, not a
+new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
+
+- Kinra Sans and Kinra Serif lead `--kin-font-sans` and `--kin-font-serif`
+  (Kinra Type 0.1.0), so prose and the serif and sans voices change face
+  where the fonts load. Their metrics differ from Inter and the system
+  serif, so check wrapping on dense screens. A consumer that wants the old
+  face sets `--kin-font-sans` or `--kin-font-serif` back locally. Bundlers
+  that resolve `url()` in CSS emit the woff2 files; a consumer that
+  vendors the CSS alone also copies `assets/fonts/` with its `OFL.txt`.
+- Kinra Mono draws box drawing, block elements and braille (Kinra Type
+  0.2.0, from Design 0.5.1). They fill the cell from the line's descent to
+  its ascent, so rows join at a 1.3 line height and overlap below it; set
+  terminal-like text at 1.3 or less where its lines should be continuous.
+  Kinra Sans and Kinra Serif leave these characters out.
+
+## Moving to 0.6: application typography
+
+Blake approved sans as the application default on 2026-10-11 following a review
+of Space and Home. This is not part of 0.5.1. Version 0.6.0 changes
+`data-kin-surface="application"` to sans UI, heading and display roles. Sizes,
+weights, prose and code roles stay unchanged; other recipes keep their defaults.
+Ordinary text takes the UI font on the recipe element, including a bounded
+subtree, rather than inheriting a computed mono font from the outer page.
+`data-kin-voice` still changes only headings/display, not UI.
+
+To retain mono application chrome, load this after Design and place the class
+on the same element as the recipe (`html`, `body` or a bounded region):
+
+```css
+.mono-application[data-kin-surface="application"] {
+  --kin-font-ui: var(--kin-font-mono);
+  --kin-font-heading: var(--kin-font-mono);
+  --kin-font-display: var(--kin-font-mono);
+}
+```
+
+```html
+<body data-kin-surface="application" class="mono-application">
+  <!-- Mono UI and headings; prose remains sans and code remains mono. -->
+</body>
+```
+
+Bind all three roles at the recipe boundary: an alias inherited from the root
+has already resolved there. A regional `data-kin-voice="serif"` or `"mono"`
+can still change headings inside the application without changing its controls.
+The complete stylesheet loads recipes after entries that import root defaults;
+selective imports should likewise put `recipes.css` last, before consumer CSS.
+
+The `/applications/` catalog page demonstrates top navigation and pane-based
+work using existing components, common page/section heads and a collection
+with inspection and sample async states. Its layout classes stay reference-only.
+No product shell, navigation runtime or registry promotion is implied.
+
+### Consumer verification for this change
+
+Text metrics change even though sizes do not. Before adopting an exact release
+or candidate commit, compare both schemes, desktop and phone widths, long
+labels and text zoom, keyboard focus, forced colours, reduced motion and touch
+controls. Check UI, headings, mono identifiers and overlays inside the recipe.
+Compare the unchanged non-application regions too.
+
+- **Space:** run its source and Chromium/WebKit browser gates and compare heads,
+  forms, menus, dialogs and panes. Keep its fallback faces, measures, resizable
+  shell, safe areas, native-host handling and attention behavior local. Remove
+  only overrides shown redundant; native/device acceptance is separate.
+- **Home:** run `task verify:app` in its owner and compare Live, Events, history
+  controls and inspectors using synthetic data in Chromium and WebKit. Preserve
+  its top navigation and media workflows. Check local frame overrides before
+  attributing a gutter difference to Design; no camera access is needed.
+
+Neither consumer is upgraded or qualified by Design's own checks. Home's
+phone/Safari lived fit and Space's installed/native acceptance remain their
+owners' gates, not claims made by the reference examples.
+
 ## Testing exact source
 
 The type, composition, component, navigation, feedback, overlay, data, recipe,
@@ -238,15 +309,18 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Kinra Space** pins an exact verified development commit through the
-  public GitHub Git URL, including `wordmark-space.svg`. Its `package.json`
-  and lockfile own the current revision; its gate and visual comparisons own
-  the upgrade evidence.
+- **Kinra Space** pins released Design **0.5.1**, exact commit
+  `f400129c85e836a966e1097987586a9401ead829`, including `wordmark-space.svg`.
+- **Kinra Home** pins released Design **0.5.0**, exact commit
+  `864d538abfd66bc934c0e042374e2686c2864cff`. It already consumes the soft-layer
+  refresh and Kinra Type; 0.5.1 only extends Mono's terminal characters.
+  These two pins were checked on 2026-10-11. Each consumer's package/lockfile
+  owns its current revision and its own gates own upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Current consumer pins predate `v0.3.0`; their exact development commits remain
-valid until each owner reviews its upgrade.
+Site and Gateway retain their earlier exact test pins. Space and Home are on
+released 0.5-series source; neither has adopted 0.6.0 application typography yet.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.

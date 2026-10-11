@@ -7,11 +7,10 @@ Follow the portfolio's [`CONVENTIONS.md`](../../CONVENTIONS.md).
 Kinra's shared, framework-light design system for web products and public
 surfaces.
 The package is consumed at build time; deployed sites remain self-contained.
-Real consumers pin an exact release or commit: `kinra-site` and Gateway pin
-`21327ae489243316988019e6b6ca9a7737982699`, and Space pins an exact verified development commit (see each owner's
-lockfile or vendored manifest); see `STATUS.md` for current
-release and adoption state. Retiring Kinra OS and Depot retain their
-historical pins in their own source but are no longer current consumers.
+Real consumers pin an exact release or commit. See `STATUS.md` and
+`docs/adoption.md` for the current release and adoption map; each owner's
+lockfile or vendored manifest remains authoritative. Retired Kinra OS and
+retiring Depot retain historical pins but are no longer current consumers.
 
 ## Start here
 
@@ -24,12 +23,15 @@ historical pins in their own source but are no longer current consumers.
    release contract. Read `docs/refresh-plan.md` before extending the corner
    key refresh.
 3. Run `npm run verify` before handing off a change (`npm run check` alone
-   for a docs-only change).
+   for a docs-only change). Verification includes local-only Chromium and
+   WebKit browser checks; no live consumer services are involved.
 
 Tool selection is `mise.toml` plus `mise.lock`: Node 26 and npm 11.17.0.
 `package.json` retains the native compatibility and `devEngines` contract,
 `package-lock.json` remains dependency truth, and npm scripts remain the
-command surface. Run `mise install` and `npm ci` on a fresh mise workstation.
+command surface. Run `mise install`, `npm ci` and
+`npx playwright install chromium webkit` on a fresh mise workstation;
+see `README.md` for development and browser setup.
 
 ## Canonical Git and public distribution
 

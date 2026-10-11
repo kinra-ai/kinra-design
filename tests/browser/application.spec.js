@@ -1,0 +1,239 @@
+import { test, expect } from "@playwright/test";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
+const root = process.cwd();
+// All requests are fulfilled from local source/build bytes. No server, service,
+// account, or consumer checkout is involved, and unknown requests are refused.
+async function serve(page, html) {
+	await page.route("**/*", async (route) => {
+		const url = new URL(route.request().url());
+		if (url.origin !== "http://design.test") return route.abort();
+		if (url.pathname === "/fixture") {
+			return route.fulfill({ contentType: "text/html", body: html });
+		}
+		const source =
+			url.pathname.startsWith("/src/styles/") ||
+			url.pathname.startsWith("/assets/fonts/");
+		const base = source ? root : path.join(root, "examples/reference/dist");
+		const name = decodeURIComponent(url.pathname).replace(/^\//, "");
+		const file = path.resolve(
+			base,
+			name.endsWith("/") ? `${name}index.html` : name,
+		);
+		if (!file.startsWith(`${base}/`)) return route.abort();
+		const types = {
+			".css": "text/css",
+			".js": "text/javascript",
+			".html": "text/html",
+			".woff2": "font/woff2",
+			".svg": "image/svg+xml",
+		};
+		try {
+			await route.fulfill({
+				body: await readFile(file),
+				contentType: types[path.extname(file)] || "application/octet-stream",
+			});
+		} catch {
+			await route.abort();
+		}
+	});
+}
+const sample = `<p id="plain">Ordinary application text</p><h1 class="kin-title">Title</h1><h2 class="kin-headline">Section</h2><button class="kin-button">Continue</button><input class="kin-input" aria-label="Name"><figure class="kin-code"><pre><code>a !== b</code></pre></figure><p class="kin-body">Reading text</p><section data-kin-voice="serif"><h2 class="kin-headline">Editorial aside</h2><button class="kin-button">Still application UI</button></section>`;
+function fixture(where, overrides = "", recipe = "application") {
+	const attribute = `data-kin-surface="${recipe}"`;
+	return `<!doctype html><html lang="en" ${where === "html" ? attribute : ""}><head><link rel="stylesheet" href="/src/styles/index.css"><style>${overrides}</style></head><body ${where === "body" ? attribute : ""}>${where === "section" ? `<section ${attribute}>${sample}</section>` : sample}</body></html>`;
+}
+async function font(locator, family) {
+	await expect(locator).toHaveCSS(
+		"font-family",
+		new RegExp(`^"?Kinra ${family}`),
+	);
+}
+for (const where of ["html", "body", "section"]) {
+	test(`application selects sans on ${where}, retaining code and regional voice`, async ({
+		page,
+	}) => {
+		await serve(page, fixture(where));
+		await page.goto("http://design.test/fixture");
+		for (const selector of [
+			"#plain",
+			".kin-title",
+			".kin-headline:first-of-type",
+			".kin-button",
+			".kin-input",
+		]) {
+			await font(page.locator(selector).first(), "Sans");
+		}
+		await font(page.locator(".kin-code code"), "Mono");
+		await font(page.locator(".kin-body"), "Sans");
+		await font(page.locator('[data-kin-voice="serif"] .kin-headline'), "Serif");
+		await font(page.locator('[data-kin-voice="serif"] .kin-button'), "Sans");
+		await expect(page.locator(".kin-title")).toHaveCSS("font-weight", "620");
+		await expect(page.locator("body")).toHaveCSS("font-size", "16px");
+	});
+	test(`explicit mono application override on ${where}`, async ({ page }) => {
+		await serve(
+			page,
+			fixture(
+				where,
+				`[data-kin-surface="application"] { --kin-font-ui: var(--kin-font-mono); --kin-font-heading: var(--kin-font-mono); --kin-font-display: var(--kin-font-mono); }`,
+			),
+		);
+		await page.goto("http://design.test/fixture");
+		await font(page.locator("#plain"), "Mono");
+		await font(page.locator(".kin-title"), "Mono");
+		await font(page.locator(".kin-button").first(), "Mono");
+		await font(page.locator(".kin-body"), "Sans");
+	});
+}
+test("heading-only voice does not replace application UI", async ({ page }) => {
+	await serve(
+		page,
+		fixture("body").replace(
+			'<body data-kin-surface="application">',
+			'<body data-kin-surface="application" data-kin-voice="mono">',
+		),
+	);
+	await page.goto("http://design.test/fixture");
+	await font(page.locator(".kin-title"), "Mono");
+	await font(page.locator("#plain"), "Sans");
+	await font(page.locator(".kin-button").first(), "Sans");
+});
+
+for (const recipe of ["editorial", "documentation", "learning", "operations"]) {
+	test(`${recipe} document keeps its existing voice`, async ({ page }) => {
+		await serve(page, fixture("body", "", recipe));
+		await page.goto("http://design.test/fixture");
+		await font(page.locator("#plain"), "Mono");
+		await font(
+			page.locator(".kin-title"),
+			recipe === "editorial" ? "Serif" : "Mono",
+		);
+		await font(
+			page.locator(".kin-body"),
+			recipe === "learning" ? "Mono" : "Sans",
+		);
+	});
+}
+
+for (const width of [1440, 390]) {
+	for (const scheme of ["dark", "light"]) {
+		test(`application examples at ${width}px in ${scheme}`, async ({
+			page,
+		}, testInfo) => {
+			await serve(page);
+			await page.setViewportSize({ width, height: 1000 });
+			await page.goto("http://design.test/applications/");
+			await page.evaluate(
+				(value) => (document.documentElement.dataset.kinScheme = value),
+				scheme,
+			);
+			await font(page.locator("#collection-title"), "Sans");
+			await font(page.locator("#work-title"), "Sans");
+			await font(page.locator("#application-details code"), "Mono");
+			await page.evaluate(() => document.fonts.ready);
+			await expect(page.locator(".application-example")).toHaveCount(2);
+			const fits = () =>
+				page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
+			expect(await fits()).toBe(true);
+			await page.screenshot({
+				path: testInfo.outputPath("applications.png"),
+				fullPage: true,
+			});
+			await page.locator("#library-query").fill("no matching entry");
+			await expect(page.locator("#library-empty")).toBeVisible();
+			await page
+				.getByRole("button", { name: "Clear filters", exact: true })
+				.click();
+			await expect(page.locator("#library-query")).toBeFocused();
+			const inspect = page.getByRole("button", {
+				name: "Inspect Reading foundations",
+				exact: true,
+			});
+			await inspect.focus();
+			await page.keyboard.press("Enter");
+			await expect(page.getByRole("dialog")).toBeVisible();
+			await font(
+				page.getByRole("dialog").locator(".kin-dialog__title"),
+				"Sans",
+			);
+			await expect(
+				page.getByRole("dialog").getByRole("button", { name: "Done" }),
+			).toBeFocused();
+			await page.keyboard.press("Escape");
+			await expect(inspect).toBeFocused();
+			await expect(inspect).toHaveCSS("outline-style", "solid");
+			for (const state of ["loading", "empty", "error"]) {
+				await page.locator("#application-state").selectOption(state);
+				await expect(
+					page.locator(`[data-sample-state="${state}"]`),
+				).toBeVisible();
+			}
+			await page.getByRole("button", { name: "Try again" }).click();
+			await expect(page.locator('[data-sample-state="ready"]')).toBeVisible();
+			await expect(page.locator("#application-state")).toBeFocused();
+			// Narrow work regions, long labels, RTL and enlarged text must not
+			// require the Space shell's geometry to keep their content reachable.
+			await page.evaluate(() => {
+				document.documentElement.dir = "rtl";
+				document.documentElement.style.fontSize = "24px";
+				document.querySelector("#work-title").textContent =
+					"Review a deliberately long application title with additional context";
+			});
+			expect(await fits()).toBe(true);
+		});
+	}
+}
+
+test("reduced motion and forced colours preserve example state and focus", async ({
+	page,
+}) => {
+	await serve(page);
+	await page.emulateMedia({ reducedMotion: "reduce", forcedColors: "active" });
+	await page.goto("http://design.test/applications/");
+	await page.locator("#application-state").selectOption("loading");
+	await expect(page.locator('[data-sample-state="loading"]')).toBeVisible();
+	const duration = await page
+		.locator('[data-sample-state="loading"] .kin-skeleton')
+		.first()
+		.evaluate((element) =>
+			parseFloat(getComputedStyle(element).animationDuration),
+		);
+	expect(duration).toBeLessThanOrEqual(0.00001);
+	await page.locator("#application-state").focus();
+	await expect(page.locator("#application-state")).toHaveCSS(
+		"outline-style",
+		"solid",
+	);
+	if (
+		await page.evaluate(() => matchMedia("(forced-colors: active)").matches)
+	) {
+		await expect(page.locator(".application-example").first()).toHaveCSS(
+			"outline-style",
+			"solid",
+		);
+	}
+});
+
+test("coarse pointer keeps application control targets", async ({
+	browser,
+}) => {
+	const context = await browser.newContext({
+		hasTouch: true,
+		viewport: { width: 390, height: 844 },
+		serviceWorkers: "block",
+	});
+	const page = await context.newPage();
+	await serve(page, fixture("body"));
+	await page.goto("http://design.test/fixture");
+	expect(
+		await page.evaluate(() => matchMedia("(pointer: coarse)").matches),
+	).toBe(true);
+	await expect(page.locator(".kin-button").first()).toHaveCSS(
+		"min-height",
+		"44px",
+	);
+	await expect(page.locator(".kin-input")).toHaveCSS("font-size", "16px");
+	await context.close();
+});

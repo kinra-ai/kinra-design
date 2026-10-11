@@ -333,20 +333,24 @@ registry candidates. They have no consumer evidence yet.
 
 ## Surface recipes
 
-Apply `data-kin-surface` to a document or bounded subtree. A recipe changes
-role values only; it does not create a page shell.
+Apply `data-kin-surface` to a document or bounded subtree. A recipe tunes
+role values; the application recipe also applies its UI font to ordinary text
+at its boundary. It does not create a page shell.
 
-| Value           | Bias                                                    |
-| --------------- | ------------------------------------------------------- |
-| `editorial`     | generous rhythm, long-form measure, serif display voice |
-| `documentation` | wider shell, denser navigation, readable prose          |
-| `learning`      | mono prose, focused measure, sequential reading         |
-| `operations`    | compact controls and data-dense working measure         |
-| `application`   | broad canvas, tighter regions, product-owned workspace  |
+| Value           | Bias                                                      |
+| --------------- | --------------------------------------------------------- |
+| `editorial`     | generous rhythm, long-form measure, serif display voice   |
+| `documentation` | wider shell, denser navigation, readable prose            |
+| `learning`      | mono prose, focused measure, sequential reading           |
+| `operations`    | compact controls and data-dense working measure           |
+| `application`   | sans UI, headings and display; broad product-owned canvas |
 
 `data-kin-voice="serif|mono|sans"` changes only the display and heading voice
 for a bounded region. `data-kin-scheme` changes only the ground. All three
-axes compose.
+axes compose. Application typography changes in 0.6.0; see the
+[migration and mono override](adoption.md#moving-to-06-application-typography).
+The `/applications/` examples demonstrate page/section heads, top navigation
+and pane-based work without adding public shell classes.
 
 A consumer may override any recipe role it can own safely. Product-specific
 navigation, editors, grids, and immersive canvases remain local.

@@ -7,6 +7,42 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-11
+
+Application UI, headings and display default to sans. This visual compatibility
+change requires deliberate consumer adoption; 0.5.1 does not contain it.
+
+### Changed
+
+- **Visual compatibility:** the application recipe selects Kinra Sans for UI,
+  headings and display, including ordinary text in bounded regions. Sizes,
+  weights, code and other recipes' defaults are unchanged. The voice axis still
+  affects headings/display only. An explicit mono-application override and
+  consumer checks are documented in `docs/adoption.md`. This requires a minor
+  release, not a patch; no consumer pin changes here.
+- The complete CSS entry point loads recipes last so native CSS imports cannot
+  reapply root token defaults over a recipe on `html`.
+
+### Added
+
+- Two reference-only application compositions at `/applications/`: a
+  top-navigation collection and a navigation region beside a review surface,
+  sharing page/section heads. Sample loading, empty and error states reuse
+  shared components; no registry candidate or stable shell is introduced.
+- Chromium and WebKit browser checks in `npm run verify` for typography scope,
+  the mono override and application examples. Development setup now includes
+  `npx playwright install chromium webkit`; package consumers need no browser.
+
+### Fixed
+
+- Update only transitive development dependency `source-map-js` from 1.2.1 to
+  1.2.2 within its existing parent ranges, resolving indexed source-map denial
+  of service (GHSA-68fv-2mgg-jv7q). The vulnerable version was already in the
+  0.5.1 lockfile; no runtime dependency or broad tooling upgrade is introduced.
+- Adoption guidance identifies Space's 0.5.1 and Home's 0.5.0 pins, separates
+  font-release migration notes, explains local CSS override boundaries and
+  labels the refresh plan's shell geometry as historical.
+
 ## [0.5.1] - 2026-10-10
 
 Kinra Mono draws box drawing, block elements and braille, from Kinra Type
@@ -273,7 +309,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...main
+[0.6.0]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/kinra-ai/kinra-design/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/kinra-ai/kinra-design/compare/v0.3.0...v0.4.0
