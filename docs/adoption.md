@@ -154,6 +154,11 @@ Expect these visual differences when upgrading past `v0.2.0`:
   face sets `--kin-font-sans` or `--kin-font-serif` back locally. Bundlers
   that resolve `url()` in CSS emit the woff2 files; a consumer that
   vendors the CSS alone also copies `assets/fonts/` with its `OFL.txt`.
+- Kinra Mono draws box drawing, block elements and braille (Kinra Type
+  0.2.0, from Design 0.5.1). They fill the cell from the line's descent to
+  its ascent, so rows join at a 1.3 line height and overlap below it; set
+  terminal-like text at 1.3 or less where its lines should be continuous.
+  Kinra Sans and Kinra Serif leave these characters out.
 - `data-kin-voice="sans"` changes display and heading roles only, matching
   the other voice choices. Use `--kin-font-ui` explicitly for sans UI text.
 - Prose line height follows `--kin-leading-prose`, including the learning

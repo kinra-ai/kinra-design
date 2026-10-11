@@ -7,6 +7,16 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Fixed
+
+- Kinra Mono draws box drawing, block elements and braille (U+2500–259F and
+  U+2800–28FF), from Kinra Type 0.2.0. Borders, progress bars and spinners in
+  the mono voice fill its cells and join their neighbours, where they came
+  from a fallback face that did not line up. Kinra Sans and Kinra Serif leave
+  these characters out; text in those voices still falls back for them. Every
+  font file in `assets/fonts/` now comes from Kinra Type 0.2.0; the outlines
+  of Kinra Sans and Kinra Serif are unchanged.
+
 ## [0.5.0] - 2026-10-10
 
 Adds Kinra Sans and Kinra Serif, the other two faces of Kinra Type, as the sans

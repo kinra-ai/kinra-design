@@ -11,9 +11,10 @@
  */
 
 /*
- * Kinra Mono, Kinra Sans and Kinra Serif, the three faces of Kinra Type 0.1.0
+ * Kinra Mono, Kinra Sans and Kinra Serif, the three faces of Kinra Type 0.2.0
  * (SIL OFL 1.1, no Reserved Font Names). Each variable file covers weights 300
- * to 800; Sans and Serif also have a drawn italic. Their licence text sits
+ * to 800; Sans and Serif also have a drawn italic. Kinra Mono alone draws box
+ * drawing, block elements and braille, to its cell. Their licence text sits
  * beside them in assets/fonts/OFL.txt, which travels with every copy.
  */
 @font-face {

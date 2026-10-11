@@ -45,6 +45,11 @@ adoption map; this file only tracks current state, not process.
   in `assets/fonts/` and declared in `tokens.css`. `--kin-font-sans` and
   `--kin-font-serif` name them first. Blake approved the release on
   2026-10-10 and it is `0.5.0`; consumers keep their pins until they upgrade.
+- Kinra Type `v0.2.0`, tagged on its `a9e9664` commit (2026-10-10), adds box
+  drawing, block elements and braille to Kinra Mono; Sans and Serif leave
+  them out. All five woff2 files are copied unchanged from that tag's build,
+  and Kinra Sans and Kinra Serif differ from 0.1.0's only in their version
+  names. It is unreleased here.
 - `0.4.0` also carries the grid hairlines (`data-rules="between"`), a chosen
   row drawn as a tint alone, table text aligned to the line's start, keyboard
   hints kept at the smallest text size, and a closed disclosure's arrow kept
