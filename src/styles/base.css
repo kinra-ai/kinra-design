@@ -148,7 +148,8 @@
 	 * A change lands in the frame that makes it. A transition shortened rather
 	 * than removed holds the old value for that frame, on every element and
 	 * every property, so a panel just shown is still hidden when focus is sent
-	 * into it. Animations still run once, at once, so their end events arrive.
+	 * into it. An animation a component keeps still runs, once and at once, so
+	 * its end event arrives.
 	 */
 	*,
 	*::before,

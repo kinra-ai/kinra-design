@@ -20,19 +20,21 @@
  */
 
 @layer kinra.shell {
-	/* The window is the shelf, the deepest ground. */
+	/* The window is the shelf, the deepest ground. It clips rather than
+	   scrolls, so focus reaching a control past its edge never shifts it. */
 	.kin-shell {
 		background: var(--kin-shell-shelf);
 		block-size: var(--kin-shell-height);
 		display: flex;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	/* The sidebar: the rail's rows down its own track, and the column beside
 	   them spanning them all. Nothing here clips, so the rail's tips reach
 	   over the column and the page; only the product's lists in the column
-	   scroll. The width is the rail plus the column, which a product that
-	   resizes the column sets through --kin-shell-column. */
+	   scroll, until a short window (below). The width is the rail plus the
+	   column, which a product that resizes the column sets through
+	   --kin-shell-column. */
 	.kin-shell__sidebar {
 		background: var(--kin-shell-shelf);
 		column-gap: var(--kin-space-2);
@@ -248,11 +250,13 @@
 		display: none;
 	}
 
-	/* Tips stand beside the item, over the column and the page, above
-	   anything either raises. A touch screen keeps the last tap's hover, so
-	   only a pointer that hovers names an item by pointing at it; the
-	   keyboard always does. A control whose own popover is open drops its
-	   tip, which would repeat what the popover says. */
+	/* Tips stand beside the item, over the column and the page. A touch
+	   screen keeps the last tap's hover, so only a pointer that hovers names
+	   an item by pointing at it; the keyboard always does. The pointer can
+	   cross onto a tip and rest there, since the tip's start reaches back to
+	   its item, and beside the page Escape puts it away (data-tip="hidden",
+	   which the product sets and clears). A control whose own popover is open
+	   drops its tip, which would repeat what the popover says. */
 	.kin-shell__tip {
 		display: block;
 		inline-size: max-content;
@@ -271,13 +275,25 @@
 		opacity: 1;
 	}
 
+	/* In the drawer the K stands where the menu was, under the pointer that
+	   opened it, so there it names itself only to the keyboard. */
 	@media (hover: hover) {
-		:is(.kin-shell__item, .kin-shell__home):hover > .kin-shell__tip {
+		:is(.kin-shell__item, .kin-shell:not([data-drawer]) .kin-shell__home):hover
+			> .kin-shell__tip {
 			opacity: 1;
+			pointer-events: auto;
 		}
 	}
 
-	[aria-expanded="true"] > .kin-shell__tip {
+	.kin-shell__tip::before {
+		content: "";
+		inline-size: var(--kin-space-3);
+		inset-block: 0;
+		inset-inline-end: 100%;
+		position: absolute;
+	}
+
+	:is([aria-expanded="true"], [data-tip="hidden"]) > .kin-shell__tip {
 		display: none;
 	}
 
@@ -309,7 +325,10 @@
 	}
 
 	/* The page: one raised panel on the shelf, inset from it, with no border.
-	   Nested surfaces return to its tone. */
+	   Nested surfaces return to its tone. It isolates whatever the page
+	   raises, so the rail's tips, the drawer and its backdrop stay above it;
+	   what must stand above the shell, such as toasts, belongs outside it or
+	   in the top layer. */
 	.kin-shell__panel {
 		--kin-surface-nested: var(--kin-shell-panel);
 
@@ -318,6 +337,7 @@
 		display: flex;
 		flex: 1;
 		flex-direction: column;
+		isolation: isolate;
 		margin-block: var(--kin-shell-inset);
 		margin-inline: 0 max(var(--kin-shell-inset), var(--kin-shell-safe-end));
 		min-inline-size: 0;
@@ -434,13 +454,15 @@
 	}
 
 	/* The drawer layout: the sidebar, rail and column together, is a card on
-	   the shelf arriving from the inline start over a flush page. Closed, it
-	   is hidden as well as inert, so assistive technology and tests pass over
-	   it; it hides once it has left. */
+	   the shelf arriving from the inline start over a flush page, as tall as
+	   the shell, so a product that follows the visual viewport keeps its foot
+	   above the keyboard. Closed, it is hidden as well as inert, so assistive
+	   technology and tests pass over it; it hides once it has left. */
 	.kin-shell[data-drawer] .kin-shell__sidebar {
 		border-end-end-radius: var(--kin-radius-sheet);
 		border-start-end-radius: var(--kin-radius-sheet);
-		inset-block: 0;
+		block-size: var(--kin-shell-height);
+		inset-block-start: 0;
 		inset-inline-start: 0;
 		padding-block: var(--kin-shell-safe-top)
 			calc(var(--kin-shell-inset) + var(--kin-shell-safe-bottom));
@@ -576,9 +598,19 @@
 		overflow: visible;
 	}
 
-	:root:has(.kin-shell[data-drawer][data-scroll="document"]) {
-		scroll-padding-block-start: calc(
+	/* What the page brings into view, by focus or by its address, stops below
+	   the bar. A margin on the page's content does this; padding on the
+	   document would count the bar as covering its own controls and scroll
+	   the reader away whenever one of them took focus. */
+	.kin-shell[data-drawer][data-scroll="document"] .kin-shell__page * {
+		scroll-margin-block-start: calc(
 			var(--kin-shell-bar) + var(--kin-shell-safe-top)
+		);
+	}
+
+	.kin-shell[data-drawer][data-scroll="document"] .kin-shell__page :target {
+		scroll-margin-block-start: calc(
+			var(--kin-shell-bar) + var(--kin-shell-safe-top) + var(--kin-space-7)
 		);
 	}
 
@@ -594,6 +626,28 @@
 
 		.kin-shell__foot {
 			padding-block-start: var(--kin-space-2);
+		}
+	}
+
+	/* Shorter still, a phone on its side: where the rail outgrows the height,
+	   the sidebar scrolls to reach its foot, and its tips then stay inside it.
+	   A folded rail under a pointer that hovers keeps its tips reaching over
+	   the page instead, since they are its only names. */
+	@media (max-height: 28rem) {
+		.kin-shell:is([data-drawer], :not([data-folded])) .kin-shell__sidebar {
+			overflow-x: hidden;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
+		}
+	}
+
+	@media (max-height: 28rem) and (hover: none) {
+		.kin-shell[data-folded] .kin-shell__sidebar {
+			overflow-x: hidden;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
 		}
 	}
 

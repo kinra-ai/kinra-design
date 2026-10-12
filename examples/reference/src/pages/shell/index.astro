@@ -64,7 +64,7 @@ const behaviour = [
 	],
 	[
 		"Focus",
-		"Folding while focus is in the column moves focus to the fold first. Opening the drawer focuses its current item, else its first.",
+		"A change that hides what holds focus hands it to the fold or the menu, whichever shows: folding hides the column, unfolding the marks. Opening the drawer focuses its current item, else its first, never a mark.",
 	],
 	[
 		"Inert",
@@ -72,7 +72,11 @@ const behaviour = [
 	],
 	[
 		"Escape",
-		"Closes the drawer unless a popover or modal is open, which closes first. Focus returns to the drawer's control, as it does from the backdrop.",
+		"An open popover or modal closes first. An open drawer closes next, its tips with it, and focus returns to its control, as it does from the backdrop.",
+	],
+	[
+		"Tips",
+		'Beside the page, Escape puts away a tip that is showing without moving focus or the pointer: set data-tip="hidden" on its item until the pointer or focus leaves the item.',
 	],
 	[
 		"Links",
@@ -80,7 +84,7 @@ const behaviour = [
 	],
 	[
 		"Breakpoint",
-		"Crossing it closes the drawer, moves focus out of a sidebar that has just become inert, and sets data-resizing for the one reflow so nothing travels.",
+		"Crossing it closes the drawer, moves focus out of whatever the new layout hides, and sets data-resizing for the one reflow so nothing travels.",
 	],
 	[
 		"Hairline",

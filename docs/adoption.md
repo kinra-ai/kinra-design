@@ -308,8 +308,9 @@ shows every state.
   every element, so focus sent into a panel just shown found it still hidden.
   Now a change lands in the frame that makes it. `transitionend` no longer
   fires under reduced motion: a product that waits for it there should act on
-  the change itself. Animations still run once and end with their events, so a
-  toast's exit still removes it.
+  the change itself. An animation a component keeps still ends with its
+  event, so a toast's exit still removes it; the arrivals of dialogs, drawers,
+  popovers and toasts are removed under reduced motion and send none.
 - **A toolbar's fields stand level under a finger.** Under a coarse pointer a
   toolbar's inputs and selects take the 44px target its buttons have; a local
   rule that raised them can go.
@@ -345,7 +346,22 @@ All three copies differ from the shared shell in the same few places:
 - A closed drawer is hidden as well as inert, as Relay's already was. Under
   reduced motion it is not displayed, so an opening drawer takes focus at once
   even beside a host reset that only shortens transitions.
-- A tip wraps beyond 18rem rather than running on.
+- A tip wraps beyond 18rem rather than running on. The pointer can cross onto
+  a tip and rest there, and beside the page Escape puts a showing tip away, as
+  WCAG 1.4.13 asks: the product sets `data-tip="hidden"` on the item until the
+  pointer or focus leaves it. In an open drawer Escape closes the drawer, its
+  tips with it, and there the K names itself only to the keyboard, since it
+  stands under the pointer that opened the drawer.
+- A change that hides what holds focus hands it to the fold or the menu:
+  unfolding with focus on a mark, crossing into the drawer layout with focus
+  on the fold, or widening onto a folded rail with focus in the column.
+- The panel isolates what the page raises, so a page layer at the overlay or
+  dialog layer no longer covers a tip or the open drawer. Keep toasts that
+  must stand above the shell outside it, as Space does, or in the top layer.
+- A window under 28rem tall scrolls the sidebar to reach its foot, as Space's
+  already did, and the drawer is as tall as `--kin-shell-height`, so a
+  product that follows the visual viewport keeps the drawer's foot above the
+  keyboard.
 
 ### Kinra Space
 
@@ -443,7 +459,11 @@ the page scrolls with it; and the 60rem breakpoint that `wide()` shares, from
 which it sets `data-drawer`.
 
 What changes for Relay: the shell mirrors right to left, where Relay's drawer,
-badges and padding were physical. Rail items are Space's 2.25rem rows rather
+badges and padding were physical. In document scroll, drop the root
+`scroll-padding-top`, which scrolls the reader away whenever a control in the
+sticky bar takes focus (Escape back to the menu, or Shift+Tab into the bar);
+the shell's margin on the page's content replaces it, and `.side-panel`'s own
+`scroll-margin-top` adds the bar to its 1rem. Rail items are Space's 2.25rem rows rather
 than 2.5rem squares. The current rail item takes the panel's tone rather than
 a raised card with a primary icon, and the panel has no ring or drop; bind
 `--kin-shell-current` and keep a local rule to keep either. Counts are square

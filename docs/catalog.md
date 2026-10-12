@@ -102,9 +102,11 @@ and 300ms. Its optional module reads those tokens. Reduced motion renders
 the same face in place and holds the working outline still.
 
 Under reduced motion `base.css` removes every transition and runs each
-animation once, at once. A change lands in the frame that makes it, so focus
-sent into a panel just shown arrives; animations still end with their events,
-and `transitionend` does not fire.
+animation that remains once, at once. A change lands in the frame that makes
+it, so focus sent into a panel just shown arrives, and `transitionend` does
+not fire. An animation a component keeps, such as a toast's exit, still ends
+with its event; the arrivals of dialogs, drawers, popovers and toasts are
+removed and send none.
 
 ### Scheme
 
@@ -375,7 +377,9 @@ state on both grounds and right to left, running the reference behaviour.
 
 - `.kin-shell` is the window, on the shelf, `--kin-shell-height` tall.
 - `.kin-shell__sidebar` holds the rail's rows down its own track and the column
-  beside them. Nothing in it clips, so tips reach over the column and the page.
+  beside them. Nothing in it clips, so tips reach over the column and the page,
+  except in a window under 28rem tall: there the sidebar scrolls to reach its
+  foot, unless it is a folded rail under a pointer that hovers.
 - `.kin-shell__head` is the bar's own height and level with it. It holds
   `.kin-shell__home`, the K: the way home, without a fill under the pointer.
 - `.kin-shell__pages` holds the primary pages. `.kin-shell__marks` holds the
@@ -394,10 +398,15 @@ state on both grounds and right to left, running the reference behaviour.
   in a labelled drawer.
 - `.kin-shell__tip`, with `.kin-tooltip`, names an item beside it under a
   pointer that hovers and under the keyboard, above the column and the page.
-  It steps aside while its control is `aria-expanded="true"`.
+  The pointer can cross onto it and rest there. It steps aside while its
+  control is `aria-expanded="true"`, and while the product has put it away
+  with `data-tip="hidden"` on the control. In the drawer the K, which stands
+  under the pointer that opened it, names itself only to the keyboard.
 - `.kin-shell__column` is the product's work; its own lists scroll.
 - `.kin-shell__panel` is the raised page and binds `--kin-surface-nested` to
-  its tone. `.kin-shell__bar` is the bar over the page. `.kin-shell__fold`
+  its tone. It isolates whatever the page raises, so tips, the drawer and its
+  backdrop stay above it; what must stand above the shell, such as toasts,
+  belongs outside it or in the top layer. `.kin-shell__bar` is the bar over the page. `.kin-shell__fold`
   folds the sidebar beside the page and draws no pressed fill while open;
   `.kin-shell__menu` opens the drawer. `.kin-shell__crumbs`, on a
   `.kin-breadcrumb`, keeps one line, and a bar under 36rem keeps only the
@@ -415,6 +424,7 @@ The product sets the state:
 | `data-labels="drawer"`          | as a drawer, items carrying a label show it, on a wider rail       |
 | `data-resizing`                 | no transitions while the shell settles after a change of shape     |
 | `data-scrolled` on the bar      | the hairline: the page is scrolled beneath the bar                 |
+| `data-tip="hidden"` on an item  | its tip, put away by Escape                                        |
 | `inert` on the sidebar or panel | the closed drawer, or the page behind an open one                  |
 
 Its measures and tones are custom properties, set on `:root` or the shell:
@@ -442,6 +452,12 @@ in the `kinra.shell` layer, after `kinra.components`, so the shell restyles
 navigation, buttons and breadcrumbs inside itself while product CSS still
 wins. `.kin-sidebar` remains the unrelated two-column composition.
 
+When the page scrolls with the document, what focus or an address brings into
+view stops below the bar, through a scroll margin on the page's content; the
+bar's own controls never move the reader. A product that sets its own
+`scroll-margin-block-start` in the page adds `--kin-shell-bar` and
+`--kin-shell-safe-top` to it, and sets no `scroll-padding` on the document.
+
 With motion, the width and the drawer move at layer speed, the column fades
 as the rail closes over it, a tip waits a moment before naming its item, and
 a closed drawer hides once it has left. Under reduced motion every state is
@@ -465,17 +481,23 @@ list, `examples/reference/src/scripts/shell.ts`, to read rather than import.
 - **Chord.** ⌘B on a Mac and Ctrl+B elsewhere, never both, never with Alt or
   Shift, never a held key's repeats. It yields to an open modal and to rich
   text. As a drawer, it opens and closes the drawer.
-- **Focus.** Folding while focus is in the column moves focus to the fold
-  first. Opening the drawer focuses its current item, else its first.
+- **Focus.** A change that hides what holds focus hands it to the fold or the
+  menu, whichever shows: folding hides the column, unfolding the marks, the
+  drawer layout the fold. Opening the drawer focuses its current item, else
+  its first, never a mark, which the drawer hides.
 - **Inert.** A closed drawer is `inert`; the panel is `inert` while the drawer
   is open.
-- **Escape.** Closes the drawer unless a popover or modal is open, which
-  closes first. Focus returns to the drawer's control, as it does when the
-  backdrop closes the drawer.
+- **Escape.** An open popover or modal closes first. An open drawer closes
+  next, its tips with it, and focus returns to the drawer's control, as it
+  does when the backdrop closes the drawer.
+- **Tips.** Beside the page, Escape puts away a tip that is showing without
+  moving focus or the pointer: set `data-tip="hidden"` on its item until the
+  pointer or focus leaves the item. The key itself makes focus visible, so a
+  focused item's tip counts.
 - **Links.** Following a link in the drawer closes it, and the destination
   takes focus.
-- **Breakpoint.** Crossing it closes the drawer, moves focus out of a sidebar
-  that has just become inert, and sets `data-resizing` for the one reflow.
+- **Breakpoint.** Crossing it closes the drawer, moves focus out of whatever
+  the new layout hides, and sets `data-resizing` for the one reflow.
 - **Hairline.** Set `data-scrolled` on the bar while the page's scroller is
   scrolled at all, and measure again after navigation.
 - **Scroller.** Sticky offsets and off-screen checks measure the scroller the

@@ -47,6 +47,7 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 	if (!sidebar || !panel)
 		throw new Error("A shell needs a sidebar and a panel.");
 	const column = part("column");
+	const marks = part("marks");
 	const bar = part("bar");
 	const page = part("page");
 	const fold = part<HTMLButtonElement>("fold");
@@ -92,29 +93,46 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 		}
 	}
 
-	/* Folding takes the column away, and focus left in it with it: the fold's
-	   own control takes focus first. */
+	/* A change that hides what holds focus hands focus to the control that
+	   changes the sidebar, the fold or the menu, whichever shows: folding
+	   hides the column, unfolding the marks, the drawer layout the fold, and
+	   leaving it the menu and a closed drawer. */
+	function rescue(active: Element | null) {
+		if (!active || !shell.contains(active)) return;
+		const drawer = narrow.matches;
+		const hidden =
+			(active === fold && drawer) ||
+			(active === menu && !drawer) ||
+			(!drawer && folded && !!column?.contains(active)) ||
+			(!!marks?.contains(active) && (drawer || !folded)) ||
+			(drawer && !open && sidebar!.contains(active));
+		if (hidden) (drawer ? menu : fold)?.focus({ preventScroll: true });
+	}
+
+	/* Folding takes the column away, and unfolding the marks; focus left in
+	   either goes to the fold first. */
 	function setFold(next: boolean) {
 		if (narrow.matches || next === folded) return;
-		if (next && column?.contains(document.activeElement))
-			fold?.focus({ preventScroll: true });
 		folded = next;
+		rescue(document.activeElement);
 		options.onfold?.(folded);
 		render();
 	}
 
 	/* Opening hands the keyboard to the drawer, at the current page's item or
-	   else the first that takes focus, and makes the page inert. Closing by
-	   Escape or the backdrop gives focus back to the drawer's control; a link
-	   followed in the drawer gives it to the destination. */
+	   else the first that takes focus, never a mark, which the drawer hides,
+	   and makes the page inert. Closing by Escape or the backdrop gives focus
+	   back to the drawer's control; a link followed in the drawer gives it to
+	   the destination. */
 	function setDrawer(next: boolean, restore: "menu" | "page" = "menu") {
 		if (!narrow.matches || next === open) return;
 		open = next;
 		render();
 		if (open) {
+			const shown = ":not(.kin-shell__marks *)";
 			const start =
-				sidebar!.querySelector<HTMLElement>('[aria-current="page"]') ??
-				sidebar!.querySelector<HTMLElement>(focusable);
+				sidebar!.querySelector<HTMLElement>(`[aria-current="page"]${shown}`) ??
+				sidebar!.querySelector<HTMLElement>(`:is(${focusable})${shown}`);
 			start?.focus();
 		} else if (restore === "page") page?.focus({ preventScroll: true });
 		else menu?.focus();
@@ -143,13 +161,43 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 		);
 	}
 
+	/* Beside the page, Escape puts away a tip that is showing, without moving
+	   focus or the pointer, until the pointer or focus leaves its item. The
+	   key itself makes focus visible, so a focused item's tip counts. */
+	function dismissTip() {
+		const owner = [
+			...shell.querySelectorAll<HTMLElement>(
+				":is(.kin-shell__item, .kin-shell__home):is(:hover, :focus-visible)",
+			),
+		].find((item) => {
+			const tip = item.querySelector(":scope > .kin-shell__tip");
+			if (!tip) return false;
+			const style = getComputedStyle(tip);
+			return style.display !== "none" && Number(style.opacity) > 0;
+		});
+		if (!owner) return false;
+		owner.dataset.tip = "hidden";
+		const away = new AbortController();
+		const back = () => {
+			delete owner.dataset.tip;
+			away.abort();
+		};
+		owner.addEventListener("pointerleave", back, { signal: away.signal });
+		owner.addEventListener("focusout", back, { signal: away.signal });
+		return true;
+	}
+
 	function keydown(event: KeyboardEvent) {
 		if (event.defaultPrevented) return;
 		if (event.key === "Escape") {
 			// The top layer owns Escape first: an open popover or modal closes
-			// before the drawer does.
-			if (!open || document.querySelector(":popover-open, dialog:modal"))
+			// before anything here. An open drawer closes next, its tips with
+			// it; beside the page, a tip that is showing goes.
+			if (document.querySelector(":popover-open, dialog:modal")) return;
+			if (!open) {
+				dismissTip();
 				return;
+			}
 			event.preventDefault();
 			setDrawer(false);
 			return;
@@ -160,17 +208,15 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 		else setFold(!folded);
 	}
 
-	/* Crossing the breakpoint closes the drawer, moves focus out of a sidebar
-	   that has just become inert, and settles the new layout without moving:
-	   transitions are off for the one reflow. */
+	/* Crossing the breakpoint closes the drawer, moves focus out of whatever
+	   the new layout hides, and settles it without moving: transitions are
+	   off for the one reflow. */
 	function relayout() {
-		const inside = sidebar!.contains(document.activeElement);
-		const onMenu = document.activeElement === menu;
+		const active = document.activeElement;
 		shell.toggleAttribute("data-resizing", true);
 		open = false;
 		render();
-		if (narrow.matches && inside) menu?.focus();
-		else if (!narrow.matches && onMenu) fold?.focus();
+		rescue(active);
 		void shell.offsetWidth;
 		shell.toggleAttribute("data-resizing", false);
 		measure();

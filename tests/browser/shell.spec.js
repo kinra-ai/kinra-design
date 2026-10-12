@@ -166,6 +166,109 @@ test("rail items name themselves beside the rail, over the page", async ({
 	await expect(account).toHaveAttribute("aria-expanded", "false");
 });
 
+test("a tip can be hovered, and Escape puts it away without moving focus", async ({
+	page,
+}) => {
+	await open(page, "fold=folded");
+	const inbox = item(page, "inbox");
+	const tip = inbox.locator(".kin-shell__tip");
+	const shown = () =>
+		tip.evaluate((element) => {
+			const style = getComputedStyle(element);
+			return style.display !== "none" && style.opacity === "1";
+		});
+	// The pointer crosses the gap onto the tip and rests there.
+	await inbox.hover();
+	expect(await shown()).toBe(true);
+	const box = await tip.boundingBox();
+	await page.mouse.move(box.x + box.width / 2, centre(box), { steps: 8 });
+	expect(await shown()).toBe(true);
+	// Escape puts it away, and neither the pointer nor focus moves.
+	const before = await page.evaluate(() => document.activeElement?.className);
+	await page.keyboard.press("Escape");
+	expect(await shown()).toBe(false);
+	expect(await page.evaluate(() => document.activeElement?.className)).toBe(
+		before,
+	);
+	// It returns once the pointer has left its item.
+	await page.mouse.move(900, 500);
+	await expect(inbox).not.toHaveAttribute("data-tip");
+	await inbox.hover();
+	expect(await shown()).toBe(true);
+	await page.mouse.move(900, 500);
+
+	// Under the keyboard: Escape puts the name away and focus stays; the next
+	// item names itself.
+	await item(page, "overview").focus();
+	await page.keyboard.press("Tab");
+	await expect(inbox).toBeFocused();
+	expect(await shown()).toBe(true);
+	await page.keyboard.press("Escape");
+	expect(await shown()).toBe(false);
+	await expect(inbox).toBeFocused();
+	await page.keyboard.press("Tab");
+	await expect(inbox).not.toHaveAttribute("data-tip");
+	await expect(item(page, "library").locator(".kin-shell__tip")).toHaveCSS(
+		"opacity",
+		"1",
+	);
+});
+
+test("in the drawer, Escape closes it at once, its tips with it", async ({
+	page,
+}) => {
+	await open(page, "", { viewport: phone });
+	await chord(page);
+	await expect(shell(page)).toHaveAttribute("data-drawer", "open");
+	const overview = item(page, "overview");
+	await expect(overview).toBeFocused();
+	await expect(overview.locator(".kin-shell__tip")).toHaveCSS("opacity", "1");
+	await page.keyboard.press("Escape");
+	await expect(shell(page)).toHaveAttribute("data-drawer", "closed");
+	await expect(page.locator(".kin-shell__menu")).toBeFocused();
+	await expect(overview).not.toHaveAttribute("data-tip");
+});
+
+test("what the page raises stays beneath the rail's tips and the drawer", async ({
+	page,
+}) => {
+	await open(page, "fold=folded");
+	// A layer the page raises to the dialog layer, where the tips stand.
+	await page.evaluate(() => {
+		const layer = document.createElement("div");
+		layer.id = "raised";
+		layer.style.cssText =
+			"position: fixed; inset-block: 0; inset-inline-start: 4rem; inline-size: 20rem; z-index: var(--kin-layer-dialog); background: rgb(200 0 0 / 0.3)";
+		document.getElementById("main").append(layer);
+	});
+	await item(page, "inbox").hover();
+	const tipOnTop = await item(page, "inbox")
+		.locator(".kin-shell__tip")
+		.evaluate((tip) => {
+			const rect = tip.getBoundingClientRect();
+			return tip.contains(
+				document.elementFromPoint(rect.right - 6, rect.top + rect.height / 2),
+			);
+		});
+	expect(tipOnTop).toBe(true);
+	await page.mouse.move(900, 500);
+
+	// The open drawer stands above it too. An inert page is skipped by hit
+	// testing but still paints, so inertness is lifted only to ask.
+	await page.setViewportSize(phone);
+	await page.locator(".kin-shell__menu").click();
+	await expect(shell(page)).toHaveAttribute("data-drawer", "open");
+	const drawerOnTop = await sidebar(page).evaluate((drawer) => {
+		const panel = document.querySelector(".kin-shell__panel");
+		panel.inert = false;
+		const rect = drawer.getBoundingClientRect();
+		const hit = document.elementFromPoint(rect.right - 24, rect.top + 200);
+		panel.inert = true;
+		return drawer.contains(hit);
+	});
+	expect(drawerOnTop).toBe(true);
+});
+
 test("the rail's marks show only while it is folded", async ({ page }) => {
 	await open(page, "fold=folded");
 	await expect(page.locator(".kin-shell__marks")).toBeVisible();
@@ -188,6 +291,42 @@ test("the rail's marks show only while it is folded", async ({ page }) => {
 	await page.keyboard.press("Escape");
 	await page.setViewportSize(desktop);
 	await expect(shell(page)).toHaveAttribute("data-folded", "");
+});
+
+test("focus leaves whatever a change hides", async ({ page }) => {
+	await open(page, "fold=folded");
+	const fold = page.locator(".kin-shell__fold");
+	const menu = page.locator(".kin-shell__menu");
+	// Unfolding hides the marks: focus on one goes to the fold.
+	await page.locator(".kin-shell__marks .kin-shell__item").first().focus();
+	await chord(page);
+	await expect(shell(page)).not.toHaveAttribute("data-folded");
+	await expect(fold).toBeFocused();
+	await chord(page);
+	await expect(shell(page)).toHaveAttribute("data-folded", "");
+
+	// With a pinned collection open, the drawer layout hides the fold: focus on
+	// it goes to the menu.
+	await page.locator(".kin-shell__marks .kin-shell__item").nth(1).click();
+	await expect(page.locator("#page-title")).toHaveText("Quarterly review");
+	await fold.focus();
+	await page.setViewportSize(phone);
+	await expect(shell(page)).toHaveAttribute("data-drawer", "closed");
+	await expect(menu).toBeFocused();
+
+	// Opening the drawer passes over the collection's mark, which it hides,
+	// for the column's own row.
+	await menu.click();
+	const row = page.locator(
+		'.demo-collections [data-collection="quarterly-review"]',
+	);
+	await expect(row).toBeFocused();
+
+	// Widening onto the remembered fold hides the column: focus goes to the
+	// fold.
+	await page.setViewportSize(desktop);
+	await expect(shell(page)).toHaveAttribute("data-folded", "");
+	await expect(fold).toBeFocused();
 });
 
 for (const motion of [false, true]) {
@@ -339,6 +478,52 @@ test("a page that scrolls with the document keeps its bar and its hairline", asy
 	await expect(bar).not.toHaveAttribute("data-scrolled");
 });
 
+test("in document scroll, the bar's controls never move the reader", async ({
+	page,
+}) => {
+	await open(page, "scroll=document", {
+		viewport: { width: 390, height: 700 },
+	});
+	await page.evaluate(() => {
+		const main = document.getElementById("main");
+		for (let i = 0; i < 30; i += 1)
+			main.insertAdjacentHTML("beforeend", `<p id="row-${i}">Row ${i}</p>`);
+	});
+	const y = () => page.evaluate(() => Math.round(scrollY));
+	await page.evaluate(() => scrollTo(0, 900));
+	const start = await y();
+	expect(start).toBeGreaterThan(400);
+	// Escape gives focus back to the menu where it stands.
+	await page.locator(".kin-shell__menu").click();
+	await page.keyboard.press("Escape");
+	await expect(page.locator(".kin-shell__menu")).toBeFocused();
+	expect(await y()).toBe(start);
+	// Shift+Tab from the page into the bar.
+	await page.evaluate(() =>
+		document.getElementById("main").focus({ preventScroll: true }),
+	);
+	await page.keyboard.press("Shift+Tab");
+	expect(
+		await page.evaluate(() =>
+			document
+				.querySelector(".kin-shell__bar")
+				.contains(document.activeElement),
+		),
+	).toBe(true);
+	expect(await y()).toBe(start);
+	// An address in the page still stops below the bar.
+	const clear = await page.evaluate(() => {
+		location.hash = "#row-12";
+		const bar = document
+			.querySelector(".kin-shell__bar")
+			.getBoundingClientRect();
+		return (
+			document.getElementById("row-12").getBoundingClientRect().top - bar.bottom
+		);
+	});
+	expect(clear).toBeGreaterThanOrEqual(0);
+});
+
 for (const direction of ["ltr", "rtl"]) {
 	for (const scroll of ["panel", "document"]) {
 		test(`no sideways scroll at 320px, ${direction}, scrolling in the ${scroll}`, async ({
@@ -406,6 +591,47 @@ test("a labelled drawer names its pages beneath their glyphs", async ({
 	await page.keyboard.press("Escape");
 	await page.setViewportSize(desktop);
 	await expect(label).toBeHidden();
+});
+
+test("a short window scrolls the sidebar to its foot, never the shell", async ({
+	page,
+}) => {
+	await open(page, "fold=open", { viewport: { width: 1280, height: 280 } });
+	await page.locator("#account-button").focus();
+	const placed = await page.evaluate(() => {
+		const account = document.getElementById("account-button");
+		const rect = account.getBoundingClientRect();
+		return {
+			shell: document.querySelector(".kin-shell").scrollTop,
+			bar: document.querySelector(".kin-shell__bar").getBoundingClientRect()
+				.top,
+			top: rect.top,
+			bottom: rect.bottom,
+			height: innerHeight,
+		};
+	});
+	expect(placed.shell).toBe(0);
+	expect(placed.bar).toBeGreaterThanOrEqual(0);
+	expect(placed.top).toBeGreaterThanOrEqual(0);
+	expect(placed.bottom).toBeLessThanOrEqual(placed.height);
+	await expect(sidebar(page)).toHaveCSS("overflow-y", "auto");
+	// Folded under a pointer that hovers, the rail keeps its tips reaching
+	// over the page.
+	await chord(page);
+	await expect(shell(page)).toHaveAttribute("data-folded", "");
+	await expect(sidebar(page)).toHaveCSS("overflow-y", "visible");
+});
+
+test("the drawer is as tall as the shell", async ({ page }) => {
+	await open(page, "", { viewport: phone });
+	await shell(page).evaluate((element) =>
+		element.style.setProperty("--kin-shell-height", "500px"),
+	);
+	await page.locator(".kin-shell__menu").click();
+	await expect(shell(page)).toHaveAttribute("data-drawer", "open");
+	const box = await sidebar(page).boundingBox();
+	expect(box.y).toBe(0);
+	expect(box.height).toBe(500);
 });
 
 for (const scheme of ["dark", "light"]) {

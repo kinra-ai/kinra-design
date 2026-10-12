@@ -22,13 +22,17 @@ finger, and drawers keep to the line right to left.
   `__panel`, `__bar`, `__fold`, `__menu`, `__crumbs`, `__end` and `__page`.
   The product sets `data-folded`, `data-drawer="closed|open"`,
   `data-scroll="document"`, `data-labels="drawer"` and `data-resizing` on the
-  shell, `data-scrolled` on the bar, and `inert` on whichever side stands
-  behind; the drawer's breakpoint is the product's own. Relay's adoption
-  lessons are part of it: a closed drawer is hidden as well as inert, tips
-  stand above the column and the page and step aside while their control's
-  popover is open, the open fold draws no pressed fill, and forced colours
-  draw the panel, the open drawer, a scrolled bar and the current item. It
-  mirrors right to left and honours safe areas and reduced motion.
+  shell, `data-scrolled` on the bar, `data-tip="hidden"` on an item whose tip
+  Escape put away, and `inert` on whichever side stands behind; the drawer's
+  breakpoint is the product's own. Relay's adoption lessons are part of it: a
+  closed drawer is hidden as well as inert, tips step aside while their
+  control's popover is open, the open fold draws no pressed fill, and forced
+  colours draw the panel, the open drawer, a scrolled bar and the current
+  item. Tips can be hovered and put away, as WCAG 1.4.13 asks; the panel
+  isolates what the page raises, so tips and the drawer stay above it; a
+  window under 28rem tall scrolls the sidebar to its foot; the drawer is as
+  tall as the shell; and in document scroll the bar's controls never move the
+  reader. It mirrors right to left and honours safe areas and reduced motion.
 - Shell tokens: `--kin-shell-rail`, `--kin-shell-rail-labelled`,
   `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`,
   `--kin-shell-height`, `--kin-shell-drawer-column`, `--kin-shell-drawer-max`,
@@ -59,8 +63,8 @@ finger, and drawers keep to the line right to left.
   them to 0.01ms. A shortened transition held every property's old value for a
   frame, on every element, so focus sent into a panel just shown found it
   still hidden. A change now lands in the frame that makes it. `transitionend`
-  no longer fires under reduced motion; animations still end with their
-  events.
+  no longer fires under reduced motion; an animation a component keeps, such
+  as a toast's exit, still ends with its event.
 - On touch screens, a toolbar's fields and selects take the same 44px hit
   target as its buttons, so a filter row no longer mixes heights.
 - Right to left, a drawer stands at the line's end (or its start, with
