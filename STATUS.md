@@ -36,14 +36,25 @@ adoption map; this file only tracks current state, not process.
   framework-free reference of the behaviour, which is catalog source and not
   exported. Additive: no existing class, token, recipe default or registry
   status changes. Not tagged; each product adopts it in its own repository.
-- **Design verification (2026-10-12, shell working tree):** `npm run verify`
-  passed: contract checks (14 style files), Astro/TypeScript (0 errors,
-  warnings or hints), formatting, the 15-page reference build and 78 Chromium
-  and WebKit cases, 44 of them the shell's, with forced colours emulated in
-  both engines. Captures of each state were reviewed on both grounds, right to
-  left and in forced colours. `npm pack --dry-run` lists 58 public files and
-  `npm audit` reports zero vulnerabilities. This checks the shell in its own
-  demo, not in any product.
+- **Fixes for 0.7.0 (2026-10-12):** at Blake's request `main` carries the
+  `touch-toolbar-fields` branch (`6bb7bb4`: a toolbar's fields take the touch
+  target its buttons have), with the shell's commits replayed on it. Reduced
+  motion now removes transitions in `base.css` rather than shortening them, so
+  a change lands in the frame that makes it and focus sent into a panel just
+  shown arrives; `transitionend` no longer fires there. Drawers and a dialog's
+  close keep to the line right to left. `npm run dev` serves the catalog from
+  its own directory, since Astro 7's background start for agents mishandles a
+  relative `--root`. A WebKit check that lost a click to smooth scrolling under
+  load (one run in about 170) presses its button from the keyboard.
+- **Design verification (2026-10-12, `main` before the 0.7.0 bump):**
+  `npm run verify` passed: contract checks (14 style files),
+  Astro/TypeScript (0 errors, warnings or hints), formatting, the 15-page
+  reference build and 86 Chromium and WebKit cases, 46 of them the shell's,
+  with forced colours emulated in both engines; the suite also passed 688
+  WebKit and 172 Chromium runs at thirteen workers. Captures of each shell
+  state were reviewed on both grounds, right to left and in forced colours.
+  `npm pack --dry-run` lists 58 public files and `npm audit` reports zero
+  vulnerabilities. This checks the shell in its own demo, not in any product.
 - **Application update (0.6.0):** Blake approved sans by default and the minor
   release on 2026-10-11. Application UI, headings and display select sans, with
   a documented mono override; sizes, weights, other recipe defaults and registry
