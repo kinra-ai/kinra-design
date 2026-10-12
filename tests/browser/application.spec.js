@@ -1,44 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { serve } from "./support.js";
 
-const root = process.cwd();
-// All requests are fulfilled from local source/build bytes. No server, service,
-// account, or consumer checkout is involved, and unknown requests are refused.
-async function serve(page, html) {
-	await page.route("**/*", async (route) => {
-		const url = new URL(route.request().url());
-		if (url.origin !== "http://design.test") return route.abort();
-		if (url.pathname === "/fixture") {
-			return route.fulfill({ contentType: "text/html", body: html });
-		}
-		const source =
-			url.pathname.startsWith("/src/styles/") ||
-			url.pathname.startsWith("/assets/fonts/");
-		const base = source ? root : path.join(root, "examples/reference/dist");
-		const name = decodeURIComponent(url.pathname).replace(/^\//, "");
-		const file = path.resolve(
-			base,
-			name.endsWith("/") ? `${name}index.html` : name,
-		);
-		if (!file.startsWith(`${base}/`)) return route.abort();
-		const types = {
-			".css": "text/css",
-			".js": "text/javascript",
-			".html": "text/html",
-			".woff2": "font/woff2",
-			".svg": "image/svg+xml",
-		};
-		try {
-			await route.fulfill({
-				body: await readFile(file),
-				contentType: types[path.extname(file)] || "application/octet-stream",
-			});
-		} catch {
-			await route.abort();
-		}
-	});
-}
 const sample = `<p id="plain">Ordinary application text</p><h1 class="kin-title">Title</h1><h2 class="kin-headline">Section</h2><button class="kin-button">Continue</button><input class="kin-input" aria-label="Name"><figure class="kin-code"><pre><code>a !== b</code></pre></figure><p class="kin-body">Reading text</p><section data-kin-voice="serif"><h2 class="kin-headline">Editorial aside</h2><button class="kin-button">Still application UI</button></section>`;
 function fixture(where, overrides = "", recipe = "application") {
 	const attribute = `data-kin-surface="${recipe}"`;
