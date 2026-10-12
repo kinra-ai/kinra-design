@@ -8,6 +8,23 @@
 	background: var(--kin-shell-shelf);
 }
 
+/* Below the breakpoint the sidebar is a drawer, but data-drawer comes from
+   the script: after the first paint, and after any layout a resize reads
+   before the breakpoint's change. Until then a sidebar beside the page would
+   leave the page a sliver, so the script's own query puts it where a closed
+   drawer waits: fixed, so a long column never lengthens the document, and
+   past the inline start rather than hidden, so focus inside it stays for the
+   script to move. A frame that moves the breakpoint (at=) leaves this out. */
+@media (max-width: 48rem) {
+	:root:not([data-demo-breakpoint])
+		.kin-shell:not([data-drawer])
+		> .kin-shell__sidebar {
+		inset-inline-start: 0;
+		position: fixed;
+		translate: calc(-100% * var(--kin-flow)) 0;
+	}
+}
+
 /* The column's first row is the bar's height, so its heading stands level
    with the K and the bar. */
 .demo-column-head {

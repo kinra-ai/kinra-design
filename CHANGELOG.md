@@ -7,6 +7,20 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Fixed
+
+- The shell's contract covers the moment below the breakpoint before
+  `data-drawer` arrives. The attribute comes from the product's script, after
+  the first paint and after any layout a resize reads before the breakpoint's
+  change; until then the sidebar stood beside the page as a column and left
+  the page a sliver, and in Kinra Space WebKit kept the heights laid out
+  there. The catalog's Layout step and the adoption guide now ask each
+  product's stylesheet for the query its `matchMedia` reads, putting a sidebar
+  not yet a drawer where a closed drawer waits: fixed past the inline start,
+  not hidden, so focus inside it stays for the breakpoint's handler to move.
+  The reference demo does so, with a check in both engines; `shell.css` is
+  unchanged.
+
 ## [0.7.0] - 2026-10-12
 
 The application shell that Kinra Space, Kinra Home and Kinra Relay each

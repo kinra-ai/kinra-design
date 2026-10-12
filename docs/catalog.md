@@ -473,7 +473,12 @@ its state already lives. The catalog runs a framework-free reference of this
 list, `examples/reference/src/scripts/shell.ts`, to read rather than import.
 
 - **Layout.** Set `data-drawer` from your own breakpoint's `matchMedia`,
-  `closed` or `open`; leave it off beside the page.
+  `closed` or `open`; leave it off beside the page. The page lays out before
+  the attribute arrives, at its first paint and wherever a resize reads layout
+  before the query's change, so give your stylesheet the same query: below it,
+  `.kin-shell:not([data-drawer]) > .kin-shell__sidebar` waits where a closed
+  drawer does, fixed past the inline start. Otherwise the sidebar stands
+  beside the page as a column there and leaves the page a sliver.
 - **Fold.** The bar's fold control and the chord toggle `data-folded` beside
   the page. Name the control by what it will do (Collapse sidebar, Expand
   sidebar), set `aria-expanded` and `aria-controls`, and remember the fold

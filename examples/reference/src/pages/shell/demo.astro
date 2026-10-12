@@ -139,7 +139,8 @@ const entries = [
 		<title>Shell demo · Kinra design</title>
 		<script is:inline>
 			// The scheme and direction apply before the first paint: a frame's
-			// parameter, else the catalog's remembered scheme.
+			// parameter, else the catalog's remembered scheme. So does a moved
+			// breakpoint, since the stylesheet holds only the default's.
 			(() => {
 				const params = new URLSearchParams(location.search);
 				let scheme = params.get("scheme");
@@ -150,6 +151,9 @@ const entries = [
 				if (scheme === "light" || scheme === "dark" || scheme === "auto")
 					document.documentElement.dataset.kinScheme = scheme;
 				if (params.get("dir") === "rtl") document.documentElement.dir = "rtl";
+				const at = params.get("at");
+				if (at && /^\d+(\.\d+)?$/.test(at))
+					document.documentElement.dataset.demoBreakpoint = at;
 			})();
 		</script>
 	</head>

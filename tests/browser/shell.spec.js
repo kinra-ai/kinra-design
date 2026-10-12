@@ -467,6 +467,50 @@ test("crossing the breakpoint closes the drawer and moves focus out of it", asyn
 	await expect(sidebar(page)).toBeHidden();
 });
 
+test("below the breakpoint the page keeps its width before the drawer arrives", async ({
+	page,
+}) => {
+	// data-drawer comes from the script, after the first paint and after any
+	// layout a resize reads before the breakpoint's change. Every width the
+	// panel takes is noted: each frame's, and the one a resize reads.
+	await page.addInitScript(() => {
+		window.widths = [];
+		const note = () => {
+			const panel = document.querySelector(".kin-shell__panel");
+			if (panel) window.widths.push(panel.getBoundingClientRect().width);
+		};
+		new MutationObserver((_, observer) => {
+			const panel = document.querySelector(".kin-shell__panel");
+			if (!panel) return;
+			observer.disconnect();
+			new ResizeObserver(note).observe(panel);
+		}).observe(document, { childList: true, subtree: true });
+		addEventListener("resize", note);
+	});
+	const narrowest = async () => {
+		const widths = await page.evaluate(() => window.widths);
+		expect(widths.length).toBeGreaterThan(0);
+		return Math.min(...widths);
+	};
+
+	await open(page, "", { viewport: phone });
+	await expect(shell(page)).toHaveAttribute("data-drawer", "closed");
+	expect(await narrowest()).toBeGreaterThan(phone.width / 2);
+
+	await page.setViewportSize(desktop);
+	await expect(shell(page)).not.toHaveAttribute("data-drawer");
+	await page.evaluate(() => (window.widths = []));
+	await page.setViewportSize(phone);
+	await expect(shell(page)).toHaveAttribute("data-drawer", "closed");
+	expect(await narrowest()).toBeGreaterThan(phone.width / 2);
+
+	// A frame that moves the breakpoint keeps its sidebar beside the page.
+	await open(page, "fold=folded&at=20", { viewport: phone });
+	await expect(shell(page)).not.toHaveAttribute("data-drawer");
+	await expect(sidebar(page)).toBeVisible();
+	expect((await sidebar(page).boundingBox()).width).toBeCloseTo(3.5 * rem, 0);
+});
+
 test("the bar draws its hairline only while the page is scrolled beneath it", async ({
 	page,
 }) => {

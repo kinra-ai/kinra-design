@@ -330,14 +330,39 @@ shows every state.
    product's own classes beside them while its local rules still apply.
 4. Derive the state attributes from the product's own state: `data-folded`,
    `data-drawer` from its own breakpoint, `data-scroll`, `data-labels`,
-   `data-resizing`, `data-scrolled` on the bar, and `inert`.
+   `data-resizing`, `data-scrolled` on the bar, and `inert`. The page lays out
+   before `data-drawer` arrives, at its first paint and wherever a resize reads
+   layout before the breakpoint's change, so the stylesheet takes the query the
+   product's `matchMedia` reads, exactly, or at the breakpoint itself the
+   sidebar would leave with no drawer to bring it back:
+
+   ```css
+   @media (max-width: 48rem) {
+     .kin-shell:not([data-drawer]) > .kin-shell__sidebar {
+       inset-inline-start: 0;
+       position: fixed;
+       translate: calc(-100% * var(--kin-flow)) 0;
+     }
+   }
+   ```
+
+   Without it the sidebar stands beside the page as a column and leaves the
+   page a sliver; in Space, WebKit kept the heights laid out there after the
+   drawer took over. The rule puts the sidebar where a closed drawer waits.
+   Fixed, a long column never lengthens the document, as an absolute sidebar
+   in an unpositioned shell does. Moved rather than hidden, it keeps focus for
+   the breakpoint's handler to move: Chromium takes focus from what
+   `visibility: hidden` hides before that handler runs, and leaves it on the
+   page's body.
+
 5. Check the behaviour against the
    [catalog's list](catalog.md#behaviour-each-product-writes).
 6. Bind the measures and tones that differ, then remove local shell rules only
    after comparing both schemes, desktop open and folded, the drawer on a phone,
-   right to left, forced colours, reduced motion and touch. A product's
-   unlayered rules beat the shell's layered ones whatever their specificity, so
-   each local rule left in place still decides what it sets.
+   a window narrowed across the breakpoint, right to left, forced colours,
+   reduced motion and touch. A product's unlayered rules beat the shell's
+   layered ones whatever their specificity, so each local rule left in place
+   still decides what it sets.
 
 All three copies differ from the shared shell in the same few places:
 

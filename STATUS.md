@@ -28,6 +28,20 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Unreleased, after 0.7.0 (2026-10-12):** Space's adoption found that below
+  its breakpoint the page lays out before `data-drawer` arrives: at its first
+  paint, and in any layout a resize reads before the breakpoint's change. The
+  sidebar then stood beside the page as a column and left it a sliver, and
+  WebKit kept the heights laid out there. Design's own demo painted its first
+  frame at a phone's width that way, the page 54px wide, in both engines. The
+  catalog's Layout step and the guide's step 4 now ask each product's
+  stylesheet for its breakpoint's query, putting a sidebar not yet a drawer
+  where a closed drawer waits. It is fixed, since an absolute sidebar in an
+  unpositioned shell made the document as tall as its column, and moved
+  rather than hidden, since Chromium took focus from a hidden rail to the body
+  before the breakpoint's handler could hand it to the menu. The demo does so,
+  with a check in both engines. `shell.css` is unchanged, so consumers apply
+  it without a release.
 - **Application shell (0.7.0):** on 2026-10-12 Blake
   asked for the collapsible sidebar shell that Kinra Space, Kinra Home and
   Kinra Relay each implement to become one shared, stable contract, and
@@ -191,8 +205,9 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Space adopts the shell from `v0.7.0` in its own repository, following
-[`docs/adoption.md`](docs/adoption.md#moving-to-07-the-application-shell) and
-its own gates. Home and Relay adopted it on 2026-10-12, and neither needed a
-change in Design. Candidate registry promotion still requires a second
-consumer and compatibility review; package renaming stays outside this update.
+Space's adoption of `v0.7.0` reaches its `dev`, and the map records it from
+there. Home and Relay, which adopted the shell on 2026-10-12 without a change
+in Design, each give their stylesheet their breakpoint's query (the catalog's
+Layout step) in their own repositories. Candidate registry promotion still
+requires a second consumer and compatibility review; package renaming stays
+outside this update.
