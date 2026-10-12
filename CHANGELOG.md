@@ -10,9 +10,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 Intended for 0.7.0: the application shell that Kinra Space, Kinra Home and
 Kinra Relay each built, shared as a stable stylesheet. The shell is additive:
 no existing class, token, recipe default or registry status changes for it.
-Two fixes reach every consumer: reduced motion removes transitions rather
-than shortening them, and a toolbar's fields stand level with its buttons
-under a finger.
+Three fixes reach every consumer: reduced motion removes transitions rather
+than shortening them, a toolbar's fields stand level with its buttons under a
+finger, and drawers keep to the line right to left.
 
 ### Added
 
@@ -63,6 +63,10 @@ under a finger.
   events.
 - On touch screens, a toolbar's fields and selects take the same 44px hit
   target as its buttons, so a filter row no longer mixes heights.
+- Right to left, a drawer stands at the line's end (or its start, with
+  `data-side="start"`) and arrives from that edge, matching the corners and
+  edge it already drew; a dialog's close reaches into the header's end corner.
+  Both were placed by physical left and right.
 
 ## [0.6.0] - 2026-10-11
 

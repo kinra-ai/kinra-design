@@ -178,6 +178,58 @@ test("reduced motion and forced colours preserve example state and focus", async
 	}
 });
 
+for (const dir of ["ltr", "rtl"]) {
+	test(`drawers and a dialog's close keep to the line ${dir === "rtl" ? "right to left" : "left to right"}`, async ({
+		page,
+	}) => {
+		await serve(
+			page,
+			`<!doctype html><html lang="en" dir="${dir}"><head><link rel="stylesheet" href="/src/styles/index.css"></head><body><dialog class="kin-drawer" id="end" aria-label="End"><p>End</p></dialog><dialog class="kin-drawer" data-side="start" id="start" aria-label="Start"><p>Start</p></dialog><dialog class="kin-dialog" id="dialog" aria-label="Dialog"><header class="kin-dialog__header"><h2 class="kin-dialog__title">Title</h2><button class="kin-button kin-dialog__close" type="button" aria-label="Close">×</button></header></dialog></body></html>`,
+		);
+		await page.setViewportSize({ width: 1024, height: 768 });
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await page.goto("http://design.test/fixture");
+		const placed = await page.evaluate(() => {
+			const placed = {};
+			for (const id of ["end", "start"]) {
+				const drawer = document.getElementById(id);
+				drawer.showModal();
+				// Where it arrives from: its first frame, held.
+				const [arrival] = drawer.getAnimations();
+				arrival.pause();
+				arrival.currentTime = 0;
+				const from = parseFloat(getComputedStyle(drawer).translate);
+				arrival.finish();
+				const box = drawer.getBoundingClientRect();
+				const style = getComputedStyle(drawer);
+				placed[id] = {
+					edge:
+						box.left === 0 ? "left" : box.right === innerWidth ? "right" : "",
+					rounded: parseFloat(style.borderTopLeftRadius) > 0 ? "left" : "right",
+					from: Math.sign(from) < 0 ? "left" : "right",
+				};
+				drawer.close();
+			}
+			const dialog = document.getElementById("dialog");
+			dialog.showModal();
+			const close = getComputedStyle(
+				dialog.querySelector(".kin-dialog__close"),
+			);
+			placed.close = parseFloat(close.marginLeft) < 0 ? "left" : "right";
+			return placed;
+		});
+		// The drawer stands at the line's end and a start drawer at its start;
+		// each arrives from its own edge and rounds the corners facing the page.
+		// The close reaches into the header's end corner.
+		const [start, end] = dir === "ltr" ? ["left", "right"] : ["right", "left"];
+		expect(placed).toEqual({
+			end: { edge: end, rounded: start, from: end },
+			start: { edge: start, rounded: end, from: start },
+			close: end,
+		});
+	});
+}
+
 test("reduced motion lands a change in the frame that makes it", async ({
 	page,
 }) => {

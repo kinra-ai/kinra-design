@@ -107,7 +107,8 @@
 
 	.kin-dialog__close {
 		flex: none;
-		margin: calc(var(--kin-space-2) * -1) calc(var(--kin-space-3) * -1) 0 0;
+		margin-block: calc(var(--kin-space-2) * -1) 0;
+		margin-inline: 0 calc(var(--kin-space-3) * -1);
 	}
 
 	/* Drawer: a dialog anchored to one edge. */
@@ -124,7 +125,8 @@
 		display: none;
 		flex-direction: column;
 		height: 100dvh;
-		inset: 0 0 0 auto;
+		inset-block: 0;
+		inset-inline: auto 0;
 		margin: 0;
 		max-height: none;
 		max-width: min(var(--kin-drawer-width, 28rem), 100vw);
@@ -144,7 +146,8 @@
 		box-shadow:
 			calc(1px * var(--kin-flow, 1)) 0 0 0 var(--kin-float-ring),
 			var(--kin-shadow-float);
-		inset: 0 auto 0 0;
+		inset-block: 0;
+		inset-inline: 0 auto;
 		border-radius: 0;
 		border-start-end-radius: var(--kin-radius-sheet);
 		border-end-end-radius: var(--kin-radius-sheet);
@@ -374,7 +377,7 @@
 
 @keyframes kin-drawer-arrive-end {
 	from {
-		translate: 1.5rem 0;
+		translate: calc(1.5rem * var(--kin-flow, 1)) 0;
 		opacity: 0;
 	}
 
@@ -386,7 +389,7 @@
 
 @keyframes kin-drawer-arrive-start {
 	from {
-		translate: -1.5rem 0;
+		translate: calc(-1.5rem * var(--kin-flow, 1)) 0;
 		opacity: 0;
 	}
 

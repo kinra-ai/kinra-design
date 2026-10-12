@@ -298,7 +298,8 @@ table scope, descriptions, roles, or native control behavior.
   Header icons are compact, footer actions use the default control height,
   and body/footer focus rings sit inside their edges. Consumers own focus
   placement, dismissal and any replacement for the default arrival motion.
-- `.kin-drawer` on a native `dialog` anchored to an edge; `data-side="start|bottom"`,
+- `.kin-drawer` on a native `dialog` anchored to an edge: the line's end by
+  default, or `data-side="start|bottom"`, mirrored right to left;
   `--kin-drawer-width`. It reuses the dialog parts.
 - `.kin-popover` on any `[popover]` element; `__title`, `__body`,
   `data-padding="none"`, `--kin-popover-width`.

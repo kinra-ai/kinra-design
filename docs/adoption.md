@@ -313,6 +313,9 @@ shows every state.
 - **A toolbar's fields stand level under a finger.** Under a coarse pointer a
   toolbar's inputs and selects take the 44px target its buttons have; a local
   rule that raised them can go.
+- **Overlays keep to the line right to left.** A `.kin-drawer` stands at the
+  line's end, or its start, and arrives from that edge; a dialog's close
+  reaches into the header's end corner. Left to right nothing moves.
 
 ### Adopt the shell
 
