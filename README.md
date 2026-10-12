@@ -108,7 +108,10 @@ npm run verify
 npm pack --dry-run
 ```
 
-The reference catalog lives in `examples/reference`. The distributable package
+The reference catalog lives in `examples/reference`, and `npm run dev` serves
+it from there. Run by an agent, Astro starts that server in the background;
+`npm run dev -- status`, `npm run dev -- logs` and `npm run dev -- stop` find
+it. The distributable package
 is limited by `files` in `package.json`; it includes public styles, assets,
 guides, and registry source, but not the example, scripts, toolchain, or
 generated output. `build:reference` is deliberately not called `build` so Git

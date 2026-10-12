@@ -27,7 +27,7 @@
     "**/*.css"
   ],
   "scripts": {
-    "dev": "astro dev --root examples/reference",
+    "dev": "cd examples/reference && astro dev",
     "build:reference": "astro build --root examples/reference",
     "check:contract": "node scripts/check-contract.mjs",
     "check": "npm run check:contract && astro check --root examples/reference && npm run format:check",

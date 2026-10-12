@@ -67,6 +67,9 @@ finger, and drawers keep to the line right to left.
   `data-side="start"`) and arrives from that edge, matching the corners and
   edge it already drew; a dialog's close reaches into the header's end corner.
   Both were placed by physical left and right.
+- `npm run dev` starts the catalog from its own directory. Astro 7 starts the
+  dev server in the background when an agent runs it and passed the relative
+  `--root` on from inside that root, so every page answered 404.
 
 ## [0.6.0] - 2026-10-11
 
