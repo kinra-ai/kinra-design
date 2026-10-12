@@ -5,7 +5,9 @@ follow the corner key refresh described in [`refresh-plan.md`](refresh-plan.md),
 so that every Kinra surface reads as one integrated system. Version 0.3 carries
 Space's soft layers and controls. Corner actions and
 the live edge remain candidate registry source; the plan records their
-consumer evidence and promotion boundary.
+consumer evidence and promotion boundary. Amended 2026-10-12 (Blake): the
+application shell is shared as a stable frame after three products built it,
+with its behaviour documented rather than shipped.
 
 ## One identity, different surfaces
 
@@ -153,10 +155,18 @@ consumer copies and owns that code. Promotion to a stable package contract
 still requires two consumers and compatibility review. The shared package
 should remove duplication, not centralize speculation.
 
+The application shell met that bar on 2026-10-12. Kinra Space, Kinra Home and
+Kinra Relay had each built the same rail, column, inset panel and drawer, so
+its frame and states became stable classes. Its behaviour stays with each
+product, written where that product's state lives: Design documents the
+behaviour and keeps a reference of it, not a runtime.
+
 ## Ownership rises with specificity
 
 Foundations and accessibility contracts are shared because drift there is
 costly. Layout compositions describe relationships without content. Generic
-controls carry only stable behavior and state. Page patterns are distributed
+controls carry only stable behavior and state. The application shell is shared
+as a frame, its geometry, layers and states, while what fills it and how it
+moves between states stay with each product. Page patterns are distributed
 as source, then adapted and owned by the consumer. Routes, copy, workflows,
 and product-specific views never move here merely to create visual uniformity.

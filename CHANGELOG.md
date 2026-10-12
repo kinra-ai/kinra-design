@@ -7,6 +7,49 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+Intended for 0.7.0: the application shell that Kinra Space, Kinra Home and
+Kinra Relay each built, shared as a stable stylesheet. The shell is additive:
+no existing class, token, recipe default or registry status changes for it.
+
+### Added
+
+- `@kinra/web/styles/shell.css`, also in the complete stylesheet: `.kin-shell`
+  with `__backdrop`, `__sidebar`, `__head`, `__home`, `__pages`, `__marks`,
+  `__foot`, `__item`, `__glyph`, `__badge`, `__label`, `__tip`, `__column`,
+  `__panel`, `__bar`, `__fold`, `__menu`, `__crumbs`, `__end` and `__page`.
+  The product sets `data-folded`, `data-drawer="closed|open"`,
+  `data-scroll="document"`, `data-labels="drawer"` and `data-resizing` on the
+  shell, `data-scrolled` on the bar, and `inert` on whichever side stands
+  behind; the drawer's breakpoint is the product's own. Relay's adoption
+  lessons are part of it: a closed drawer is hidden as well as inert, tips
+  stand above the column and the page and step aside while their control's
+  popover is open, the open fold draws no pressed fill, and forced colours
+  draw the panel, the open drawer, a scrolled bar and the current item. It
+  mirrors right to left and honours safe areas and reduced motion.
+- Shell tokens: `--kin-shell-rail`, `--kin-shell-rail-labelled`,
+  `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`,
+  `--kin-shell-height`, `--kin-shell-drawer-column`, `--kin-shell-drawer-max`,
+  `--kin-shell-shelf`, `--kin-shell-panel`, `--kin-shell-flush` and the
+  flow-relative `--kin-shell-safe-top|bottom|start|end`. The optional
+  `--kin-shell-current` sets the open item's tone.
+- The `kinra.shell` cascade layer, after `kinra.components` in the order
+  `base.css` declares.
+- The shell's behaviour contract in `docs/catalog.md`, and `/shell/` in the
+  reference catalog: every state on both grounds and right to left, framed
+  from a full-screen demo that runs a framework-free reference of the
+  behaviour. The reference is catalog source, not an export.
+- Chromium and WebKit checks for the fold and its chord, tips, the drawer's
+  focus, inertness, Escape and backdrop, the scrolled hairline, 320px in both
+  directions and scroll models, both grounds, reduced motion, forced colours
+  and touch targets.
+
+### Changed
+
+- `docs/adoption.md` maps each consumer's shell classes to the shared ones,
+  records Space and Home on 0.6.0 and adds Relay to the adoption map.
+  `docs/composing.md` and `docs/principles.md` say when the shell is used and
+  why it is shared.
+
 ### Fixed
 
 - On touch screens, a toolbar's fields and selects take the same 44px hit

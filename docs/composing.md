@@ -50,11 +50,29 @@ scale. Alternatives that stay in the identity:
 Use the eyebrow when a kicker adds information, not as a ritual above every
 heading.
 
-## Compose an application without copying its shell
+## Compose an application
 
-The `/applications/` reference page puts the same page and section heads into
-both a top-navigation collection and a navigation region beside a work surface.
-Start from existing type roles, stacks, clusters and controls:
+An application whose pages stand beside its work uses the shared
+[application shell](catalog.md#application-shell-shellcss): a rail of its pages
+beside a column of its work, and the page on one raised panel. Use it rather
+than building a sidebar; `/shell/` shows its states. A product with a few pages
+and no standing work can keep top navigation, as the `/applications/`
+collection does.
+
+- Put in the rail only what means the same thing on every page: the K, the
+  primary pages, and at its foot the scheme and the account. Tools that act on
+  what is in view belong in the bar.
+- The column holds the product's standing work: what is alive, open or kept
+  close. It is not a second copy of the rail.
+- The folded rail keeps a few marks for what the column held, with their
+  lights. It never scrolls, so show as many as fit.
+- Write the [behaviour](catalog.md#behaviour-each-product-writes) where the
+  product's state lives, and keep its fold wherever it keeps preferences.
+
+Inside the panel, start from existing type roles, stacks, clusters and
+controls. The `/applications/` reference page puts the same page and section
+heads into both a top-navigation collection and a navigation region beside a
+work surface:
 
 - A page head names the work, optionally adds a quiet summary, places its action
   group at the end and puts one description on the next line.
@@ -64,14 +82,18 @@ Start from existing type roles, stacks, clusters and controls:
 - A collection keeps search, filters, results and an inspector together. Loading,
   empty and failed reads are different states; the example lets you inspect
   each without a service.
-- Bind nested surfaces to their actual page tone. Keep the content inset even
-  when a product's media intentionally reaches the edge.
+- Bind nested surfaces to their actual page tone. The shell's panel binds
+  `--kin-surface-nested` to its own; a work surface of the product's does the
+  same. Keep the content inset even when a product's media intentionally
+  reaches the edge.
 
-These relationships are reference-only, not exported application-head classes.
-Navigation topology, page measures, resizing, scroll ownership, saved state,
-action placement policy, safe areas and native-host behavior stay local. A
-second product that looks similar is not evidence for promoting a registry
-candidate unless it proves the same responsibility.
+The page and section heads are reference-only, not exported application-head
+classes. What fills the shell stays local: routes, the column's contents, page
+measures, scroll restoration, saved state, action placement policy, gestures,
+safe-area readings beyond the shell's own and native-host behavior. A second
+product that looks similar is not evidence for promoting a registry candidate
+unless it proves the same responsibility; the shell was shared once three
+products had built the same one.
 
 ## Write titles as descriptions
 
@@ -102,6 +124,7 @@ person wrote them. Put the idea in the first sentence of the body instead.
 | An on or off setting                               | `.kin-switch`    | a checkbox in a form  |
 | Peer views of one thing                            | `.kin-tabs`      | a nav rail            |
 | Sections of a document or app                      | `.kin-nav`       | tabs                  |
+| An application's pages beside its standing work    | `.kin-shell`     | a hand-built sidebar  |
 
 ## Put the one action in the corner
 

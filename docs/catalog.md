@@ -27,12 +27,13 @@ npm run dev
 | `@kinra/web/styles/data.css`         | figures, key-value lists, logs, code, avatars, cards      |
 | `@kinra/web/styles/recipes.css`      | opt-in surface, scheme, and voice role adjustments        |
 | `@kinra/web/styles/prose.css`        | scoped long-form typography                               |
+| `@kinra/web/styles/shell.css`        | the application shell: rail, column, panel, bar, drawer   |
 | `@kinra/web/registry`                | source registry manifest                                  |
 
 Every entry point imports `tokens.css` and can be used alone. `base.css`
 declares the cascade layer order `kinra.reset, kinra.base, kinra.type,
-kinra.compositions, kinra.components, kinra.prose`; a consumer that skips
-`base.css` receives layers in import order instead.
+kinra.compositions, kinra.components, kinra.shell, kinra.prose`; a consumer
+that skips `base.css` receives layers in import order instead.
 
 ## Foundations
 
@@ -331,11 +332,162 @@ and a review checklist with a confirmation dialog. Its option cards and
 compositions are reference-only experiments, not exported components or
 registry candidates. They have no consumer evidence yet.
 
+## Application shell (`shell.css`)
+
+Kinra Space, Kinra Home and Kinra Relay each built the same frame, so it is
+shared. The window is the shelf, a sidebar stands on it, and the page is one
+raised panel inset from the shelf, with a bar above the page that scrolls
+beneath it. The sidebar is a rail of the product's pages beside a column of
+its work. Folded, the rail stays as it is and the column goes. Below a
+breakpoint the product chooses, the sidebar is a drawer from the inline start
+over a flush page. The stylesheet draws every state; the product sets the
+state, writes the behaviour below and fills the shell. `/shell/` shows each
+state on both grounds and right to left, running the reference behaviour.
+
+<!-- prettier-ignore -->
+```html
+<div class="kin-shell" data-folded>
+  <div class="kin-shell__backdrop" aria-hidden="true"></div>
+  <aside class="kin-shell__sidebar" id="navigation" aria-label="Navigation">
+    <div class="kin-shell__head"><a class="kin-shell__home" href="/">…</a></div>
+    <nav class="kin-shell__pages" aria-label="Pages"><ul>…</ul></nav>
+    <nav class="kin-shell__marks" aria-label="Pinned"><ul>…</ul></nav>
+    <div class="kin-shell__column">…</div>
+    <div class="kin-shell__foot">…</div>
+  </aside>
+  <div class="kin-shell__panel">
+    <header class="kin-shell__bar">
+      <button class="kin-button kin-button--ghost kin-button--icon kin-shell__fold">…</button>
+      <button class="kin-button kin-button--ghost kin-button--icon kin-shell__menu">…</button>
+      <nav class="kin-breadcrumb kin-shell__crumbs" aria-label="Where you are">…</nav>
+      <div class="kin-shell__end">…</div>
+    </header>
+    <main class="kin-shell__page" id="main" tabindex="-1">…</main>
+  </div>
+</div>
+```
+
+- `.kin-shell` is the window, on the shelf, `--kin-shell-height` tall.
+- `.kin-shell__sidebar` holds the rail's rows down its own track and the column
+  beside them. Nothing in it clips, so tips reach over the column and the page.
+- `.kin-shell__head` is the bar's own height and level with it. It holds
+  `.kin-shell__home`, the K: the way home, without a fill under the pointer.
+- `.kin-shell__pages` holds the primary pages. `.kin-shell__marks` holds the
+  places the folded rail keeps; it shows only while folded and never scrolls,
+  so the product shows as many as fit. `.kin-shell__foot` ends the rail, with
+  controls such as the scheme and the account.
+- `.kin-shell__item` is a rail control, a square in the track.
+  `aria-current="page"` or `"true"` gives it the panel's tone, as it does a
+  current `.kin-nav` row in the column.
+- `.kin-shell__glyph` holds an item's icon, avatar or mark. A
+  `.kin-shell__badge` count, muted unless `data-tone` names
+  `primary|reason|success|warning|error`, or a `.kin-status` mark sits on its
+  top end corner. A count repeats what the item's name says: hide it with
+  `aria-hidden="true"` and say it in the name.
+- `.kin-shell__label` is an item's visible name, shown beneath its glyph only
+  in a labelled drawer.
+- `.kin-shell__tip`, with `.kin-tooltip`, names an item beside it under a
+  pointer that hovers and under the keyboard, above the column and the page.
+  It steps aside while its control is `aria-expanded="true"`.
+- `.kin-shell__column` is the product's work; its own lists scroll.
+- `.kin-shell__panel` is the raised page and binds `--kin-surface-nested` to
+  its tone. `.kin-shell__bar` is the bar over the page. `.kin-shell__fold`
+  folds the sidebar beside the page and draws no pressed fill while open;
+  `.kin-shell__menu` opens the drawer. `.kin-shell__crumbs`, on a
+  `.kin-breadcrumb`, keeps one line, and a bar under 36rem keeps only the
+  current page. `.kin-shell__end` ends the bar. `.kin-shell__page` scrolls
+  inside the panel.
+- `.kin-shell__backdrop` dims the page behind an open drawer.
+
+The product sets the state:
+
+| Attribute                       | Effect                                                             |
+| ------------------------------- | ------------------------------------------------------------------ |
+| `data-folded`                   | the rail alone beside the page; the drawer ignores it              |
+| `data-drawer="closed\|open"`    | the drawer layout, from the product's own breakpoint               |
+| `data-scroll="document"`        | as a drawer, the page scrolls with the document under a sticky bar |
+| `data-labels="drawer"`          | as a drawer, items carrying a label show it, on a wider rail       |
+| `data-resizing`                 | no transitions while the shell settles after a change of shape     |
+| `data-scrolled` on the bar      | the hairline: the page is scrolled beneath the bar                 |
+| `inert` on the sidebar or panel | the closed drawer, or the page behind an open one                  |
+
+Its measures and tones are custom properties, set on `:root` or the shell:
+
+| Property                                   | Default                                             |
+| ------------------------------------------ | --------------------------------------------------- |
+| `--kin-shell-rail`                         | `3.5rem`                                            |
+| `--kin-shell-rail-labelled`                | `4.5rem`, a labelled drawer's rail                  |
+| `--kin-shell-column`                       | `17rem`; a product that resizes the column sets it  |
+| `--kin-shell-bar`                          | `3.5rem`                                            |
+| `--kin-shell-inset`                        | `--kin-space-2`, the panel's inset from the shelf   |
+| `--kin-shell-height`                       | `100dvh`                                            |
+| `--kin-shell-drawer-column`                | `17rem`                                             |
+| `--kin-shell-drawer-max`                   | `85vw`                                              |
+| `--kin-shell-shelf`                        | `--kin-color-ground-deep`                           |
+| `--kin-shell-panel`                        | `--kin-color-surface`, the inset panel              |
+| `--kin-shell-flush`                        | `--kin-color-ground`, the page in the drawer layout |
+| `--kin-shell-current`                      | unset: the open item takes `--kin-shell-panel`      |
+| `--kin-shell-safe-top\|bottom\|start\|end` | the safe-area insets, named by the flow             |
+
+A column's first row `--kin-shell-bar` tall stands level with the K and the
+bar. The bar is a container named `kin-shell-bar` and the page one named
+`kin-shell-page`, so what each holds can answer its own width. The rules live
+in the `kinra.shell` layer, after `kinra.components`, so the shell restyles
+navigation, buttons and breadcrumbs inside itself while product CSS still
+wins. `.kin-sidebar` remains the unrelated two-column composition.
+
+With motion, the width and the drawer move at layer speed, the column fades
+as the rail closes over it, a tip waits a moment before naming its item, and
+a closed drawer hides once it has left. Under reduced motion every state is
+the same and nothing travels; a closed drawer is not displayed. In forced
+colours the inset panel, the open drawer, a scrolled bar and the current item
+draw their edges, and the fold at rest draws none.
+
+### Behaviour each product writes
+
+The product moves the shell between its states, in its own framework, where
+its state already lives. The catalog runs a framework-free reference of this
+list, `examples/reference/src/scripts/shell.ts`, to read rather than import.
+
+- **Layout.** Set `data-drawer` from your own breakpoint's `matchMedia`,
+  `closed` or `open`; leave it off beside the page.
+- **Fold.** The bar's fold control and the chord toggle `data-folded` beside
+  the page. Name the control by what it will do (Collapse sidebar, Expand
+  sidebar), set `aria-expanded` and `aria-controls`, and remember the fold
+  wherever the product keeps preferences. The drawer ignores the fold and
+  keeps it.
+- **Chord.** ⌘B on a Mac and Ctrl+B elsewhere, never both, never with Alt or
+  Shift, never a held key's repeats. It yields to an open modal and to rich
+  text. As a drawer, it opens and closes the drawer.
+- **Focus.** Folding while focus is in the column moves focus to the fold
+  first. Opening the drawer focuses its current item, else its first.
+- **Inert.** A closed drawer is `inert`; the panel is `inert` while the drawer
+  is open.
+- **Escape.** Closes the drawer unless a popover or modal is open, which
+  closes first. Focus returns to the drawer's control, as it does when the
+  backdrop closes the drawer.
+- **Links.** Following a link in the drawer closes it, and the destination
+  takes focus.
+- **Breakpoint.** Crossing it closes the drawer, moves focus out of a sidebar
+  that has just become inert, and sets `data-resizing` for the one reflow.
+- **Hairline.** Set `data-scrolled` on the bar while the page's scroller is
+  scrolled at all, and measure again after navigation.
+- **Scroller.** Sticky offsets and off-screen checks measure the scroller the
+  page actually moves in: the page in its panel, or the document.
+- **Popovers.** A rail control's popover opens beside it, toward the page, in
+  either direction. Author its `display` only under `:popover-open`.
+
+Routes, the column's contents, which marks the rail keeps, the foot's
+controls, the crumbs' words, the bar's end, gestures, native-host handling and
+page padding stay with the product. [Adoption](adoption.md#moving-to-07-the-application-shell)
+maps each consumer's classes to these.
+
 ## Surface recipes
 
 Apply `data-kin-surface` to a document or bounded subtree. A recipe tunes
 role values; the application recipe also applies its UI font to ordinary text
-at its boundary. It does not create a page shell.
+at its boundary. It does not create a page shell; that is the
+[application shell](#application-shell-shellcss).
 
 | Value           | Bias                                                      |
 | --------------- | --------------------------------------------------------- |
@@ -350,7 +502,8 @@ for a bounded region. `data-kin-scheme` changes only the ground. All three
 axes compose. Application typography changes in 0.6.0; see the
 [migration and mono override](adoption.md#moving-to-06-application-typography).
 The `/applications/` examples demonstrate page/section heads, top navigation
-and pane-based work without adding public shell classes.
+and pane-based work with reference-only layout. A product whose pages and work
+stand in a sidebar uses the [application shell](#application-shell-shellcss).
 
 A consumer may override any recipe role it can own safely. Product-specific
 navigation, editors, grids, and immersive canvases remain local.

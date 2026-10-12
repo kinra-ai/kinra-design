@@ -87,10 +87,12 @@ full outline.
 ## The shell
 
 Historical Space geometry from the September 2026 refresh, not a shared shell
-contract or a description of current Space. Space now owns a rail beside a
-separately resizable column; its interface guide owns today's layout. Design's
-`/applications/` examples show alternative compositions without copying either
-version of Space's shell.
+contract or a description of current Space. The shared contract is now
+`shell.css`, brought from Kinra Space, Kinra Home and Kinra Relay on
+2026-10-12: the [catalog](catalog.md#application-shell-shellcss) describes it,
+`/shell/` shows it, and [adoption](adoption.md#moving-to-07-the-application-shell)
+maps each product's copy to it. Space still owns its resizable column and the
+rest of its interface guide's layout.
 
 - **Panel on a shelf.** The window and sidebar sit on the deepest ground; the
   page is one raised panel inset 8px, with a 12px radius and no border. Radii

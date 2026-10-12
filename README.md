@@ -118,6 +118,11 @@ Open `/examples/` in the catalog for interactive collection, preferences, and
 review examples. These reference-only compositions demonstrate the shared
 styles without adding speculative package contracts.
 
+Open `/shell/` for the application shell that Kinra Space, Kinra Home and
+Kinra Relay share: the sidebar open, folded and as a drawer, on both grounds
+and right to left, with the behaviour each product writes. It is
+`@kinra/web/styles/shell.css`, prepared for 0.7.0.
+
 Open `/applications/` for two reference-only application compositions: a
 top-navigation collection and a navigation region beside a review surface.
 Version 0.6.0 selects sans application UI, headings and display; 0.5.1 retains

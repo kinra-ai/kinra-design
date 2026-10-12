@@ -25,6 +25,25 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Application shell (unreleased, intended 0.7.0):** on 2026-10-12 Blake
+  asked for the collapsible sidebar shell that Kinra Space, Kinra Home and
+  Kinra Relay each implement to become one shared, stable contract, and
+  approved the proposed contract, its names and a documented behaviour
+  contract (rather than a shared helper) the same day. `src/styles/shell.css`,
+  in the complete stylesheet and its own `kinra.shell` layer, draws every
+  state; products set its state attributes and write the behaviour that
+  `docs/catalog.md` lists. `/shell/` frames each state and runs a
+  framework-free reference of the behaviour, which is catalog source and not
+  exported. Additive: no existing class, token, recipe default or registry
+  status changes. Not tagged; each product adopts it in its own repository.
+- **Design verification (2026-10-12, shell working tree):** `npm run verify`
+  passed: contract checks (14 style files), Astro/TypeScript (0 errors,
+  warnings or hints), formatting, the 15-page reference build and 78 Chromium
+  and WebKit cases, 44 of them the shell's, with forced colours emulated in
+  both engines. Captures of each state were reviewed on both grounds, right to
+  left and in forced colours. `npm pack --dry-run` lists 58 public files and
+  `npm audit` reports zero vulnerabilities. This checks the shell in its own
+  demo, not in any product.
 - **Application update (0.6.0):** Blake approved sans by default and the minor
   release on 2026-10-11. Application UI, headings and display select sans, with
   a documented mono override; sizes, weights, other recipe defaults and registry
@@ -107,10 +126,16 @@ adoption map; this file only tracks current state, not process.
 - **kinra-site** and **kinra-gateway** consume the public GitHub codeload
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
   integrity.
-- **kinra-space** pins Design 0.5.1 at `f400129c85e836a966e1097987586a9401ead829`.
-- **kinra-home** pins Design 0.5.0 at `864d538abfd66bc934c0e042374e2686c2864cff`.
-  Both were checked on 2026-10-11; their own package/lockfile and verification
-  gates remain authoritative. Neither has adopted the 0.6.0 application update.
+- **kinra-space** pins Design 0.6.0 at `7f05565b5183121edf141f320a184bc3d2338bb4`,
+  since its `4a510857` (2026-10-11).
+- **kinra-home** pins Design 0.6.0 through `#v0.6.0`, locked to
+  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `7493fc4` (2026-10-11).
+- **kinra-relay** pins Design 0.6.0 through the public codeload archive of
+  `7f05565b5183121edf141f320a184bc3d2338bb4`, with lockfile integrity, since
+  its `b259fc6` (2026-10-12).
+  All three were read from their manifests and lockfiles on 2026-10-12; their
+  own package/lockfile and verification gates remain authoritative. Each
+  carries its own copy of the application shell until it adopts 0.7.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
@@ -138,9 +163,10 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Adopt `v0.6.0` deliberately in separate Space and Home sessions using the
-immutable tag and its full peeled commit, after confirming both on canonical
-GitHub. Their source/browser and installed-device verification remain OPEN
-in their owners. Candidate registry promotion still requires a second consumer
-and compatibility review; package renaming and the Space shell runtime are
-outside this update.
+Blake decides whether to release the shell as 0.7.0: the manifest and lockfile
+bump, the changelog entry moved under the version, and the annotated `v0.7.0`
+tag pushed with the release commit, each with his authorization. Space, Home
+and Relay then adopt the shell in their own repositories against the exact tag,
+following [`docs/adoption.md`](docs/adoption.md#moving-to-07-the-application-shell)
+and their own gates. Candidate registry promotion still requires a second
+consumer and compatibility review; package renaming stays outside this update.

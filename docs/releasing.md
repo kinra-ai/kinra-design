@@ -50,7 +50,7 @@ npm pack --dry-run
 
 `npm run verify` checks the registry/export contract, Astro and TypeScript,
 formatting, the production reference build, and Chromium/WebKit browser checks
-for typography scope and the application examples. Install browser engines
+for typography scope, the application examples and the application shell. Install browser engines
 once per toolchain setup (and their OS dependencies where needed). The checks
 fulfill requests from local source/build bytes, without live services. Review the rendered catalog at
 desktop and mobile widths, including keyboard focus and reduced motion.

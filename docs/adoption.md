@@ -13,6 +13,8 @@ This package owns:
 - canonical Kinra marks;
 - scoped canvas, frame, prose, composition, component, and surface-recipe
   classes;
+- the application shell's frame: its geometry, layers and states, and the
+  behaviour contract that moves between them;
 - candidate source patterns with evidence and accessibility guidance; and
 - future compatibility adapters after real reuse earns them.
 
@@ -20,7 +22,8 @@ The consumer owns:
 
 - routes and information architecture;
 - curriculum, documentation, product copy, and claims;
-- product-specific layout, workflow, state, and interaction;
+- product-specific layout, workflow, state, and interaction, including the
+  shell's state, its behaviour and whatever fills it;
 - copied registry code after adaptation; and
 - analytics, deployment configuration, and release artifacts.
 
@@ -63,6 +66,7 @@ CDN.
 | `@kinra/web/styles/data.css`         | figures, key-value lists, logs, code, avatars, cards, lists | evidence and collections                             |
 | `@kinra/web/styles/recipes.css`      | surface, scheme, and voice role adjustments                 | tuning density and voice without adopting a template |
 | `@kinra/web/styles/prose.css`        | scoped `.kin-prose` typography                              | lessons, guides, and documentation                   |
+| `@kinra/web/styles/shell.css`        | rail, column, inset panel, bar, and drawer                  | an application whose pages stand beside its work     |
 | `@kinra/web/assets/*`                | canonical brand assets                                      | headers, favicons, and metadata                      |
 | `@kinra/web/registry`                | pattern manifest and copyable source                        | product-owned higher-level composition               |
 
@@ -262,7 +266,9 @@ selective imports should likewise put `recipes.css` last, before consumer CSS.
 The `/applications/` catalog page demonstrates top navigation and pane-based
 work using existing components, common page/section heads and a collection
 with inspection and sample async states. Its layout classes stay reference-only.
-No product shell, navigation runtime or registry promotion is implied.
+Version 0.6 implies no product shell, navigation runtime or registry
+promotion; the shared [application shell](#moving-to-07-the-application-shell)
+comes with 0.7.
 
 ### Consumer verification for this change
 
@@ -284,6 +290,153 @@ Compare the unchanged non-application regions too.
 Neither consumer is upgraded or qualified by Design's own checks. Home's
 phone/Safari lived fit and Space's installed/native acceptance remain their
 owners' gates, not claims made by the reference examples.
+
+## Moving to 0.7: the application shell
+
+Prepared for 0.7.0, not yet released. The shell is additive: no existing
+class, token, recipe default or registry status changes, and a consumer that
+does not use `.kin-shell` sees no difference. Kinra Space, Kinra Home and
+Kinra Relay each built the same shell; each can now replace its copy, in its
+own repository and on its own schedule. The
+[catalog](catalog.md#application-shell-shellcss) is the contract, and `/shell/`
+shows every state.
+
+### Adopt the shell
+
+1. Pin the release, or a full commit while testing unreleased source.
+2. Load `shell.css`. The complete stylesheet includes it; a selective import
+   adds `@import "@kinra/web/styles/shell.css";` after the entry points whose
+   classes it restyles (`canvas.css`, `components.css`, `navigation.css`) and
+   before `recipes.css`. With `base.css` first, its `kinra.shell` layer follows
+   `kinra.components` whatever the order.
+3. Put the shared classes on the product's markup (mapped below), keeping the
+   product's own classes beside them while its local rules still apply.
+4. Derive the state attributes from the product's own state: `data-folded`,
+   `data-drawer` from its own breakpoint, `data-scroll`, `data-labels`,
+   `data-resizing`, `data-scrolled` on the bar, and `inert`.
+5. Check the behaviour against the
+   [catalog's list](catalog.md#behaviour-each-product-writes).
+6. Bind the measures and tones that differ, then remove local shell rules only
+   after comparing both schemes, desktop open and folded, the drawer on a phone,
+   right to left, forced colours, reduced motion and touch.
+
+All three copies differ from the shared shell in the same few places:
+
+- The K sits on the bar's centre line. The rail's head is now the bar's own
+  height, inset by `--kin-shell-inset`; before, the K stood 2px above the
+  bar's controls. The pages stay where they were; the column starts 4px higher
+  and the rail's foot ends 4px lower.
+- A closed drawer is hidden as well as inert, as Relay's already was. Under
+  reduced motion it is not displayed, so an opening drawer can take focus at
+  once despite the base stylesheet's reduced-motion transitions.
+- A tip wraps beyond 18rem rather than running on.
+
+### Kinra Space
+
+From `751343ee`. Space is the model: its geometry and behaviour come through
+except where noted.
+
+| Space                                                                                                                        | Shared                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `.app-shell`, `.sidebar-collapsed`, `.nav-open`                                                                              | `.kin-shell`, `data-folded`, `data-drawer="closed\|open"`                                                     |
+| `.navigation-backdrop`                                                                                                       | `.kin-shell__backdrop`                                                                                        |
+| `aside.sidebar`                                                                                                              | `.kin-shell__sidebar`                                                                                         |
+| `.sidebar-head`, `.brand`                                                                                                    | `.kin-shell__head`, `.kin-shell__home`                                                                        |
+| `.sidebar-pages`, `.sidebar-sessions`, `.sidebar-bottom`                                                                     | `.kin-shell__pages`, `.kin-shell__marks`, `.kin-shell__foot`                                                  |
+| `.sidebar-band`                                                                                                              | `.kin-shell__column`                                                                                          |
+| a rail `.kin-nav__item`, `.sidebar-tip`                                                                                      | `.kin-shell__item`, `.kin-shell__tip`                                                                         |
+| `.rail-favorite-mark`, a rail item's `.kin-nav__trail`                                                                       | `.kin-shell__glyph` holding a `.kin-status`                                                                   |
+| `.main-shell`, `.topbar`, `.main-content`                                                                                    | `.kin-shell__panel`, `.kin-shell__bar`, `.kin-shell__page`                                                    |
+| `.sidebar-toggle`, `.mobile-menu`                                                                                            | `.kin-shell__fold`, `.kin-shell__menu`                                                                        |
+| `--space-sidebar-width-collapsed`, `--space-sidebar-width`, `--space-drawer-width`, `--space-topbar-height`, `--space-shelf` | `--kin-shell-rail`, `--kin-shell-column`, `--kin-shell-drawer-column`, `--kin-shell-bar`, `--kin-shell-inset` |
+| `--space-selected`, `--space-viewport-height`, `--space-safe-*`                                                              | bind `--kin-shell-current`, `--kin-shell-height`, `--kin-shell-safe-*`                                        |
+| `data-resizing` on the root                                                                                                  | `data-resizing` on the shell as well                                                                          |
+
+Space keeps its splitter, which writes `--kin-shell-column` in place of
+`--space-sidebar-width`, and its drawer under a finger, which sets
+`data-resizing` on the shell while its own rule moves the drawer. It keeps the
+palette control and its live edge, the measuring of its favorites, the
+letters' door and the account menu; its crumb trail with the faded cut, which
+need not use `.kin-shell__crumbs`; the workspace tools, search, the session's
+fold and Kin's door; Live and Favorites; the server-side `sidebar` preference;
+native-host and visual-viewport handling; and its 48rem breakpoint.
+
+What changes for Space: opening the drawer moves focus into it and makes the
+page inert; Escape and the backdrop give focus back to the menu; and ⌘B or
+Ctrl+B opens and closes the drawer below 48rem instead of yielding there
+(Blake's choice, 2026-10-12).
+
+### Kinra Home
+
+From `202b009`, the most compact copy.
+
+| Home                                                                | Shared                                                                                                  |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `.kh-shell` with `data-railed`, `data-drawer`                       | `.kin-shell` with `data-folded`, `data-drawer="closed\|open"`                                           |
+| `.kh-backdrop`, `aside.kh-sidebar`                                  | `.kin-shell__backdrop`, `.kin-shell__sidebar`                                                           |
+| `.kh-sidebar__head`, `.kh-brand`                                    | `.kin-shell__head`, `.kin-shell__home`                                                                  |
+| `.kh-sidebar__pages`, `.kh-sidebar__marks`, `.kh-sidebar__bottom`   | `.kin-shell__pages`, `.kin-shell__marks`, `.kin-shell__foot`                                            |
+| `.kh-mark-link`, `.kh-mark`, `.kh-tip`                              | `.kin-shell__item`, `.kin-shell__glyph`, `.kin-shell__tip`                                              |
+| `.kh-sidebar__band`                                                 | `.kin-shell__column`                                                                                    |
+| `.kh-panel`, `.kh-topbar`, `.kh-main` and its `kh-page` container   | `.kin-shell__panel`, `.kin-shell__bar`, `.kin-shell__page` and its `kin-shell-page`                     |
+| `.kh-topbar__fold`, `.kh-topbar__menu`, `.kh-crumbs`                | `.kin-shell__fold`, `.kin-shell__menu`, `.kin-shell__crumbs`                                            |
+| `--kh-rail`, `--kh-band`, `--kh-bar`, `--kh-shelf`, `--kh-selected` | `--kin-shell-rail`, `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`, `--kin-shell-current` |
+| `--kh-safe-*`                                                       | `--kin-shell-safe-*`                                                                                    |
+
+Home keeps its camera rows and their recordings action, the footage disk and
+detector at the column's foot, the camera marks' initials and lights, its
+three-state scheme control, the recorder's health at the bar's end, its page
+padding, the fold in localStorage, and its 48rem breakpoint.
+
+What changes for Home: the drawer's current item takes the panel's tone where
+Home used the page's ground (bind `--kin-shell-current` in the drawer to keep
+it); Escape leaves an open popover or modal to close first; following a link
+gives focus to the page; crossing the breakpoint moves focus out of the
+drawer without travel; and forced colours draw the shell's edges.
+
+### Kinra Relay
+
+From `21b464b`, its shell from `bf05738`.
+
+| Relay                                                          | Shared                                                                                                          |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `.app-shell` with `data-railed`, `data-drawer`                 | `.kin-shell` with `data-folded`, `data-drawer="closed\|open"`, `data-scroll="document"`, `data-labels="drawer"` |
+| `.shell-backdrop`, `aside.sidebar`                             | `.kin-shell__backdrop`, `.kin-shell__sidebar`                                                                   |
+| `.rail-head`, `.brand`                                         | `.kin-shell__head`, `.kin-shell__home`                                                                          |
+| `.rail-pages`, `.rail-marks`, `.rail-bottom`                   | `.kin-shell__pages`, `.kin-shell__marks`, `.kin-shell__foot`                                                    |
+| `.rail-item`, `.mark-link`, `.rail-tip`, `.rail-label`         | `.kin-shell__item`, `.kin-shell__tip`, `.kin-shell__label`                                                      |
+| `.build-mark` with its `.kin-status`                           | the mark and its `.kin-status` inside a `.kin-shell__glyph`                                                     |
+| `.nav-badge`, `.menu-badge`                                    | `.kin-shell__badge` in the item's or the menu's glyph                                                           |
+| `.sidebar-band`                                                | `.kin-shell__column`                                                                                            |
+| `.panel`, `.topbar`, `.page`                                   | `.kin-shell__panel`, `.kin-shell__bar`, `.kin-shell__page`                                                      |
+| `.topbar-fold`, `.topbar-menu`, `.crumbs`, `.topbar-end`       | `.kin-shell__fold`, `.kin-shell__menu`, `.kin-shell__crumbs`, `.kin-shell__end`                                 |
+| `--relay-rail`, `--relay-band`, `--relay-bar`, `--relay-inset` | `--kin-shell-rail`, `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`                                |
+| `--relay-shelf`, `--relay-panel`                               | bind `--kin-shell-shelf`, `--kin-shell-panel` and `--kin-shell-flush`                                           |
+
+Relay keeps its palette, bound to the tone properties; the workspace head and
+the Build list in the column; the account card and its placement; the
+appearance control; freshness and Refresh at the bar's end; the cap of eight
+pinned Builds; the narrower column from 60 to 75rem; page padding and
+measure; the parts table's sticky offset, measured against the document while
+the page scrolls with it; and the 60rem breakpoint that `wide()` shares, from
+which it sets `data-drawer`.
+
+What changes for Relay: the shell mirrors right to left, where Relay's drawer,
+badges and padding were physical. Rail items are Space's 2.25rem rows rather
+than 2.5rem squares. The current rail item takes the panel's tone rather than
+a raised card with a primary icon, and the panel has no ring or drop; bind
+`--kin-shell-current` and keep a local rule to keep either. Counts are square
+and muted unless `data-tone` says otherwise: `primary` for unseen changes and
+`reason` for what waits on the reader keep today's colours. The account card
+should open toward the page in either direction.
+
+### Consumer verification for the shell
+
+Design's checks cover the shell in its own demo, not in any product. Each
+owner runs its own gates on an exact Design commit: Space its source and
+Chromium/WebKit browser gates, Home `task verify:app` and its browser matrix,
+Relay its browser workflows, each comparing the states listed above. Installed,
+device and native-host acceptance remain their owners' gates.
 
 ## Testing exact source
 
@@ -309,18 +462,24 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Kinra Space** pins released Design **0.5.1**, exact commit
-  `f400129c85e836a966e1097987586a9401ead829`, including `wordmark-space.svg`.
-- **Kinra Home** pins released Design **0.5.0**, exact commit
-  `864d538abfd66bc934c0e042374e2686c2864cff`. It already consumes the soft-layer
-  refresh and Kinra Type; 0.5.1 only extends Mono's terminal characters.
-  These two pins were checked on 2026-10-11. Each consumer's package/lockfile
-  owns its current revision and its own gates own upgrade evidence.
+- **Kinra Space** pins released Design **0.6.0**, exact commit
+  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `4a510857`
+  (2026-10-11), including `wordmark-space.svg`.
+- **Kinra Home** pins **0.6.0** through `#v0.6.0`, resolved by its lockfile to
+  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `7493fc4` (2026-10-11).
+- **Kinra Relay** pins **0.6.0** through the public codeload archive of
+  `7f05565b5183121edf141f320a184bc3d2338bb4`, with package-lock integrity, since
+  its `b259fc6` (2026-10-12).
+  These three pins were read from each owner's manifest and lockfile on
+  2026-10-12, at Space `751343ee`, Home `202b009` and Relay `21b464b`. Each
+  consumer's package/lockfile owns its current revision and its own gates own
+  upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Site and Gateway retain their earlier exact test pins. Space and Home are on
-released 0.5-series source; neither has adopted 0.6.0 application typography yet.
+Site and Gateway retain their earlier exact test pins. Space, Home and Relay
+are on released 0.6.0 and each carries its own copy of the application shell
+until it adopts 0.7.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.
