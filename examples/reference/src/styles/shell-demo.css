@@ -1,0 +1,130 @@
+/*
+ * The shell demo's own composition, reference-only: what fills the column,
+ * the page and the account card belongs to each product. The shell itself is
+ * @kinra/web/styles/shell.css.
+ */
+
+.demo-body {
+	background: var(--kin-shell-shelf);
+}
+
+/* The column's first row is the bar's height, so its heading stands level
+   with the K and the bar. */
+.demo-column-head {
+	align-items: center;
+	display: flex;
+	flex: none;
+	gap: var(--kin-space-2);
+	justify-content: space-between;
+	min-block-size: var(--kin-shell-bar);
+	padding-inline-start: var(--kin-space-3);
+}
+
+.demo-column-head .kin-label {
+	margin: 0;
+}
+
+.demo-search {
+	flex: none;
+	inline-size: 100%;
+	margin-block: var(--kin-space-2) var(--kin-space-3);
+}
+
+/* Only the column's own list scrolls; the rail's tips reach over it. */
+.demo-collections {
+	flex: 1;
+	min-block-size: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.demo-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-inline-size: 0;
+}
+
+.demo-row__name,
+.demo-row__caption {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.demo-row__caption {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+	font-weight: var(--kin-weight-quiet);
+}
+
+.demo-mark {
+	--kin-avatar-size: 1.75rem;
+
+	font-size: 0.625rem;
+}
+
+[aria-current] > .kin-shell__glyph > .demo-mark {
+	background: var(--kin-tint-primary);
+	color: var(--kin-color-primary);
+}
+
+/* The fold's glyph draws the sidebar on the side it stands. */
+.demo-along svg {
+	scale: var(--kin-flow) 1;
+}
+
+.demo-saved {
+	white-space: nowrap;
+}
+
+.demo-page {
+	--kin-layout-space: var(--kin-space-6);
+
+	margin-inline: auto;
+	max-inline-size: 64rem;
+	padding: var(--kin-space-6) var(--kin-space-8) var(--kin-space-9);
+}
+
+@container kin-shell-page (max-width: 40rem) {
+	.demo-page {
+		padding: var(--kin-space-4) var(--kin-space-4) var(--kin-space-8);
+	}
+}
+
+@container kin-shell-bar (max-width: 26rem) {
+	.demo-saved {
+		display: none;
+	}
+}
+
+/* A frame may show one tip at rest. */
+.demo-tip > .kin-shell__tip {
+	opacity: 1;
+}
+
+/* Author display only on an open popover, or a closed one would show. */
+.demo-account {
+	--kin-popover-width: 17rem;
+}
+
+.demo-account:popover-open {
+	display: grid;
+	gap: var(--kin-space-4);
+}
+
+.demo-identity {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-3);
+	min-inline-size: 0;
+}
+
+.demo-identity__name {
+	display: grid;
+	min-inline-size: 0;
+}
+
+.demo-account .kin-button {
+	justify-content: flex-start;
+}

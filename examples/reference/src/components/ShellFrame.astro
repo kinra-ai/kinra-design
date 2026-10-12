@@ -1,0 +1,44 @@
+---
+/*
+ * One state of the shell demo in a frame at its own window size, scaled down
+ * to fit the catalog's column. The frame is the demo's own document, so its
+ * breakpoint, drawer and focus behave as they do full screen.
+ */
+interface Props {
+	title: string;
+	query: string;
+	width: number;
+	height: number;
+	caption: string;
+}
+
+const { title, query, width, height, caption } = Astro.props;
+const src = `/shell/demo/?${query}`;
+---
+
+<figure
+	class="shell-frame"
+	data-width={width}
+	style={`--shell-frame-width: ${width}px; --shell-frame-ratio: ${width} / ${height}`}
+>
+	<div class="shell-frame__window">
+		<iframe src={src} title={title} width={width} height={height} loading="lazy"
+		></iframe>
+	</div>
+	<figcaption class="kin-caption">
+		{caption} · <a href={src}>Open full screen</a>
+	</figcaption>
+</figure>
+
+<script>
+	// Each frame keeps its window size and scales to the room it has.
+	for (const frame of document.querySelectorAll<HTMLElement>(".shell-frame")) {
+		const view = frame.querySelector<HTMLElement>(".shell-frame__window");
+		const width = Number(frame.dataset.width);
+		if (!view || !width) continue;
+		new ResizeObserver(([entry]) => {
+			const scale = Math.min(1, entry.contentRect.width / width);
+			view.style.setProperty("--shell-frame-scale", String(scale));
+		}).observe(view);
+	}
+</script>

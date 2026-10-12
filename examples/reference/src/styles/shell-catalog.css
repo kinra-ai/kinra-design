@@ -1,0 +1,62 @@
+/* The shell catalog page's frames and notes. Reference-only. */
+
+.shell-frames {
+	display: grid;
+	gap: var(--kin-space-7);
+}
+
+.shell-frames__row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-6);
+}
+
+.shell-frames__row > .shell-frame {
+	flex: 1 1 16rem;
+}
+
+.shell-frame {
+	display: grid;
+	gap: var(--kin-space-2);
+	justify-items: start;
+	margin: 0;
+	min-width: 0;
+}
+
+.shell-frame__window {
+	aspect-ratio: var(--shell-frame-ratio);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: 0 0 0 1px var(--kin-float-ring);
+	overflow: hidden;
+	position: relative;
+	width: min(100%, var(--shell-frame-width));
+}
+
+.shell-frame iframe {
+	border: 0;
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transform: scale(var(--shell-frame-scale, 1));
+	transform-origin: 0 0;
+}
+
+.shell-notes {
+	max-width: var(--kin-measure-prose);
+}
+
+.shell-notes dd {
+	font-family: var(--kin-font-prose);
+	line-height: 1.6;
+}
+
+.shell-markup {
+	max-width: 100%;
+}
+
+@media (forced-colors: active) {
+	.shell-frame__window {
+		outline: 1px solid CanvasText;
+	}
+}

@@ -1,0 +1,345 @@
+---
+import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
+import ShellFrame from "../../components/ShellFrame.astro";
+import Specimen from "../../components/Specimen.astro";
+import "../../styles/shell-catalog.css";
+
+const markup = `<div class="kin-shell" data-folded>
+  <div class="kin-shell__backdrop" aria-hidden="true"></div>
+  <aside class="kin-shell__sidebar" id="navigation" aria-label="Navigation">
+    <div class="kin-shell__head">
+      <a class="kin-shell__home" href="/" aria-label="Product home">
+        <img src="mark.svg" alt="" />
+        <span class="kin-tooltip kin-shell__tip" aria-hidden="true">Home</span>
+      </a>
+    </div>
+    <nav class="kin-shell__pages" aria-label="Pages">
+      <ul>
+        <li>
+          <a class="kin-shell__item" href="/inbox" aria-current="page">
+            <span class="kin-shell__glyph">
+              <svg aria-hidden="true">…</svg>
+              <span class="kin-shell__badge" data-tone="reason" aria-hidden="true">3</span>
+            </span>
+            <span class="kin-sr-only">Inbox, 3 waiting on you</span>
+            <span class="kin-shell__label" aria-hidden="true">Inbox</span>
+            <span class="kin-tooltip kin-shell__tip" aria-hidden="true">
+              Inbox<span class="kin-tooltip__hint">3 waiting on you</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <nav class="kin-shell__marks" aria-label="Pinned">…</nav>
+    <div class="kin-shell__column">…</div>
+    <div class="kin-shell__foot">…</div>
+  </aside>
+  <div class="kin-shell__panel">
+    <header class="kin-shell__bar">
+      <button class="kin-button kin-button--ghost kin-button--icon kin-shell__fold"
+        data-size="compact" aria-controls="navigation" aria-expanded="false"
+        aria-label="Expand sidebar">…</button>
+      <button class="kin-button kin-button--ghost kin-button--icon kin-shell__menu"
+        data-size="compact" aria-controls="navigation" aria-expanded="false"
+        aria-label="Open navigation">…</button>
+      <nav class="kin-breadcrumb kin-shell__crumbs" aria-label="Where you are">…</nav>
+      <div class="kin-shell__end">…</div>
+    </header>
+    <main class="kin-shell__page" id="main" tabindex="-1">…</main>
+  </div>
+</div>`;
+
+const behaviour = [
+	[
+		"Layout",
+		"Set data-drawer from your own breakpoint's matchMedia, closed or open; leave it off beside the page.",
+	],
+	[
+		"Fold",
+		"The bar's fold control and the chord toggle data-folded beside the page. Name the control by what it will do and set aria-expanded. Remember the fold wherever you keep preferences; the drawer ignores it and keeps it.",
+	],
+	[
+		"Chord",
+		"⌘B on a Mac and Ctrl+B elsewhere, never both, never with Alt or Shift, never a held key's repeats. It yields to an open modal and to rich text. As a drawer, it opens and closes the drawer.",
+	],
+	[
+		"Focus",
+		"Folding while focus is in the column moves focus to the fold first. Opening the drawer focuses its current item, else its first.",
+	],
+	[
+		"Inert",
+		"A closed drawer is inert; the panel is inert while the drawer is open. The stylesheet hides the closed drawer as well.",
+	],
+	[
+		"Escape",
+		"Closes the drawer unless a popover or modal is open, which closes first. Focus returns to the drawer's control, as it does from the backdrop.",
+	],
+	[
+		"Links",
+		"Following a link in the drawer closes it, and the destination takes focus.",
+	],
+	[
+		"Breakpoint",
+		"Crossing it closes the drawer, moves focus out of a sidebar that has just become inert, and sets data-resizing for the one reflow so nothing travels.",
+	],
+	[
+		"Hairline",
+		"The bar carries data-scrolled while the page's scroller is scrolled at all, measured again after navigation.",
+	],
+	[
+		"Scroller",
+		"Sticky offsets and off-screen checks measure the scroller the page actually moves in: the page in its panel, or the document.",
+	],
+	[
+		"Popovers",
+		"A rail control's popover opens beside it, toward the page, in either direction. Author its display only under :popover-open.",
+	],
+];
+
+const owned = [
+	[
+		"Breakpoint and scroll",
+		"Where the drawer begins, and whether a page as a drawer scrolls in its panel or with the document.",
+	],
+	[
+		"The column",
+		"Lists, search and filters, a splitter that resizes it through --kin-shell-column, and how its rows look.",
+	],
+	[
+		"Marks",
+		"Which places the folded rail keeps, their glyphs and lights, and how many fit.",
+	],
+	[
+		"Foot and bar",
+		"The account menu or card, the scheme control's states, the crumbs' words and whatever ends the bar.",
+	],
+	[
+		"Behaviour",
+		"Fold persistence, the chord registry, gestures such as a drawer under a finger, and native-host handling.",
+	],
+	["Pages", "Padding, measures and what a page holds; icons and every word."],
+];
+---
+
+<ReferenceLayout
+	title="Application shell"
+	description="The shared frame of Kinra applications: a rail beside a column of work, and the page on one raised panel."
+	current="Shell"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Application shell</h1>
+			<p class="catalog-header__summary">
+				The frame Kinra applications share: a rail of pages beside a column of
+				work, and the page on one raised panel. The stylesheet draws every
+				state; each product sets the state, writes the behaviour below and fills
+				the shell with its own work.
+			</p>
+		</div>
+	</header>
+	<div class="catalog-section kin-frame">
+		<Specimen
+			title="Open, folded and drawer"
+			contract=".kin-shell · data-folded · data-drawer=closed|open"
+			description="Beside the page the sidebar is a rail and a column. Folded, the rail stays as it is and holds the marks. Below the product's own breakpoint the sidebar is a drawer from the inline start over a flush page."
+		>
+			<div class="shell-frames">
+				<ShellFrame
+					title="Shell demo with the sidebar open"
+					query="fold=open&scheme=dark"
+					width={1100}
+					height={620}
+					caption="Open"
+				/>
+				<ShellFrame
+					title="Shell demo folded to its rail"
+					query="fold=folded&scheme=dark"
+					width={1100}
+					height={620}
+					caption="Folded"
+				/>
+				<div class="shell-frames__row">
+					<ShellFrame
+						title="Shell demo as a closed drawer"
+						query="scheme=dark"
+						width={390}
+						height={720}
+						caption="Drawer, closed"
+					/>
+					<ShellFrame
+						title="Shell demo with the drawer open"
+						query="scheme=dark&drawer=open"
+						width={390}
+						height={720}
+						caption="Drawer, open"
+					/>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Paper"
+			contract="--kin-shell-shelf · --kin-shell-panel · --kin-shell-flush · --kin-shell-current"
+			description="The same roles on paper. The window is the shelf on the deepest ground, the page the raised panel, and the open item takes the panel's tone. As a drawer the page is flush, on the ground."
+		>
+			<div class="shell-frames">
+				<ShellFrame
+					title="Shell demo on paper, page scrolled, one tip shown"
+					query="fold=open&scheme=light&scrolled&tip=inbox"
+					width={1100}
+					height={620}
+					caption="Open, the page scrolled beneath the bar, and a tip"
+				/>
+				<div class="shell-frames__row">
+					<ShellFrame
+						title="Shell demo on paper with the drawer open"
+						query="scheme=light&drawer=open"
+						width={390}
+						height={720}
+						caption="Drawer, open"
+					/>
+					<ShellFrame
+						title="Shell demo on paper, folded"
+						query="fold=folded&scheme=light&at=20"
+						width={390}
+						height={720}
+						caption="Folded at 390px, in a frame whose breakpoint is 20rem"
+					/>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Tips, counts and the scrolled bar"
+			contract=".kin-shell__tip · .kin-shell__glyph · .kin-shell__badge · data-scrolled"
+			description="Each rail item names itself in a tip beside it, under a pointer that hovers and under the keyboard, over the column and the page. A count or a status mark sits on its glyph's corner, and the item's name says it too. The bar draws a hairline only while the page is scrolled beneath it."
+		>
+			<ShellFrame
+				title="Shell demo folded, the page scrolled, one tip shown"
+				query="fold=folded&scheme=dark&scrolled&tip=inbox"
+				width={1100}
+				height={620}
+				caption="Folded, with a tip reaching over the page"
+			/>
+		</Specimen>
+
+		<Specimen
+			title="Right to left"
+			contract="dir=rtl · --kin-flow · --kin-shell-safe-start"
+			description="The sidebar stands at the inline start, its tips open toward the page, counts sit on the glyph's other corner, and the drawer arrives from the right. The sample words are English, so their numbers and full stops follow the right-to-left line."
+		>
+			<div class="shell-frames">
+				<ShellFrame
+					title="Shell demo right to left"
+					query="fold=open&scheme=dark&dir=rtl&tip=inbox"
+					width={1100}
+					height={620}
+					caption="Open, right to left"
+				/>
+				<div class="shell-frames__row">
+					<ShellFrame
+						title="Shell demo right to left, drawer open"
+						query="scheme=dark&dir=rtl&drawer=open"
+						width={390}
+						height={720}
+						caption="Drawer, right to left"
+					/>
+				</div>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="A labelled drawer that scrolls with the document"
+			contract='data-labels="drawer" · data-scroll="document"'
+			description="Where no pointer hovers, a drawer may name its pages beneath their glyphs on a wider rail. As a drawer, a page may scroll with the document under a bar that stays, and the document holds still while the drawer is open."
+		>
+			<div class="shell-frames__row">
+				<ShellFrame
+					title="Shell demo with a labelled drawer open"
+					query="scheme=dark&labels&scroll=document&drawer=open"
+					width={390}
+					height={720}
+					caption="Labelled drawer"
+				/>
+				<ShellFrame
+					title="Shell demo scrolling with the document"
+					query="scheme=dark&labels&scroll=document&scrolled"
+					width={390}
+					height={720}
+					caption="The page scrolled with the document"
+				/>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Reduced motion and forced colours"
+			contract="prefers-reduced-motion · forced-colors"
+			description="Both follow the reader's settings, so these frames show them when the browser asks for them."
+		>
+			<div class="kin-stack shell-notes">
+				<p class="kin-body">
+					With reduced motion, every state is the same and nothing travels
+					between them: the sidebar folds, the column goes, the drawer arrives
+					and a tip appears at once. With motion, the width and the drawer move
+					at layer speed, the column fades as the rail closes over it, a tip
+					waits a moment before naming its item, and a closed drawer hides once
+					it has left.
+				</p>
+				<p class="kin-body">
+					In forced colours, tones and shadows no longer set things apart, so
+					the inset panel, the open drawer, a scrolled bar and the current item
+					draw their edges, and the fold at rest draws none. Status marks keep
+					their light. The browser checks emulate both settings in Chromium and
+					WebKit.
+				</p>
+			</div>
+		</Specimen>
+
+		<Specimen
+			title="Markup"
+			contract="@kinra/web/styles/shell.css"
+			description="The shell's parts in their places. The product writes the state attributes and inertness, and everything inside the column, the foot, the bar's crumbs and end, and the page."
+		>
+			<figure class="kin-code shell-markup">
+				<div class="kin-code__header">
+					<figcaption class="kin-code__title">The shell, folded</figcaption>
+				</div>
+				<pre><code>{markup}</code></pre>
+			</figure>
+		</Specimen>
+
+		<Specimen
+			title="Behaviour each product writes"
+			contract="examples/reference/src/scripts/shell.ts"
+			description="The stylesheet draws the states; the product moves between them. The demo above runs a framework-free reference of this list, to read and rewrite where each product's state lives, not to import."
+		>
+			<dl class="kin-kv shell-notes" data-layout="stacked">
+				{
+					behaviour.map(([term, detail]) => (
+						<div>
+							<dt>{term}</dt>
+							<dd>{detail}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</Specimen>
+
+		<Specimen
+			title="What stays with the product"
+			contract="docs/adoption.md"
+			description="The shell is a frame. What fills it, and how each product keeps its state, stays with the product."
+		>
+			<dl class="kin-kv shell-notes" data-layout="stacked">
+				{
+					owned.map(([term, detail]) => (
+						<div>
+							<dt>{term}</dt>
+							<dd>{detail}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</Specimen>
+	</div>
+</ReferenceLayout>

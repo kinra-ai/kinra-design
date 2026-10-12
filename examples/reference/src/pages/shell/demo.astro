@@ -1,0 +1,494 @@
+---
+/*
+ * The application shell, full screen, with the reference behaviour. The
+ * catalog's /shell/ page frames it in each state through query parameters:
+ * fold=open|folded, drawer=open, scheme=dark|light|auto, dir=rtl, labels,
+ * scroll=document, scrolled, tip=<page>, at=<breakpoint in rem>. Its content
+ * is sample data, and its column, page and account card are reference-only.
+ */
+import "@kinra/web/styles";
+import markUrl from "@kinra/web/assets/mark.svg?url";
+import "../../styles/shell-demo.css";
+
+const paths: Record<string, string> = {
+	overview:
+		'<rect x="4" y="4" width="6.5" height="6.5" rx="1.25"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.25"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.25"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.25"/>',
+	inbox:
+		'<path d="M4 13.5 6.2 5.6A1.5 1.5 0 0 1 7.6 4.5h8.8a1.5 1.5 0 0 1 1.4 1.1L20 13.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18Z"/><path d="M4 13.5h4.5l1.25 2h4.5l1.25-2H20"/>',
+	library:
+		'<path d="m12 4 8 4-8 4-8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 16 8 4 8-4"/>',
+	activity: '<path d="M3.5 12h3.5l2.5-6.5 5 13 2.5-6.5h3.5"/>',
+	sidebar:
+		'<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9.5 4.5v15"/>',
+	menu: '<path d="M4.5 7h15M4.5 12h15M4.5 17h15"/>',
+	plus: '<path d="M12 5.5v13M5.5 12h13"/>',
+	refresh:
+		'<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/>',
+	dark: '<path d="M19.5 14.2A7.5 7.5 0 0 1 9.8 4.5a7.5 7.5 0 1 0 9.7 9.7Z"/>',
+	light:
+		'<circle cx="12" cy="12" r="3.75"/><path d="M12 3.5v1.75M12 18.75v1.75M3.5 12h1.75M18.75 12h1.75M6 6l1.25 1.25M16.75 16.75 18 18M6 18l1.25-1.25M16.75 7.25 18 6"/>',
+	auto: '<circle cx="12" cy="12" r="7.5"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor" stroke="none"/>',
+};
+const icon = (name: string, attributes = "") =>
+	`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${attributes}>${paths[name]}</svg>`;
+
+const pages = [
+	{
+		id: "overview",
+		name: "Overview",
+		icon: "overview",
+		summary: "Everything in your collections, newest first.",
+	},
+	{
+		id: "inbox",
+		name: "Inbox",
+		icon: "inbox",
+		count: 3,
+		says: "3 waiting on you",
+		summary: "Three entries are waiting for your review.",
+	},
+	{
+		id: "library",
+		name: "Library",
+		icon: "library",
+		summary: "Every collection, open or closed.",
+	},
+	{
+		id: "activity",
+		name: "Activity",
+		icon: "activity",
+		state: "warning",
+		says: "A check needs attention",
+		summary: "What changed, and one check that needs attention.",
+	},
+];
+const collections = [
+	{ id: "field-notes", name: "Field notes", caption: "12 entries", mark: "FN" },
+	{
+		id: "quarterly-review",
+		name: "Quarterly review",
+		caption: "Ready to share",
+		mark: "QR",
+		state: "success",
+	},
+	{
+		id: "site-survey",
+		name: "Site survey",
+		caption: "Syncing 4 photos",
+		mark: "SS",
+		state: "running",
+	},
+	{
+		id: "reading-list",
+		name: "Reading list",
+		caption: "31 entries",
+		mark: "RL",
+	},
+	{
+		id: "workshop",
+		name: "Workshop",
+		caption: "Shared with 3 people",
+		mark: "WS",
+	},
+	{ id: "floor-plans", name: "Floor plans", caption: "8 drawings", mark: "FP" },
+	{
+		id: "correspondence",
+		name: "Correspondence",
+		caption: "2 replies to send",
+		mark: "CO",
+	},
+	{
+		id: "archive",
+		name: "Archive",
+		caption: "Closed in September",
+		mark: "AR",
+	},
+];
+const pinned = collections.slice(0, 3);
+const entries = [
+	["Notes from the morning walk", "Field notes", "2 hours ago"],
+	["Photos from the north field", "Site survey", "3 hours ago"],
+	["Draft of the quarterly summary", "Quarterly review", "Yesterday"],
+	["Questions for the next review", "Quarterly review", "Yesterday"],
+	["Measurements from the east wall", "Floor plans", "2 days ago"],
+	["Sketches for the new layout", "Floor plans", "2 days ago"],
+	["Comments on the second draft", "Correspondence", "3 days ago"],
+	["Materials to order", "Workshop", "4 days ago"],
+	["Minutes from Tuesday", "Workshop", "Last week"],
+	["Ideas for the spring plan", "Field notes", "Last week"],
+	["Corrections to the floor plan", "Floor plans", "Last week"],
+	["Summary of the site visit", "Site survey", "2 weeks ago"],
+	["Reading notes, chapter four", "Reading list", "2 weeks ago"],
+	["Photos from the workshop", "Workshop", "3 weeks ago"],
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover"
+		/>
+		<meta
+			name="description"
+			content="The application shell with sample content and its reference behaviour."
+		/>
+		<link rel="icon" type="image/svg+xml" href={markUrl} />
+		<title>Shell demo · Kinra design</title>
+		<script is:inline>
+			// The scheme and direction apply before the first paint: a frame's
+			// parameter, else the catalog's remembered scheme.
+			(() => {
+				const params = new URLSearchParams(location.search);
+				let scheme = params.get("scheme");
+				if (!scheme)
+					try {
+						scheme = localStorage.getItem("kin-scheme");
+					} catch {}
+				if (scheme === "light" || scheme === "dark" || scheme === "auto")
+					document.documentElement.dataset.kinScheme = scheme;
+				if (params.get("dir") === "rtl") document.documentElement.dir = "rtl";
+			})();
+		</script>
+	</head>
+	<body class="demo-body" data-kin-surface="application">
+		<a class="kin-sr-only" href="#main">Skip to content</a>
+		<div class="kin-shell" id="shell">
+			<div class="kin-shell__backdrop" aria-hidden="true"></div>
+			<aside
+				class="kin-shell__sidebar"
+				id="demo-navigation"
+				aria-label="Navigation"
+			>
+				<div class="kin-shell__head">
+					<a
+						class="kin-shell__home"
+						href="#overview"
+						data-page="overview"
+						aria-label="Kinra, back to the overview"
+						><img src={markUrl} alt="" width="20" height="20" /><span
+							class="kin-tooltip kin-shell__tip"
+							aria-hidden="true"
+							>Kinra<span class="kin-tooltip__hint">Back to the overview</span
+							></span
+						></a
+					>
+				</div>
+				<nav class="kin-shell__pages" aria-label="Pages">
+					<ul>
+						{
+							pages.map((page) => (
+								<li>
+									<a
+										class="kin-shell__item"
+										href={`#${page.id}`}
+										data-page={page.id}
+										data-summary={page.summary}
+										aria-current={page.id === "overview" ? "page" : undefined}
+									>
+										<span class="kin-shell__glyph">
+											<Fragment set:html={icon(page.icon)} />
+											{page.count && (
+												<span
+													class="kin-shell__badge"
+													data-tone="reason"
+													aria-hidden="true"
+												>
+													{page.count}
+												</span>
+											)}
+											{page.state && (
+												<span class="kin-status" data-state={page.state} />
+											)}
+										</span>
+										<span class="kin-sr-only">
+											{page.says ? `${page.name}, ${page.says}` : page.name}
+										</span>
+										<span class="kin-shell__label" aria-hidden="true">
+											{page.name}
+										</span>
+										<span class="kin-tooltip kin-shell__tip" aria-hidden="true">
+											{page.name}
+											{page.says && (
+												<span class="kin-tooltip__hint">{page.says}</span>
+											)}
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+				<nav class="kin-shell__marks" aria-label="Pinned">
+					<ul>
+						{
+							pinned.map((collection) => (
+								<li>
+									<a
+										class="kin-shell__item"
+										href={`#${collection.id}`}
+										data-collection={collection.id}
+									>
+										<span class="kin-shell__glyph">
+											<span class="kin-avatar demo-mark" aria-hidden="true">
+												{collection.mark}
+											</span>
+											{collection.state && (
+												<span
+													class="kin-status"
+													data-state={collection.state}
+												/>
+											)}
+										</span>
+										<span class="kin-sr-only">
+											{collection.state
+												? `${collection.name}, ${collection.caption}`
+												: collection.name}
+										</span>
+										<span class="kin-tooltip kin-shell__tip" aria-hidden="true">
+											{collection.name}
+											<span class="kin-tooltip__hint">
+												{collection.caption}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+				<div class="kin-shell__column">
+					<div class="demo-column-head">
+						<h2 class="kin-label" id="collections-title">Collections</h2>
+						<button
+							type="button"
+							class="kin-button kin-button--ghost kin-button--icon"
+							data-size="compact"
+							id="new-collection"
+							aria-label="New collection"
+							title="New collection"
+							set:html={icon("plus")}
+						/>
+					</div>
+					<label class="kin-sr-only" for="collection-search"
+						>Find a collection</label
+					>
+					<input
+						class="kin-input demo-search"
+						data-size="compact"
+						id="collection-search"
+						type="search"
+						placeholder="Find a collection"
+						autocomplete="off"
+					/>
+					<nav
+						class="kin-nav demo-collections"
+						aria-labelledby="collections-title"
+					>
+						<ul>
+							{
+								collections.map((collection) => (
+									<li>
+										<a
+											href={`#${collection.id}`}
+											data-collection={collection.id}
+										>
+											<span class="demo-row">
+												<span class="demo-row__name">{collection.name}</span>
+												<span class="demo-row__caption">
+													{collection.caption}
+												</span>
+											</span>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</nav>
+				</div>
+				<div class="kin-shell__foot">
+					<ul>
+						<li>
+							<button
+								type="button"
+								class="kin-shell__item demo-scheme"
+								id="scheme-toggle"
+								aria-label="Colour scheme: Graphite"
+							>
+								<span class="kin-shell__glyph">
+									<Fragment set:html={icon("dark", 'data-icon="dark"')} />
+									<Fragment
+										set:html={icon("light", 'data-icon="light" hidden')}
+									/>
+									<Fragment
+										set:html={icon("auto", 'data-icon="auto" hidden')}
+									/>
+								</span>
+								<span class="kin-tooltip kin-shell__tip" aria-hidden="true"
+									>Colour scheme<span class="kin-tooltip__hint" id="scheme-hint"
+										>Graphite. Press for Paper.</span
+									></span
+								>
+							</button>
+						</li>
+						<li>
+							<button
+								type="button"
+								class="kin-shell__item"
+								id="account-button"
+								aria-label="Your account, Sample person"
+								aria-haspopup="dialog"
+								aria-expanded="false"
+								aria-controls="demo-account"
+								popovertarget="demo-account"
+							>
+								<span class="kin-shell__glyph">
+									<span class="kin-avatar demo-mark" aria-hidden="true">SP</span
+									>
+								</span>
+								<span class="kin-tooltip kin-shell__tip" aria-hidden="true"
+									>Sample person<span class="kin-tooltip__hint">Editor</span
+									></span
+								>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</aside>
+			<div class="kin-shell__panel">
+				<header class="kin-shell__bar">
+					<button
+						type="button"
+						class="kin-button kin-button--ghost kin-button--icon kin-shell__fold demo-along"
+						data-size="compact"
+						aria-controls="demo-navigation"
+						aria-expanded="true"
+						aria-label="Collapse sidebar"
+						set:html={icon("sidebar")}
+					/>
+					<button
+						type="button"
+						class="kin-button kin-button--ghost kin-button--icon kin-shell__menu"
+						data-size="compact"
+						aria-controls="demo-navigation"
+						aria-expanded="false"
+						aria-label="Open navigation, 3 waiting on you"
+					>
+						<span class="kin-shell__glyph"
+							><Fragment set:html={icon("menu")} /><span
+								class="kin-shell__badge"
+								data-tone="reason"
+								aria-hidden="true">3</span
+							></span
+						>
+					</button>
+					<nav
+						class="kin-breadcrumb kin-shell__crumbs"
+						aria-label="Where you are"
+					>
+						<ol id="crumbs">
+							<li><span aria-current="page">Overview</span></li>
+						</ol>
+					</nav>
+					<div class="kin-shell__end">
+						<span class="kin-status demo-saved" data-state="success">Saved</span
+						>
+						<button
+							type="button"
+							class="kin-button kin-button--ghost kin-button--icon"
+							data-size="compact"
+							aria-label="Refresh"
+							title="Refresh"
+							set:html={icon("refresh")}
+						/>
+					</div>
+				</header>
+				<main class="kin-shell__page" id="main" tabindex="-1">
+					<div class="demo-page kin-stack">
+						<header class="kin-stack" data-space="tight">
+							<h1 class="kin-title" id="page-title">Overview</h1>
+							<p class="kin-caption" id="page-summary">
+								Everything in your collections, newest first.
+							</p>
+						</header>
+						<ul class="kin-list" data-variant="bounded">
+							{
+								entries.map(([title, collection, when]) => (
+									<li class="kin-list__item">
+										<div class="kin-list__body">
+											<p class="kin-list__title">{title}</p>
+											<p class="kin-list__meta">
+												{collection} · {when}
+											</p>
+										</div>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</main>
+			</div>
+		</div>
+
+		<div
+			id="demo-account"
+			class="kin-popover demo-account"
+			popover="auto"
+			role="dialog"
+			aria-label="Your account"
+		>
+			<div class="demo-identity">
+				<span class="kin-avatar" aria-hidden="true">SP</span>
+				<div class="demo-identity__name">
+					<strong>Sample person</strong>
+					<span class="kin-caption">Editor</span>
+				</div>
+			</div>
+			<button
+				type="button"
+				class="kin-button kin-button--quiet"
+				data-size="compact"
+				popovertarget="demo-account"
+				popovertargetaction="hide">Sign out</button
+			>
+		</div>
+
+		<dialog
+			class="kin-dialog"
+			id="new-collection-dialog"
+			data-size="narrow"
+			aria-labelledby="new-collection-title"
+		>
+			<div class="kin-dialog__header">
+				<h2 class="kin-dialog__title" id="new-collection-title">
+					New collection
+				</h2>
+			</div>
+			<div class="kin-dialog__body">
+				<label class="kin-field">
+					<span class="kin-field__label">Name</span>
+					<input class="kin-input" autocomplete="off" />
+				</label>
+			</div>
+			<form class="kin-dialog__footer" method="dialog">
+				<button
+					class="kin-button kin-button--ghost"
+					type="submit"
+					value="cancel">Cancel</button
+				>
+				<button
+					class="kin-button kin-button--primary"
+					type="submit"
+					value="create">Create</button
+				>
+			</form>
+		</dialog>
+
+		<script>
+			import { run } from "../../scripts/shell-demo";
+			run();
+		</script>
+	</body>
+</html>
