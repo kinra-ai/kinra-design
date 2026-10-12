@@ -367,6 +367,42 @@
 	--kin-region-space: clamp(3.5rem, 8vw, 7rem);
 	--kin-layout-gap: clamp(var(--kin-space-6), 4vw, var(--kin-space-9));
 	--kin-sidebar-width: 18.25rem;
+
+	/* Application shell (shell.css): the rail and the column of work beside
+	   it, the bar over the page, the panel's inset from the shelf and the
+	   shell's height; the drawer's column and widest reach; and the tones of
+	   the shelf, the inset panel and the flush page of the drawer layout. */
+	--kin-shell-rail: 3.5rem;
+	--kin-shell-rail-labelled: 4.5rem;
+	--kin-shell-column: 17rem;
+	--kin-shell-bar: 3.5rem;
+	--kin-shell-inset: var(--kin-space-2);
+	--kin-shell-height: 100dvh;
+	--kin-shell-drawer-column: 17rem;
+	--kin-shell-drawer-max: 85vw;
+	--kin-shell-shelf: var(--kin-color-ground-deep);
+	--kin-shell-panel: var(--kin-color-surface);
+	--kin-shell-flush: var(--kin-color-ground);
+}
+
+/* The window's safe areas, named by the flow: the start is the right edge of
+   a right-to-left page. No specificity, so a product that reads the insets
+   itself can bind these on :root or the shell. */
+:where(:root) {
+	--kin-shell-safe-top: env(safe-area-inset-top, 0px);
+	--kin-shell-safe-bottom: env(safe-area-inset-bottom, 0px);
+	--kin-shell-safe-start: env(safe-area-inset-left, 0px);
+	--kin-shell-safe-end: env(safe-area-inset-right, 0px);
+}
+
+:where(:root:dir(rtl), :root[dir="rtl"], [dir="rtl"]) {
+	--kin-shell-safe-start: env(safe-area-inset-right, 0px);
+	--kin-shell-safe-end: env(safe-area-inset-left, 0px);
+}
+
+:where([dir="ltr"]) {
+	--kin-shell-safe-start: env(safe-area-inset-left, 0px);
+	--kin-shell-safe-end: env(safe-area-inset-right, 0px);
 }
 
 /* Scheme switch. Applies to the document or any bounded subtree. */

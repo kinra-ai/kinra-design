@@ -8,6 +8,7 @@
 @import "./overlays.css";
 @import "./data.css";
 @import "./prose.css";
+@import "./shell.css";
 /* Keep scoped roles after entry points that import root defaults. This also
    preserves recipes on html when native CSS imports are not deduplicated. */
 @import "./recipes.css";

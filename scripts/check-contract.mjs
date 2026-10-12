@@ -196,6 +196,7 @@ const styleEntries = [
 	"./overlays.css",
 	"./data.css",
 	"./prose.css",
+	"./shell.css",
 ];
 const indexCss = await readFile(
 	path.join(root, "src/styles/index.css"),

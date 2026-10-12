@@ -1,0 +1,747 @@
+@import "./tokens.css";
+
+/*
+ * The application shell, shared once Kinra Space, Kinra Home and Kinra Relay
+ * had each built the same one. The window is the shelf. A sidebar stands on
+ * it: a rail of the product's pages beside a column of its work. The page is
+ * one raised panel inset from the shelf, holding the bar and the page that
+ * scrolls beneath it. Folded, the sidebar keeps only its rail. In the drawer
+ * layout it arrives from the inline start over a flush page.
+ *
+ * The product owns state and behaviour. It sets data-folded, data-drawer,
+ * data-scroll, data-labels and data-resizing on .kin-shell, data-scrolled on
+ * the bar, and inert on whichever of the sidebar and the panel stands behind;
+ * it moves focus and remembers the fold. docs/catalog.md, "Application
+ * shell", is the contract and lists the behaviour each product implements.
+ *
+ * The rules sit in their own layer after kinra.components, so the shell can
+ * restyle navigation, buttons and breadcrumbs inside itself; product CSS,
+ * layered after kinra or unlayered, still wins.
+ */
+
+@layer kinra.shell {
+	/* The window is the shelf, the deepest ground. */
+	.kin-shell {
+		background: var(--kin-shell-shelf);
+		block-size: var(--kin-shell-height);
+		display: flex;
+		overflow: hidden;
+	}
+
+	/* The sidebar: the rail's rows down its own track, and the column beside
+	   them spanning them all. Nothing here clips, so the rail's tips reach
+	   over the column and the page; only the product's lists in the column
+	   scroll. The width is the rail plus the column, which a product that
+	   resizes the column sets through --kin-shell-column. */
+	.kin-shell__sidebar {
+		background: var(--kin-shell-shelf);
+		column-gap: var(--kin-space-2);
+		display: grid;
+		flex: none;
+		grid-template-columns:
+			calc(var(--kin-shell-rail) - 2 * var(--kin-space-2))
+			minmax(0, 1fr);
+		grid-template-rows: auto auto minmax(0, 1fr) auto;
+		min-block-size: 0;
+		padding-block: calc(var(--kin-shell-inset) + var(--kin-shell-safe-top))
+			calc(var(--kin-shell-inset) + var(--kin-shell-safe-bottom));
+		padding-inline: calc(var(--kin-space-2) + var(--kin-shell-safe-start)) 0;
+		position: relative;
+		width: calc(
+			var(--kin-shell-rail) + var(--kin-shell-column) +
+				var(--kin-shell-safe-start)
+		);
+	}
+
+	/* The head is the bar's own height and stands level with it, so the K
+	   shares the bar's centre line, open or folded. */
+	.kin-shell__head {
+		align-items: center;
+		block-size: var(--kin-shell-bar);
+		display: flex;
+		grid-area: 1 / 1;
+		position: relative;
+	}
+
+	.kin-shell__pages {
+		grid-area: 2 / 1;
+		margin-block-start: var(--kin-space-2);
+	}
+
+	/* Folded, the rail holds the marks; open, the column says the same in
+	   full, so only one of the two is ever shown. The marks never scroll,
+	   since their tips reach over the page: the product shows as many as
+	   fit. */
+	.kin-shell__marks {
+		grid-area: 3 / 1;
+		margin-block-start: var(--kin-space-4);
+		min-block-size: 0;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.kin-shell__foot {
+		grid-area: 4 / 1;
+		margin-block-start: var(--kin-space-4);
+		padding-block-start: var(--kin-space-3);
+	}
+
+	:is(.kin-shell__pages, .kin-shell__marks, .kin-shell__foot),
+	:is(.kin-shell__pages, .kin-shell__marks, .kin-shell__foot) > ul {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		min-inline-size: 0;
+	}
+
+	:is(.kin-shell__pages, .kin-shell__marks, .kin-shell__foot) > ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	/* The K is the way home, not a key: the pointer finds it without a fill,
+	   the keyboard by its ring. */
+	.kin-shell__home {
+		align-items: center;
+		aspect-ratio: 1;
+		background: none;
+		border: 0;
+		border-radius: var(--kin-radius-row);
+		color: inherit;
+		cursor: pointer;
+		display: flex;
+		inline-size: 100%;
+		justify-content: center;
+		min-block-size: 0;
+		padding: 0;
+		position: relative;
+		text-decoration: none;
+	}
+
+	.kin-shell__home > :is(img, svg) {
+		block-size: 1.25rem;
+		inline-size: 1.25rem;
+	}
+
+	/* Rail items are squares in the track: a glyph, the item's name for
+	   assistive technology and, under the pointer and the keyboard, a tip. */
+	.kin-shell__item {
+		align-items: center;
+		background: none;
+		border: 0;
+		border-radius: var(--kin-radius-row);
+		color: var(--kin-color-text-muted);
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		font-weight: inherit;
+		gap: 0;
+		inline-size: 100%;
+		justify-content: center;
+		line-height: 1.3;
+		min-block-size: var(--kin-control-height-compact);
+		padding: 0;
+		position: relative;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.kin-shell__item:hover:where(:not(:disabled, [aria-disabled="true"])) {
+		background: var(--kin-surface-hover);
+		color: var(--kin-color-text);
+	}
+
+	/* The open item takes the panel's tone, which ties it to the page it
+	   opened; a line would only divide them. So does the current row of a
+	   navigation list in the column. */
+	.kin-shell__item:is([aria-current="page"], [aria-current="true"]),
+	.kin-shell__sidebar
+		.kin-nav
+		:is([aria-current="page"], [aria-current="true"]) {
+		background: var(--kin-shell-current, var(--kin-shell-panel));
+		color: var(--kin-color-text);
+	}
+
+	.kin-shell__item:is([aria-current="page"], [aria-current="true"]) {
+		font-weight: var(--kin-weight-strong);
+	}
+
+	.kin-shell__item:is(:disabled, [aria-disabled="true"]) {
+		cursor: not-allowed;
+		opacity: 0.55;
+	}
+
+	:is(.kin-shell__item, .kin-shell__home):focus-visible {
+		outline: 2px solid var(--kin-color-primary);
+		outline-offset: -2px;
+	}
+
+	.kin-shell__item > svg,
+	.kin-shell__glyph > svg {
+		block-size: 1.25rem;
+		flex: none;
+		inline-size: 1.25rem;
+	}
+
+	/* A glyph holds an icon, an avatar or a mark, and carries the item's news
+	   on its top end corner: a count, or a status mark with no words. */
+	.kin-shell__glyph {
+		display: inline-flex;
+		flex: none;
+		position: relative;
+	}
+
+	.kin-shell__glyph > .kin-status {
+		inset-block-start: -0.2rem;
+		inset-inline-end: -0.35rem;
+		position: absolute;
+	}
+
+	.kin-shell__badge {
+		background: var(--kin-color-text-muted);
+		block-size: 1.125rem;
+		border-radius: var(--kin-radius-mark);
+		color: var(--kin-color-text-inverse);
+		display: inline-grid;
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-xs);
+		font-variant-numeric: tabular-nums;
+		font-weight: var(--kin-weight-strong);
+		inset-block-start: -0.5rem;
+		inset-inline-start: 75%;
+		letter-spacing: normal;
+		line-height: 1;
+		min-inline-size: 1.125rem;
+		padding-inline: 0.25rem;
+		place-items: center;
+		pointer-events: none;
+		position: absolute;
+		white-space: nowrap;
+	}
+
+	.kin-shell__badge[data-tone="primary"] {
+		background: var(--kin-color-primary);
+	}
+
+	.kin-shell__badge[data-tone="reason"] {
+		background: var(--kin-color-reason);
+	}
+
+	.kin-shell__badge[data-tone="success"] {
+		background: var(--kin-color-success);
+	}
+
+	.kin-shell__badge[data-tone="warning"] {
+		background: var(--kin-color-warning);
+	}
+
+	.kin-shell__badge[data-tone="error"] {
+		background: var(--kin-color-error);
+	}
+
+	/* An item's visible name, shown beneath its glyph only in a labelled
+	   drawer, where no pointer hovers to show the tip. */
+	.kin-shell__label {
+		display: none;
+	}
+
+	/* Tips stand beside the item, over the column and the page, above
+	   anything either raises. A touch screen keeps the last tap's hover, so
+	   only a pointer that hovers names an item by pointing at it; the
+	   keyboard always does. A control whose own popover is open drops its
+	   tip, which would repeat what the popover says. */
+	.kin-shell__tip {
+		display: block;
+		inline-size: max-content;
+		inset-block-start: 50%;
+		inset-inline-start: calc(100% + var(--kin-space-3));
+		max-width: 18rem;
+		opacity: 0;
+		position: absolute;
+		text-align: start;
+		translate: 0 -50%;
+		white-space: normal;
+		z-index: var(--kin-layer-overlay);
+	}
+
+	:is(.kin-shell__item, .kin-shell__home):focus-visible > .kin-shell__tip {
+		opacity: 1;
+	}
+
+	@media (hover: hover) {
+		:is(.kin-shell__item, .kin-shell__home):hover > .kin-shell__tip {
+			opacity: 1;
+		}
+	}
+
+	[aria-expanded="true"] > .kin-shell__tip {
+		display: none;
+	}
+
+	/* The column: the product's work beside the rail. */
+	.kin-shell__column {
+		display: flex;
+		flex-direction: column;
+		grid-area: 1 / 2 / 5 / 3;
+		min-block-size: 0;
+		min-inline-size: 0;
+		padding-inline-end: var(--kin-space-2);
+	}
+
+	/* Folded, the column goes and the rail stays as it is. */
+	.kin-shell[data-folded]:not([data-drawer]) .kin-shell__sidebar {
+		width: calc(var(--kin-shell-rail) + var(--kin-shell-safe-start));
+	}
+
+	.kin-shell[data-folded]:not([data-drawer]) .kin-shell__column {
+		opacity: 0;
+		padding-inline-end: 0;
+		pointer-events: none;
+		visibility: hidden;
+	}
+
+	.kin-shell[data-folded]:not([data-drawer]) .kin-shell__marks {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	/* The page: one raised panel on the shelf, inset from it, with no border.
+	   Nested surfaces return to its tone. */
+	.kin-shell__panel {
+		--kin-surface-nested: var(--kin-shell-panel);
+
+		background: var(--kin-shell-panel);
+		border-radius: var(--kin-radius-panel);
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		margin-block: var(--kin-shell-inset);
+		margin-inline: 0 max(var(--kin-shell-inset), var(--kin-shell-safe-end));
+		min-inline-size: 0;
+		overflow: clip;
+	}
+
+	/* The bar over the page draws no rule; a hairline says only that the page
+	   is scrolled beneath it. It is a container, so what it holds answers the
+	   bar's own width. */
+	.kin-shell__bar {
+		align-items: center;
+		container: kin-shell-bar / inline-size;
+		display: flex;
+		flex: none;
+		gap: var(--kin-space-3);
+		min-block-size: calc(var(--kin-shell-bar) + var(--kin-shell-safe-top));
+		padding-block-start: var(--kin-shell-safe-top);
+		padding-inline: var(--kin-space-3);
+		position: relative;
+		z-index: var(--kin-layer-raised);
+	}
+
+	.kin-shell__bar[data-scrolled] {
+		box-shadow: 0 1px 0 0 var(--kin-float-ring);
+	}
+
+	/* The fold stays put in the bar while the sidebar folds beside it. Open is
+	   its resting state, so it draws no pressed fill there. The drawer layout
+	   has its own control instead. */
+	:is(.kin-shell__fold, .kin-shell__menu) {
+		flex: none;
+	}
+
+	.kin-shell__fold[aria-expanded="true"] {
+		background: transparent;
+		color: var(--kin-color-text-subtle);
+	}
+
+	.kin-shell__fold[aria-expanded="true"]:hover:where(
+			:not(:disabled, [aria-disabled="true"])
+		) {
+		background: var(--kin-surface-hover);
+		color: var(--kin-color-text);
+	}
+
+	.kin-shell__menu {
+		display: none;
+	}
+
+	/* Where the page sits: one line, the current page giving way first; a
+	   narrow bar keeps only the current page. */
+	.kin-shell__crumbs {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.kin-shell__crumbs ol {
+		flex-wrap: nowrap;
+		overflow: hidden;
+	}
+
+	.kin-shell__crumbs li {
+		flex: none;
+		font-size: var(--kin-text-sm);
+		white-space: nowrap;
+	}
+
+	.kin-shell__crumbs li:last-child {
+		flex: 0 1 auto;
+		min-width: 0;
+	}
+
+	.kin-shell__crumbs li:last-child > * {
+		display: block;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	@container kin-shell-bar (max-width: 36rem) {
+		.kin-shell__crumbs li:not(:last-child) {
+			display: none;
+		}
+
+		.kin-shell__crumbs li:last-child::before {
+			content: none;
+		}
+	}
+
+	.kin-shell__end {
+		align-items: center;
+		display: flex;
+		flex: none;
+		gap: var(--kin-space-2);
+		margin-inline-start: auto;
+	}
+
+	/* The page scrolls inside the panel, so the sidebar and the bar hold
+	   still. It is a container, so a page answers the room it actually has. */
+	.kin-shell__page {
+		container: kin-shell-page / inline-size;
+		flex: 1;
+		min-block-size: 0;
+		overflow: auto;
+		overscroll-behavior-y: contain;
+	}
+
+	.kin-shell__page:focus-visible {
+		outline-offset: -2px;
+	}
+
+	.kin-shell__backdrop {
+		display: none;
+	}
+
+	/* The drawer layout: the sidebar, rail and column together, is a card on
+	   the shelf arriving from the inline start over a flush page. Closed, it
+	   is hidden as well as inert, so assistive technology and tests pass over
+	   it; it hides once it has left. */
+	.kin-shell[data-drawer] .kin-shell__sidebar {
+		border-end-end-radius: var(--kin-radius-sheet);
+		border-start-end-radius: var(--kin-radius-sheet);
+		inset-block: 0;
+		inset-inline-start: 0;
+		padding-block: var(--kin-shell-safe-top)
+			calc(var(--kin-shell-inset) + var(--kin-shell-safe-bottom));
+		position: fixed;
+		translate: calc(-100% * var(--kin-flow)) 0;
+		visibility: hidden;
+		width: min(
+			calc(
+				var(--kin-shell-rail) + var(--kin-shell-drawer-column) +
+					var(--kin-shell-safe-start)
+			),
+			var(--kin-shell-drawer-max)
+		);
+		z-index: var(--kin-layer-dialog);
+	}
+
+	/* Open, it faces the page with its end edge and casts toward it. */
+	.kin-shell[data-drawer="open"] .kin-shell__sidebar {
+		box-shadow:
+			calc(1px * var(--kin-flow)) 0 0 0 var(--kin-float-ring),
+			calc(6px * var(--kin-flow)) 0 16px -10px var(--kin-shadow-tint-deep);
+		translate: 0 0;
+		visibility: visible;
+	}
+
+	/* A plain surface, never a quiet button, whose hover would wash over the
+	   dim. */
+	.kin-shell[data-drawer] .kin-shell__backdrop {
+		background: var(--kin-backdrop);
+		block-size: 100%;
+		border: 0;
+		border-radius: 0;
+		cursor: pointer;
+		display: block;
+		inline-size: 100%;
+		inset: 0;
+		margin: 0;
+		opacity: 0;
+		padding: 0;
+		position: fixed;
+		visibility: hidden;
+		z-index: calc(var(--kin-layer-dialog) - 1);
+	}
+
+	.kin-shell[data-drawer="open"] .kin-shell__backdrop {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.kin-shell[data-drawer] .kin-shell__panel {
+		--kin-surface-nested: var(--kin-shell-flush);
+
+		background: var(--kin-shell-flush);
+		border-radius: 0;
+		margin: 0;
+	}
+
+	.kin-shell[data-drawer] .kin-shell__bar {
+		padding-inline: calc(var(--kin-space-3) + var(--kin-shell-safe-start))
+			calc(var(--kin-space-3) + var(--kin-shell-safe-end));
+	}
+
+	.kin-shell[data-drawer] .kin-shell__fold {
+		display: none;
+	}
+
+	.kin-shell[data-drawer] .kin-shell__menu {
+		display: inline-flex;
+	}
+
+	/* A labelled drawer names each item that carries a label beneath its
+	   glyph, at the smallest text size, on a wider rail. */
+	.kin-shell[data-drawer][data-labels="drawer"] .kin-shell__sidebar {
+		grid-template-columns:
+			calc(var(--kin-shell-rail-labelled) - 2 * var(--kin-space-2))
+			minmax(0, 1fr);
+		width: min(
+			calc(
+				var(--kin-shell-rail-labelled) + var(--kin-shell-drawer-column) +
+					var(--kin-shell-safe-start)
+			),
+			var(--kin-shell-drawer-max)
+		);
+	}
+
+	.kin-shell[data-drawer][data-labels="drawer"]
+		.kin-shell__item:has(> .kin-shell__label) {
+		gap: 0.1875rem;
+		min-block-size: 3.25rem;
+	}
+
+	.kin-shell[data-drawer][data-labels="drawer"] .kin-shell__label {
+		display: block;
+		font-size: var(--kin-text-xs);
+		line-height: 1.1;
+		max-inline-size: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.kin-shell[data-drawer][data-labels="drawer"]
+		.kin-shell__item:has(> .kin-shell__label)
+		> .kin-shell__tip {
+		display: none;
+	}
+
+	/* In the drawer layout a page may scroll with the document instead,
+	   under a bar that stays; the document holds still while the drawer is
+	   open. Wherever the page scrolls, sticky offsets and off-screen checks
+	   measure that scroller. */
+	.kin-shell[data-drawer][data-scroll="document"] {
+		background: var(--kin-shell-flush);
+		block-size: auto;
+		display: block;
+		min-block-size: var(--kin-shell-height);
+		overflow: visible;
+	}
+
+	.kin-shell[data-drawer][data-scroll="document"] .kin-shell__panel {
+		display: block;
+		overflow: visible;
+	}
+
+	.kin-shell[data-drawer][data-scroll="document"] .kin-shell__bar {
+		background: var(--kin-shell-flush);
+		inset-block-start: 0;
+		position: sticky;
+		z-index: var(--kin-layer-sticky);
+	}
+
+	.kin-shell[data-drawer][data-scroll="document"] .kin-shell__page {
+		overflow: visible;
+	}
+
+	:root:has(.kin-shell[data-drawer][data-scroll="document"]) {
+		scroll-padding-block-start: calc(
+			var(--kin-shell-bar) + var(--kin-shell-safe-top)
+		);
+	}
+
+	:root:has(.kin-shell[data-drawer="open"][data-scroll="document"]) {
+		overflow: hidden;
+	}
+
+	/* Room across and none down: the rail's gaps close. */
+	@media (max-height: 40rem) {
+		:is(.kin-shell__marks, .kin-shell__foot) {
+			margin-block-start: var(--kin-space-2);
+		}
+
+		.kin-shell__foot {
+			padding-block-start: var(--kin-space-2);
+		}
+	}
+
+	@media (pointer: coarse) {
+		.kin-shell__item {
+			min-block-size: var(--kin-hit-target);
+		}
+	}
+
+	/* Motion, only where the reader allows it; reduced motion keeps every
+	   state and drops the movement between them. The width moves at layer
+	   speed, the column fades out as the rail closes over it and back as it
+	   opens, a tip waits a moment before naming its item, and the drawer
+	   leaves before it hides. */
+	@media (prefers-reduced-motion: no-preference) {
+		.kin-shell__sidebar {
+			transition: width var(--kin-motion-layer);
+		}
+
+		.kin-shell__column {
+			transition:
+				opacity var(--kin-motion-control),
+				visibility 0s;
+		}
+
+		.kin-shell[data-folded]:not([data-drawer]) .kin-shell__column {
+			transition-delay: 0s, var(--kin-duration-fast);
+		}
+
+		.kin-shell__marks {
+			transition:
+				opacity var(--kin-motion-control),
+				visibility 0s var(--kin-duration-fast);
+		}
+
+		.kin-shell[data-folded]:not([data-drawer]) .kin-shell__marks {
+			transition-delay: 0s;
+		}
+
+		.kin-shell__item {
+			transition:
+				background var(--kin-motion-control),
+				color var(--kin-motion-control);
+		}
+
+		.kin-shell__tip {
+			transition: opacity var(--kin-motion-control);
+		}
+
+		:is(.kin-shell__item, .kin-shell__home):focus-visible > .kin-shell__tip {
+			transition-delay: var(--kin-duration-normal);
+		}
+
+		@media (hover: hover) {
+			:is(.kin-shell__item, .kin-shell__home):hover > .kin-shell__tip {
+				transition-delay: var(--kin-duration-normal);
+			}
+		}
+
+		.kin-shell__bar {
+			transition: box-shadow var(--kin-motion-surface);
+		}
+
+		.kin-shell[data-drawer] .kin-shell__sidebar {
+			transition:
+				translate var(--kin-motion-layer),
+				box-shadow var(--kin-motion-layer),
+				visibility 0s var(--kin-duration-slow);
+		}
+
+		.kin-shell[data-drawer] .kin-shell__backdrop {
+			transition:
+				opacity var(--kin-motion-layer),
+				visibility 0s var(--kin-duration-slow);
+		}
+
+		.kin-shell[data-drawer="open"]
+			:is(.kin-shell__sidebar, .kin-shell__backdrop) {
+			transition-delay: 0s;
+		}
+
+		/* Nothing travels while the shell settles: a breakpoint crossed, a
+		   column resized, a drawer under a finger. */
+		.kin-shell[data-resizing]
+			:is(
+				.kin-shell__sidebar,
+				.kin-shell__column,
+				.kin-shell__marks,
+				.kin-shell__backdrop
+			) {
+			transition: none;
+		}
+	}
+
+	/* The base stylesheet still gives every property a moment's transition
+	   under reduced motion, which would carry a closed drawer's hiding into
+	   its contents for a frame after it opens. The shell's parts take none,
+	   and with nothing to travel a closed drawer is simply not displayed, so
+	   an opening drawer is visible, and takes focus, at once. */
+	@media (prefers-reduced-motion: reduce) {
+		:is(
+			.kin-shell__sidebar,
+			.kin-shell__column,
+			.kin-shell__marks,
+			.kin-shell__backdrop,
+			.kin-shell__bar,
+			.kin-shell__item,
+			.kin-shell__tip
+		) {
+			transition-property: none;
+		}
+
+		.kin-shell[data-drawer="closed"] .kin-shell__sidebar {
+			display: none;
+		}
+	}
+
+	/* Forced colours remove the tones and shadows that set these apart, so
+	   the inset panel, the open drawer, a scrolled bar and the current item
+	   draw their edges. */
+	@media (forced-colors: active) {
+		.kin-shell:not([data-drawer]) .kin-shell__panel,
+		.kin-shell[data-drawer="open"] .kin-shell__sidebar {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+
+		.kin-shell__bar[data-scrolled] {
+			border-block-end: 1px solid CanvasText;
+		}
+
+		.kin-shell__item:is([aria-current="page"], [aria-current="true"]):where(
+				:not(:focus-visible)
+			) {
+			outline: 1px solid Highlight;
+			outline-offset: -1px;
+		}
+
+		:is(.kin-shell__item, .kin-shell__home):focus-visible {
+			outline-color: Highlight;
+		}
+
+		.kin-shell__fold[aria-expanded="true"]:where(:not(:focus-visible)) {
+			outline: none;
+		}
+
+		.kin-shell__badge {
+			border: 1px solid CanvasText;
+		}
+	}
+}

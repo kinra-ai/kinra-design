@@ -1,7 +1,7 @@
 @import "./tokens.css";
 
 @layer kinra.reset, kinra.base, kinra.type, kinra.compositions, kinra.components,
-	kinra.prose;
+	kinra.shell, kinra.prose;
 
 @layer kinra.reset {
 	*,
