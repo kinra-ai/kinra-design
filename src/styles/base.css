@@ -144,12 +144,18 @@
 		scroll-behavior: auto;
 	}
 
+	/*
+	 * A change lands in the frame that makes it. A transition shortened rather
+	 * than removed holds the old value for that frame, on every element and
+	 * every property, so a panel just shown is still hidden when focus is sent
+	 * into it. Animations still run once, at once, so their end events arrive.
+	 */
 	*,
 	*::before,
 	*::after {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		scroll-behavior: auto !important;
-		transition-duration: 0.01ms !important;
+		transition: none !important;
 	}
 }

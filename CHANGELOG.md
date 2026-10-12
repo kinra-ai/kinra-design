@@ -10,6 +10,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 Intended for 0.7.0: the application shell that Kinra Space, Kinra Home and
 Kinra Relay each built, shared as a stable stylesheet. The shell is additive:
 no existing class, token, recipe default or registry status changes for it.
+Two fixes reach every consumer: reduced motion removes transitions rather
+than shortening them, and a toolbar's fields stand level with its buttons
+under a finger.
 
 ### Added
 
@@ -52,6 +55,12 @@ no existing class, token, recipe default or registry status changes for it.
 
 ### Fixed
 
+- Under reduced motion `base.css` removes transitions rather than shortening
+  them to 0.01ms. A shortened transition held every property's old value for a
+  frame, on every element, so focus sent into a panel just shown found it
+  still hidden. A change now lands in the frame that makes it. `transitionend`
+  no longer fires under reduced motion; animations still end with their
+  events.
 - On touch screens, a toolbar's fields and selects take the same 44px hit
   target as its buttons, so a filter row no longer mixes heights.
 

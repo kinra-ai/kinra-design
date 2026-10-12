@@ -178,6 +178,35 @@ test("reduced motion and forced colours preserve example state and focus", async
 	}
 });
 
+test("reduced motion lands a change in the frame that makes it", async ({
+	page,
+}) => {
+	// A panel shown by its own visibility, one shown through an inherited one,
+	// and a fade: none may hold its old value for a frame, or focus sent into a
+	// panel just opened finds it still hidden.
+	await serve(
+		page,
+		`<!doctype html><html lang="en"><head><link rel="stylesheet" href="/src/styles/index.css"></head><body><div id="eased" style="visibility: hidden; transition: visibility 200ms"><button id="act">Act</button></div><div id="inherited" style="visibility: hidden"><nav><ul><li><a id="link" href="#one">One</a></li></ul></nav></div><p id="fade" style="opacity: 0; transition: opacity 200ms">Faded</p></body></html>`,
+	);
+	await page.emulateMedia({ reducedMotion: "reduce" });
+	await page.goto("http://design.test/fixture");
+	const landed = await page.evaluate(() => {
+		const focus = (panel, target) => {
+			document.getElementById(panel).style.visibility = "visible";
+			document.getElementById(target).focus();
+			return document.activeElement?.id;
+		};
+		const fade = document.getElementById("fade");
+		fade.style.opacity = "1";
+		return {
+			eased: focus("eased", "act"),
+			inherited: focus("inherited", "link"),
+			opacity: getComputedStyle(fade).opacity,
+		};
+	});
+	expect(landed).toEqual({ eased: "act", inherited: "link", opacity: "1" });
+});
+
 test("coarse pointer keeps application control targets", async ({
 	browser,
 }) => {

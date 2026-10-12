@@ -101,6 +101,11 @@ pair the existing durations and easing. The corner key uses
 and 300ms. Its optional module reads those tokens. Reduced motion renders
 the same face in place and holds the working outline still.
 
+Under reduced motion `base.css` removes every transition and runs each
+animation once, at once. A change lands in the frame that makes it, so focus
+sent into a panel just shown arrives; animations still end with their events,
+and `transitionend` does not fire.
+
 ### Scheme
 
 Every colour role resolves through `light-dark()`. The default scheme is

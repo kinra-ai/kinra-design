@@ -256,6 +256,27 @@ for (const motion of [false, true]) {
 	});
 }
 
+test("beside a host's reset that only shortens transitions, the drawer still takes focus", async ({
+	page,
+}) => {
+	// The shell loaded without base.css, beside the common reset that shortens
+	// every transition under reduced motion rather than removing it.
+	await serve(
+		page,
+		`<!doctype html><html lang="en"><head><link rel="stylesheet" href="/src/styles/shell.css"><style>@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }</style></head><body><div class="kin-shell" data-drawer="closed"><aside class="kin-shell__sidebar" inert><nav class="kin-shell__pages"><ul><li><a class="kin-shell__item" id="first" href="#first">First</a></li></ul></nav></aside><div class="kin-shell__panel"><header class="kin-shell__bar"><button class="kin-shell__menu" type="button">Menu</button></header><main class="kin-shell__page">Page</main></div></div></body></html>`,
+	);
+	await page.setViewportSize(phone);
+	await page.emulateMedia({ reducedMotion: "reduce" });
+	await page.goto("http://design.test/fixture");
+	const focused = await page.evaluate(() => {
+		document.querySelector(".kin-shell").dataset.drawer = "open";
+		document.querySelector(".kin-shell__sidebar").inert = false;
+		document.getElementById("first").focus();
+		return document.activeElement?.id;
+	});
+	expect(focused).toBe("first");
+});
+
 test("crossing the breakpoint closes the drawer and moves focus out of it", async ({
 	page,
 }) => {

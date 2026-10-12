@@ -688,11 +688,12 @@
 		}
 	}
 
-	/* The base stylesheet still gives every property a moment's transition
-	   under reduced motion, which would carry a closed drawer's hiding into
-	   its contents for a frame after it opens. The shell's parts take none,
-	   and with nothing to travel a closed drawer is simply not displayed, so
-	   an opening drawer is visible, and takes focus, at once. */
+	/* The base stylesheet removes every transition under reduced motion, but a
+	   host may load the shell without it, beside a reset that only shortens
+	   them, which would carry a closed drawer's hiding into its contents for a
+	   frame after it opens. So the shell's parts take none of their own, and
+	   with nothing to travel a closed drawer is simply not displayed: an
+	   opening drawer is visible, and takes focus, at once. */
 	@media (prefers-reduced-motion: reduce) {
 		:is(
 			.kin-shell__sidebar,

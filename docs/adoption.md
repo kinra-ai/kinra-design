@@ -294,12 +294,25 @@ owners' gates, not claims made by the reference examples.
 ## Moving to 0.7: the application shell
 
 Prepared for 0.7.0, not yet released. The shell is additive: no existing
-class, token, recipe default or registry status changes, and a consumer that
-does not use `.kin-shell` sees no difference. Kinra Space, Kinra Home and
-Kinra Relay each built the same shell; each can now replace its copy, in its
-own repository and on its own schedule. The
+class, token, recipe default or registry status changes for it, and a consumer
+that does not use `.kin-shell` sees no difference from it. Kinra Space, Kinra
+Home and Kinra Relay each built the same shell; each can now replace its copy,
+in its own repository and on its own schedule. The
 [catalog](catalog.md#application-shell-shellcss) is the contract, and `/shell/`
 shows every state.
+
+### Fixes every consumer receives
+
+- **Reduced motion removes transitions.** `base.css` used to shorten every
+  transition to 0.01ms, which held each property's old value for a frame on
+  every element, so focus sent into a panel just shown found it still hidden.
+  Now a change lands in the frame that makes it. `transitionend` no longer
+  fires under reduced motion: a product that waits for it there should act on
+  the change itself. Animations still run once and end with their events, so a
+  toast's exit still removes it.
+- **A toolbar's fields stand level under a finger.** Under a coarse pointer a
+  toolbar's inputs and selects take the 44px target its buttons have; a local
+  rule that raised them can go.
 
 ### Adopt the shell
 
@@ -327,8 +340,8 @@ All three copies differ from the shared shell in the same few places:
   bar's controls. The pages stay where they were; the column starts 4px higher
   and the rail's foot ends 4px lower.
 - A closed drawer is hidden as well as inert, as Relay's already was. Under
-  reduced motion it is not displayed, so an opening drawer can take focus at
-  once despite the base stylesheet's reduced-motion transitions.
+  reduced motion it is not displayed, so an opening drawer takes focus at once
+  even beside a host reset that only shortens transitions.
 - A tip wraps beyond 18rem rather than running on.
 
 ### Kinra Space
