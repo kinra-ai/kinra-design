@@ -135,7 +135,7 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 				sidebar!.querySelector<HTMLElement>(`:is(${focusable})${shown}`);
 			start?.focus();
 		} else if (restore === "page") page?.focus({ preventScroll: true });
-		else menu?.focus();
+		else menu?.focus({ preventScroll: true });
 	}
 
 	/* The hairline says the page is scrolled beneath the bar: measured on the
@@ -190,10 +190,16 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 	function keydown(event: KeyboardEvent) {
 		if (event.defaultPrevented) return;
 		if (event.key === "Escape") {
-			// The top layer owns Escape first: an open popover or modal closes
-			// before anything here. An open drawer closes next, its tips with
+			// The top layer owns Escape first: a popover that Escape closes,
+			// or a modal, closes before anything here. A manual popover, such
+			// as a toast, does not. An open drawer closes next, its tips with
 			// it; beside the page, a tip that is showing goes.
-			if (document.querySelector(":popover-open, dialog:modal")) return;
+			if (
+				document.querySelector(
+					':popover-open:not([popover="manual"]), dialog:modal',
+				)
+			)
+				return;
 			if (!open) {
 				dismissTip();
 				return;

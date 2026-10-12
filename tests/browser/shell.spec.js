@@ -166,10 +166,29 @@ test("rail items name themselves beside the rail, over the page", async ({
 	await expect(account).toHaveAttribute("aria-expanded", "false");
 });
 
-test("a tip can be hovered, and Escape puts it away without moving focus", async ({
+test("a click passes through a tip, and Escape puts it away without moving focus", async ({
 	page,
 }) => {
 	await open(page, "fold=folded");
+	// The K's tip lies over the fold; going from one to the other and
+	// clicking folds nothing away and goes nowhere but the fold.
+	const home = page.locator(".kin-shell__home");
+	const fold = page.locator(".kin-shell__fold");
+	await home.hover();
+	const homeTip = await home.locator(".kin-shell__tip").boundingBox();
+	const target = await fold.boundingBox();
+	expect(homeTip.x + homeTip.width).toBeGreaterThan(target.x + target.width);
+	await page.mouse.move(target.x + target.width / 2, centre(target), {
+		steps: 4,
+	});
+	await page.mouse.down();
+	await page.mouse.up();
+	await expect(shell(page)).not.toHaveAttribute("data-folded");
+	await expect(page.locator("#page-title")).toHaveText("Overview");
+	await fold.click();
+	await expect(shell(page)).toHaveAttribute("data-folded", "");
+	await page.mouse.move(900, 500);
+
 	const inbox = item(page, "inbox");
 	const tip = inbox.locator(".kin-shell__tip");
 	const shown = () =>
@@ -177,11 +196,7 @@ test("a tip can be hovered, and Escape puts it away without moving focus", async
 			const style = getComputedStyle(element);
 			return style.display !== "none" && style.opacity === "1";
 		});
-	// The pointer crosses the gap onto the tip and rests there.
 	await inbox.hover();
-	expect(await shown()).toBe(true);
-	const box = await tip.boundingBox();
-	await page.mouse.move(box.x + box.width / 2, centre(box), { steps: 8 });
 	expect(await shown()).toBe(true);
 	// Escape puts it away, and neither the pointer nor focus moves.
 	const before = await page.evaluate(() => document.activeElement?.className);
@@ -218,6 +233,14 @@ test("in the drawer, Escape closes it at once, its tips with it", async ({
 	page,
 }) => {
 	await open(page, "", { viewport: phone });
+	// A manual popover, such as a toast, does not hold Escape.
+	await page.evaluate(() => {
+		const toast = document.createElement("div");
+		toast.popover = "manual";
+		toast.textContent = "Saved";
+		document.body.append(toast);
+		toast.showPopover();
+	});
 	await chord(page);
 	await expect(shell(page)).toHaveAttribute("data-drawer", "open");
 	const overview = item(page, "overview");
@@ -245,10 +268,15 @@ test("what the page raises stays beneath the rail's tips and the drawer", async 
 	const tipOnTop = await item(page, "inbox")
 		.locator(".kin-shell__tip")
 		.evaluate((tip) => {
+			// A tip never takes the pointer; lifted only to ask what paints on top.
 			const rect = tip.getBoundingClientRect();
-			return tip.contains(
-				document.elementFromPoint(rect.right - 6, rect.top + rect.height / 2),
+			tip.style.pointerEvents = "auto";
+			const hit = document.elementFromPoint(
+				rect.right - 6,
+				rect.top + rect.height / 2,
 			);
+			tip.style.pointerEvents = "";
+			return tip.contains(hit);
 		});
 	expect(tipOnTop).toBe(true);
 	await page.mouse.move(900, 500);
@@ -493,8 +521,12 @@ test("in document scroll, the bar's controls never move the reader", async ({
 	await page.evaluate(() => scrollTo(0, 900));
 	const start = await y();
 	expect(start).toBeGreaterThan(400);
-	// Escape gives focus back to the menu where it stands.
-	await page.locator(".kin-shell__menu").click();
+	// Escape gives focus back to the menu where it stands. A pointer's click,
+	// not the locator's, which scrolls its target into view first.
+	const menu = await page.locator(".kin-shell__menu").boundingBox();
+	await page.mouse.click(menu.x + menu.width / 2, centre(menu));
+	await expect(shell(page)).toHaveAttribute("data-drawer", "open");
+	expect(await y()).toBe(start);
 	await page.keyboard.press("Escape");
 	await expect(page.locator(".kin-shell__menu")).toBeFocused();
 	expect(await y()).toBe(start);
@@ -511,7 +543,19 @@ test("in document scroll, the bar's controls never move the reader", async ({
 		),
 	).toBe(true);
 	expect(await y()).toBe(start);
-	// An address in the page still stops below the bar.
+	// The skip link's destination and an address in the page still stop
+	// below the bar.
+	const skipped = await page.evaluate(() => {
+		location.hash = "#main";
+		const bar = document
+			.querySelector(".kin-shell__bar")
+			.getBoundingClientRect();
+		return (
+			document.getElementById("page-title").getBoundingClientRect().top -
+			bar.bottom
+		);
+	});
+	expect(skipped).toBeGreaterThanOrEqual(0);
 	const clear = await page.evaluate(() => {
 		location.hash = "#row-12";
 		const bar = document

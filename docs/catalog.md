@@ -379,7 +379,8 @@ state on both grounds and right to left, running the reference behaviour.
 - `.kin-shell__sidebar` holds the rail's rows down its own track and the column
   beside them. Nothing in it clips, so tips reach over the column and the page,
   except in a window under 28rem tall: there the sidebar scrolls to reach its
-  foot, unless it is a folded rail under a pointer that hovers.
+  foot, unless it is a folded rail under a pointer that hovers. A product whose
+  rail needs more height applies the same rule from its own height.
 - `.kin-shell__head` is the bar's own height and level with it. It holds
   `.kin-shell__home`, the K: the way home, without a fill under the pointer.
 - `.kin-shell__pages` holds the primary pages. `.kin-shell__marks` holds the
@@ -398,9 +399,10 @@ state on both grounds and right to left, running the reference behaviour.
   in a labelled drawer.
 - `.kin-shell__tip`, with `.kin-tooltip`, names an item beside it under a
   pointer that hovers and under the keyboard, above the column and the page.
-  The pointer can cross onto it and rest there. It steps aside while its
-  control is `aria-expanded="true"`, and while the product has put it away
-  with `data-tip="hidden"` on the control. In the drawer the K, which stands
+  It never takes the pointer, so a click passes through it to the fold, the
+  column or the page. It steps aside while its control is
+  `aria-expanded="true"`, and while the product has put it away with
+  `data-tip="hidden"` on the control. In the drawer the K, which stands
   under the pointer that opened it, names itself only to the keyboard.
 - `.kin-shell__column` is the product's work; its own lists scroll.
 - `.kin-shell__panel` is the raised page and binds `--kin-surface-nested` to
@@ -452,11 +454,10 @@ in the `kinra.shell` layer, after `kinra.components`, so the shell restyles
 navigation, buttons and breadcrumbs inside itself while product CSS still
 wins. `.kin-sidebar` remains the unrelated two-column composition.
 
-When the page scrolls with the document, what focus or an address brings into
-view stops below the bar, through a scroll margin on the page's content; the
-bar's own controls never move the reader. A product that sets its own
-`scroll-margin-block-start` in the page adds `--kin-shell-bar` and
-`--kin-shell-safe-top` to it, and sets no `scroll-padding` on the document.
+When the page scrolls with the document, the document's scroll padding keeps
+what focus, a caret or an address brings into view below the bar. The bar's
+own controls reach back over that padding, so focusing them never moves the
+reader; the product focuses them with `preventScroll` as well.
 
 With motion, the width and the drawer move at layer speed, the column fades
 as the rail closes over it, a tip waits a moment before naming its item, and
@@ -484,12 +485,14 @@ list, `examples/reference/src/scripts/shell.ts`, to read rather than import.
 - **Focus.** A change that hides what holds focus hands it to the fold or the
   menu, whichever shows: folding hides the column, unfolding the marks, the
   drawer layout the fold. Opening the drawer focuses its current item, else
-  its first, never a mark, which the drawer hides.
+  its first, never a mark, which the drawer hides. Focus sent to the bar's
+  controls uses `preventScroll`.
 - **Inert.** A closed drawer is `inert`; the panel is `inert` while the drawer
   is open.
-- **Escape.** An open popover or modal closes first. An open drawer closes
-  next, its tips with it, and focus returns to the drawer's control, as it
-  does when the backdrop closes the drawer.
+- **Escape.** A popover that Escape closes, or a modal, closes first; a manual
+  popover, such as a toast, does not hold it. An open drawer closes next, its
+  tips with it, and focus returns to the drawer's control, as it does when the
+  backdrop closes the drawer.
 - **Tips.** Beside the page, Escape puts away a tip that is showing without
   moving focus or the pointer: set `data-tip="hidden"` on its item until the
   pointer or focus leaves the item. The key itself makes focus visible, so a

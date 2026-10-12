@@ -64,7 +64,7 @@ const behaviour = [
 	],
 	[
 		"Focus",
-		"A change that hides what holds focus hands it to the fold or the menu, whichever shows: folding hides the column, unfolding the marks. Opening the drawer focuses its current item, else its first, never a mark.",
+		"A change that hides what holds focus hands it to the fold or the menu, whichever shows: folding hides the column, unfolding the marks. Opening the drawer focuses its current item, else its first, never a mark. Focus sent to the bar uses preventScroll.",
 	],
 	[
 		"Inert",
@@ -72,7 +72,7 @@ const behaviour = [
 	],
 	[
 		"Escape",
-		"An open popover or modal closes first. An open drawer closes next, its tips with it, and focus returns to its control, as it does from the backdrop.",
+		"A popover that Escape closes, or a modal, closes first; a manual popover such as a toast does not hold it. An open drawer closes next, its tips with it, and focus returns to its control, as it does from the backdrop.",
 	],
 	[
 		"Tips",

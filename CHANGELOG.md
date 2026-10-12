@@ -28,11 +28,12 @@ finger, and drawers keep to the line right to left.
   closed drawer is hidden as well as inert, tips step aside while their
   control's popover is open, the open fold draws no pressed fill, and forced
   colours draw the panel, the open drawer, a scrolled bar and the current
-  item. Tips can be hovered and put away, as WCAG 1.4.13 asks; the panel
-  isolates what the page raises, so tips and the drawer stay above it; a
-  window under 28rem tall scrolls the sidebar to its foot; the drawer is as
-  tall as the shell; and in document scroll the bar's controls never move the
-  reader. It mirrors right to left and honours safe areas and reduced motion.
+  item. Beside the page Escape puts a showing tip away; the panel isolates
+  what the page raises, so tips and the drawer stay above it; a window under
+  28rem tall scrolls the sidebar to its foot, unless it is a folded rail under
+  a pointer that hovers; the drawer is as tall as the shell; and in document
+  scroll the bar's controls never move the reader. It mirrors right to left
+  and honours safe areas and reduced motion.
 - Shell tokens: `--kin-shell-rail`, `--kin-shell-rail-labelled`,
   `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`,
   `--kin-shell-height`, `--kin-shell-drawer-column`, `--kin-shell-drawer-max`,
