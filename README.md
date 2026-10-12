@@ -35,12 +35,12 @@ adoption map.
 
 ## Install
 
-The latest immutable release is `v0.6.0`:
+The latest immutable release is `v0.7.0`:
 
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.6.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.7.0"
   }
 }
 ```
@@ -124,7 +124,7 @@ styles without adding speculative package contracts.
 Open `/shell/` for the application shell that Kinra Space, Kinra Home and
 Kinra Relay share: the sidebar open, folded and as a drawer, on both grounds
 and right to left, with the behaviour each product writes. It is
-`@kinra/web/styles/shell.css`, prepared for 0.7.0.
+`@kinra/web/styles/shell.css`, new in 0.7.0.
 
 Open `/applications/` for two reference-only application compositions: a
 top-navigation collection and a navigation region beside a review surface.

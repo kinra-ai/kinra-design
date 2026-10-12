@@ -7,11 +7,13 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Intended for 0.7.0: the application shell that Kinra Space, Kinra Home and
-Kinra Relay each built, shared as a stable stylesheet. The shell is additive:
-no existing class, token, recipe default or registry status changes for it.
-Three fixes reach every consumer: reduced motion removes transitions rather
-than shortening them, a toolbar's fields stand level with its buttons under a
+## [0.7.0] - 2026-10-12
+
+The application shell that Kinra Space, Kinra Home and Kinra Relay each
+built, shared as a stable stylesheet. The shell is additive: no existing
+class, token, recipe default or registry status changes for it. Three fixes
+reach every consumer: reduced motion removes transitions rather than
+shortening them, a toolbar's fields stand level with its buttons under a
 finger, and drawers keep to the line right to left.
 
 ### Added
@@ -378,7 +380,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...main
+[0.7.0]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/kinra-ai/kinra-design/compare/v0.4.0...v0.5.0

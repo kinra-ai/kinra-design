@@ -39,7 +39,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.6.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.7.0"
   }
 }
 ```
@@ -293,7 +293,7 @@ owners' gates, not claims made by the reference examples.
 
 ## Moving to 0.7: the application shell
 
-Prepared for 0.7.0, not yet released. The shell is additive: no existing
+New in 0.7.0, released on 2026-10-12. The shell is additive: no existing
 class, token, recipe default or registry status changes for it, and a consumer
 that does not use `.kin-shell` sees no difference from it. Kinra Space, Kinra
 Home and Kinra Relay each built the same shell; each can now replace its copy,

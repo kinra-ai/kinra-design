@@ -7,12 +7,15 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.6.0` (2026-10-11, sans application language,
-  reference-only compositions and development dependency remediation; commit,
-  push and release explicitly authorized by Blake).
-  `package.json` and both root lockfile versions match 0.6.0. Consumer upgrades
-  remain separate; no npm registry publication or deployment is implied.
-- Prior releases: `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing from
+- Latest immutable tag: `v0.7.0` (2026-10-12, the shared application shell,
+  reduced motion that removes transitions, drawers that keep to the line right
+  to left and toolbar touch targets; commit, push and release explicitly
+  authorized by Blake). `package.json` and both root lockfile versions match
+  0.7.0. Consumer upgrades remain separate; no npm registry publication or
+  deployment is implied.
+- Prior releases: `v0.6.0` (2026-10-11, sans application language,
+  reference-only compositions and development dependency remediation;
+  authorized by Blake), `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing from
   Kinra Type 0.2.0; authorized by Blake), `v0.5.0` (2026-10-10, Kinra Sans and Kinra Serif;
   authorized by Blake), `v0.4.0` (2026-10-10, Kinra Mono and grid hairlines;
   authorized by Blake), `v0.3.0` (2026-10-05, design-system expansion and Space
@@ -25,7 +28,7 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
-- **Application shell (unreleased, intended 0.7.0):** on 2026-10-12 Blake
+- **Application shell (0.7.0):** on 2026-10-12 Blake
   asked for the collapsible sidebar shell that Kinra Space, Kinra Home and
   Kinra Relay each implement to become one shared, stable contract, and
   approved the proposed contract, its names and a documented behaviour
@@ -35,8 +38,9 @@ adoption map; this file only tracks current state, not process.
   `docs/catalog.md` lists. `/shell/` frames each state and runs a
   framework-free reference of the behaviour, which is catalog source and not
   exported. Additive: no existing class, token, recipe default or registry
-  status changes. Not tagged; each product adopts it in its own repository.
-- **Fixes for 0.7.0 (2026-10-12):** at Blake's request `main` carries the
+  status changes. Released in `v0.7.0`; each product adopts it in its own
+  repository.
+- **Fixes in 0.7.0 (2026-10-12):** at Blake's request `main` carries the
   `touch-toolbar-fields` branch (`6bb7bb4`: a toolbar's fields take the touch
   target its buttons have), with the shell's commits replayed on it. Reduced
   motion now removes transitions in `base.css` rather than shortening them, so
@@ -46,13 +50,22 @@ adoption map; this file only tracks current state, not process.
   its own directory, since Astro 7's background start for agents mishandles a
   relative `--root`. A WebKit check that lost a click to smooth scrolling under
   load (one run in about 170) presses its button from the keyboard.
-- **Design verification (2026-10-12, `main` before the 0.7.0 bump):**
-  `npm run verify` passed: contract checks (14 style files),
-  Astro/TypeScript (0 errors, warnings or hints), formatting, the 15-page
-  reference build and 86 Chromium and WebKit cases, 46 of them the shell's,
-  with forced colours emulated in both engines; the suite also passed 688
-  WebKit and 172 Chromium runs at thirteen workers. Captures of each shell
-  state were reviewed on both grounds, right to left and in forced colours.
+- **Reviews before 0.7.0 (2026-10-12):** two fresh-context adversarial
+  reviews of the release's CSS and reference behaviour found seven defects
+  and then four in their fixes; each is fixed with a check in both engines
+  (`50ec47d`, `0253354`). Recorded limits: tips never take the pointer, so
+  WCAG 1.4.13's condition that the pointer can rest on a tip is not met (a tip
+  that held it took clicks meant for the fold and the column); the 28rem
+  short-window rule is a heuristic a product with a taller rail extends; and
+  a folded rail under a hovering pointer may cut off its foot in a short
+  window.
+- **Design verification (2026-10-12, the 0.7.0 release commit):** after
+  `npm ci` and browser-engine setup, `npm run verify` passed: contract checks
+  (14 style files), Astro/TypeScript (0 errors, warnings or hints),
+  formatting, the 15-page reference build and 100 Chromium and WebKit cases,
+  60 of them the shell's, with forced colours emulated in both engines; the
+  suite also passed 400 runs at thirteen workers. Captures of each shell state
+  were reviewed on both grounds, right to left and in forced colours.
   `npm pack --dry-run` lists 58 public files and `npm audit` reports zero
   vulnerabilities. This checks the shell in its own demo, not in any product.
 - **Application update (0.6.0):** Blake approved sans by default and the minor
@@ -174,10 +187,10 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Blake decides whether to release the shell as 0.7.0: the manifest and lockfile
-bump, the changelog entry moved under the version, and the annotated `v0.7.0`
-tag pushed with the release commit, each with his authorization. Space, Home
-and Relay then adopt the shell in their own repositories against the exact tag,
-following [`docs/adoption.md`](docs/adoption.md#moving-to-07-the-application-shell)
-and their own gates. Candidate registry promotion still requires a second
+Space, Home and Relay adopt the shell from `v0.7.0` in their own
+repositories, following
+[`docs/adoption.md`](docs/adoption.md#moving-to-07-the-application-shell) and
+their own gates. Relay first confirms two defects Design found in its copy:
+the narrow drawer's focus under reduced motion, and the document scroll its
+bar's controls disturb. Candidate registry promotion still requires a second
 consumer and compatibility review; package renaming stays outside this update.
