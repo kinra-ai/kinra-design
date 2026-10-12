@@ -413,7 +413,7 @@ drawer without travel; and forced colours draw the shell's edges.
 
 ### Kinra Relay
 
-From `21b464b`, its shell from `bf05738`.
+From `41b6301`: its shell from `bf05738`, its resizable column from `3e707d8`.
 
 | Relay                                                          | Shared                                                                                                          |
 | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -429,9 +429,13 @@ From `21b464b`, its shell from `bf05738`.
 | `.topbar-fold`, `.topbar-menu`, `.crumbs`, `.topbar-end`       | `.kin-shell__fold`, `.kin-shell__menu`, `.kin-shell__crumbs`, `.kin-shell__end`                                 |
 | `--relay-rail`, `--relay-band`, `--relay-bar`, `--relay-inset` | `--kin-shell-rail`, `--kin-shell-column`, `--kin-shell-bar`, `--kin-shell-inset`                                |
 | `--relay-shelf`, `--relay-panel`                               | bind `--kin-shell-shelf`, `--kin-shell-panel` and `--kin-shell-flush`                                           |
+| `data-resizing` on the root                                    | `data-resizing` on the shell as well                                                                            |
 
-Relay keeps its palette, bound to the tone properties; the workspace head and
-the Build list in the column; the account card and its placement; the
+Relay keeps its splitter, Space's brought to the column's edge, which writes
+`--kin-shell-column` in place of `--relay-band`, still within the 40rem the
+page keeps beside the rail, and sets `data-resizing` on the shell while it
+drags. It keeps its palette, bound to the tone properties; the workspace head
+and the Build list in the column; the account card and its placement; the
 appearance control; freshness and Refresh at the bar's end; the cap of eight
 pinned Builds; the narrower column from 60 to 75rem; page padding and
 measure; the parts table's sticky offset, measured against the document while
