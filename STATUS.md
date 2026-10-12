@@ -151,15 +151,19 @@ adoption map; this file only tracks current state, not process.
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
   integrity.
 - **kinra-space** pins Design 0.6.0 at `7f05565b5183121edf141f320a184bc3d2338bb4`,
-  since its `4a510857` (2026-10-11).
-- **kinra-home** pins Design 0.6.0 through `#v0.6.0`, locked to
-  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `7493fc4` (2026-10-11).
-- **kinra-relay** pins Design 0.6.0 through the public codeload archive of
-  `7f05565b5183121edf141f320a184bc3d2338bb4`, with lockfile integrity, since
-  its `b259fc6` (2026-10-12).
-  All three were read from their manifests and lockfiles on 2026-10-12; their
-  own package/lockfile and verification gates remain authoritative. Each
-  carries its own copy of the application shell until it adopts 0.7.
+  since its `4a510857` (2026-10-11), and carries its own copy of the
+  application shell until it adopts 0.7.
+- **kinra-home** pins Design 0.7.0 through `#v0.7.0`, locked to
+  `3708fc229556d57e80720b5f497d581581b80e2a`, and uses the shared shell, since
+  its `7412712` (2026-10-12).
+- **kinra-relay** pins Design 0.7.0 through the public codeload archive of
+  `3708fc229556d57e80720b5f497d581581b80e2a`, with lockfile integrity, since
+  its `a30c757` (2026-10-12), and uses the shared shell since its `e427875`.
+  It confirmed both defects Design found in its copy: 0.7.0's reduced motion
+  alone returned the narrow drawer's focus, and `a30c757` kept its bar's
+  controls from scrolling the document until the shared shell took over.
+  All three were read from their pushed manifests and lockfiles on 2026-10-12;
+  their own package/lockfile and verification gates remain authoritative.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
@@ -187,10 +191,8 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Space, Home and Relay adopt the shell from `v0.7.0` in their own
-repositories, following
+Space adopts the shell from `v0.7.0` in its own repository, following
 [`docs/adoption.md`](docs/adoption.md#moving-to-07-the-application-shell) and
-their own gates. Relay first confirms two defects Design found in its copy:
-the narrow drawer's focus under reduced motion, and the document scroll its
-bar's controls disturb. Candidate registry promotion still requires a second
+its own gates. Home and Relay adopted it on 2026-10-12, and neither needed a
+change in Design. Candidate registry promotion still requires a second
 consumer and compatibility review; package renaming stays outside this update.

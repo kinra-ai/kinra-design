@@ -335,7 +335,9 @@ shows every state.
    [catalog's list](catalog.md#behaviour-each-product-writes).
 6. Bind the measures and tones that differ, then remove local shell rules only
    after comparing both schemes, desktop open and folded, the drawer on a phone,
-   right to left, forced colours, reduced motion and touch.
+   right to left, forced colours, reduced motion and touch. A product's
+   unlayered rules beat the shell's layered ones whatever their specificity, so
+   each local rule left in place still decides what it sets.
 
 All three copies differ from the shared shell in the same few places:
 
@@ -510,21 +512,22 @@ consumers for as long as each product needs.
 - **Kinra Space** pins released Design **0.6.0**, exact commit
   `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `4a510857`
   (2026-10-11), including `wordmark-space.svg`.
-- **Kinra Home** pins **0.6.0** through `#v0.6.0`, resolved by its lockfile to
-  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `7493fc4` (2026-10-11).
-- **Kinra Relay** pins **0.6.0** through the public codeload archive of
-  `7f05565b5183121edf141f320a184bc3d2338bb4`, with package-lock integrity, since
-  its `b259fc6` (2026-10-12).
-  These three pins were read from each owner's manifest and lockfile on
-  2026-10-12, at Space `751343ee`, Home `202b009` and Relay `21b464b`. Each
+- **Kinra Home** pins **0.7.0** through `#v0.7.0`, resolved by its lockfile to
+  `3708fc229556d57e80720b5f497d581581b80e2a`, since its `7412712` (2026-10-12),
+  the commit that moved it onto the shared shell.
+- **Kinra Relay** pins **0.7.0** through the public codeload archive of
+  `3708fc229556d57e80720b5f497d581581b80e2a`, with package-lock integrity, since
+  its `a30c757` (2026-10-12), and has used the shared shell since its `e427875`.
+  These three pins were read from each owner's pushed manifest and lockfile on
+  2026-10-12, at Space `ae4616e3`, Home `4b54baf` and Relay `fc9521e`. Each
   consumer's package/lockfile owns its current revision and its own gates own
   upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Site and Gateway retain their earlier exact test pins. Space, Home and Relay
-are on released 0.6.0 and each carries its own copy of the application shell
-until it adopts 0.7.
+Site and Gateway retain their earlier exact test pins. Home and Relay use the
+shared application shell; Space is on released 0.6.0 and carries its own copy
+of the shell until it adopts 0.7.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.
