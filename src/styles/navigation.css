@@ -574,6 +574,7 @@
 	@layer kinra.components {
 		.kin-toolbar :is(.kin-input, .kin-select) {
 			font-size: max(1rem, var(--kin-text-sm));
+			min-height: var(--kin-hit-target);
 		}
 	}
 }

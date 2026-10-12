@@ -7,6 +7,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Fixed
+
+- On touch screens, a toolbar's fields and selects take the same 44px hit
+  target as its buttons, so a filter row no longer mixes heights.
+
 ## [0.6.0] - 2026-10-11
 
 Application UI, headings and display default to sans. This visual compatibility

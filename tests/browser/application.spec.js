@@ -235,5 +235,18 @@ test("coarse pointer keeps application control targets", async ({
 		"44px",
 	);
 	await expect(page.locator(".kin-input")).toHaveCSS("font-size", "16px");
+	// A toolbar's fields stand at its buttons' height, so a filter row is level.
+	await page.evaluate(() =>
+		document.body.insertAdjacentHTML(
+			"beforeend",
+			'<div class="kin-toolbar" id="filters"><button class="kin-button">Filter</button><select class="kin-select" aria-label="Owner"><option>All</option></select><input class="kin-input" aria-label="Find"></div>',
+		),
+	);
+	const heights = await page
+		.locator("#filters > *")
+		.evaluateAll((nodes) =>
+			nodes.map((node) => node.getBoundingClientRect().height),
+		);
+	expect(heights).toEqual([44, 44, 44]);
 	await context.close();
 });
