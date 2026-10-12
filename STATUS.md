@@ -164,20 +164,26 @@ adoption map; this file only tracks current state, not process.
 - **kinra-site** and **kinra-gateway** consume the public GitHub codeload
   archive at `21327ae489243316988019e6b6ca9a7737982699`, with lockfile
   integrity.
-- **kinra-space** pins Design 0.6.0 at `7f05565b5183121edf141f320a184bc3d2338bb4`,
-  since its `4a510857` (2026-10-11), and carries its own copy of the
-  application shell until it adopts 0.7.
+- **kinra-space** pins Design 0.7.0 at `3708fc229556d57e80720b5f497d581581b80e2a`,
+  with lockfile integrity, and uses the shared shell, since its `a518d7ed`
+  (2026-10-12). Its adoption found the page cramped below the breakpoint
+  before `data-drawer` arrives (`cb97b472`), and its `4c8934c7` moves that
+  guard's sidebar past the shell's start rather than hiding it. Space 0.20.0
+  (`v0.20.0` at `4c8934c7`) carries both.
 - **kinra-home** pins Design 0.7.0 through `#v0.7.0`, locked to
   `3708fc229556d57e80720b5f497d581581b80e2a`, and uses the shared shell, since
-  its `7412712` (2026-10-12).
+  its `7412712` (2026-10-12). Its `c6b18c6`, deployed on 2026-10-12, gives its
+  stylesheet its breakpoint's query, as the guide's step 4 asks.
 - **kinra-relay** pins Design 0.7.0 through the public codeload archive of
   `3708fc229556d57e80720b5f497d581581b80e2a`, with lockfile integrity, since
   its `a30c757` (2026-10-12), and uses the shared shell since its `e427875`.
   It confirmed both defects Design found in its copy: 0.7.0's reduced motion
   alone returned the narrow drawer's focus, and `a30c757` kept its bar's
-  controls from scrolling the document until the shared shell took over.
-  All three were read from their pushed manifests and lockfiles on 2026-10-12;
-  their own package/lockfile and verification gates remain authoritative.
+  controls from scrolling the document until the shared shell took over. It
+  has yet to give its stylesheet its breakpoint's query.
+  All three were read from their pushed manifests and lockfiles on 2026-10-12,
+  at Space `4c8934c7`, Home `dcddb9b` and Relay `62235c5`; their own
+  package/lockfile and verification gates remain authoritative.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
@@ -205,9 +211,9 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Space's adoption of `v0.7.0` reaches its `dev`, and the map records it from
-there. Home and Relay, which adopted the shell on 2026-10-12 without a change
-in Design, each give their stylesheet their breakpoint's query (the catalog's
-Layout step) in their own repositories. Candidate registry promotion still
-requires a second consumer and compatibility review; package renaming stays
-outside this update.
+Relay gives its stylesheet its breakpoint's query, `(max-width: 59.99rem)`,
+in its own repository, as the catalog's Layout step asks. Design's next
+release carries the unreleased contract, guide and demo change; no consumer
+waits on it, since `shell.css` is unchanged. Candidate registry promotion
+still requires a second consumer and compatibility review; package renaming
+stays outside this update.

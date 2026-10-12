@@ -534,9 +534,11 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Kinra Space** pins released Design **0.6.0**, exact commit
-  `7f05565b5183121edf141f320a184bc3d2338bb4`, since its `4a510857`
-  (2026-10-11), including `wordmark-space.svg`.
+- **Kinra Space** pins **0.7.0** at exact commit
+  `3708fc229556d57e80720b5f497d581581b80e2a`, with package-lock integrity,
+  since its `a518d7ed` (2026-10-12), the commit that moved it onto the shared
+  shell, including `wordmark-space.svg`. Space 0.20.0 (`v0.20.0`, `4c8934c7`)
+  released it.
 - **Kinra Home** pins **0.7.0** through `#v0.7.0`, resolved by its lockfile to
   `3708fc229556d57e80720b5f497d581581b80e2a`, since its `7412712` (2026-10-12),
   the commit that moved it onto the shared shell.
@@ -544,15 +546,16 @@ consumers for as long as each product needs.
   `3708fc229556d57e80720b5f497d581581b80e2a`, with package-lock integrity, since
   its `a30c757` (2026-10-12), and has used the shared shell since its `e427875`.
   These three pins were read from each owner's pushed manifest and lockfile on
-  2026-10-12, at Space `ae4616e3`, Home `4b54baf` and Relay `fc9521e`. Each
+  2026-10-12, at Space `4c8934c7`, Home `dcddb9b` and Relay `62235c5`. Each
   consumer's package/lockfile owns its current revision and its own gates own
   upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Site and Gateway retain their earlier exact test pins. Home and Relay use the
-shared application shell; Space is on released 0.6.0 and carries its own copy
-of the shell until it adopts 0.7.
+Site and Gateway retain their earlier exact test pins. Space, Home and Relay
+use the shared application shell. Space's `4c8934c7` and Home's `c6b18c6` give
+their stylesheets the breakpoint query that step 4 of
+[Adopt the shell](#adopt-the-shell) asks for; Relay's does not yet.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.
