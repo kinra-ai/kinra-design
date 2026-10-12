@@ -132,7 +132,10 @@ for (const width of [1440, 390]) {
 					page.locator(`[data-sample-state="${state}"]`),
 				).toBeVisible();
 			}
-			await page.getByRole("button", { name: "Try again" }).click();
+			// Pressed from the keyboard: the page may still be gliding the button
+			// into view (base.css scrolls smoothly), and a pointer that lands as
+			// it rises and lifts after it has moved on clicks nothing.
+			await page.getByRole("button", { name: "Try again" }).press("Enter");
 			await expect(page.locator('[data-sample-state="ready"]')).toBeVisible();
 			await expect(page.locator("#application-state")).toBeFocused();
 			// Narrow work regions, long labels, RTL and enlarged text must not
