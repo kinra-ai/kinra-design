@@ -3,3 +3,5 @@ node_modules/
 package-lock.json
 # A byte-identical snapshot of a published Design canvas, not source.
 examples/studies/space-refresh/
+# Worktrees nested in the canonical checkout format themselves.
+.local/
