@@ -354,7 +354,8 @@ except where noted.
 
 Space keeps its splitter, which writes `--kin-shell-column` in place of
 `--space-sidebar-width`, and its drawer under a finger, which sets
-`data-resizing` on the shell while its own rule moves the drawer. It keeps the
+`data-resizing` on the shell while its own rule moves the drawer and keeps a
+closed one visible as it is drawn open. It keeps the
 palette control and its live edge, the measuring of its favorites, the
 letters' door and the account menu; its crumb trail with the faded cut, which
 need not use `.kin-shell__crumbs`; the workspace tools, search, the session's
