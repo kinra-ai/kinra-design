@@ -84,8 +84,12 @@ The reference catalog wears the lockup in its own header, and the brand
 section of the foundations page shows it on both grounds.
 
 `.kin-lockup` is the web rendering. A surface that cannot use the CSS
-follows the same geometry: the K as tall as one line of the interface text,
-a hairline, and the name in the mono face at that text size.
+follows the same geometry, in fractions of the K's height, which is one line
+of the interface text: the name at 0.68 in the mono face at the heading
+weight with −0.01 em tracking, so its capitals are half the K; a hairline
+0.82 tall; and 0.55 on each side of it, measured from the K's box, whose
+SVG carries its own inset. The name is about the interface text's size,
+never the K's.
 
 A terminal draws the K where it can. Where the terminal offers an image
 protocol, the mark is placed from the asset itself. Where it does not, the

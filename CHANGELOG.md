@@ -20,6 +20,12 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
   not hidden, so focus inside it stays for the breakpoint's handler to move.
   The reference demo does so, with a check in both engines; `shell.css` is
   unchanged.
+- The brand standard gives the lockup's proportions to a surface that cannot
+  use the CSS, as fractions of the K: the name at 0.68, at the heading weight
+  and −0.01 em, its capitals half the K; the hairline 0.82 tall; and 0.55 on
+  each side of it. It said only "the name … at that text size", which Kinra
+  TV's tvOS lockup read as the K's size, setting "TV" as tall as the K.
+  `canvas.css` is unchanged.
 
 ## [0.7.0] - 2026-10-12
 
