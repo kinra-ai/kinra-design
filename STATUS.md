@@ -7,13 +7,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.7.0` (2026-10-12, the shared application shell,
-  reduced motion that removes transitions, drawers that keep to the line right
-  to left and toolbar touch targets; commit, push and release explicitly
-  authorized by Blake). `package.json` and both root lockfile versions match
-  0.7.0. Consumer upgrades remain separate; no npm registry publication or
-  deployment is implied.
-- Prior releases: `v0.6.0` (2026-10-11, sans application language,
+- Latest immutable tag: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand
+  and Sans spacing refinements, and the previously unreleased shell guide
+  and first-paint correction). Blake authorized the Type release, font
+  adoption and Design release. `package.json` and both root lockfile
+  versions match 0.7.1. Each consumer upgrades its own exact dependency;
+  no npm registry publication or deployment is implied.
+- Prior releases: `v0.7.0` (2026-10-12, shared application shell and
+  accessibility fixes; authorized by Blake), `v0.6.0` (2026-10-11, sans application language,
   reference-only compositions and development dependency remediation;
   authorized by Blake), `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing from
   Kinra Type 0.2.0; authorized by Blake), `v0.5.0` (2026-10-10, Kinra Sans and Kinra Serif;
@@ -26,9 +27,32 @@ adoption map; this file only tracks current state, not process.
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
 
+## Verification of 0.7.1
+
+- A fresh `npm ci`, `npm run verify`, `npm audit` and `npm pack --dry-run`
+  pass on the pinned Node 26/npm 11.17 toolchain. The gate includes the
+  public contract, Astro/type checks, formatting, production reference build
+  and 102 Chromium/WebKit browser cases. The dependency audit reports zero
+  vulnerabilities; the package manifest contains 59 public files, including
+  all five fonts, `OFL.txt` and their exact source/hash provenance, and
+  excludes the reference site, browser tests and development tools.
+- The adopted woff2 files match Type 0.2.1's frozen release files byte for
+  byte. Type's release passes 372 structural and 212 real build tests;
+  every glyph, advance and feature matches its checked refinement at nine
+  weights. The release's source commit and SHA-256 hashes are recorded in
+  `assets/fonts/VENDORED.md`.
+
 ## Development
 
-- **Unreleased, after 0.7.0 (2026-10-12):** Space's adoption found that below
+- **Fonts (0.7.1, 2026-11-14):** all five woff2 files and `OFL.txt` come
+  from Kinra Type `v0.2.1`, on Blake's authorization. The ampersand is clearer
+  in every style; Sans upright and italic have more even shape-based spacing,
+  with accented forms and mark anchors fitted together. Sans sample words
+  average 4.0% narrower, so text may reflow. Word spaces, tabular figures,
+  coverage, vertical metrics and every font URL retain their contract.
+  `assets/fonts/VENDORED.md` records the source tag, commit and file hashes.
+
+- **Shell first paint (released in 0.7.1; developed 2026-10-12):** Space's adoption found that below
   its breakpoint the page lays out before `data-drawer` arrives: at its first
   paint, and in any layout a resize reads before the breakpoint's change. The
   sidebar then stood beside the page as a column and left it a sliver, and
@@ -192,6 +216,12 @@ adoption map; this file only tracks current state, not process.
 
 ## Dependency audit
 
+- The 0.7.1 release audit on 2026-11-14 found five affected development
+  packages. Astro advances from 7.3.5 to 7.4.12; the lockfile refreshes the
+  affected fast-uri, undici, Vite and Zod paths within their parent ranges.
+  `npm audit` reports zero vulnerabilities. These tools are not shipped in
+  the exported styles/assets package.
+
 - Remediated on 2026-10-11: transitive development dependency `source-map-js`
   1.2.1 → 1.2.2 resolves GHSA-68fv-2mgg-jv7q (indexed source-map denial of
   service). Astro reaches it through css-tree, magicast and PostCSS; every
@@ -212,8 +242,7 @@ adoption map; this file only tracks current state, not process.
 ## Next event
 
 Relay gives its stylesheet its breakpoint's query, `(max-width: 59.99rem)`,
-in its own repository, as the catalog's Layout step asks. Design's next
-release carries the unreleased contract, guide and demo change; no consumer
-waits on it, since `shell.css` is unchanged. Candidate registry promotion
+in its own repository, as the catalog's Layout step asks. Design 0.7.1
+carries the contract, guide and demo correction; `shell.css` is unchanged. Candidate registry promotion
 still requires a second consumer and compatibility review; package renaming
 stays outside this update.

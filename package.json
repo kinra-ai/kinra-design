@@ -1,6 +1,6 @@
 {
   "name": "@kinra/web",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Kinra's framework-light design system for web products and public surfaces.",
   "license": "Apache-2.0",
   "type": "module",
@@ -66,7 +66,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@playwright/test": "1.63.0",
-    "astro": "7.3.5",
+    "astro": "7.4.12",
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",
     "typescript": "6.0.3"

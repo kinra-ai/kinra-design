@@ -7,8 +7,27 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-11-14
+
+Refines the existing font assets from Kinra Type 0.2.1. Font names, exported
+paths, CSS roles, vertical metrics and coverage stay the same. Sans sample
+words average 4.0% narrower, so consumers should check line wrapping.
+
 ### Fixed
 
+- The ampersand has a broader upper eye, a cleaner crossing and a longer
+  rising arm in all five font styles.
+- Kinra Sans upright and italic fit the space beside rounds, diagonals and
+  open sides, including accented letters and joined Ĳ/ĳ. Kerning exceptions
+  keep ogoneks, slash overhangs and narrow accents clear at heavy weights.
+  The word space and tabular figure widths are retained.
+- All five font files and `OFL.txt` come from Kinra Type `v0.2.1`; exact
+  provenance and file hashes are recorded in `assets/fonts/VENDORED.md`.
+
+- Update the reference site's Astro development dependency from 7.3.5 to
+  7.4.12 and refresh affected transitive dependencies, clearing the release
+  audit's Astro, fast-uri, undici, Vite and Zod advisories. These development
+  tools are excluded from the distributed styles/assets package.
 - The shell's contract covers the moment below the breakpoint before
   `data-drawer` arrives. The attribute comes from the product's script, after
   the first paint and after any layout a resize reads before the breakpoint's
@@ -400,7 +419,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.7.1...main
+[0.7.1]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/kinra-ai/kinra-design/compare/v0.5.0...v0.5.1

@@ -39,7 +39,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.7.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.7.1"
   }
 }
 ```
@@ -229,6 +229,20 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
   its ascent, so rows join at a 1.3 line height and overlap below it; set
   terminal-like text at 1.3 or less where its lines should be continuous.
   Kinra Sans and Kinra Serif leave these characters out.
+
+## Moving to 0.7.1: font refinements
+
+Design 0.7.1 adopts all five font files from Kinra Type `v0.2.1`, with the
+same font names, asset paths, coverage and vertical metrics. Every style has
+a clearer ampersand. Sans upright and italic have more even text spacing;
+its sample words average 4.0% narrower, while word spaces and tabular figures
+keep their widths. Check line breaks in dense controls, tables, conversation
+text and narrow columns at the weights and sizes your product uses.
+
+Bundlers that resolve the existing font URLs emit the new files during the
+consumer's next build. A consumer that vendors fonts copies all five files
+and `OFL.txt` and records the provenance in `assets/fonts/VENDORED.md`.
+Updating a dependency does not deploy the consumer.
 
 ## Moving to 0.6: application typography
 
