@@ -5,3 +5,5 @@ package-lock.json
 examples/studies/space-refresh/
 # Worktrees nested in the canonical checkout format themselves.
 .local/
+# Agent worktrees nested in the checkout are checked in their own runs.
+.claude/
