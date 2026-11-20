@@ -446,3 +446,242 @@
 .k6-page [data-inview="waiting"] * {
 	animation-name: none !important;
 }
+
+/* K2: the console's chain. */
+.k2-chain {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-3) var(--kin-space-7);
+	position: relative;
+}
+
+.k2-tile {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	font-size: var(--kin-text-sm);
+	padding: var(--kin-space-2) var(--kin-space-3);
+	position: relative;
+	z-index: 1;
+}
+
+.k2-links {
+	height: 100%;
+	inset: 0;
+	overflow: visible;
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+}
+
+.k2-links path {
+	fill: none;
+	stroke: var(--kin-color-text-muted);
+	stroke-opacity: 0.55;
+	stroke-width: 1;
+}
+
+.k2-dot {
+	fill: var(--kin-color-primary);
+	filter: drop-shadow(0 0 3px var(--kin-color-primary));
+}
+
+.k2-bands {
+	align-items: center;
+	display: grid;
+	gap: var(--kin-space-2) var(--kin-space-3);
+	grid-template-columns: auto auto;
+	justify-content: start;
+}
+
+.k2-band {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+	font-style: italic;
+	grid-column: 1 / -1;
+	margin: 0;
+}
+
+/* K7: a ladder of clocks on a log scale. Container units measure the way to
+   the hour end, at the ladder's right. */
+.k7-ladder {
+	container-type: inline-size;
+	height: 4.5rem;
+	margin: var(--kin-space-4) var(--kin-space-4) var(--kin-space-2);
+	position: relative;
+}
+
+.k7-axis {
+	background: var(--kin-color-rule-strong);
+	height: 1px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 2.5rem;
+}
+
+.k7-tick {
+	white-space: nowrap;
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	position: absolute;
+	top: 3rem;
+	translate: -50% 0;
+}
+
+.k7-mark {
+	--k7-to-end: calc((100 - var(--k7-at-n)) * 1cqi) 0;
+	left: calc(var(--k7-at-n) * 1%);
+	position: absolute;
+	top: calc(2.5rem - 0.3rem);
+}
+
+.k7-mark::before {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	content: "";
+	display: block;
+	height: 0.6rem;
+	translate: -50% 0;
+	width: 0.6rem;
+}
+
+.k7-mark span {
+	bottom: 0.9rem;
+	color: var(--kin-color-text-subtle);
+	font-size: var(--kin-text-xs);
+	left: 0;
+	position: absolute;
+	translate: -50% 0;
+	white-space: nowrap;
+}
+
+/* Before d68265b: marks waited at the hour end, unseen, and then travelled to
+   their readings over 1.5s on out, fading in over 0.5s, 180ms plus 140ms a
+   mark apart. */
+.k7-ladder[data-k7="before"] .k7-mark {
+	transition:
+		translate 1.5s var(--kin-ease-out) calc(180ms + var(--k7-i) * 140ms),
+		opacity 0.5s var(--kin-ease-out) calc(180ms + var(--k7-i) * 140ms);
+}
+
+.k7-ladder[data-k7="before"]:not([data-k7-seen]) .k7-mark {
+	opacity: 0;
+	translate: var(--k7-to-end);
+}
+
+.k7-ladder[data-k7-reset] .k7-mark {
+	transition: none;
+}
+
+/* After: every mark stands at its reading; the entry is decoration, from the
+   hour end on the settle's time, a stagger step apart. */
+.k7-ladder[data-k7="after"][data-k7-seen] .k7-mark {
+	--kin-appear-from: var(--k7-to-end);
+	animation: kin-appear var(--kin-motion-settle) both;
+	animation-delay: calc((4 + var(--k7-i) * 3) * var(--kin-duration-stagger));
+}
+
+/* K8: a dial whose hand turns. */
+.k8-dial {
+	aspect-ratio: 1;
+	border: 1px solid var(--kin-color-rule-strong);
+	border-radius: 50%;
+	margin-inline: auto;
+	position: relative;
+	width: 7rem;
+}
+
+.k8-hand {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	height: 42%;
+	left: calc(50% - 1px);
+	position: absolute;
+	top: 8%;
+	transform-origin: 50% 100%;
+	width: 2px;
+}
+
+/* K9: three layers leaving. */
+.k9-stage {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-2);
+	min-height: 8.5rem;
+}
+
+.k9-layer {
+	background: var(--kin-surface-card);
+	border: 1px solid var(--kin-float-ring);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: var(--kin-shadow-panel);
+	font-size: var(--kin-text-sm);
+	padding: var(--kin-space-2) var(--kin-space-3);
+}
+
+.k9-layer[hidden] {
+	display: none;
+}
+
+/* K10: Kin's working caption. */
+.k10-row {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-3);
+	min-height: 2rem;
+}
+
+/* signature: Space's activity shimmer (decision 0011), one highlight across
+   the caption every 1.8s, at an even pace. */
+.k10-caption[data-k10-live] {
+	-webkit-background-clip: text;
+	animation: k10-shimmer 1.8s linear infinite;
+	background: linear-gradient(
+		90deg,
+		var(--kin-color-text-muted) 0% 40%,
+		var(--kin-color-text) 50%,
+		var(--kin-color-text-muted) 60% 100%
+	);
+	background-clip: text;
+	background-size: 200% 100%;
+	color: transparent;
+}
+
+@keyframes k10-shimmer {
+	from {
+		background-position: 100% 0;
+	}
+
+	to {
+		background-position: -100% 0;
+	}
+}
+
+/* K11, before Design 0.2: buttons lifted a pixel under the pointer over
+   180ms on out, and their colours changed over 180ms on ease. */
+.k11-button[data-k11="before"] {
+	transition:
+		background 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		transform 180ms var(--kin-ease-out);
+}
+
+.k11-button[data-k11="before"]:hover,
+.k11-button[data-k11="before"][data-lab-hover] {
+	transform: translateY(-1px);
+}
+
+/* After: the control term, a change of tone in place. */
+.k11-button[data-k11="after"] {
+	transition:
+		background-color var(--kin-motion-control),
+		border-color var(--kin-motion-control),
+		color var(--kin-motion-control);
+}
+
+.k11-button[data-lab-hover] {
+	background: var(--kin-surface-lift-hover);
+}

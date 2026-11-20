@@ -17,6 +17,7 @@ import {
 	type Face,
 } from "@kinra/web/registry/patterns/corner-key/corner-key.js";
 import { mountCorrections } from "./motion-corrections.ts";
+import { mountContext, mountSignatures } from "./motion-signatures.ts";
 
 /** Start the lab on /motion/. */
 export function startLab(): void {
@@ -748,4 +749,6 @@ export function startLab(): void {
 	readings();
 	report();
 	mountCorrections(lab.querySelector<HTMLElement>("[data-lab-corrections]")!);
+	mountSignatures(lab);
+	mountContext(lab);
 }

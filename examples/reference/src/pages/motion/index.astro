@@ -1,12 +1,15 @@
 ---
 import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
 import Corrections from "../../components/motion/Corrections.astro";
+import Signatures from "../../components/motion/Signatures.astro";
+import Context from "../../components/motion/Context.astro";
 import keySource from "@kinra/web/registry/patterns/corner-key/corner-key.html?raw";
 import motionDoc from "../../../../../docs/motion.md?raw";
 import "@kinra/web/registry/patterns/corner-key/corner-key.css";
 import "@kinra/web/registry/patterns/live-edge/live-edge.css";
 import "../../styles/motion-lab.css";
 import "../../styles/motion-corrections.css";
+import "../../styles/motion-signatures.css";
 
 // docs/motion.md is the source of every meaning shown here, so the lab and
 // the standard cannot say different things.
@@ -1063,6 +1066,35 @@ const band =
 						</div>
 					</div>
 				</article>
+			</div>
+		</section>
+
+		<section
+			class="lab-section"
+			id="signatures"
+			aria-labelledby="signatures-heading"
+		>
+			<header class="catalog-heading">
+				<h2 id="signatures-heading">Signatures</h2>
+				<p>
+					Timing that belongs to the thing itself, which no term carries. Each
+					is declared where it is defined, with its reason and its still form.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<Signatures />
+			</div>
+		</section>
+
+		<section class="lab-section" id="context" aria-labelledby="context-heading">
+			<header class="catalog-heading">
+				<h2 id="context-heading">In context</h2>
+				<p>
+					The terms at work together, to judge a register outside a specimen.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<Context />
 			</div>
 		</section>
 

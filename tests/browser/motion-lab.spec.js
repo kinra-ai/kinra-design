@@ -130,10 +130,30 @@ test("each correction's before breaks its rule and its after keeps it", async ({
 	await page.locator("#K4 [data-lab-run]").click();
 	await page.locator("#K5 [data-lab-visit]").click();
 	await page.locator("#K6 [data-lab-load]").click();
+	await page.locator("#K2 [data-lab-run]").click();
+	await page.locator("#K7 [data-lab-load]").click();
+	await page.locator("#K8 [data-lab-run]").click();
+	await page.locator("#K9 [data-lab-dismiss]").click();
+	await page.locator("#K10 [data-lab-run]").click();
+	await page.locator("#K11 [data-lab-point]").click();
 	// Long enough for the old page to dock itself and the old entry to finish.
 	await page.waitForTimeout(3800);
 	await page.locator("#K6 [data-lab-jump]").click();
-	for (const id of ["K1", "K3", "K4", "K5", "K6"]) {
+	const ids = [
+		"K1",
+		"K2",
+		"K3",
+		"K4",
+		"K5",
+		"K6",
+		"K7",
+		"K8",
+		"K9",
+		"K10",
+		"K11",
+	];
+	expect(await page.locator("[data-lab-correction]").count()).toBe(ids.length);
+	for (const id of ids) {
 		const [before, after] = [
 			page.locator(`#${id} [data-lab-check]`).first(),
 			page.locator(`#${id} [data-lab-check]`).last(),
@@ -145,4 +165,44 @@ test("each correction's before breaks its rule and its after keeps it", async ({
 			timeout: 10000,
 		});
 	}
+});
+
+test("one exit speed reads in ms, however the build writes it", async ({
+	page,
+}) => {
+	await open(page);
+	await page.locator("#K9 [data-lab-dismiss]").click();
+	await expect(page.locator("#K9 [data-lab-check]").last()).toHaveText(
+		/every layer leaves at 180ms/,
+	);
+});
+
+test("the escapement beats on its own gait, and playback draws nothing once stopped", async ({
+	page,
+}) => {
+	await open(page);
+	await page.locator("#X2 [data-lab-run]").click();
+	const hand = page.locator("[data-x2-hand]");
+	// One minute-long animation of 181 keyframes, started from the clock.
+	expect(
+		await hand.evaluate((element) => {
+			const [turn] = element.getAnimations();
+			return [
+				turn.effect.getKeyframes().length,
+				turn.effect.getTiming().duration,
+			];
+		}),
+	).toEqual([181, 60000]);
+	await page.locator("#X3").scrollIntoViewIfNeeded();
+	await page.locator("#X3 [data-lab-play]").click();
+	await page.waitForTimeout(400);
+	await page.locator("#X3 [data-lab-play]").click();
+	await expect(page.locator("#X3 [data-lab-check]")).toHaveAttribute(
+		"data-kept",
+		"true",
+		{ timeout: 5000 },
+	);
+	await expect(page.locator("#X3 [data-lab-check]")).toHaveText(
+		/0 frames drawn since it stopped/,
+	);
 });

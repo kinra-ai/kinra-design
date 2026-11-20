@@ -1,0 +1,125 @@
+---
+// Every term at work together, to judge a register outside a specimen: a
+// productive list of runs and an expressive instrument.
+---
+
+<article class="lab-specimen" id="X4" data-lab-context="productive">
+	<div class="lab-specimen__head">
+		<span class="lab-id">X4</span>
+		<h3 class="lab-term">A productive list of runs</h3>
+		<div class="lab-actions">
+			<button class="kin-button" data-size="compact" type="button" data-x4-start
+				>A run starts</button
+			>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-x4-finish>It finishes</button
+			>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-x4-sample>A sample arrives</button
+			>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				popovertarget="x4-menu">Run menu</button
+			>
+		</div>
+		<p class="lab-meaning">
+			A new run appears; its edge traces while it works and closes when it ends;
+			a toast confirms it and exits; a sample lands at once; a menu comes from
+			its button.
+		</p>
+	</div>
+	<div class="lab-columns">
+		<div class="lab-col" data-kin-motion="productive">
+			<p class="lab-col__label">
+				Productive <span class="lab-caption"
+					>CPU <strong class="x4-sample" data-x4-figure>41%</strong></span
+				>
+			</p>
+			<ul class="lab-rows x4-runs" data-x4-runs>
+				<li
+					class="kin-list__item x4-run"
+					style="position: relative; --kin-pattern-edge-radius: var(--kin-radius-row)"
+				>
+					<span
+						class="kin-pattern-live-edge"
+						data-edge="ready"
+						aria-hidden="true"
+						><span class="kin-pattern-live-edge__line"></span></span
+					>
+					<div class="kin-list__body">
+						<p class="kin-list__title">Nightly sync</p>
+						<p class="kin-list__meta">Done</p>
+					</div>
+				</li>
+			</ul>
+			<div class="lab-toasts" data-x4-toasts aria-live="polite"></div>
+		</div>
+	</div>
+	<div class="kin-popover" popover id="x4-menu" data-padding="none">
+		<div class="kin-menu" role="menu" aria-label="Run">
+			<button class="kin-menu__item" role="menuitem" type="button"
+				>Open the log</button
+			>
+			<button class="kin-menu__item" role="menuitem" type="button"
+				>Run again</button
+			>
+		</div>
+	</div>
+</article>
+
+<article class="lab-specimen" id="X5" data-lab-context="expressive">
+	<div class="lab-specimen__head">
+		<span class="lab-id">X5</span>
+		<h3 class="lab-term">An expressive instrument</h3>
+		<div class="lab-actions">
+			<button class="kin-button" data-size="compact" type="button" data-x5-sight
+				>First sight</button
+			>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-x5-reading>A new reading</button
+			>
+		</div>
+		<p class="lab-meaning">
+			First seen, its trace draws and its marks grow in turn; a new reading's
+			figure changes at once while its needle settles, and its words arrive
+			afresh.
+		</p>
+	</div>
+	<div class="lab-columns">
+		<div class="lab-col" data-kin-motion="expressive">
+			<div class="lab-stage">
+				<div class="lab-dial" aria-hidden="true">
+					<span class="lab-dial__hand" data-x5-hand></span>
+				</div>
+				<p class="lab-figure" data-x5-figure>12.4 ns</p>
+				<p class="lab-reading-line" data-x5-line>
+					Kepler leads the pulse by 12.4 ns.
+				</p>
+			</div>
+			<svg class="lab-trace" viewBox="0 0 200 80" aria-hidden="true">
+				<path
+					d="M0 50 C 25 44 35 30 60 34 S 95 62 120 46 S 160 18 200 26"
+					pathLength="1"
+					data-lab-drawn></path>
+			</svg>
+			<div class="lab-marks" data-x5-marks>
+				{
+					Array.from({ length: 8 }, (_, index) => (
+						<span class="lab-mark" style={`--lab-i: ${index}`} />
+					))
+				}
+			</div>
+		</div>
+	</div>
+</article>

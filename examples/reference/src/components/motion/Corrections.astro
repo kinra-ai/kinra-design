@@ -235,6 +235,61 @@ const sides = [
 	</div>
 </article>
 
+<article class="lab-specimen" id="K2" data-lab-correction="chain">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K2</span>
+		<h3 class="lab-term">Nothing runs without work behind it</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Run the console
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: connectors between the console's tiles, and a light that ran along
+			them every second. Read as: a busy console rather than a clear one.
+			Replaced by: group labels that tell the chain, and nothing running.
+		</p>
+		<p class="lab-note">
+			Observatory <code>cde5fbe</code>. One light per connector, a second long
+			and locked to Kepler's second, easing along its stretch of the chain and
+			fading at its ends.
+		</p>
+	</div>
+	<div class="lab-pair">
+		<div>
+			<p class="lab-pair__label" data-side="before">Before · cde5fbe^</p>
+			<div class="k2-chain" data-k2="before">
+				<span class="k2-tile">Pulse</span>
+				<span class="k2-tile">Receiver</span>
+				<span class="k2-tile">chrony</span>
+				<span class="k2-tile">This device</span>
+				<svg class="k2-links" aria-hidden="true" data-k2-links></svg>
+			</div>
+			<p class="lab-check" data-lab-check>Stopped.</p>
+		</div>
+		<div>
+			<p class="lab-pair__label" data-side="after">After · cde5fbe</p>
+			<div class="k2-bands">
+				<p class="k2-band">Above</p>
+				<span class="k2-tile">Pulse</span>
+				<span class="k2-tile">Receiver</span>
+				<p class="k2-band">Measured against it</p>
+				<span class="k2-tile">chrony</span>
+				<span class="k2-tile">This device</span>
+			</div>
+			<p class="lab-check" data-lab-check data-kept="true">
+				Rule 2 · keeps: nothing runs at rest; the labels tell the chain.
+			</p>
+		</div>
+	</div>
+</article>
+
 <article class="lab-specimen" id="K3" data-lab-correction="lamps">
 	<div class="lab-specimen__head">
 		<span class="lab-id">K3</span>
@@ -501,6 +556,281 @@ const sides = [
 					</p>
 					<p class="lab-check" data-lab-check>
 						Not loaded.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K7" data-lab-correction="ladder">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K7</span>
+		<h3 class="lab-term">A value never waits</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-load
+			>
+				Load the page
+			</button>
+			<button class="kin-button" data-size="compact" type="button" data-lab-see>
+				See the ladder
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: marks that waited off at the hour end until the ladder was seen,
+			then travelled to their readings. Read as: values held back, missing in
+			print and from a reader who never scrolled there. Replaced by: every mark
+			standing at its reading, with an entry that runs from the hour end only as
+			decoration.
+		</p>
+		<p class="lab-note">
+			Observatory <code>d68265b</code>. Before: marks moved over 1.5s on out,
+			faded in over 0.5s, 180ms plus 140ms a mark apart. After: the appear
+			keyframes from the hour end at the settle's 1400ms, 45ms apart.
+		</p>
+	</div>
+	<div class="lab-pair" data-kin-motion="expressive">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "d68265b^" : "d68265b"}
+					</p>
+					<div class="k7-ladder" data-k7={side}>
+						<span class="k7-axis" />
+						<span class="k7-tick" style="left: 0%">
+							1 ns
+						</span>
+						<span class="k7-tick" style="left: 33.3%">
+							1 µs
+						</span>
+						<span class="k7-tick" style="left: 66.6%">
+							1 ms
+						</span>
+						<span class="k7-tick" style="left: 100%">
+							1 s
+						</span>
+						{[
+							["GPS", 8],
+							["chrony", 27],
+							["NTP", 58],
+							["Broadcast", 71],
+							["Watch", 92],
+						].map(([name, at], index) => (
+							<span
+								class="k7-mark"
+								style={`--k7-at-n: ${at}; --k7-i: ${index}`}
+								data-k7-mark={at}
+							>
+								<span>{name}</span>
+							</span>
+						))}
+					</div>
+					<p class="lab-check" data-lab-check>
+						Not loaded.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K8" data-lab-correction="compositor">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K8</span>
+		<h3 class="lab-term">The compositor turns the hands</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Start the clocks
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: hands set by script on every frame. Read as: a page that never
+			rests, its own thread drawing the time. Replaced by: one animation per
+			hand, started from the clock, that the compositor runs.
+		</p>
+		<p class="lab-note">
+			Observatory <code>55fa672</code>. The page's own frames are counted while
+			each clock runs.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "55fa672^" : "55fa672"}
+					</p>
+					<div class="k8-dial" data-k8={side} aria-hidden="true">
+						<span class="k8-hand" data-k8-hand />
+					</div>
+					<p class="lab-check" data-lab-check>
+						Stopped.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K9" data-lab-correction="exits">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K9</span>
+		<h3 class="lab-term">Every layer exits at one speed</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-raise
+			>
+				Raise them
+			</button>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-dismiss
+			>
+				Dismiss them
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: toasts and trays leaving at layer speed, 320ms, while dialogs left
+			at control speed, 120ms. Read as: exits that were waited on, or missed.
+			Replaced by: one exit speed for whatever leaves.
+		</p>
+		<p class="lab-note">
+			Space <code>3723debc</code> (decision 0065), at Space's 180ms; the after leaves
+			on Design's exit term.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} ·{" "}
+						{side === "before" ? "Space before 0065" : "the exit term"}
+					</p>
+					<div class="k9-stage" data-k9={side}>
+						<div class="k9-layer" data-k9-kind="toast" data-k9-before="320">
+							Toast · Saved
+						</div>
+						<div class="k9-layer" data-k9-kind="tray" data-k9-before="320">
+							Tray · Two decisions
+						</div>
+						<div class="k9-layer" data-k9-kind="dialog" data-k9-before="120">
+							Dialog · Rename
+						</div>
+					</div>
+					<p class="lab-check" data-lab-check>
+						Not dismissed.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K10" data-lab-correction="signals">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K10</span>
+		<h3 class="lab-term">One piece of work has one trace</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Start the work
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: a spinner beside the shimmer on Kin's working caption. Read as: two
+			signals for one piece of work. Replaced by: the shimmer alone, Space's
+			chosen expression of liveliness.
+		</p>
+		<p class="lab-note">
+			Space decision 0011. The shimmer is Space's signature: a highlight across
+			the caption once every 1.8s.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "Space before 0011" : "Space 0011"}
+					</p>
+					<div class="k10-row" data-k10={side}>
+						<span class="k10-spinner" data-k10-spinner />
+						<span class="k10-caption" data-k10-caption>
+							Kin is idle
+						</span>
+					</div>
+					<p class="lab-check" data-lab-check>
+						Stopped.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K11" data-lab-correction="hover">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K11</span>
+		<h3 class="lab-term">A control answers in tone, not position</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-point
+				aria-pressed="false"
+			>
+				Point at them
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: buttons lifting a pixel under the pointer. Read as: decoration.
+			Replaced by: a change of tone, the control term.
+		</p>
+		<p class="lab-note">
+			Design 0.1 to 0.2: the lift moved 1px over 180ms on out, with its colours
+			at 180ms on ease. Hover them, or point at them with the button.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "Design 0.1" : "Design 0.2 on"}
+					</p>
+					<div class="lab-stage">
+						<button class="kin-button k11-button" type="button" data-k11={side}>
+							Save
+						</button>
+						<button class="kin-button k11-button" type="button" data-k11={side}>
+							Share
+						</button>
+					</div>
+					<p class="lab-check" data-lab-check>
+						Not pointed at.
 					</p>
 				</div>
 			))

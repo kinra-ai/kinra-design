@@ -7,6 +7,14 @@ import { follow, getRate, labNow, lessMotion } from "./motion-rate.ts";
 
 const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
 
+/** A duration as the browser computes it, in ms; a minifier may write 180ms as .18s. */
+function toMs(value: string) {
+	const text = value.trim();
+	const number = parseFloat(text);
+	if (!Number.isFinite(number)) return 0;
+	return text.endsWith("ms") ? number : number * 1000;
+}
+
 /** A repeatable number in [0, 1) for each integer, so both sides share data. */
 function noise(n: number) {
 	let x = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b);
@@ -538,7 +546,7 @@ function dock(article: HTMLElement) {
 			const style = getComputedStyle(page);
 			const duration = lessMotion()
 				? 0
-				: parseFloat(style.getPropertyValue("--kin-duration-navigate")) || 0;
+				: toMs(style.getPropertyValue("--kin-duration-navigate"));
 			const easing =
 				style
 					.getPropertyValue("--kin-motion-navigate")
@@ -731,6 +739,350 @@ function entries(article: HTMLElement) {
 	});
 }
 
+// ------------------------------------------------------------ K2, the chain
+
+function chain(article: HTMLElement) {
+	const box = article.querySelector<HTMLElement>('[data-k2="before"]')!;
+	const svg = box.querySelector<SVGSVGElement>("[data-k2-links]")!;
+	const side = box.parentElement!;
+	let lights: Animation[] = [];
+	let timer = 0;
+	// Observatory's light eased along its stretch in and out: a cubic each way.
+	const along = (t: number) =>
+		t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+	const start = () => {
+		svg.replaceChildren();
+		const frame = box.getBoundingClientRect();
+		const tiles = Array.from(box.querySelectorAll(".k2-tile"));
+		const links = tiles.slice(1).map((tile, index) => {
+			const a = tiles[index].getBoundingClientRect();
+			const b = tile.getBoundingClientRect();
+			return {
+				x1: a.right - frame.left,
+				y1: a.top + a.height / 2 - frame.top,
+				x2: b.left - frame.left,
+				y2: b.top + b.height / 2 - frame.top,
+			};
+		});
+		const space = "http://www.w3.org/2000/svg";
+		for (const [index, link] of links.entries()) {
+			const path = document.createElementNS(space, "path");
+			path.setAttribute("d", `M${link.x1} ${link.y1}L${link.x2} ${link.y2}`);
+			svg.append(path);
+			if (lessMotion()) continue;
+			const dot = document.createElementNS(space, "circle");
+			dot.setAttribute("r", "2.5");
+			dot.setAttribute("class", "k2-dot");
+			svg.append(dot);
+			const at = (t: number) =>
+				`translate(${link.x1 + (link.x2 - link.x1) * t}px, ${link.y1 + (link.y2 - link.y1) * t}px)`;
+			const from = (index / links.length) * 0.9;
+			const to = ((index + 1) / links.length) * 0.9;
+			const frames: Keyframe[] = [{ offset: 0, opacity: 0, transform: at(0) }];
+			if (from > 0) frames.push({ offset: from, opacity: 0, transform: at(0) });
+			for (let step = 0; step <= 12; step++) {
+				frames.push({
+					offset: from + ((to - from) * step) / 12,
+					opacity: step === 0 || step === 12 ? 0.4 : 1,
+					transform: at(along(step / 12)),
+				});
+			}
+			frames.push({
+				offset: Math.min(1, to + 0.02),
+				opacity: 0,
+				transform: at(1),
+			});
+			if (to + 0.02 < 1)
+				frames.push({ offset: 1, opacity: 0, transform: at(1) });
+			// One second long, locked to the clock's second.
+			const light = dot.animate(frames, {
+				duration: 1000,
+				iterations: Infinity,
+				easing: "linear",
+			});
+			light.currentTime = labNow() % 1000;
+			lights.push(light);
+		}
+		const measure = () =>
+			check(
+				side,
+				lights.length
+					? `Rule 2 · breaks: ${lights.length} lights run every second with no work behind them.`
+					: "Rule 2 · no lights with less motion.",
+				lights.length ? false : null,
+			);
+		measure();
+		timer = window.setInterval(measure, 1000);
+	};
+	const stop = () => {
+		clearInterval(timer);
+		for (const light of lights) light.cancel();
+		lights = [];
+		svg.replaceChildren();
+		check(side, "Stopped.");
+	};
+	runButton(article, start, stop);
+}
+
+// ----------------------------------------------------------- K7, the ladder
+
+function ladder(article: HTMLElement) {
+	const ladders = Array.from(
+		article.querySelectorAll<HTMLElement>("[data-k7]"),
+	);
+	const held = (ladder: HTMLElement) => {
+		const axis = ladder.getBoundingClientRect();
+		return Array.from(
+			ladder.querySelectorAll<HTMLElement>("[data-k7-mark]"),
+		).filter((mark) => {
+			const dot = mark.getBoundingClientRect();
+			const expected =
+				axis.left + (axis.width * Number(mark.dataset.k7Mark)) / 100;
+			return (
+				Number(getComputedStyle(mark).opacity) < 0.99 ||
+				Math.abs(dot.left - expected) > 1
+			);
+		}).length;
+	};
+	const load = () => {
+		for (const ladder of ladders) {
+			ladder.toggleAttribute("data-k7-reset", true);
+			ladder.removeAttribute("data-k7-seen");
+			void getComputedStyle(ladder).opacity;
+			for (const mark of ladder.querySelectorAll("[data-k7-mark]")) {
+				void getComputedStyle(mark).translate;
+			}
+			ladder.removeAttribute("data-k7-reset");
+			// Before anyone sees it: in print, in a picture, or to a reader who
+			// never scrolls this far.
+			const count = held(ladder);
+			const before = ladder.dataset.k7 === "before";
+			check(
+				ladder.parentElement!,
+				count
+					? `Rule 6 · breaks: before it is seen, ${count} of 5 values are not where they read.`
+					: "Rule 6 · keeps: before it is seen, every value stands where it reads.",
+				count ? false : before ? null : true,
+			);
+		}
+	};
+	article.querySelector("[data-lab-load]")!.addEventListener("click", load);
+	article.querySelector("[data-lab-see]")!.addEventListener("click", () => {
+		for (const ladder of ladders) ladder.toggleAttribute("data-k7-seen", true);
+		follow();
+	});
+}
+
+// ------------------------------------------------------- K8, the compositor
+
+function compositor(article: HTMLElement) {
+	const dials = Array.from(article.querySelectorAll<HTMLElement>("[data-k8]"));
+	let frame = 0;
+	let timer = 0;
+	let drawn = 0;
+	let turn: Animation | undefined;
+	const start = () => {
+		for (const dial of dials) {
+			const hand = dial.querySelector<HTMLElement>("[data-k8-hand]")!;
+			if (dial.dataset.k8 === "before") {
+				// The page's own thread sets the hand on every frame.
+				const draw = () => {
+					hand.style.rotate = `${((labNow() % 60000) / 60000) * 360}deg`;
+					drawn++;
+					frame = requestAnimationFrame(draw);
+				};
+				frame = requestAnimationFrame(draw);
+			} else {
+				turn = hand.animate(
+					[{ transform: "rotate(0turn)" }, { transform: "rotate(1turn)" }],
+					{
+						duration: 60000,
+						iterations: Infinity,
+						easing: lessMotion() ? "steps(60)" : "linear",
+					},
+				);
+				turn.currentTime = labNow() % 60000;
+			}
+		}
+		const measure = () => {
+			const [before, after] = dials.map((dial) => dial.parentElement!);
+			check(
+				before,
+				`Rule 11 · breaks: the page's own thread drew the hand ${drawn} times in the last second.`,
+				false,
+			);
+			check(
+				after,
+				"Rule 11 · keeps: the compositor turns the hand; the page drew it no times.",
+				true,
+			);
+			drawn = 0;
+		};
+		timer = window.setInterval(measure, 1000);
+	};
+	const stop = () => {
+		cancelAnimationFrame(frame);
+		clearInterval(timer);
+		turn?.cancel();
+		for (const dial of dials) check(dial.parentElement!, "Stopped.");
+	};
+	runButton(article, start, stop);
+}
+
+// ----------------------------------------------------------- K9, the exits
+
+function exits(article: HTMLElement) {
+	const stages = Array.from(article.querySelectorAll<HTMLElement>("[data-k9]"));
+	article.querySelector("[data-lab-raise]")!.addEventListener("click", () => {
+		for (const stage of stages) {
+			for (const layer of stage.querySelectorAll<HTMLElement>(".k9-layer")) {
+				for (const animation of layer.getAnimations()) animation.cancel();
+				layer.hidden = false;
+			}
+			check(stage.parentElement!, "Raised.");
+		}
+	});
+	article.querySelector("[data-lab-dismiss]")!.addEventListener("click", () => {
+		for (const stage of stages) {
+			const before = stage.dataset.k9 === "before";
+			const exit = getComputedStyle(stage);
+			const exitMs = lessMotion()
+				? 0
+				: toMs(exit.getPropertyValue("--kin-duration-exit"));
+			const exitCurve =
+				exit
+					.getPropertyValue("--kin-motion-exit")
+					.trim()
+					.replace(/^[\d.]+m?s\s*/, "") || "ease-in";
+			const times: number[] = [];
+			for (const layer of stage.querySelectorAll<HTMLElement>(".k9-layer")) {
+				if (layer.hidden) continue;
+				const dialog = layer.dataset.k9Kind === "dialog";
+				// Space before 0065: toasts and trays fell 12px at layer speed on
+				// Svelte's quint; dialogs faded at control speed on its cubic.
+				const duration = lessMotion()
+					? 0
+					: before
+						? Number(layer.dataset.k9Before)
+						: exitMs;
+				const easing = before
+					? dialog
+						? "cubic-bezier(0.32, 0, 0.67, 0)"
+						: "cubic-bezier(0.64, 0, 0.78, 0)"
+					: exitCurve;
+				const travel = before ? (dialog ? "0 0" : "0 12px") : "0 0.25rem";
+				times.push(duration);
+				const leaving = layer.animate(
+					[
+						{ opacity: 1, translate: "0 0" },
+						{ opacity: 0, translate: travel },
+					],
+					{ duration, easing, fill: "forwards" },
+				);
+				leaving.finished
+					.then(() => {
+						layer.hidden = true;
+						leaving.cancel();
+					})
+					.catch(() => {});
+			}
+			const same = times.every((time) => time === times[0]);
+			check(
+				stage.parentElement!,
+				same
+					? `Exit · keeps: every layer leaves at ${times[0]}ms.`
+					: `Exit · breaks: they leave at ${times.join("ms, ")}ms.`,
+				same,
+			);
+		}
+		follow();
+	});
+}
+
+// ---------------------------------------------------------- K10, the signals
+
+function signals(article: HTMLElement) {
+	const rows = Array.from(article.querySelectorAll<HTMLElement>("[data-k10]"));
+	let timer = 0;
+	const start = () => {
+		for (const row of rows) {
+			const caption = row.querySelector<HTMLElement>("[data-k10-caption]")!;
+			caption.textContent = "Kin is working";
+			caption.toggleAttribute("data-k10-live", !lessMotion());
+			if (row.dataset.k10 === "before") {
+				row.querySelector<HTMLElement>("[data-k10-spinner]")!.className =
+					"k10-spinner kin-spinner";
+			}
+		}
+		const measure = () => {
+			for (const row of rows) {
+				const loops = row
+					.getAnimations({ subtree: true })
+					.filter(
+						(animation) =>
+							animation.effect?.getTiming().iterations === Infinity,
+					).length;
+				check(
+					row.parentElement!,
+					loops > 1
+						? `Rule 3 · breaks: ${loops} loops say one piece of work is running.`
+						: "Rule 3 · keeps: one loop says it.",
+					loops <= 1,
+				);
+			}
+		};
+		follow();
+		window.setTimeout(measure, 50);
+		timer = window.setInterval(measure, 1000);
+	};
+	const stop = () => {
+		clearInterval(timer);
+		for (const row of rows) {
+			const caption = row.querySelector<HTMLElement>("[data-k10-caption]")!;
+			caption.textContent = "Kin is idle";
+			caption.removeAttribute("data-k10-live");
+			row.querySelector<HTMLElement>("[data-k10-spinner]")!.className =
+				"k10-spinner";
+			check(row.parentElement!, "Stopped.");
+		}
+	};
+	runButton(article, start, stop);
+}
+
+// ------------------------------------------------------------ K11, the hover
+
+function hover(article: HTMLElement) {
+	const buttons = Array.from(
+		article.querySelectorAll<HTMLElement>("[data-k11]"),
+	);
+	const point = article.querySelector<HTMLButtonElement>("[data-lab-point]")!;
+	const measure = () => {
+		for (const side of ["before", "after"]) {
+			const button = buttons.find((each) => each.dataset.k11 === side)!;
+			const moved = new DOMMatrixReadOnly(getComputedStyle(button).transform).f;
+			check(
+				button.closest(".lab-pair > div")!,
+				moved
+					? `Control · breaks: the button moves ${Math.abs(moved).toFixed(0)}px under the pointer.`
+					: "Control · keeps: it answers in tone and stays where it is.",
+				!moved,
+			);
+		}
+	};
+	point.addEventListener("click", () => {
+		const on = point.getAttribute("aria-pressed") !== "true";
+		point.setAttribute("aria-pressed", String(on));
+		for (const button of buttons) button.toggleAttribute("data-lab-hover", on);
+		follow();
+		if (on) window.setTimeout(measure, 400);
+	});
+	for (const button of buttons) {
+		button.addEventListener("pointerenter", () =>
+			window.setTimeout(measure, 400),
+		);
+	}
+}
+
 export function mountCorrections(container: HTMLElement) {
 	const find = (name: string) =>
 		container.querySelector<HTMLElement>(`[data-lab-correction="${name}"]`);
@@ -744,4 +1096,16 @@ export function mountCorrections(container: HTMLElement) {
 	if (k5) dock(k5);
 	const k6 = find("entries");
 	if (k6) entries(k6);
+	const k2 = find("chain");
+	if (k2) chain(k2);
+	const k7 = find("ladder");
+	if (k7) ladder(k7);
+	const k8 = find("compositor");
+	if (k8) compositor(k8);
+	const k9 = find("exits");
+	if (k9) exits(k9);
+	const k10 = find("signals");
+	if (k10) signals(k10);
+	const k11 = find("hover");
+	if (k11) hover(k11);
 }

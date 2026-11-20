@@ -1,0 +1,117 @@
+/* The motion lab's signatures and context specimens. */
+
+.lab-edge-list {
+	display: grid;
+	gap: var(--kin-space-2);
+}
+
+/* The still alternative to the live edge's breath and blink: its own forms,
+   held still. */
+.lab-edge-still
+	:is(
+		.kin-pattern-live-edge[data-edge="waiting"],
+		.kin-pattern-live-edge[data-edge="reconnecting"]
+	),
+.lab-edge-still
+	:is(
+		.kin-pattern-live-edge[data-edge="waiting"],
+		.kin-pattern-live-edge[data-edge="reconnecting"]
+	)
+	:is(*, *::before, *::after),
+.lab-edge-still
+	:is(
+		.kin-pattern-live-edge[data-edge="waiting"],
+		.kin-pattern-live-edge[data-edge="reconnecting"]
+	)::before,
+.lab-edge-still
+	:is(
+		.kin-pattern-live-edge[data-edge="waiting"],
+		.kin-pattern-live-edge[data-edge="reconnecting"]
+	)::after {
+	animation: none !important;
+}
+
+/* X2: a dial with sixty ticks and a seconds hand. */
+.x2-dial {
+	aspect-ratio: 1;
+	border: 1px solid var(--kin-color-rule-strong);
+	border-radius: 50%;
+	flex: none;
+	position: relative;
+	width: 8rem;
+}
+
+.x2-dial::before {
+	background: repeating-conic-gradient(
+		from -0.5deg,
+		var(--kin-color-text-muted) 0deg 1deg,
+		transparent 1deg 6deg
+	);
+	border-radius: 50%;
+	content: "";
+	inset: 4%;
+	-webkit-mask: radial-gradient(
+		closest-side,
+		transparent 88%,
+		#000 89%,
+		#000 97%,
+		transparent 98%
+	);
+	mask: radial-gradient(
+		closest-side,
+		transparent 88%,
+		#000 89%,
+		#000 97%,
+		transparent 98%
+	);
+	position: absolute;
+}
+
+.x2-hand {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	height: 44%;
+	left: calc(50% - 1px);
+	position: absolute;
+	top: 6%;
+	transform-origin: 50% 100%;
+	width: 2px;
+}
+
+/* X3: a program's path. */
+.x3-path {
+	aspect-ratio: 244 / 84;
+	display: block;
+	height: auto;
+	max-height: 8rem;
+	overflow: visible;
+	width: 100%;
+}
+
+.x3-route {
+	fill: none;
+	stroke: var(--kin-color-rule-strong);
+	stroke-dasharray: 3 3;
+	stroke-width: 1.2;
+}
+
+.x3-op {
+	fill: var(--kin-color-text-muted);
+}
+
+.x3-tool {
+	fill: var(--kin-color-primary);
+}
+
+/* X4 and X5: context. */
+.x4-runs {
+	gap: var(--kin-space-2);
+}
+
+.x4-run {
+	background: var(--kin-surface-step);
+}
+
+.x4-sample {
+	font-variant-numeric: tabular-nums;
+}

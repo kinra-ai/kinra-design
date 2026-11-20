@@ -1,0 +1,196 @@
+---
+// Signatures: timing that belongs to the thing itself, which no term carries
+// (docs/motion.md, Signatures). Each is declared where it is defined, with its
+// reason and its form with less motion.
+import edgeSource from "@kinra/web/registry/patterns/live-edge/live-edge.html?raw";
+
+const edge = (state: string, title: string, meta: string) =>
+	edgeSource
+		.replace(
+			'data-edge="working"',
+			`data-edge="ready" data-lab-edge-state="${state}"`,
+		)
+		.replace("Indexing files", title)
+		.replace(
+			'<p class="kin-list__meta">Working</p>',
+			`<p class="kin-list__meta">${meta}</p>`,
+		);
+
+const ops = [
+	[12, 70],
+	[40, 22],
+	[78, 58],
+	[110, 18],
+	[146, 64],
+	[176, 30],
+	[204, 66],
+	[232, 24],
+];
+const path = ops
+	.map(([x, y], index) => `${index ? "L" : "M"}${x} ${y}`)
+	.join(" ");
+---
+
+<article class="lab-specimen" id="X1" data-lab-signature="edge">
+	<div class="lab-specimen__head">
+		<span class="lab-id">X1</span>
+		<h3 class="lab-term">The live edge</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Show the states
+			</button>
+		</div>
+		<p class="lab-meaning">
+			A stable pattern's own timings: the working band (2.4s), the breath while
+			the next move is the person's (3.2s), the blink while reconnecting (1.2s)
+			and the gather that ends work (1.1s, as long as the closing state).
+		</p>
+		<p class="lab-note">
+			Open for review: "nothing blinks" asks whether waiting and reconnecting
+			should hold still. Each is shown as it is today and as a still line beside
+			it. Changing a stable pattern's form needs a migration note.
+		</p>
+	</div>
+	<div class="lab-pair">
+		<div>
+			<p class="lab-pair__label">Today, as signatures</p>
+			<ul class="lab-edge-row lab-edge-list">
+				<Fragment
+					set:html={edge("working", "Indexing files", "Working · band 2.4s")}
+				/>
+				<Fragment
+					set:html={edge("waiting", "Your answer", "Waiting · breath 3.2s")}
+				/>
+				<Fragment
+					set:html={edge(
+						"reconnecting",
+						"The connection",
+						"Reconnecting · blink 1.2s",
+					)}
+				/>
+			</ul>
+		</div>
+		<div>
+			<p class="lab-pair__label">The still alternative</p>
+			<ul class="lab-edge-row lab-edge-list lab-edge-still">
+				<Fragment
+					set:html={edge("working", "Indexing files", "Working · band 2.4s")}
+				/>
+				<Fragment
+					set:html={edge("waiting", "Your answer", "Waiting · a steady line")}
+				/>
+				<Fragment
+					set:html={edge(
+						"reconnecting",
+						"The connection",
+						"Reconnecting · still dashes",
+					)}
+				/>
+			</ul>
+		</div>
+	</div>
+</article>
+
+<article class="lab-specimen" id="X2" data-lab-signature="escapement">
+	<div class="lab-specimen__head">
+		<span class="lab-id">X2</span>
+		<h3 class="lab-term">The escapement</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Start the clock
+			</button>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-gait
+				aria-pressed="true"
+			>
+				Locked to the pulse
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Observatory's seconds hand beats dead seconds while it is locked to the
+			GPS pulse: each second it swings to the mark and 0.6° past it in 60ms,
+			falls back in 40ms and holds. Coasting, it sweeps, and the dial says why.
+			Its timing is the escapement's own gait, so it is a signature, not a
+			settle.
+		</p>
+		<p class="lab-note">
+			Rebuilt from Observatory's <code>movement.ts</code>: one minute-long
+			animation of 181 keyframes, started from the clock. A change of gait waits
+			until just after a second and keeps the phase. With less motion it steps
+			once a second.
+		</p>
+	</div>
+	<div class="lab-columns">
+		<div class="lab-col" data-kin-motion="expressive">
+			<div class="lab-stage">
+				<div class="x2-dial" aria-hidden="true">
+					<span class="x2-hand" data-x2-hand></span>
+				</div>
+				<p class="lab-caption" data-x2-caption>Stopped.</p>
+			</div>
+		</div>
+	</div>
+</article>
+
+<article class="lab-specimen" id="X3" data-lab-signature="playback">
+	<div class="lab-specimen__head">
+		<span class="lab-id">X3</span>
+		<h3 class="lab-term">Playback</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-play
+				aria-pressed="false"
+			>
+				Play
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Relay's Play runs a program's path in about half a minute however long the
+			machine takes. Nothing moves until Play is pressed; it stops at the end,
+			on Pause, off screen and in a hidden tab, and no frame is drawn after it
+			stops. With less motion it goes an operation at a time.
+		</p>
+		<p class="lab-note">
+			Relay decision 0070: ten to forty seconds, six plus three a span; with
+			less motion the first operation after 600ms and each next after 900ms.
+		</p>
+	</div>
+	<div class="lab-columns">
+		<div class="lab-col" data-kin-motion="productive">
+			<svg class="x3-path" viewBox="0 0 244 84" aria-hidden="true">
+				<path class="x3-route" d={path}></path>
+				{ops.map(([x, y]) => <circle class="x3-op" cx={x} cy={y} r="2.4" />)}
+				<circle class="x3-tool" data-x3-tool cx={ops[0][0]} cy={ops[0][1]} r="4"
+				></circle>
+			</svg>
+			<p class="lab-caption" data-x3-caption>Operation 1 of {ops.length}</p>
+			<p class="lab-check" data-lab-check>
+				Nothing moves until Play is pressed.
+			</p>
+			<script
+				is:inline
+				type="application/json"
+				data-x3-ops
+				set:html={JSON.stringify(ops)}
+			/>
+		</div>
+	</div>
+</article>
