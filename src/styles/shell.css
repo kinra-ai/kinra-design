@@ -197,7 +197,9 @@
 	}
 
 	.kin-shell__glyph > .kin-status {
+		/* off-scale: seats the status mark on the glyph's top end corner. */
 		inset-block-start: -0.2rem;
+		/* off-scale: as above. */
 		inset-inline-end: -0.35rem;
 		position: absolute;
 	}
@@ -542,6 +544,7 @@
 
 	.kin-shell[data-drawer][data-labels="drawer"]
 		.kin-shell__item:has(> .kin-shell__label) {
+		/* off-scale: fits the glyph and its label in the 3.25rem item. */
 		gap: 0.1875rem;
 		min-block-size: 3.25rem;
 	}

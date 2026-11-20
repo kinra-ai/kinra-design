@@ -27,3 +27,26 @@ export interface FieldControlAttributes {
 	"aria-invalid": "true" | undefined;
 	required: boolean | undefined;
 }
+
+/** What a `Dialog` hands its footer: its form's id, and a guarded close. */
+export interface DialogControls {
+	/** The body form's id, for `<button type="submit" form={form}>`. */
+	form: string;
+	/** Close as Escape would, asking `canClose` first. */
+	close: () => void;
+}
+
+/** A request to `confirm()`. */
+export interface ConfirmRequest {
+	title: string;
+	/** What happens, in a sentence. */
+	body?: string;
+	/** The things it happens to, listed. */
+	items?: readonly string[];
+	/** The confirming action's words, such as "Delete repository". */
+	action: string;
+	/** The way back's words; "Cancel" by default. */
+	cancel?: string;
+	/** `error` for an action that destroys; `primary` otherwise. */
+	tone?: "primary" | "error";
+}

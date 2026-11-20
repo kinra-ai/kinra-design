@@ -447,6 +447,7 @@
 	.kin-steps__step::before {
 		background: var(--kin-color-rule);
 		content: "";
+		/* off-scale: runs the 1px line from below one 1.75rem index to the next, through its centre. */
 		inset: 1.75rem auto 0 calc(0.875rem - 0.5px);
 		position: absolute;
 		width: 1px;
@@ -548,6 +549,7 @@
 	}
 
 	.kin-steps[data-orientation="horizontal"] .kin-steps__step::before {
+		/* off-scale: joins the 1.75rem indexes through their centres. */
 		inset: 0.875rem 0 auto 2.25rem;
 		height: 1px;
 		width: auto;

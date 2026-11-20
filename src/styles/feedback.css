@@ -163,6 +163,7 @@
 		content: "";
 		flex: none;
 		height: var(--kin-mark-size);
+		/* off-scale: room for the two marks its shadows draw beside it. */
 		margin-inline: 0.65rem 0.65rem;
 		width: var(--kin-mark-size);
 	}
@@ -229,6 +230,45 @@
 
 	.kin-skeleton + .kin-skeleton[data-shape="text"] {
 		width: var(--kin-skeleton-width, 85%);
+	}
+
+	/* Loading: the shape of what is on its way, shown only once a read has
+	   taken long enough to notice. Kinra Space's waiting shapes. */
+
+	.kin-loading {
+		display: grid;
+		gap: var(--kin-gap-stack);
+		padding-block: var(--kin-gap-stack);
+	}
+
+	.kin-loading[data-shape="lines"] > .kin-skeleton {
+		min-height: var(--kin-space-4);
+	}
+
+	.kin-loading[data-shape="lines"] > .kin-skeleton:nth-child(3n + 2) {
+		--kin-skeleton-width: 85%;
+	}
+
+	.kin-loading[data-shape="lines"] > .kin-skeleton:nth-child(3n) {
+		--kin-skeleton-width: 60%;
+	}
+
+	.kin-loading[data-shape="rows"] {
+		gap: var(--kin-gap-inline);
+	}
+
+	.kin-loading[data-shape="rows"] > .kin-skeleton {
+		border-radius: var(--kin-radius-row);
+		min-height: var(--kin-control-height);
+	}
+
+	.kin-loading[data-shape="cards"] {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+	}
+
+	.kin-loading[data-shape="cards"] > .kin-skeleton {
+		border-radius: var(--kin-radius-layer);
+		min-height: 12rem;
 	}
 
 	/* Toast: a brief message that arrives, then leaves. */

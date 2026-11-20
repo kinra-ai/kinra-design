@@ -281,6 +281,7 @@
 	height: calc(
 		var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-width)
 	);
+	/* off-scale: the key's size, which the radius scales from. */
 	border-radius: calc(
 		var(--kin-pattern-key-size, 3rem) * var(--kin-pattern-stroke-radius)
 	);

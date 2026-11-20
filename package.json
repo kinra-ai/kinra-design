@@ -41,16 +41,21 @@
       "optional": true
     }
   },
+  "bin": {
+    "kinra-check-spacing": "./tools/check-spacing.mjs"
+  },
   "scripts": {
     "dev": "cd examples/reference && astro dev",
     "build:reference": "astro build --root examples/reference",
     "check:contract": "node scripts/check-contract.mjs",
-    "check": "npm run check:contract && npm run check:svelte && astro check --root examples/reference && npm run format:check",
+    "check": "npm run check:contract && npm run check:spacing && npm run test:tools && npm run check:svelte && astro check --root examples/reference && npm run format:check",
     "verify": "npm run check && npm run build:reference && npm run test:browser",
     "test:browser": "playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings"
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "check:spacing": "node tools/check-spacing.mjs src/styles registry",
+    "test:tools": "node --test tests/tools/"
   },
   "repository": {
     "type": "git",

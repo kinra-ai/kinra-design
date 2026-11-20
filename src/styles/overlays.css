@@ -483,6 +483,27 @@
 	.kin-dialog__body:where(:not(.kin-stack)) > p {
 		margin-block-end: 0;
 	}
+	/* A form body's fields, disabled together while work is in flight. They
+	   keep the body's rhythm. */
+	.kin-dialog__fields {
+		border: 0;
+		margin: 0;
+		min-inline-size: 0;
+		padding: 0;
+	}
+	.kin-dialog__fields > :where(* + *) {
+		margin-block-start: var(--kin-space-4);
+	}
+	.kin-dialog__fields > :where(:first-child) {
+		margin-block-start: 0;
+	}
+	.kin-dialog__fields > :where(:last-child) {
+		margin-block-end: 0;
+	}
+	/* The title takes focus only to say where the reader is. */
+	.kin-dialog__title:focus {
+		outline: 0;
+	}
 	.kin-dialog__footer .kin-button:not(.kin-button--icon) {
 		min-height: var(--kin-control-height);
 	}

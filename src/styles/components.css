@@ -146,6 +146,35 @@
 		width: 0.75rem;
 	}
 
+	/* Icon: a glyph at one of three sizes. It is decoration: the control
+	   around it carries the name. */
+
+	.kin-icon {
+		block-size: var(--kin-icon-size, 1.25rem);
+		display: inline-flex;
+		flex: none;
+		inline-size: var(--kin-icon-size, 1.25rem);
+		vertical-align: middle;
+	}
+
+	.kin-icon[data-size="sm"] {
+		--kin-icon-size: 1rem;
+	}
+
+	.kin-icon[data-size="lg"] {
+		--kin-icon-size: 1.5rem;
+	}
+
+	.kin-icon > svg {
+		block-size: 100%;
+		inline-size: 100%;
+	}
+
+	/* A glyph that points along the line turns with it, right to left. */
+	.kin-icon[data-along] > svg {
+		scale: var(--kin-flow, 1) 1;
+	}
+
 	/* Notice */
 
 	.kin-notice {
@@ -473,6 +502,7 @@
 		accent-color: var(--kin-color-primary);
 		flex: none;
 		height: 1rem;
+		/* off-scale: centres the 1rem box on the label's first line. */
 		margin: 0.2rem 0 0;
 		width: 1rem;
 	}
@@ -524,6 +554,7 @@
 		border-radius: calc(var(--kin-control-radius) - 0.25rem);
 		content: "";
 		height: 1rem;
+		/* off-scale: the thumb's inset in its track, which its radius nests with. */
 		inset: 0.1875rem auto auto 0.1875rem;
 		position: absolute;
 		transition:
@@ -583,6 +614,7 @@
 		border: 0;
 		border-radius: 2px;
 		height: 1rem;
+		/* off-scale: centres the 1rem thumb on the 2px track. */
 		margin-top: -0.4375rem;
 		width: 1rem;
 	}

@@ -218,6 +218,7 @@
 	.kin-log__entry::before {
 		background: var(--kin-color-rule);
 		content: "";
+		/* off-scale: centres the 1px line on the marker column. */
 		inset: 0 auto 0
 			calc(var(--kin-log-time, 5.5rem) + var(--kin-space-4) + 0.5rem - 0.5px);
 		position: absolute;
@@ -226,6 +227,7 @@
 	}
 
 	.kin-log__entry:first-child::before {
+		/* off-scale: starts the line at the first marker's centre. */
 		top: calc(var(--kin-space-3) + 0.6rem);
 	}
 
@@ -254,6 +256,7 @@
 		border-radius: 1px;
 		height: 0.625rem;
 		justify-self: center;
+		/* off-scale: sets the marker on the centre of the entry's first line. */
 		margin-block-start: 0.4375rem;
 		position: relative;
 		width: 0.625rem;
@@ -320,6 +323,7 @@
 	}
 
 	.kin-log[data-time="none"] .kin-log__entry::before {
+		/* off-scale: centres the 1px line on the 1rem marker column. */
 		left: calc(0.5rem - 0.5px);
 	}
 
@@ -815,6 +819,7 @@
 		}
 
 		.kin-log__entry::before {
+			/* off-scale: centres the 1px line on the 1rem marker column. */
 			left: calc(0.5rem - 0.5px);
 		}
 
