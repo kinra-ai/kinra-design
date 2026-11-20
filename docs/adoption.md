@@ -39,7 +39,7 @@ dependency to the consumer's `package.json`:
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.7.1"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.8.0"
   }
 }
 ```
@@ -232,8 +232,7 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
 
 ## Moving to 0.8: shared structure and the Svelte layer
 
-Prepared for 0.8.0 with the edges below. Everything here is additive except
-two small changes to existing spacing:
+Version 0.8.0 adds shared structure and adjusts list rows and card footers.
 
 - `.kin-list__item` takes the row roles, 8px above and below and 12px at its
   ends (16px in a bounded list), where it took 12px and 8px; its minimum
@@ -292,10 +291,9 @@ the same pass.
 
 ## Moving to 0.8: edges by meaning
 
-Prepared for 0.8.0 and not yet released. On 2026-11-20 Blake gave each small
-shape one meaning: a line along an edge is work in flight, a bar set in from
-the start is a still block's tone, and the square marks state. No class,
-attribute or export is renamed or removed, but three things look different:
+Version 0.8.0 uses a line along an edge for work in flight, a bar set in from
+the start for a still block's tone, and a square to mark state. The release
+changes notice and switch styling and promotes the live edge pattern.
 
 - `.kin-notice` and `.kin-toast` draw their tone as a 3px bar with round
   ends, `--kin-space-1` in from their start and `--kin-space-2` from top and

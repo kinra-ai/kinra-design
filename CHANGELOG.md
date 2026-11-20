@@ -7,15 +7,16 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Prepared for 0.8.0; not released. Each small shape now means one thing:
-a line along an edge is work in flight, a bar is a still block's tone, and
+## [0.8.0] - 2026-11-20
+
+A line along an edge is work in flight, a bar is a still block's tone, and
 the square marks state. The page head, section head and row with actions that
 Kinra Space and Kinra Relay each built are shared, spacing has roles and a
 check, and an optional Svelte layer writes the markup and carries the
-behaviour. No class, attribute or export is renamed or removed, but notices,
-toasts, switches and list rows look different after an upgrade; see
+behaviour. For changes to notices, toasts, switches and list rows, see
 [shared structure](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer)
 and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
+This release includes all five fonts from Kinra Type `v0.2.1`, its latest tag.
 
 ### Added
 
@@ -76,6 +77,11 @@ and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
   `off-scale:` reason, and Design passes its own spacing check.
 - `/applications/` writes the shared heads in place of its reference-only
   ones, and the catalog's `/svelte/` pages render the layer.
+
+### Fixed
+
+- The release check selects unit-test files with a glob supported by the
+  pinned Node 26 test runner.
 
 ## [0.7.1] - 2026-11-14
 
@@ -489,7 +495,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.7.1...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.8.0...main
+[0.8.0]: https://github.com/kinra-ai/kinra-design/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/kinra-ai/kinra-design/compare/v0.5.1...v0.6.0

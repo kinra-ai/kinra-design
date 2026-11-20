@@ -7,13 +7,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand
-  and Sans spacing refinements, and the previously unreleased shell guide
-  and first-paint correction). Blake authorized the Type release, font
-  adoption and Design release. `package.json` and both root lockfile
-  versions match 0.7.1. Each consumer upgrades its own exact dependency;
-  no npm registry publication or deployment is implied.
-- Prior releases: `v0.7.0` (2026-10-12, shared application shell and
+- Latest immutable tag: `v0.8.0` (2026-11-20, authorized by Blake). It ships
+  shared page and list structure, spacing roles and the spacing check, the
+  optional Svelte 5 layer, and the revised notice, toast and switch styling.
+  `package.json` and both root lockfile versions match 0.8.0. Consumer
+  upgrades follow the [adoption guide](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer).
+- Prior releases: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
+  spacing refinements and the shell guide and first-paint correction;
+  authorized by Blake), `v0.7.0` (2026-10-12, shared application shell and
   accessibility fixes; authorized by Blake), `v0.6.0` (2026-10-11, sans application language,
   reference-only compositions and development dependency remediation;
   authorized by Blake), `v0.5.1` (2026-10-10, Kinra Mono's terminal drawing from
@@ -26,6 +27,20 @@ adoption map; this file only tracks current state, not process.
 - A release is a tag, not a deployment: no build output, host, route, or
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
+
+## Verification of 0.8.0
+
+- `npm ci`, `npm run verify`, `npm audit` and `npm pack --dry-run` pass on
+  Node 26.7.0 and npm 11.17.0. Verification covers the public contract,
+  spacing, 44 unit tests, Svelte and Astro types, formatting, the production
+  reference build and 226 Chromium and WebKit cases. The audit reports zero
+  vulnerabilities. The manifest includes 114 public files, including the
+  Svelte source, declarations and spacing command. A CSS-only install
+  resolves the stylesheet and runs the spacing command with Svelte absent.
+- GitHub reports `v0.2.1` as the latest Kinra Type tag at
+  `fe38f4d6b72afccacff1d94784499d4e7da74474`. The five vendored WOFF2 files
+  and `OFL.txt` match the frozen Type release byte for byte. See
+  [`assets/fonts/VENDORED.md`](assets/fonts/VENDORED.md) for the hashes.
 
 ## Verification of 0.7.1
 
@@ -44,9 +59,9 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
-- **Shared structure and the Svelte layer (unreleased, prepared for 0.8.0;
-  2026-11-20):** a review of Kinra Space's and Kinra Relay's layout passes
-  found both building the same page head, section head, row with actions and
+- **Shared structure and the Svelte layer (0.8.0, 2026-11-20):** a review of
+  Kinra Space's and Kinra Relay's layout passes found both building the same
+  page head, section head, row with actions and
   spacing check, to different rules, and four Svelte products each wiring
   the shell, dialogs and toasts around the CSS. Blake asked for the
   structural recommendations and a robust Svelte layer. Design now ships
@@ -67,11 +82,10 @@ adoption map; this file only tracks current state, not process.
   vulnerabilities, and a packed copy installed into a Vite and Svelte
   consumer that type-checks under the strictest options and builds for the
   server and the browser. At Blake's request `main` carries it, with edges by
-  meaning, from 2026-11-20 (`10a41a5`). Not released; consumers keep their
-  pins.
+  meaning, from 2026-11-20 (`10a41a5`).
 
-- **Edges by meaning (unreleased, prepared for 0.8.0; 2026-11-20):** Kinra
-  Relay's polish pass found the notice's edge, the live edge's line round both
+- **Edges by meaning (0.8.0, 2026-11-20):** Kinra Relay's polish pass found
+  the notice's edge, the live edge's line round both
   leading corners, reading as a bracket, and drew its still accents as a bar
   set in from the start. Blake kept both shapes and gave each one meaning: a
   line along an edge is work in flight, a still block's tone is the bar, and
@@ -80,9 +94,7 @@ adoption map; this file only tracks current state, not process.
   control radius with its thumb nested, and the principles, catalog,
   composing guide and refresh plan say which shape means what. The live edge
   is a stable registry pattern after a review of both consumers' copies (its
-  README records it). No class, attribute or export is renamed or removed;
-  `docs/adoption.md` has the per-product notes. Not released; consumers keep
-  their pins.
+  README records it). `docs/adoption.md` has the per-product notes.
 
 - **Fonts (0.7.1, 2026-11-14):** all five woff2 files and `OFL.txt` come
   from Kinra Type `v0.2.1`, on Blake's authorization. The ampersand is clearer
@@ -287,13 +299,9 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Blake reviews the edges-by-meaning change, the shared structure and the
-Svelte layer, now on `main`, for release as 0.8.0. After it, each product upgrades in its own
-repository: Relay removes its notice override, Space updates its switch
-wording, and each moves its heads, rows, shell wiring and spacing script to
-the shared ones as `docs/adoption.md` lists. Until Relay moves to `Shell`, it
-still needs its breakpoint's query, `(max-width: 59.99rem)`, in its own
-stylesheet, as the catalog's Layout step asks. Design 0.7.1
-carries the contract, guide and demo correction; `shell.css` is unchanged. Candidate registry promotion
-still requires a second consumer and compatibility review; package renaming
-stays outside this update.
+Each product can adopt 0.8.0 in its own repository. Relay removes its notice
+override, Space updates its switch wording, and each moves its heads, rows,
+shell wiring and spacing script to the shared ones as `docs/adoption.md`
+lists. Until Relay moves to `Shell`, it still needs its breakpoint's query,
+`(max-width: 59.99rem)`, in its own stylesheet, as the catalog's Layout step
+asks.

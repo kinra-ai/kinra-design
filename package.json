@@ -1,6 +1,6 @@
 {
   "name": "@kinra/web",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Kinra's framework-light design system for web products and public surfaces.",
   "license": "Apache-2.0",
   "type": "module",
@@ -55,7 +55,7 @@
     "format:check": "prettier --check .",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "check:spacing": "node tools/check-spacing.mjs src/styles registry",
-    "test:tools": "node --test tests/unit/"
+    "test:tools": "node --test \"tests/unit/**/*.test.js\""
   },
   "repository": {
     "type": "git",
