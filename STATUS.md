@@ -161,24 +161,9 @@ adoption map; this file only tracks current state, not process.
   were reviewed on both grounds, right to left and in forced colours.
   `npm pack --dry-run` lists 58 public files and `npm audit` reports zero
   vulnerabilities. This checks the shell in its own demo, not in any product.
-- **Application update (0.6.0):** Blake approved sans by default and the minor
-  release on 2026-10-11. Application UI, headings and display select sans, with
-  a documented mono override; sizes, weights, other recipe defaults and registry
-  statuses are unchanged. Two reference-only compositions at `/applications/`
-  demonstrate page/section heads and collection states. Consumer verification
-  remains separate; no consumer rollout is authorized.
-- **Design verification (2026-10-11, prepared 0.6.0 working tree):** after the
-  dependency patch and version bump, a fresh `npm ci`, browser-engine setup and
-  `npm run verify` passed: contract checks, Astro/TypeScript (zero diagnostics),
-  formatting, the 13-page build and 34 Chromium/WebKit cases. Browser coverage
-  includes scope, mono overrides, example interactions, both schemes at
-  desktop/phone widths, RTL/enlarged text, reduced motion and touch targets.
-  Forced-colour checks run where the engine supports the mode. Fresh reference
-  captures were inspected; `npm pack --dry-run` lists 57 public files, excluding
-  examples, tests, tooling and generated output. `npm audit` reports zero
-  vulnerabilities. The prior independent public-CSS review reported no findings;
-  the reviewed public CSS is unchanged by this preparation. This is Design
-  working-tree evidence, not a clean release-commit gate or consumer acceptance.
+- 0.6.0 (2026-10-11) moved application UI, headings and display to sans, with
+  a documented mono override; its verification and history are in the
+  CHANGELOG.
 
 - `main` contains the released design-system expansion and refresh: a paper
   scheme beside graphite, serif and sans voices beside mono, type roles,
