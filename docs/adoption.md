@@ -258,25 +258,24 @@ Per product:
 - **Kinra Space** moves its `.page-head`, `.section-heading` and
   `.section-head` CSS to the shared heads, or its `PageHead`, `SectionHead`,
   `Row`, `Card`, `Disclosure`, `Empty`, `Loading`, `Confirm`, `ContextMenu`,
-  `Hint` and shell wiring to the layer's (its `ContextMenu.show(event, items,
-anchor)` keeps its shape; icons by name become snippets), and retires `scripts/check-layout-css.mjs` with its
-  suppressions file for `npx kinra-check-spacing --strict src`. Read
-  2026-11-20 at `db1eeae3`, the strict check finds 21 lengths in about 16
-  declarations. Fifteen of Space's 28 suppressions go away, since zero in a
-  fallback passes; the rest, and a few its own script never reached (insets,
-  radii, pages outside `src/styles`), need a value on the scale or an
-  `off-scale:` reason. Its interface guide's
-  page and section head rules point at the catalog's.
+  `Hint` and shell wiring to the layer's. Its context menus keep their shape,
+  `show(event, items, anchor)`, though icons by name become snippets. It
+  retires `scripts/check-layout-css.mjs` and its suppressions file for
+  `npx kinra-check-spacing --strict src`. Read 2026-11-20 at `db1eeae3`, the
+  strict check finds 21 lengths in about 16 declarations. Fifteen of Space's
+  28 suppressions go away, since zero in a fallback passes; the rest, and a
+  few its own script never reached (insets, radii, pages outside
+  `src/styles`), need a value on the scale or an `off-scale:` reason. Its
+  interface guide's page and section head rules point at the catalog's.
 - **Kinra Relay** moves its inline `.page-head` and `.section-head` to the
-  shared heads, its dialog, toasts, `ActionMenu`, `tip` and shell wiring to
-  the layer's (`{@attach tip(text, hint)}` keeps its shape), and
-  retires `scripts/scale.py` for `npx kinra-check-spacing src`. The default
-  mode keeps Relay's own rule, on-scale lengths; it also checks insets and
-  scroll margins, which `scale.py` did not, and finds 20 values in 19
-  declarations there, read 2026-11-20 at `6d804088`. Its
-  five `off-scale:` reasons carry over. Moving to `Shell` brings the
-  first-paint guard Relay lacks, Escape that waits for a modal, and a chord
-  that refuses both modifiers.
+  shared heads, and its dialog, toasts, `ActionMenu`, `tip` and shell wiring
+  to the layer's; `{@attach tip(text, hint)}` keeps its shape. It retires
+  `scripts/scale.py` for `npx kinra-check-spacing src`. The default mode
+  keeps Relay's own rule, on-scale lengths; it also checks insets and scroll
+  margins, which `scale.py` did not, and finds 20 values in 19 declarations
+  there, read 2026-11-20 at `6d804088`. Its five `off-scale:` reasons carry
+  over. Moving to `Shell` brings the first-paint guard Relay lacks, Escape
+  that waits for a modal, and a chord that refuses both modifiers.
 - **Kinra Thread** gains a drawer, a fold and a hairline by moving its frame
   to `Shell`; today its sidebar stands beside the page on a phone.
 - **Kinra Home** moves its shell wiring, the closest copy of the reference,
