@@ -278,8 +278,10 @@ moves focus after the page has changed.
 		});
 		const relayout = () => {
 			const active = document.activeElement;
+			const wasOpen = open;
 			resizing = true;
 			open = false;
+			if (wasOpen) ondrawer?.(false);
 			narrow = query.matches;
 			flushSync();
 			rescue(active);
@@ -471,7 +473,7 @@ moves focus after the page has changed.
 			id={mainId}
 			tabindex="-1"
 			bind:this={page}
-			onscroll={measure}
+			onscrollcapture={measure}
 		>
 			{@render children()}
 		</main>

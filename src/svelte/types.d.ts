@@ -1,4 +1,9 @@
 import type { Snippet } from "svelte";
+import type {
+	HTMLAnchorAttributes,
+	HTMLAttributes,
+	HTMLButtonAttributes,
+} from "svelte/elements";
 import type { Attachment } from "svelte/attachments";
 
 /** A tone names a state: colour is information (principles). */
@@ -122,3 +127,13 @@ export interface MenuTriggerAttributes {
 	[attachment: symbol]:
 		Attachment<HTMLButtonElement> | false | null | undefined;
 }
+
+/**
+ * The attributes of a part that renders a link with `href` and a button
+ * without: one type, so a handler's event is typed for either element.
+ */
+export type LinkOrButtonAttributes = HTMLAttributes<
+	HTMLAnchorElement | HTMLButtonElement
+> &
+	Omit<HTMLButtonAttributes, keyof HTMLAttributes<HTMLButtonElement>> &
+	Omit<HTMLAnchorAttributes, keyof HTMLAttributes<HTMLAnchorElement>>;

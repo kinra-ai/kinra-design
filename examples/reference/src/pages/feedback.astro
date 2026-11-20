@@ -144,11 +144,11 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 		<Specimen
 			title="Toast"
 			contract=".kin-toast-region · .kin-toast · data-tone · data-placement · data-leaving"
-			description="A brief message that arrives and leaves. The region is fixed; each toast uses role='status' for information or role='alert' for failure. Shown here in flow; the button raises a live one."
+			description="A brief message that arrives and leaves. The region is fixed and stays in the page as a polite live region, so each toast that arrives is read. Shown here in flow; the button raises a live one."
 		>
 			<div class="kin-stack">
 				<div class="kin-stack" data-space="compact" style="max-width: 24rem">
-					<div class="kin-toast" data-tone="success" role="status">
+					<div class="kin-toast" data-tone="success">
 						<p class="kin-toast__title">Release v0.3.0 tagged</p>
 						<p class="kin-toast__body">
 							The annotated tag matches the package version.
@@ -159,7 +159,7 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 							>
 						</div>
 					</div>
-					<div class="kin-toast" data-tone="error" role="alert">
+					<div class="kin-toast" data-tone="error">
 						<p class="kin-toast__title">Push rejected</p>
 						<p class="kin-toast__body">
 							The remote has commits you do not have locally.
@@ -207,7 +207,14 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 		</Specimen>
 	</div>
 
-	<div class="kin-toast-region" id="toast-region"></div>
+	<div
+		class="kin-toast-region"
+		id="toast-region"
+		role="region"
+		aria-label="Notifications"
+		aria-live="polite"
+	>
+	</div>
 
 	<script>
 		const region = document.getElementById("toast-region");
@@ -218,7 +225,6 @@ import ReferenceLayout from "../layouts/ReferenceLayout.astro";
 			const toast = document.createElement("div");
 			toast.className = "kin-toast";
 			toast.dataset.tone = "primary";
-			toast.setAttribute("role", "status");
 			toast.innerHTML =
 				'<p class="kin-toast__title">Session started</p><p class="kin-toast__body">The peer is indexing the repository.</p>';
 			region.append(toast);

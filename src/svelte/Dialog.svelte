@@ -21,7 +21,7 @@ it:
 ```
 -->
 <script lang="ts">
-	import type { Snippet } from "svelte";
+	import { tick, untrack, type Snippet } from "svelte";
 	import type { HTMLDialogAttributes } from "svelte/elements";
 	import IconButton from "./IconButton.svelte";
 	import { focusable, restore } from "./focus.js";
@@ -79,6 +79,10 @@ it:
 		footerJustify,
 		element = $bindable(null),
 		edge,
+		oncancel: userCancel,
+		onkeydown: userKeydown,
+		onpointerdown: userPointerdown,
+		onclick: userClick,
 		class: className,
 		...rest
 	}: Props = $props();
@@ -89,6 +93,11 @@ it:
 	const formId = `${uid}-form`;
 	let opener: Element | null = null;
 	let pressedOutside = false;
+	/** The next close was asked for: by `request()` or by `open` itself. */
+	let allowed = false;
+	/** Whatever held focus in the fields when work began. */
+	let waiting: Element | null = null;
+	let destroyed = false;
 
 	function arrive(dialog: HTMLDialogElement) {
 		const target =
@@ -108,13 +117,54 @@ it:
 			dialog.showModal();
 			arrive(dialog);
 		} else if (!open && dialog.open) {
+			allowed = true;
 			dialog.close();
 		}
+	});
+
+	// Removed while open, it still closes properly: focus goes back and the
+	// product hears of it.
+	$effect(() => {
+		const dialog = element;
+		if (!dialog) return;
+		return () => {
+			destroyed = true;
+			if (!dialog.open) return;
+			dialog.close();
+			const back = opener;
+			opener = null;
+			restore(back);
+			open = false;
+			onclose?.();
+		};
+	});
+
+	// Work in flight disables the fields, and a disabled field drops focus;
+	// the title holds it meanwhile and gives it back when the work ends.
+	$effect.pre(() => {
+		if (!busy) return;
+		const dialog = untrack(() => element);
+		const active = document.activeElement;
+		if (dialog && active?.closest(".kin-dialog__fields")) {
+			waiting = active;
+			dialog
+				.querySelector<HTMLElement>(`#${CSS.escape(titleId)}`)
+				?.focus({ preventScroll: true });
+		}
+		return () => {
+			const back = waiting;
+			waiting = null;
+			if (!back) return;
+			void tick().then(() => {
+				if (document.activeElement?.id === titleId) restore(back);
+			});
+		};
 	});
 
 	async function request() {
 		if (busy) return;
 		if (canClose && !(await canClose())) return;
+		allowed = true;
 		open = false;
 		// A dialog a product opened itself closes as well.
 		if (element?.open) element.close();
@@ -135,13 +185,36 @@ it:
 	data-size={edge ? undefined : size}
 	data-side={edge === "end" ? undefined : edge}
 	aria-busy={busy || undefined}
-	oncancel={(event) => {
+	onkeydown={(event) => {
+		userKeydown?.(event);
+		// Escape is the dialog's to answer: the platform's own cancel cannot
+		// be refused a second time, so it never reaches it. A popover inside
+		// that Escape closes goes first.
+		if (event.key !== "Escape" || event.defaultPrevented) return;
+		if (
+			event.currentTarget.querySelector(':popover-open:not([popover="manual"])')
+		)
+			return;
 		event.preventDefault();
 		void request();
 	}}
-	onclose={() => {
-		// The platform may close a modal on its own, such as on a second
-		// Escape; the state follows it either way.
+	oncancel={(event) => {
+		userCancel?.(event);
+		event.preventDefault();
+		void request();
+	}}
+	onclose={(event) => {
+		const dialog = event.currentTarget;
+		// Opened again before this event arrived, or already torn down.
+		if (destroyed || dialog.open) return;
+		if (!allowed && (busy || canClose)) {
+			// The platform closed it on its own; work in flight or a guard
+			// keeps it open, and the guard is asked as Escape would.
+			dialog.showModal();
+			if (!busy) void request();
+			return;
+		}
+		allowed = false;
 		open = false;
 		const back = opener;
 		opener = null;
@@ -149,9 +222,11 @@ it:
 		onclose?.();
 	}}
 	onpointerdown={(event) => {
+		userPointerdown?.(event);
 		pressedOutside = light && event.target === event.currentTarget;
 	}}
 	onclick={(event) => {
+		userClick?.(event);
 		// Only a press and release both on the backdrop: a drag that starts
 		// inside the box and ends outside it does not close it.
 		if (pressedOutside && event.target === event.currentTarget) {
@@ -201,6 +276,8 @@ it:
 			id={formId}
 			onsubmit={(event) => {
 				event.preventDefault();
+				// A submit button outside the disabled fields still submits.
+				if (busy) return;
 				onsubmit(event);
 			}}
 		>

@@ -10,8 +10,9 @@ accident. An icon alone needs a name: use `IconButton`.
 		HTMLAnchorAttributes,
 		HTMLButtonAttributes,
 	} from "svelte/elements";
+	import type { LinkOrButtonAttributes } from "./types.js";
 
-	interface Shared {
+	interface Props extends LinkOrButtonAttributes {
 		/** The button's weight; omit it for the ordinary button. */
 		variant?: "primary" | "quiet" | "ghost" | "danger" | undefined;
 		size?: "compact" | "large" | undefined;
@@ -21,11 +22,6 @@ accident. An icon alone needs a name: use `IconButton`.
 		element?: HTMLButtonElement | HTMLAnchorElement | null;
 		children: Snippet;
 	}
-	type Props = Shared &
-		(
-			| ({ href: string } & Omit<HTMLAnchorAttributes, "href">)
-			| ({ href?: undefined } & HTMLButtonAttributes)
-		);
 
 	let {
 		variant,
@@ -44,7 +40,7 @@ accident. An icon alone needs a name: use `IconButton`.
 	]);
 </script>
 
-{#if rest.href !== undefined}
+{#if rest.href != null}
 	<a
 		{...rest as HTMLAnchorAttributes}
 		bind:this={element}

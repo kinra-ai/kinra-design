@@ -1,0 +1,11 @@
+---
+import SveltePage from "../../components/SveltePage.astro";
+import Demo from "../../svelte/demos/CasesDemo.svelte";
+---
+
+<SveltePage
+	title="Hard cases"
+	description="The cases the Svelte layer must get right, each one a regression test: guards, busy forms, removal while open, replaced confirmations, toasts that hold focus, and rows that only read."
+>
+	<Demo client:load />
+</SveltePage>

@@ -68,6 +68,9 @@ and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
 - Paragraphs inside a notice, empty-state or toast body keep their rhythm
   without margins at the body's edges.
 - A menu shortcut reads left to right in either direction: `⌘C`, never `C⌘`.
+- The toast region stays in the page as a polite live region, and a toast
+  takes no live role of its own: a live element inserted with its words
+  already in it is often not read.
 - Design's own optical values off the spacing scale each carry an
   `off-scale:` reason, and Design passes its own spacing check.
 - `/applications/` writes the shared heads in place of its reference-only

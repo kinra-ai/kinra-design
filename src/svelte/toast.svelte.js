@@ -14,6 +14,9 @@ let next = 0;
  * @returns {number} its id, for `dismiss()`
  */
 export function toast(request) {
+	// A server render shares this module's state with every request it serves,
+	// so a toast raised there would reach later readers.
+	if (typeof window === "undefined") return 0;
 	const id = ++next;
 	const duration = request.duration ?? (request.tone === "error" ? 0 : 5000);
 	toasts.push({ ...request, id, duration, leaving: false });

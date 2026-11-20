@@ -156,8 +156,8 @@ removed.
 
 - `List` and `Row`: a row with `href` or `onopen` has a main control and a
   trail beside it, both lighting the whole row
-  ([rows that act](composing.md#rows-that-act)). Without either, the row only
-  reads. `current` marks the open row; `tone` draws its still state; `after`
+  ([rows that act](composing.md#rows-that-act)). It takes one or the other,
+  never both; without either, the row only reads. `current` marks the open row; `tone` draws its still state; `after`
   holds what it opens.
 - `Card`: with `href` or `onopen` its title opens it and the whole card
   answers the pointer, while actions in its body and footer stay above.
@@ -171,18 +171,25 @@ removed.
 - `Dialog` opens with `bind:open`. It takes first focus to `initialFocus`,
   else the first control in its body, else its title, never the close button;
   it gives focus back to whatever held it, unless that has gone or stands
-  behind something inert. Escape, the close button and, with `light`, the
-  backdrop ask `canClose` first, and nothing closes while `busy`. With
+  behind something inert, including when it is removed while open, which
+  also calls `onclose`. Escape, the close button and, with `light`, the
+  backdrop ask `canClose` first, every time, and nothing closes while
+  `busy`; while busy its title holds focus and gives it back after. With
   `onsubmit` its body is a form whose fields wait while `busy`; the footer
   snippet receives `{ form, close }`.
 - `Drawer` is a dialog from an edge (`side`), closed by its backdrop.
 - `confirm({ title, body, items, action, tone })` resolves `true` or `false`.
-  Mount one `ConfirmHost`. Its focus starts on the way back, Escape answers no,
-  and a new request answers the one before it no.
+  Mount one `ConfirmHost`. It is an alert dialog described by its body; focus
+  starts on the way back, Escape answers no, and a new request answers the
+  one before it no and moves focus back to the way back.
 - `toast({ title, body, tone, action, duration })` raises a toast; mount one
-  `Toaster` outside the shell. Its time stops while the reader points at or
-  focuses it, an error stays until dismissed, and every toast has a dismiss
-  button.
+  `Toaster` outside the shell. The region stays in the page as a polite live
+  region, so each arrival is read. A toast's time stops while the reader
+  points at it or focuses it, each on its own; an error stays until
+  dismissed; and a dismissed toast hands focus to the next, or back to where
+  it came from. On the server `toast()` raises nothing and `confirm()`
+  answers no at once, since a server's module state is shared by every
+  request it serves.
 - `Notice` stays in the page. Pass `role="status"` or `role="alert"` when it
   arrives after the page has loaded.
 
@@ -218,7 +225,8 @@ removed.
 field's `id`, `aria-describedby`, `aria-invalid` while there is an error, and
 `required`. `Input`, `Select` and `Textarea` take these on their own inside a
 field; any other control takes them from the snippet's argument, or reads
-`fieldControl()`. `Check`, `Radio`, `Switch` and `Segmented` wrap native
+`fieldControl()`. The field names its control, so its label always reaches
+it: give an id to the field as `for`, not to the control. `Check`, `Radio`, `Switch` and `Segmented` wrap native
 inputs, so the keyboard and forms behave as the platform does.
 
 ## Icons
@@ -234,10 +242,16 @@ line. The products keep their own icon sets; Design does not ship one.
   typed, no `<style>`, no class outside `kin-`, no import beyond Svelte, and a
   hand-written declaration beside every helper, so a product's TypeScript
   settings never meet the layer's source.
+- `tests/types/props.ts` holds the prop rules the types enforce, such as a
+  row that cannot both link and open in place, and handlers typed for either
+  element.
+- The confirm and toast stores are compiled as a consumer's build compiles
+  them, for the server and the browser, and tested in Node.
 - The catalog renders every component on the server and hydrates it, and the
   browser tests in Chromium and WebKit drive them there: `/svelte/controls/`,
-  `/svelte/menus/`, and `/svelte/shell/`, a whole application built from the
-  layer alone.
+  `/svelte/menus/`, `/svelte/cases/` (the hard cases: guards, busy forms,
+  removal while open, replaced confirmations, toasts that hold focus) and
+  `/svelte/shell/`, a whole application built from the layer alone.
 - A packed copy installed into a plain Vite and Svelte consumer, under
   `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`, type-checks
   and builds for the server and the browser.

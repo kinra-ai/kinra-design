@@ -9,7 +9,7 @@ next line. Keep one primary action at most; the others are quiet.
 	import type { HTMLAttributes } from "svelte/elements";
 	import type { Content, HeadingLevel } from "./types.js";
 
-	interface Props extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
 		title: Content;
 		/** Defaults to 1: a page has one. */
 		level?: HeadingLevel;
@@ -38,7 +38,7 @@ next line. Keep one primary action at most; the others are quiet.
 	}: Props = $props();
 </script>
 
-<header {...rest} class={["kin-page-head", className]}>
+<div {...rest} class={["kin-page-head", className]}>
 	{#if lead}<span class="kin-page-head__lead">{@render lead()}</span>{/if}
 	<svelte:element
 		this={`h${level}`}
@@ -60,4 +60,4 @@ next line. Keep one primary action at most; the others are quiet.
 			{#if typeof description === "function"}{@render description()}{:else}{description}{/if}
 		</p>
 	{/if}
-</header>
+</div>

@@ -10,9 +10,9 @@ in `badge` repeats what `says` puts into the name.
 		HTMLAnchorAttributes,
 		HTMLButtonAttributes,
 	} from "svelte/elements";
-	import type { StatusState, Tone } from "./types.js";
+	import type { LinkOrButtonAttributes, StatusState, Tone } from "./types.js";
 
-	interface Shared {
+	interface Props extends LinkOrButtonAttributes {
 		/** The item's name: its tip, its label and what is said. */
 		label: string;
 		/** More the tip and the name say, such as "3 waiting on you". */
@@ -32,11 +32,6 @@ in `badge` repeats what `says` puts into the name.
 		/** The glyph: an icon, an avatar or a mark. */
 		children: Snippet;
 	}
-	type Props = Shared &
-		(
-			| ({ href: string } & Omit<HTMLAnchorAttributes, "href">)
-			| ({ href?: undefined } & HTMLButtonAttributes)
-		);
 
 	let {
 		label,
@@ -81,7 +76,7 @@ in `badge` repeats what `says` puts into the name.
 	>
 {/snippet}
 
-{#if rest.href !== undefined}
+{#if rest.href != null}
 	<a
 		{...rest as HTMLAnchorAttributes}
 		bind:this={element}

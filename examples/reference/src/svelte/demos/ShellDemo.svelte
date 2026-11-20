@@ -278,8 +278,8 @@ router.
 	onsubmit={create}
 	id="create-dialog"
 >
-	<Field label="Name" required>
-		<Input bind:value={name} id="entry-name" />
+	<Field label="Name" required for="entry-name">
+		<Input bind:value={name} />
 	</Field>
 	{#snippet footer({ form, close })}
 		<Button variant="ghost" onclick={close}>Cancel</Button>

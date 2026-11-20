@@ -27,6 +27,8 @@ test("a page head and its sections keep the catalog's parts and outline", async 
 }) => {
 	const problems = await open(page);
 	const head = page.locator(".kin-page-head");
+	// A div, not a header, so it never stands as a banner landmark.
+	await expect(head).toHaveJSProperty("tagName", "DIV");
 	expect(
 		await head.evaluate((element) =>
 			[...element.children].map((child) => [child.tagName, child.className]),
@@ -95,6 +97,12 @@ test("a row's main control and trail are siblings, and either lights the row", a
 	expect(lit).not.toBe(rest);
 	await main.hover();
 	expect(await settled()).toBe(lit);
+	// A click leaves no light behind once the pointer has gone.
+	await main.click();
+	await page.mouse.move(700, 880);
+	await main.click();
+	await page.mouse.move(700, 880);
+	expect(await settled()).toBe(rest);
 	await main.click();
 	await expect(main).toHaveAttribute("aria-current", "true");
 	await expect(row.locator(".kin-list__after .kin-caption")).toBeVisible();
@@ -138,7 +146,12 @@ test("a dialog focuses its first field, submits as a form and gives focus back",
 	await expect(page.locator("#new-entry")).toBeFocused();
 	await expect(page.locator("#entries")).toContainText("Harbour charts");
 	const toast = page.locator(".kin-toast").filter({ hasText: "Entry added" });
-	await expect(toast).toHaveAttribute("role", "status");
+	// The region announces it; the toast itself takes no live role.
+	await expect(toast).not.toHaveAttribute("role", /.*/);
+	await expect(page.locator(".kin-toast-region")).toHaveAttribute(
+		"aria-live",
+		"polite",
+	);
 	expect(problems).toEqual([]);
 });
 
@@ -148,7 +161,7 @@ test("a confirmation starts on the way back and answers no to Escape", async ({
 	const problems = await open(page);
 	const trigger = page.getByRole("button", { name: "Delete Tide tables" });
 	await trigger.click();
-	const dialog = page.getByRole("dialog", { name: "Delete Tide tables?" });
+	const dialog = page.getByRole("alertdialog", { name: "Delete Tide tables?" });
 	await expect(dialog).toBeVisible();
 	await expect(dialog.getByRole("button", { name: "Cancel" })).toBeFocused();
 	await expect(
@@ -205,4 +218,17 @@ test("a toast's dismiss button removes it", async ({ page }) => {
 	await toast.getByRole("button", { name: "Dismiss" }).click();
 	await expect(toast).toHaveCount(0);
 	expect(problems).toEqual([]);
+});
+
+test("the open row draws its edge in forced colours", async ({ page }) => {
+	await page.emulateMedia({ forcedColors: "active" });
+	await open(page);
+	const row = page.locator('[data-entry="1"]');
+	await row.locator("> .kin-list__main").click();
+	await page.mouse.move(700, 880);
+	await expect
+		.poll(() =>
+			row.evaluate((element) => getComputedStyle(element).outlineStyle),
+		)
+		.toBe("solid");
 });

@@ -9,7 +9,7 @@ state beside it, compact actions at the end, and a description beneath. With
 	import type { HTMLAttributes } from "svelte/elements";
 	import type { Content, HeadingLevel, Tone } from "./types.js";
 
-	interface Props extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
 		title: Content;
 		/** Defaults to 2; a dialog's sections take 3. */
 		level?: HeadingLevel;
@@ -36,7 +36,7 @@ state beside it, compact actions at the end, and a description beneath. With
 	}: Props = $props();
 </script>
 
-<header {...rest} class={["kin-section-head", className]} data-tone={tone}>
+<div {...rest} class={["kin-section-head", className]} data-tone={tone}>
 	<svelte:element
 		this={`h${level}`}
 		{...headingProps}
@@ -57,4 +57,4 @@ state beside it, compact actions at the end, and a description beneath. With
 			{#if typeof description === "function"}{@render description()}{:else}{description}{/if}
 		</p>
 	{/if}
-</header>
+</div>

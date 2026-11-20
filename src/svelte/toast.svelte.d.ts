@@ -22,7 +22,7 @@ export interface Toast extends ToastRequest {
 
 /** The toasts on screen, oldest first. */
 export const toasts: Toast[];
-/** Raise a toast. Mount one `Toaster` to render it. Returns its id. */
+/** Raise a toast. Mount one `Toaster` to render it. Returns its id, or 0 on the server, where nothing is raised. */
 export function toast(request: ToastRequest): number;
 /** Let a toast leave; it fades out, then goes. */
 export function dismiss(id: number): void;

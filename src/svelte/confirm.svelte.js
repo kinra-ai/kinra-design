@@ -4,8 +4,16 @@
  * it with `false`.
  */
 
-/** @type {{ request: (import("./types.js").ConfirmRequest & { answer: (value: boolean) => void }) | null }} */
-export const pending = $state({ request: null });
+class Pending {
+	/**
+	 * Raw, not deep, so the request on screen is the very object `confirm()`
+	 * made and identity holds.
+	 * @type {(import("./types.js").ConfirmRequest & { answer: (value: boolean) => void }) | null}
+	 */
+	request = $state.raw(null);
+}
+
+export const pending = new Pending();
 
 /**
  * Ask the reader to confirm an action.
@@ -13,6 +21,9 @@ export const pending = $state({ request: null });
  * @returns {Promise<boolean>}
  */
 export function confirm(request) {
+	// A server render has no reader to ask, and a module's state there is
+	// shared by every request it serves.
+	if (typeof window === "undefined") return Promise.resolve(false);
 	pending.request?.answer(false);
 	return new Promise((resolve) => {
 		const entry = {

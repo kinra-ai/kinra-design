@@ -305,7 +305,10 @@ table scope, descriptions, roles, or native control behavior.
   enough to notice.
 - `.kin-toast-region` is a fixed region with `data-placement`; `.kin-toast`
   holds `__title`, `__body`, and `__actions`, takes `data-tone`, and animates
-  out when `data-leaving` is set. Its tone is the notice's bar.
+  out when `data-leaving` is set. Its tone is the notice's bar. Put the region
+  in the page before the first toast, named and `aria-live="polite"`, so each
+  arrival is read: a live element inserted with its words already in it is
+  often not.
 - `.kin-kbd` styles a `kbd`.
 - `.kin-tooltip` with `__hint` styles a `role="tooltip"` element the consumer
   positions. As a `[popover]` it loses the browser's popover box and arrives

@@ -10,7 +10,7 @@ and footer stay above that.
 	import type { HTMLAttributes } from "svelte/elements";
 	import type { Content, HeadingLevel, Tone } from "./types.js";
 
-	interface Props extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+	interface Base extends Omit<HTMLAttributes<HTMLElement>, "title"> {
 		/** The element; `li` inside a list of cards. Defaults to `article`. */
 		as?: "article" | "section" | "li" | "div";
 		title?: Content | undefined;
@@ -18,13 +18,9 @@ and footer stay above that.
 		level?: HeadingLevel;
 		/** A quiet line under the title. */
 		meta?: Content | undefined;
-		/** The title opens a page… */
-		href?: string | undefined;
-		/** …or opens something in place. */
-		onopen?: ((event: MouseEvent) => void) | undefined;
 		/** A badge, status or menu at the header's end. */
 		actions?: Snippet;
-		/** Replaces the whole header. */
+		/** Replaces the whole header, title and all; name the card yourself. */
 		header?: Snippet;
 		/** An image above the header. */
 		media?: Snippet;
@@ -35,6 +31,12 @@ and footer stay above that.
 		variant?: "raised" | "plain" | undefined;
 		density?: "compact" | undefined;
 	}
+	/** The title opens a page, opens something in place, or neither. */
+	type Opens =
+		| { href: string; onopen?: undefined }
+		| { href?: undefined; onopen: (event: MouseEvent) => void }
+		| { href?: undefined; onopen?: undefined };
+	type Props = Base & Opens;
 
 	let {
 		as = "article",
@@ -61,7 +63,7 @@ and footer stay above that.
 
 <svelte:element
 	this={as}
-	aria-labelledby={title ? `${uid}-title` : undefined}
+	aria-labelledby={title && !header ? `${uid}-title` : undefined}
 	{...rest}
 	class={["kin-card", className]}
 	data-tone={tone}

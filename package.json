@@ -55,7 +55,7 @@
     "format:check": "prettier --check .",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "check:spacing": "node tools/check-spacing.mjs src/styles registry",
-    "test:tools": "node --test tests/tools/"
+    "test:tools": "node --test tests/unit/"
   },
   "repository": {
     "type": "git",

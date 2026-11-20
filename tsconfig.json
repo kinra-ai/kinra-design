@@ -15,5 +15,9 @@
     "noUncheckedIndexedAccess": true,
     "types": []
   },
-  "include": ["src/svelte/**/*", "examples/reference/src/svelte/**/*"]
+  "include": [
+    "src/svelte/**/*",
+    "examples/reference/src/svelte/**/*",
+    "tests/types/**/*"
+  ]
 }

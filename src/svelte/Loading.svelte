@@ -2,7 +2,8 @@
 @component
 A `.kin-loading` shape: lines, rows or cards of skeletons standing where the
 content will be. It waits `delay` milliseconds before it shows, so a quick
-read never flashes, and says `label` to assistive technology meanwhile.
+read never flashes. Its `label` is said through a status that stays in the
+page, so it is read when the read begins.
 -->
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
@@ -43,11 +44,13 @@ read never flashes, and says `label` to assistive technology meanwhile.
 	});
 </script>
 
+<!-- One status that stays in the page, so its words are read when the
+     read begins; the shape beside it is decoration. -->
+<span class="kin-sr-only" role="status">{active ? label : ""}</span>
 {#if active}
 	<div
-		role="status"
-		aria-label={label}
 		aria-busy="true"
+		aria-hidden="true"
 		{...rest}
 		class={["kin-loading", className]}
 		data-shape={shape}
@@ -57,7 +60,6 @@ read never flashes, and says `label` to assistive technology meanwhile.
 				<span
 					class="kin-skeleton"
 					data-shape={shape === "lines" ? "text" : "block"}
-					aria-hidden="true"
 				></span>
 			{/each}
 		{/if}

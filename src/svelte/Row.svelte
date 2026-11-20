@@ -10,7 +10,7 @@ only reads. `after` holds what the row opens, beneath it.
 	import type { HTMLAttributes, HTMLLiAttributes } from "svelte/elements";
 	import type { Content, Tone } from "./types.js";
 
-	interface Props extends Omit<HTMLLiAttributes, "title"> {
+	interface Base extends Omit<HTMLLiAttributes, "title"> {
 		title?: Content | undefined;
 		/** A quiet line under the title. */
 		caption?: Content | undefined;
@@ -22,13 +22,8 @@ only reads. `after` holds what the row opens, beneath it.
 		trail?: Snippet;
 		/** What the row opens, beneath it. */
 		after?: Snippet;
-		/** The row opens a page. */
-		href?: string | undefined;
-		/** The row opens something in place. */
-		onopen?: ((event: MouseEvent) => void) | undefined;
 		/** The open row: `aria-current` on its main part. */
 		current?: boolean | "page" | "step" | "location" | "true";
-		disabled?: boolean;
 		/** A still state, drawn as the bar at the row's start. */
 		tone?: Tone | undefined;
 		/** Attributes for the main link or button. */
@@ -36,6 +31,22 @@ only reads. `after` holds what the row opens, beneath it.
 		/** The main link or button, for focus. */
 		element?: HTMLElement | null;
 	}
+	/** A row opens a page, opens something in place, or only reads. */
+	type Opens =
+		| {
+				/** The row opens a page. */
+				href: string;
+				onopen?: undefined;
+				disabled?: undefined;
+		  }
+		| {
+				href?: undefined;
+				/** The row opens something in place. */
+				onopen: (event: MouseEvent) => void;
+				disabled?: boolean;
+		  }
+		| { href?: undefined; onopen?: undefined; disabled?: undefined };
+	type Props = Base & Opens;
 
 	let {
 		title,

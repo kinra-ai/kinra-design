@@ -719,6 +719,7 @@
 
 	.kin-list__title {
 		color: var(--kin-color-text);
+		display: block;
 		font-size: var(--kin-text-sm);
 		font-weight: var(--kin-weight-strong);
 		line-height: 1.4;
@@ -735,6 +736,7 @@
 
 	.kin-list__meta {
 		color: var(--kin-color-text-muted);
+		display: block;
 		font-family: var(--kin-font-ui);
 		font-size: var(--kin-text-xs);
 		line-height: 1.5;
@@ -998,18 +1000,26 @@
 	}
 
 	/* What the row opens, beneath it and inside its highlight. */
+	.kin-list__item:has(> .kin-list__after) {
+		flex-wrap: wrap;
+	}
+
 	.kin-list__after {
 		flex-basis: 100%;
 		min-inline-size: 0;
 		padding: 0 var(--kin-row-pad-inline) var(--kin-row-pad-block);
 	}
 
-	.kin-list__item:where(
-			:has(> .kin-list__main:is(a[href], button:enabled)):is(
-				:hover,
-				:focus-within
-			),
-			:has(> .kin-list__trail :is(:hover, :focus-visible))
+	/* A row that only reads already has its inset. */
+	.kin-list__item:not(:has(> .kin-list__main)) > .kin-list__after {
+		padding: 0;
+	}
+
+	/* A row that opens lights under the pointer anywhere on it, and while
+	   the keyboard is anywhere in it. A click leaves no light behind. */
+	.kin-list__item:has(> .kin-list__main:is(a[href], button:enabled)):is(
+			:hover,
+			:has(:focus-visible)
 		):where(
 			:not(
 				[aria-selected="true"],
@@ -1094,7 +1104,8 @@
 
 @media (pointer: coarse) {
 	@layer kinra.components {
-		.kin-list__item:has(> .kin-list__main) {
+		/* Outranks a compact list's height: a row that acts keeps the target. */
+		.kin-list .kin-list__item:has(> .kin-list__main) {
 			min-height: var(--kin-hit-target);
 		}
 	}
@@ -1110,6 +1121,14 @@
 		.kin-list[data-rules] > .kin-list__item + .kin-list__item {
 			border-top: 1px solid CanvasText;
 			box-shadow: none;
+		}
+
+		/* The open row's tint is lost here; it draws its edge instead. */
+		.kin-list__item:has(
+				> .kin-list__main[aria-current]:not([aria-current="false"])
+			):where(:not(:has(:focus-visible))) {
+			outline: 2px solid Highlight;
+			outline-offset: -2px;
 		}
 	}
 }
