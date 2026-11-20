@@ -16,6 +16,8 @@
 			inset 0 0 0 1px var(--kin-float-ring),
 			var(--kin-shadow-float);
 		color: var(--kin-color-text);
+		/* A column whenever it shows, so it keeps its shape while it leaves. */
+		flex-direction: column;
 		margin: auto;
 		max-height: calc(100dvh - 2 * var(--kin-space-6));
 		max-width: min(
@@ -45,13 +47,12 @@
 	}
 
 	.kin-dialog[open] {
-		animation: kin-layer-arrive var(--kin-duration-slow) var(--kin-ease-out);
+		animation: kin-layer-arrive var(--kin-motion-layer);
 		display: flex;
-		flex-direction: column;
 	}
 
 	.kin-dialog[open]::backdrop {
-		animation: kin-backdrop-arrive var(--kin-duration-slow) ease;
+		animation: kin-backdrop-arrive var(--kin-motion-layer);
 	}
 
 	.kin-dialog__header {
@@ -137,8 +138,7 @@
 	}
 
 	.kin-drawer[open] {
-		animation: kin-drawer-arrive-end var(--kin-duration-slow)
-			var(--kin-ease-out);
+		animation: kin-drawer-arrive-end var(--kin-motion-layer);
 		display: flex;
 	}
 
@@ -178,7 +178,7 @@
 	}
 
 	.kin-drawer[open]::backdrop {
-		animation: kin-backdrop-arrive var(--kin-duration-slow) ease;
+		animation: kin-backdrop-arrive var(--kin-motion-layer);
 	}
 
 	.kin-drawer > .kin-dialog__body {
@@ -220,7 +220,7 @@
 	}
 
 	.kin-popover:popover-open {
-		animation: kin-layer-arrive var(--kin-duration-normal) var(--kin-ease-out);
+		animation: kin-layer-arrive var(--kin-motion-popover);
 	}
 
 	.kin-popover::backdrop {
@@ -350,6 +350,75 @@
 	}
 }
 
+/*
+ * Exits. A dialog, drawer or popover leaves the way it came, half the
+ * distance and faster, on the exit term: a dialog or popover falls 0.25rem as
+ * it fades, a drawer goes 0.75rem back toward its edge, and a backdrop fades
+ * with its layer. It stops being modal and gives focus back as the exit
+ * starts, and while it goes it is only a picture: inert, with the page beneath
+ * taking the pointer. The transition belongs to the closed state alone, so an
+ * opening runs only its arrival. Keeping a closing layer in the top layer
+ * needs a browser that transitions overlay; elsewhere a layer closes at once,
+ * as it does with less motion, where base.css removes every transition.
+ */
+@supports (overlay: auto) {
+	@layer kinra.components {
+		/* Out of the top layer's own styles, a dialog or drawer opened with
+		   showModal() keeps the box they gave it while it goes. */
+		dialog:is(.kin-dialog, .kin-drawer):not([open]) {
+			overflow: auto;
+			position: fixed;
+		}
+
+		dialog.kin-dialog:not([open]) {
+			inset: 0;
+		}
+
+		dialog:is(.kin-dialog, .kin-drawer):not([open]),
+		.kin-popover[popover]:not(:popover-open) {
+			interactivity: inert;
+			opacity: 0;
+			pointer-events: none;
+			transition:
+				opacity var(--kin-motion-exit),
+				translate var(--kin-motion-exit),
+				display var(--kin-duration-exit) allow-discrete,
+				overlay var(--kin-duration-exit) allow-discrete;
+		}
+
+		dialog.kin-dialog:not([open]),
+		.kin-popover[popover]:not(:popover-open) {
+			translate: 0 0.25rem;
+		}
+
+		dialog.kin-drawer:not([open]) {
+			translate: calc(0.75rem * var(--kin-flow, 1)) 0;
+		}
+
+		dialog.kin-drawer[data-side="start"]:not([open]) {
+			translate: calc(-0.75rem * var(--kin-flow, 1)) 0;
+		}
+
+		dialog.kin-drawer[data-side="bottom"]:not([open]) {
+			translate: 0 0.75rem;
+		}
+
+		dialog:is(.kin-dialog, .kin-drawer):not([open])::backdrop {
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity var(--kin-motion-exit);
+		}
+
+		/* Opened again while it is still leaving, it drops the exit and runs
+		   its arrival, rather than fading on beneath it. */
+		dialog:is(.kin-dialog, .kin-drawer)[open],
+		dialog:is(.kin-dialog, .kin-drawer)[open]::backdrop,
+		.kin-popover[popover]:popover-open {
+			transition: none;
+		}
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	@layer kinra.components {
 		.kin-dialog[open],
@@ -362,25 +431,18 @@
 	}
 }
 
+/* Each arrival runs from where its layer lives to the layer's own style, so
+   with no animation at all the layer simply stands in its place. */
 @keyframes kin-layer-arrive {
 	from {
 		opacity: 0;
 		translate: 0 0.5rem;
-	}
-
-	to {
-		opacity: 1;
-		translate: 0 0;
 	}
 }
 
 @keyframes kin-backdrop-arrive {
 	from {
 		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
 	}
 }
 
@@ -389,11 +451,6 @@
 		translate: calc(1.5rem * var(--kin-flow, 1)) 0;
 		opacity: 0;
 	}
-
-	to {
-		translate: 0 0;
-		opacity: 1;
-	}
 }
 
 @keyframes kin-drawer-arrive-start {
@@ -401,22 +458,12 @@
 		translate: calc(-1.5rem * var(--kin-flow, 1)) 0;
 		opacity: 0;
 	}
-
-	to {
-		translate: 0 0;
-		opacity: 1;
-	}
 }
 
 @keyframes kin-drawer-arrive-bottom {
 	from {
 		translate: 0 1.5rem;
 		opacity: 0;
-	}
-
-	to {
-		translate: 0 0;
-		opacity: 1;
 	}
 }
 
