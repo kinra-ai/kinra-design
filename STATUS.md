@@ -66,7 +66,9 @@ adoption map; this file only tracks current state, not process.
   run three times over without a flake), `npm audit` with no
   vulnerabilities, and a packed copy installed into a Vite and Svelte
   consumer that type-checks under the strictest options and builds for the
-  server and the browser. Not released; consumers keep their pins.
+  server and the browser. At Blake's request `main` carries it, with edges by
+  meaning, from 2026-11-20 (`10a41a5`). Not released; consumers keep their
+  pins.
 
 - **Edges by meaning (unreleased, prepared for 0.8.0; 2026-11-20):** Kinra
   Relay's polish pass found the notice's edge, the live edge's line round both
@@ -286,7 +288,7 @@ adoption map; this file only tracks current state, not process.
 ## Next event
 
 Blake reviews the edges-by-meaning change, the shared structure and the
-Svelte layer for release as 0.8.0. After it, each product upgrades in its own
+Svelte layer, now on `main`, for release as 0.8.0. After it, each product upgrades in its own
 repository: Relay removes its notice override, Space updates its switch
 wording, and each moves its heads, rows, shell wiring and spacing script to
 the shared ones as `docs/adoption.md` lists. Until Relay moves to `Shell`, it
