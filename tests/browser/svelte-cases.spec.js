@@ -52,6 +52,9 @@ test("a busy form keeps focus, refuses a second submit and gives focus back", as
 	const note = page.getByLabel("Note", { exact: true });
 	await expect(note).toBeFocused();
 	await note.fill("Tide at six");
+	// Time stands still until the test runs it, so the 300ms save cannot
+	// finish between the two submits however slowly the page is driven.
+	await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10));
 	await page.keyboard.press("Enter");
 	const dialog = page.locator("#busy");
 	await expect(dialog).toHaveAttribute("aria-busy", "true");
