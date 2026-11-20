@@ -55,12 +55,18 @@ adoption map; this file only tracks current state, not process.
   beside each optical value), and `@kinra/web/svelte`, an optional Svelte 5
   layer with Svelte as an optional peer. `docs/svelte.md` is its guide and
   `docs/adoption.md` has per-product notes and the rule that a product fixes
-  a shared problem in Design first. Verified on the branch: the contract
-  check, the spacing check and its tests, `svelte-check`, Astro, formatting,
-  the reference build and the browser tests in Chromium and WebKit, plus a
-  packed copy installed into a Vite and Svelte consumer that type-checks
-  under the strictest options and builds for the server and the browser.
-  Not released; consumers keep their pins.
+  a shared problem in Design first. Two independent reviews of the layer
+  found 30 defects between them, among them dialogs a second Escape could
+  close while busy, toasts a server render leaked, focus lost in a scrolling
+  menu, and a tip that vanished when its words changed; each is fixed with a
+  regression test, and `/svelte/cases/` holds the hard cases. Verified on
+  `design/shared-layer`: `npm run verify` (the contract and spacing checks,
+  44 unit tests, `svelte-check` with type tests, Astro, formatting, the
+  reference build and 226 Chromium and WebKit cases, the Svelte ones also
+  run three times over without a flake), `npm audit` with no
+  vulnerabilities, and a packed copy installed into a Vite and Svelte
+  consumer that type-checks under the strictest options and builds for the
+  server and the browser. Not released; consumers keep their pins.
 
 - **Edges by meaning (unreleased, prepared for 0.8.0; 2026-11-20):** Kinra
   Relay's polish pass found the notice's edge, the live edge's line round both

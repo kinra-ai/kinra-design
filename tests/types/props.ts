@@ -65,3 +65,20 @@ export const dialogUntitled: ComponentProps<typeof Dialog> = {
 };
 // @ts-expect-error A menu needs a name.
 export const menuUnnamed: ComponentProps<typeof Menu> = { items: [] };
+
+type Entry = import("../../src/svelte/index.js").MenuEntry;
+export const menuItems: Entry[] = [
+	{ label: "Copy", onselect: () => {}, done: "Copied", shortcut: "⌘C" },
+	{ label: "Pinned", checked: true },
+	{ label: "By name", checked: false, role: "menuitemradio" },
+	{ label: "Open", href: "/open", external: true },
+	{ separator: true },
+];
+// @ts-expect-error A link is neither on nor off.
+export const menuLinkChecked: Entry = { label: "x", href: "/x", checked: true };
+// @ts-expect-error An item that is on or off is not a plain menuitem.
+export const menuPlainChecked: Entry = {
+	label: "x",
+	checked: true,
+	role: "menuitem",
+};

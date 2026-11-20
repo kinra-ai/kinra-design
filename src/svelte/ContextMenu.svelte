@@ -127,8 +127,15 @@ used is still reached, and says why. An anchor that carries
 					: null) ??
 			anchor ??
 			null;
+		// A context menu at the pointer: the right button, or Ctrl+click on a
+		// Mac, which sends contextmenu with the main button still down. The
+		// keyboard's context menu key reports no button and opens beneath.
 		const pointer =
-			event instanceof MouseEvent && event.button === 2 ? event : null;
+			event instanceof MouseEvent &&
+			(event.button === 2 ||
+				(event.type === "contextmenu" && event.button >= 0))
+				? event
+				: null;
 		const mine = ++ticket;
 		settle();
 		if (owner && owner !== element) expanded(owner, false);
@@ -147,7 +154,18 @@ used is still reached, and says why. An anchor that carries
 		pending = false;
 		if (mine !== ticket || !popover || !list) return;
 		try {
-			if (!popover.matches(":popover-open")) popover.showPopover();
+			if (!popover.matches(":popover-open")) {
+				// Its source makes it a child of any popover it was opened from,
+				// so opening it does not light-dismiss that one.
+				const source = owner instanceof HTMLElement ? owner : undefined;
+				popover.showPopover(source ? { source } : undefined);
+				const modal = document.querySelector("dialog:modal");
+				if (modal && !modal.contains(popover)) {
+					console.warn(
+						"ContextMenu: render the menu inside the modal dialog it opens from; outside it, the dialog makes the menu inert.",
+					);
+				}
+			}
 		} catch {
 			open = false;
 			return;
@@ -255,7 +273,20 @@ used is still reached, and says why. An anchor that carries
 			which === "last"
 				? (usable.at(-1) ?? all.at(-1))
 				: (checked ?? usable[0] ?? all[0]);
-		(target ?? list)?.focus({ preventScroll: true });
+		reach(target ?? list);
+	}
+
+	/** Focus an item, and scroll the menu, not the page, to show it. */
+	function reach(item: HTMLElement | null | undefined) {
+		if (!item) return;
+		item.focus({ preventScroll: true });
+		if (!popover || item === list) return;
+		const outer = popover.getBoundingClientRect();
+		const inner = item.getBoundingClientRect();
+		const top = outer.top + popover.clientTop;
+		const bottom = top + popover.clientHeight;
+		if (inner.top < top) popover.scrollTop -= top - inner.top;
+		else if (inner.bottom > bottom) popover.scrollTop += inner.bottom - bottom;
 	}
 
 	function keydown(event: KeyboardEvent) {
@@ -297,7 +328,7 @@ used is still reached, and says why. An anchor that carries
 			next = match.index;
 		} else return;
 		event.preventDefault();
-		all[next]?.focus({ preventScroll: true });
+		reach(all[next]);
 	}
 
 	async function choose(item: MenuItem, index: number, event: MouseEvent) {
@@ -396,7 +427,9 @@ used is still reached, and says why. An anchor that carries
 		{/if}
 		{#if item.shortcut}<span class="kin-menu__shortcut">{item.shortcut}</span
 			>{/if}
-		{#if item.checked}<span class="kin-menu__check">{@render mark()}</span>{/if}
+		{#if item.checked && item.href === undefined}<span class="kin-menu__check"
+				>{@render mark()}</span
+			>{/if}
 	{/if}
 {/snippet}
 
@@ -445,6 +478,7 @@ used is still reached, and says why. An anchor that carries
 >
 	<ul
 		class="kin-menu"
+		id={`${menuId}-list`}
 		role="menu"
 		aria-label={label}
 		tabindex="-1"

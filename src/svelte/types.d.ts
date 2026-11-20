@@ -57,8 +57,8 @@ export interface ConfirmRequest {
 	tone?: "primary" | "error";
 }
 
-/** One command in a `Menu` or `ContextMenu`. */
-export interface MenuItem {
+/** What every menu item has. */
+interface MenuItemBase {
 	/** What the item does, in a few words. Typeahead reads its first letter. */
 	label: string;
 	/** A glyph before the label; mark its `svg` `aria-hidden="true"`. */
@@ -68,12 +68,6 @@ export interface MenuItem {
 	 * it first and waits for the promise it returns.
 	 */
 	onselect?: ((event: MouseEvent) => unknown) | undefined;
-	/** The item is a link. */
-	href?: string | undefined;
-	/** Open the link in a new tab, without a referrer. */
-	external?: boolean | undefined;
-	/** Download the link, under this file name when it is a string. */
-	download?: boolean | string | undefined;
 	/** A command that destroys or cannot be undone. */
 	tone?: "error" | undefined;
 	/**
@@ -81,18 +75,44 @@ export interface MenuItem {
 	 * label and is the item's description. The keyboard still reaches it.
 	 */
 	disabled?: boolean | string | undefined;
-	/** On or off; with it the item is a `menuitemcheckbox` unless `role` says otherwise. */
-	checked?: boolean | undefined;
-	/** `menuitemradio` for one choice among a group's peers. */
-	role?: "menuitem" | "menuitemcheckbox" | "menuitemradio" | undefined;
 	/** A key chord shown at the item's end, such as ⌘C. */
 	shortcut?: string | undefined;
+}
+
+/** A command, which may be on or off. */
+export type MenuCommand = MenuItemBase & {
+	href?: undefined;
+	external?: undefined;
+	download?: undefined;
 	/**
 	 * What the item says for a moment once its action has worked, such as
 	 * Copied, before the menu closes. A rejected action closes it at once.
 	 */
 	done?: string | undefined;
+} & (
+		| { checked?: undefined; role?: "menuitem" | undefined }
+		| {
+				/** On or off: a `menuitemcheckbox`, or with `role` a radio. */
+				checked: boolean;
+				/** `menuitemradio` for one choice among a group's peers. */
+				role?: "menuitemcheckbox" | "menuitemradio" | undefined;
+		  }
+	);
+
+/** A link; it is neither on nor off. */
+export interface MenuLink extends MenuItemBase {
+	href: string;
+	/** Open the link in a new tab, without a referrer. */
+	external?: boolean | undefined;
+	/** Download the link, under this file name when it is a string. */
+	download?: boolean | string | undefined;
+	checked?: undefined;
+	role?: undefined;
+	done?: undefined;
 }
+
+/** One item in a `Menu` or `ContextMenu`: a command or a link. */
+export type MenuItem = MenuCommand | MenuLink;
 
 /** A line between a menu's items. */
 export interface MenuSeparator {

@@ -24,8 +24,11 @@ async function open(page) {
 // A layer's box once its arrival has finished, since the arrival moves it.
 const box = (locator) =>
 	locator.evaluate(async (element) => {
+		// A transition cut short rejects its promise; it has still ended.
 		await Promise.all(
-			element.getAnimations().map((animation) => animation.finished),
+			element
+				.getAnimations()
+				.map((animation) => animation.finished.catch(() => {})),
 		);
 		const { left, top, right, bottom } = element.getBoundingClientRect();
 		return { left, top, right, bottom };
@@ -68,7 +71,9 @@ test("a menu button keeps its popup state and returns focus on Escape", async ({
 	await trigger.click();
 	await expect(menu).toBeVisible();
 	await expect(trigger).toHaveAttribute("aria-expanded", "true");
-	const popover = page.locator(`#${controls}`);
+	// It names the menu itself, whose popover holds it.
+	await expect(page.locator(`#${controls}`)).toHaveAttribute("role", "menu");
+	const popover = page.locator(`#${controls}`).locator("xpath=..");
 	await expect(popover).toHaveClass("kin-popover");
 	await expect(popover).toHaveAttribute("popover", "auto");
 	await expect(popover.locator("> ul.kin-menu")).toHaveAttribute(
@@ -242,8 +247,13 @@ test("checkbox and radio items say their state and update it", async ({
 	).toBeFocused();
 	expect(
 		Math.abs(
-			(await box(page.locator(`#${await sort.getAttribute("aria-controls")}`)))
-				.left - (await box(sort)).left,
+			(
+				await box(
+					page
+						.locator(`#${await sort.getAttribute("aria-controls")}`)
+						.locator("xpath=.."),
+				)
+			).left - (await box(sort)).left,
 		),
 	).toBeLessThanOrEqual(1);
 	await page.keyboard.press("Escape");
@@ -262,7 +272,10 @@ test("a done item says it worked, then closes", async ({ page }) => {
 	await expect(copy).toHaveText("Copied");
 	await expect(copy.locator("svg")).toHaveCount(1);
 	await expect(
-		page.locator(`#${await trigger.getAttribute("aria-controls")} [aria-live]`),
+		page
+			.locator(`#${await trigger.getAttribute("aria-controls")}`)
+			.locator("xpath=..")
+			.locator("[aria-live]"),
 	).toHaveText("Copied");
 	await expect(page.getByRole("menu")).toBeVisible();
 	await expect(page.getByRole("menu")).toHaveCount(0, { timeout: 3000 });
@@ -329,9 +342,9 @@ test("the menu opens beneath its trigger and keeps inside the window", async ({
 }) => {
 	const problems = await open(page);
 	const trigger = page.locator("#actions-trigger");
-	const popover = page.locator(
-		`#${await trigger.getAttribute("aria-controls")}`,
-	);
+	const popover = page
+		.locator(`#${await trigger.getAttribute("aria-controls")}`)
+		.locator("xpath=..");
 	await standAt(trigger, 120);
 	await trigger.click();
 	// Beneath it, at its inline start, 6px off.
@@ -385,9 +398,9 @@ test("right to left, the menu lines up with its trigger's right edge", async ({
 }) => {
 	const problems = await open(page);
 	const trigger = page.locator("#rtl-trigger");
-	const popover = page.locator(
-		`#${await trigger.getAttribute("aria-controls")}`,
-	);
+	const popover = page
+		.locator(`#${await trigger.getAttribute("aria-controls")}`)
+		.locator("xpath=..");
 	await trigger.click();
 	await expect(page.getByRole("menuitem", { name: "فتح" })).toBeFocused();
 	const anchor = await box(trigger);
@@ -638,4 +651,110 @@ test.describe("on a touch screen", () => {
 		await expect(chip(page)).toBeHidden();
 		expect(problems).toEqual([]);
 	});
+});
+
+// Regression cases from the review of menus and tips.
+
+test("a menu that scrolls brings the focused item into view, and keeps its place as the page scrolls", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1280, height: 360 });
+	const problems = await open(page);
+	const trigger = page.locator("#actions-trigger");
+	const popover = page
+		.locator(`#${await trigger.getAttribute("aria-controls")}`)
+		.locator("xpath=..");
+	await standAt(trigger, 140);
+	await trigger.click();
+	await page.keyboard.press("End");
+	const shown = () =>
+		page.evaluate(() => {
+			const item = document.activeElement;
+			const menu = item?.closest(".kin-popover");
+			if (!item || !menu) return false;
+			const a = item.getBoundingClientRect();
+			const b = menu.getBoundingClientRect();
+			return a.top >= b.top - 1 && a.bottom <= b.bottom + 1;
+		});
+	expect(await shown()).toBe(true);
+	const before = await popover.evaluate((element) => element.scrollTop);
+	expect(before).toBeGreaterThan(0);
+	await page.evaluate(() => window.scrollBy(0, 2));
+	await page.waitForTimeout(100);
+	expect(await popover.evaluate((element) => element.scrollTop)).toBe(before);
+	await page.keyboard.press("Home");
+	expect(await shown()).toBe(true);
+	expect(problems).toEqual([]);
+});
+
+test("a tip whose words change keeps showing, and its control keeps focus", async ({
+	page,
+}) => {
+	const problems = await open(page);
+	const copy = page.locator("#tip-copy");
+	await copy.focus();
+	await page.keyboard.press("Shift+Tab");
+	await page.keyboard.press("Tab");
+	const chip = page.locator(".kin-tooltip[popover]");
+	await expect(chip).toHaveText("Copy the link");
+	await page.keyboard.press("Enter");
+	await expect(chip).toHaveText("Copied");
+	await expect(chip).toBeVisible();
+	await expect(copy).toBeFocused();
+	await expect(copy).toHaveAccessibleDescription("Copied");
+	expect(problems).toEqual([]);
+});
+
+test("a tip keeps its description when the product rewrites aria-describedby", async ({
+	page,
+}) => {
+	const problems = await open(page);
+	const archive = page.locator("#tip-described");
+	await expect(archive).toHaveAccessibleDescription("Archive the session");
+	await page.locator("#describe-switch").check();
+	await expect(archive).toHaveAttribute(
+		"aria-describedby",
+		/described-note.*kin-tip-|kin-tip-.*described-note/,
+	);
+	await page.locator("#describe-switch").uncheck();
+	await expect(archive).toHaveAccessibleDescription("Archive the session");
+	expect(problems).toEqual([]);
+});
+
+test("Escape puts a tip away before it closes the dialog it is in", async ({
+	page,
+}) => {
+	const problems = await open(page);
+	await page.locator("#open-tip-dialog").click();
+	const dialog = page.locator("#tip-dialog");
+	await expect(dialog).toHaveAttribute("open", "");
+	await page.keyboard.press("Tab");
+	await page.keyboard.press("Shift+Tab");
+	const target = page.locator("#tip-in-dialog");
+	await target.focus();
+	await page.keyboard.press("Tab");
+	await page.keyboard.press("Shift+Tab");
+	const chip = page.locator(".kin-tooltip[popover]");
+	await expect(chip).toHaveText("Explains itself");
+	await page.keyboard.press("Escape");
+	await expect(chip).toBeHidden();
+	await expect(dialog).toHaveAttribute("open", "");
+	await expect(target).toBeFocused();
+	await page.keyboard.press("Escape");
+	await expect(dialog).not.toHaveAttribute("open", /.*/);
+	expect(problems).toEqual([]);
+});
+
+test("right to left, a shortcut stands at the item's end", async ({ page }) => {
+	const problems = await open(page);
+	await page.locator("#rtl-trigger").click();
+	const item = page.getByRole("menuitem", { name: /فتح/ });
+	const [itemBox, shortcutBox] = await Promise.all([
+		box(item),
+		box(item.locator(".kin-menu__shortcut")),
+	]);
+	// The item's end is its left edge right to left.
+	expect(shortcutBox.left - itemBox.left).toBeLessThan(24);
+	await expect(item.locator(".kin-menu__shortcut")).toHaveText("⌘O");
+	expect(problems).toEqual([]);
 });

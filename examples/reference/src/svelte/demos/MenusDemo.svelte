@@ -2,6 +2,7 @@
 	import {
 		Button,
 		ContextMenu,
+		Dialog,
 		IconButton,
 		List,
 		Menu,
@@ -18,6 +19,9 @@
 	let sort = $state("newest");
 	let sortOpen = $state(false);
 	let tips = $state(true);
+	let copied = $state(false);
+	let described = $state(false);
+	let tipDialog = $state(false);
 	let files: ContextMenu;
 
 	const wait = (ms: number) =>
@@ -285,11 +289,44 @@
 			id="rtl-trigger"
 			{@attach tip(tips && "إجراءات")}
 			items={[
-				{ label: "فتح", onselect: () => (last = "فتح") },
+				{ label: "فتح", shortcut: "⌘O", onselect: () => (last = "فتح") },
 				{ label: "نسخ", onselect: () => (last = "نسخ") },
 				{ separator: true },
 				{ label: "حذف", tone: "error" },
 			]}
 		/>
 	</div>
+</Specimen>
+
+<Specimen
+	title="Tips under pressure"
+	contract="tip · Dialog"
+	description="A tip whose words change keeps showing; a tip keeps its description when the product rewrites aria-describedby; Escape puts a tip away before it closes the dialog it is in."
+>
+	<div class="kin-cluster" data-space="compact">
+		<Button
+			id="tip-copy"
+			onclick={() => (copied = true)}
+			{@attach tip(tips && (copied ? "Copied" : "Copy the link"))}>Copy</Button
+		>
+		<Button
+			id="tip-described"
+			aria-describedby={described ? "described-note" : undefined}
+			{@attach tip(tips && "Archive the session")}>Archive</Button
+		>
+		<Switch bind:checked={described} id="describe-switch"
+			>Describe Archive</Switch
+		>
+		<Button id="open-tip-dialog" onclick={() => (tipDialog = true)}
+			>Open a dialog with a tip</Button
+		>
+	</div>
+	<p class="kin-caption" id="described-note">
+		Archived sessions stay readable.
+	</p>
+	<Dialog bind:open={tipDialog} title="Dialog with a tip" id="tip-dialog">
+		<Button id="tip-in-dialog" {@attach tip(tips && "Explains itself")}
+			>Pointed at</Button
+		>
+	</Dialog>
 </Specimen>

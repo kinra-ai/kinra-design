@@ -78,7 +78,7 @@ trigger; `menuProps` go to the popover. The menu itself is `ContextMenu`.
 			return isOpen;
 		},
 		get "aria-controls"() {
-			return menuId;
+			return `${menuId}-list`;
 		},
 		onclick: click,
 		onkeydown: keydown,

@@ -122,6 +122,10 @@ function show(target, text, hint, byFocus) {
 	}
 	owner = target;
 	focused = byFocus;
+	if (byFocus) {
+		follow();
+		return;
+	}
 	try {
 		if (!tip.matches(":popover-open")) tip.showPopover();
 	} catch {
@@ -150,41 +154,69 @@ export function hideTip(target, warmNext = true) {
 	if (chip?.matches(":popover-open")) chip.hidePopover();
 }
 
+/** @param {HTMLElement} target */
+function inView(target) {
+	const rect = target.getBoundingClientRect();
+	return rect.bottom > 0 && rect.top < innerHeight;
+}
+
+/**
+ * A tip that came with the keyboard's focus follows its control as the page
+ * scrolls, as it does while focus scrolls the control into view: out of view
+ * it waits, and back in view it shows again.
+ */
+function follow() {
+	if (!owner || !chip) return;
+	if (!inView(owner)) {
+		if (chip.matches(":popover-open")) chip.hidePopover();
+		return;
+	}
+	try {
+		if (!chip.matches(":popover-open")) chip.showPopover();
+	} catch {
+		return;
+	}
+	stand(chip, owner);
+}
+
 /** @param {Event} event */
 function away(event) {
-	if (event instanceof KeyboardEvent && event.key !== "Escape") return;
 	if (event.type === "scroll") {
-		// A scroll moves a showing tip's target from under the pointer; one
-		// still waiting shows where its target lands. The keyboard's focus
-		// stays as the page scrolls it into view, so its tip goes along.
 		if (!owner) return;
-		if (focused && chip) {
-			const rect = owner.getBoundingClientRect();
-			if (rect.bottom > 0 && rect.top < innerHeight) {
-				stand(chip, owner);
-				return;
-			}
+		if (focused) {
+			follow();
+			return;
 		}
 	}
 	if (event.type === "pointerdown") pressed = owner;
 	hideTip(undefined, false);
 }
 
-const AWAY = /** @type {const} */ ([
-	"pointerdown",
-	"keydown",
-	"scroll",
-	"blur",
-]);
+/**
+ * Escape puts a showing tip away and goes no further, so a dialog or drawer
+ * behind it stays open: a tip is dismissed without moving focus (WCAG
+ * 1.4.13). With no tip showing, Escape is left alone.
+ * @param {KeyboardEvent} event
+ */
+function escape(event) {
+	if (event.key !== "Escape" || !owner || !chip?.matches(":popover-open"))
+		return;
+	event.preventDefault();
+	event.stopPropagation();
+	hideTip(undefined, false);
+}
+
+const AWAY = /** @type {const} */ (["pointerdown", "scroll", "blur"]);
 
 function listen() {
-	// None is claimed, so each still does its own work.
 	for (const name of AWAY)
 		addEventListener(name, away, { capture: true, passive: true });
+	addEventListener("keydown", escape, { capture: true });
 }
 
 function forget() {
 	for (const name of AWAY) removeEventListener(name, away, { capture: true });
+	removeEventListener("keydown", escape, { capture: true });
 	clearTimeout(timer);
 	chip?.remove();
 	descriptions?.remove();
@@ -218,6 +250,22 @@ function undescribe(node, id) {
 }
 
 /**
+ * @typedef {object} Record
+ * @property {number} holds
+ * @property {(text: string, hint: string) => void} update
+ * @property {() => void} detach
+ */
+
+/**
+ * One record per node. New words for the same node, such as Copy becoming
+ * Copied, update it in place: Svelte attaches the new attachment and
+ * detaches the old one in the same turn, in either order, and the record
+ * outlives that, so the tip keeps showing and the node keeps its focus.
+ * @type {WeakMap<HTMLElement, Record>}
+ */
+const records = new WeakMap();
+
+/**
  * @param {string | null | undefined | false} text
  * @param {string | null | undefined | false} hint
  * @param {boolean} reach
@@ -226,93 +274,136 @@ function undescribe(node, id) {
 function attach(text, hint, reach) {
 	return (node) => {
 		if (!text) return;
-		const words = text;
-		const more = hint || "";
-		if (attached++ === 0) listen();
-		// Words or a mark that is no control, and inside none: a tap is free
-		// to show the tip, and `told` may give it the keyboard's focus.
-		const plain = !node.closest(CONTROL);
-		const reached = reach && plain && !node.hasAttribute("tabindex");
-		if (reached) node.tabIndex = 0;
+		let record = records.get(node);
+		if (record) {
+			record.holds++;
+			record.update(text, hint || "");
+		} else {
+			record = setup(node, text, hint || "", reach);
+			records.set(node, record);
+		}
+		const mine = record;
+		return () => {
+			mine.holds--;
+			queueMicrotask(() => {
+				if (mine.holds > 0 || records.get(node) !== mine) return;
+				records.delete(node);
+				mine.detach();
+			});
+		};
+	};
+}
 
-		// A control describes itself by its tip. When its name already says
-		// the tip's words, only the hint is left to add.
+/**
+ * @param {HTMLElement} node
+ * @param {string} first
+ * @param {string} firstHint
+ * @param {boolean} reach
+ * @returns {Record}
+ */
+function setup(node, first, firstHint, reach) {
+	let words = first;
+	let more = firstHint;
+	if (attached++ === 0) listen();
+	const plain = !node.closest(CONTROL);
+	const reached = reach && plain && !node.hasAttribute("tabindex");
+	if (reached) node.tabIndex = 0;
+
+	/** @type {HTMLElement | null} */
+	let said = null;
+	const id = `kin-tip-${++serial}`;
+	const description = () => {
 		const named =
 			node.getAttribute("aria-label") === words ||
 			node.textContent?.trim() === words;
-		const description = named
+		return named
 			? more
 			: more
 				? `${words.replace(/[.:]$/, "")}. ${more}`
 				: words;
-		/** @type {HTMLElement | null} */
-		let said = null;
-		const id = `kin-tip-${++serial}`;
-		if (description && node.matches(FOCUSABLE)) {
+	};
+	const say = () => {
+		const text = node.matches(FOCUSABLE) ? description() : "";
+		if (!text) {
+			if (said) {
+				undescribe(node, id);
+				said.remove();
+				said = null;
+			}
+			return;
+		}
+		if (!said) {
 			said = document.createElement("span");
 			said.id = id;
-			said.textContent = description;
 			home().append(said);
-			describe(node, id);
 		}
-		// The product may write its own `aria-describedby` again; the tip's
-		// words return before anyone reads them.
-		const keep = () => {
-			if (said) describe(node, id);
-		};
+		said.textContent = text;
+		describe(node, id);
+	};
+	say();
+	// A product that rewrites aria-describedby, as a field does when an error
+	// arrives, keeps the tip's words in the description.
+	const watch = new MutationObserver(() => {
+		if (said && !said.isConnected) home().append(said);
+		if (said) describe(node, id);
+	});
+	watch.observe(node, { attributeFilter: ["aria-describedby"] });
 
-		/**
-		 * @param {number} wait
-		 * @param {boolean} [byFocus]
-		 */
-		const soon = (wait, byFocus = false) => {
-			keep();
-			clearTimeout(timer);
-			waiting = node;
-			const warm = owner || performance.now() - closedAt < WARM;
-			timer = setTimeout(
-				() => show(node, words, more, byFocus),
-				warm ? 0 : wait,
-			);
-		};
-		/** @param {PointerEvent} event */
-		const enter = (event) => {
-			if (event.pointerType !== "touch") soon(REST);
-		};
-		// A finger lifting leaves, as a pointer does; its tap's tip stays
-		// until the next press anywhere.
-		/** @param {Event} event */
-		const leave = (event) => {
-			if (event instanceof PointerEvent && event.pointerType === "touch")
-				return;
-			hideTip(node);
-		};
-		// A tap ends in a click, after the browser has moved focus for it and
-		// the press has put tips away, so the tip shows on the click.
-		let touched = false;
-		/** @param {PointerEvent} event */
-		const lift = (event) => {
-			touched = event.pointerType === "touch";
-		};
-		const tap = () => {
-			if (!touched) return;
-			touched = false;
-			const shown = pressed === node;
-			pressed = null;
-			if (!shown) soon(0);
-		};
-		const focus = () => {
-			if (node.matches(":focus-visible")) soon(REST / 2, true);
-		};
-		node.addEventListener("pointerenter", enter);
-		node.addEventListener("pointerleave", leave);
-		node.addEventListener("focus", focus);
-		node.addEventListener("blur", leave);
-		if (plain) {
-			node.addEventListener("pointerup", lift);
-			node.addEventListener("click", tap);
-		}
-		return () => {
+	/**
+	 * @param {number} wait
+	 * @param {boolean} [byFocus]
+	 */
+	const soon = (wait, byFocus = false) => {
+		if (said) describe(node, id);
+		clearTimeout(timer);
+		waiting = node;
+		const warm = owner || performance.now() - closedAt < WARM;
+		timer = setTimeout(() => show(node, words, more, byFocus), warm ? 0 : wait);
+	};
+	/** @param {PointerEvent} event */
+	const enter = (event) => {
+		if (event.pointerType !== "touch") soon(REST);
+	};
+	/** @param {Event} event */
+	const leave = (event) => {
+		if (event instanceof PointerEvent && event.pointerType === "touch") return;
+		hideTip(node);
+	};
+	let touched = false;
+	/** @param {PointerEvent} event */
+	const lift = (event) => {
+		touched = event.pointerType === "touch";
+	};
+	const tap = () => {
+		if (!touched) return;
+		touched = false;
+		const shown = pressed === node;
+		pressed = null;
+		if (!shown) soon(0);
+	};
+	const focus = () => {
+		if (node.matches(":focus-visible")) soon(REST / 2, true);
+	};
+	node.addEventListener("pointerenter", enter);
+	node.addEventListener("pointerleave", leave);
+	node.addEventListener("focus", focus);
+	node.addEventListener("blur", leave);
+	if (plain) {
+		node.addEventListener("pointerup", lift);
+		node.addEventListener("click", tap);
+	}
+	return {
+		holds: 1,
+		update(text, hint) {
+			if (text === words && hint === more) return;
+			words = text;
+			more = hint;
+			say();
+			// The showing tip takes its new words where it stands.
+			if (owner === node) show(node, words, more, focused);
+		},
+		detach() {
+			watch.disconnect();
 			node.removeEventListener("pointerenter", enter);
 			node.removeEventListener("pointerleave", leave);
 			node.removeEventListener("focus", focus);
@@ -327,7 +418,7 @@ function attach(text, hint, reach) {
 			hideTip(node, false);
 			if (pressed === node) pressed = null;
 			if (--attached === 0) forget();
-		};
+		},
 	};
 }
 

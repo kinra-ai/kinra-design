@@ -109,7 +109,10 @@ export function place(layer, anchor, options = {}) {
 	const edges = options.insets ?? insets();
 	const rect = box(anchor);
 	const point = !(anchor instanceof Element) && !("left" in anchor);
-	// Measured at its own height, not one an earlier placement held it to.
+	// Measured at its own height, not one an earlier placement held it to,
+	// and put back where it was scrolled: following the page re-places it on
+	// every scroll, and the reader's place in a long menu stays.
+	const scrolled = layer.scrollTop;
 	layer.style.maxHeight = "";
 	const width = layer.offsetWidth;
 	const height = layer.offsetHeight;
@@ -162,6 +165,7 @@ export function place(layer, anchor, options = {}) {
 
 	layer.style.left = `${Math.round(left)}px`;
 	layer.style.top = `${Math.round(top)}px`;
+	layer.scrollTop = scrolled;
 	return { left, top, side: chosen };
 }
 

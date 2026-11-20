@@ -326,6 +326,12 @@
 		unicode-bidi: isolate;
 	}
 
+	/* Its own direction would turn its start margin to the left; right to
+	   left, it still stands at the item's end. */
+	.kin-menu__item:dir(rtl) > .kin-menu__shortcut {
+		margin-inline: 0 auto;
+	}
+
 	.kin-menu__separator {
 		border: 0;
 		height: 1px;

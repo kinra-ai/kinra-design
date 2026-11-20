@@ -67,7 +67,8 @@ and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
   card's footer now matches its other parts at 16px.
 - Paragraphs inside a notice, empty-state or toast body keep their rhythm
   without margins at the body's edges.
-- A menu shortcut reads left to right in either direction: `⌘C`, never `C⌘`.
+- A menu shortcut reads left to right in either direction, `⌘C` and never
+  `C⌘`, and still stands at the item's end right to left.
 - The toast region stays in the page as a polite live region, and a toast
   takes no live role of its own: a live element inserted with its words
   already in it is often not read.

@@ -207,8 +207,13 @@ removed.
   typeahead, Escape back to the trigger, Tab out. ArrowDown and ArrowUp on the
   trigger open on the first and last item.
 - `ContextMenu` is the same menu opened from script:
-  `menu.show(event, items)` opens at the pointer for a right-click, or beneath
-  an element, and returns focus to it on closing.
+  `menu.show(event, items)` opens at the pointer for a right-click or a
+  Ctrl+click on a Mac, or beneath an element, and returns focus to it on
+  closing. Render it inside any dialog or drawer it opens from: a modal
+  makes everything outside it inert, a menu included, and the menu warns in
+  the console when that happens.
+- A menu's popover renders beside its trigger, so keep a `Menu` out of a
+  `<p>`; the parser would end the paragraph at it.
 - `place()` puts a popover beside an anchor or at a point, inside the viewport
   and its safe areas, flipping when it would cross an edge and right to left
   aware; `follow()` keeps it there while the page scrolls. Use them for a
@@ -217,7 +222,10 @@ removed.
   after the pointer rests, or at once for the keyboard, and gives the words to
   the control as its description. The control keeps its own name; the tip
   only describes. `told()` is for a mark that is no control and whose words
-  appear nowhere else: it also takes focus.
+  appear nowhere else: it also takes focus. New words for the same control,
+  such as Copy becoming Copied, change the showing tip in place. A product's
+  own `aria-describedby` keeps the tip's words beside its own, and Escape
+  puts a showing tip away before it closes the dialog the tip is in.
 
 ## Forms
 
