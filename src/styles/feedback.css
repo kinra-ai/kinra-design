@@ -622,8 +622,8 @@
 
 @layer kinra.components {
 	/* A tooltip in the top layer: a manual popover that script places beside
-	   its target. A tip answers its control, so after its wait it fades in on
-	   the control term, coming out of the side it stands on. */
+	   its target. It is anchored to its control, so after its wait it arrives
+	   on the popover term, out of the side it stands on. */
 	.kin-tooltip[popover] {
 		border: 0;
 		height: auto;
@@ -633,7 +633,7 @@
 		overflow: visible;
 	}
 	.kin-tooltip[popover]:popover-open {
-		animation: kin-tooltip-arrive var(--kin-motion-control);
+		animation: kin-tooltip-arrive var(--kin-motion-popover);
 	}
 	.kin-tooltip[data-side="below"] {
 		--kin-tooltip-from: -0.1875rem;

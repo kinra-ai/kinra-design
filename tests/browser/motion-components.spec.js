@@ -197,7 +197,7 @@ test("each component moves by its term", async ({ page }) => {
 	});
 	expect(fill).toEqual(["width var(--kin-motion-surface)"]);
 
-	// Layers arrive on layer, a popover on popover, a tip on control; a toast
+	// Layers arrive on layer, a popover and a tip on popover; a toast
 	// leaves on exit, and stays gone.
 	const arrivals = await page.evaluate(() => {
 		const pick = (element, pseudo) => {
@@ -228,7 +228,7 @@ test("each component moves by its term", async ({ page }) => {
 	});
 	const expected = {
 		toast: ["kin-toast-arrive", "layer"],
-		tip: ["kin-tooltip-arrive", "control"],
+		tip: ["kin-tooltip-arrive", "popover"],
 		dialog: ["kin-layer-arrive", "layer"],
 		"dialog::backdrop": ["kin-backdrop-arrive", "layer"],
 		drawer: ["kin-drawer-arrive-end", "layer"],

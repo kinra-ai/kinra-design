@@ -242,10 +242,10 @@ replaces. Its values are in the [table](#values).
 - **Less motion.** It lands at once.
 - **Examples.** A button's fill under the pointer; a switch's thumb crossing;
   a disclosure's arrow turning; a selection indicator moving to the chosen
-  tab; a tip fading in after its wait.
+  tab.
 - **Counterexamples.** The focus ring, which never moves. A card rising under
-  the pointer: a control answers in tone, not position. A menu opening:
-  popover.
+  the pointer: a control answers in tone, not position. A menu opening, or a
+  tip naming the control: popover.
 - **Replaces.** `var(--kin-duration-fast) ease` written by hand; "control
   speed".
 
@@ -307,13 +307,15 @@ replaces. Its values are in the [table](#values).
 
 #### popover
 
-- **Meaning.** A layer anchored to the control that opened it arrives from
-  that control.
-- **Mechanics.** From-only `opacity` and a rise of 0.5rem into its place.
+- **Meaning.** A layer anchored to a control arrives from it: a layer the
+  control opened, or a tip that names it.
+- **Mechanics.** From-only `opacity` and a rise of 0.5rem into its place; a
+  tip comes 0.1875rem out of the side it stands on, after its wait.
 - **Less motion.** At once.
-- **Examples.** A menu; a popover; a context menu.
-- **Counterexamples.** A tip that names a control: control, since it fades in
-  after its wait and never travels. A dialog: layer.
+- **Examples.** A menu; a popover; a context menu; a tip that names a
+  control.
+- **Counterexamples.** A dialog: layer. A reading tip on a chart, which is
+  content arriving: appear.
 - **Replaces.** Relay's `relay-drop` and `relay-arrive-end`.
 
 #### exit
@@ -328,8 +330,10 @@ replaces. Its values are in the [table](#values).
   `animationend`.
 - **Less motion.** Gone at once. A kept exit runs for 0.01ms, so its
   `animationend` still fires.
-- **Examples.** A toast with `data-leaving`; Space's trays and dialogs, all
-  at one speed (Space 0065); Relay's menus, toasts and selection bar.
+- **Examples.** A toast with `data-leaving`; Design's dialogs, drawers and
+  popovers, and the shell's drawer, where the browser transitions `overlay`;
+  Space's trays and dialogs, all at one speed (Space 0065); Relay's menus,
+  toasts and selection bar.
 - **Counterexamples.** Each layer leaving at its own speed. Focus moving only
   when the fade ends. Work ending: close. `animation: none` with less motion
   where code waits for `animationend`: the event never comes.
@@ -476,7 +480,7 @@ replaces. Its values are in the [table](#values).
 - **Mechanics.** Three marks, one lit at a time, stepping on `steps(1, end)`,
   so each holds for a third of the period. It never spins.
 - **Less motion.** Every mark lit.
-- **Examples.** `.kin-spinner`; the corner key's reconnecting dots.
+- **Examples.** `.kin-spinner`.
 - **Counterexamples.** A rotating ring. A spinner beside a shimmer for the
   same work.
 - **Replaces.** The update spinner's turn.
@@ -523,10 +527,14 @@ containing `signature:` and its reason, and it states:
 - whether it is one of the product's continuous motions.
 
 Design's own signatures are the live edge's band (2.4s), breath (3.2s),
-reconnecting dashes (1.2s), gather (1.1s, tied to the 1100ms closing state)
-and gather-in (420ms), and the corner key's glyph kick (340ms), ink (160ms),
-flash, stroke stagger (18ms), spine (400ms), lift (260ms) and retract
-(200ms). A product lists its own in its interface guide.
+reconnecting dashes (1.2s), gather (1.1s, as long as the 1100ms closing
+state) and gather-in (420ms), and the corner key's: its glyph's kick (340ms)
+and the 20ms it waits before rising, its ink (160ms), its flash, its strokes'
+18ms stagger, its spine (400ms), its lift (260ms, followed 40ms later) and
+retract (200ms), its reconnecting dots (1050ms on standard's in-and-out, 175ms
+apart), the 180ms and 20ms it waits when a turn ends, and the 1.5s in which a
+change counts as a message sent. Each is marked `signature:` where it is
+defined. A product lists its own in its interface guide.
 
 ## Less motion
 

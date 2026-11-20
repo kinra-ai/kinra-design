@@ -51,7 +51,7 @@
     "dev": "cd examples/reference && astro dev",
     "build:reference": "astro build --root examples/reference",
     "check:contract": "node scripts/check-contract.mjs",
-    "check": "npm run check:contract && npm run check:spacing && npm run test:tools && npm run check:svelte && astro check --root examples/reference && npm run format:check",
+    "check": "npm run check:contract && npm run check:spacing && npm run check:motion && npm run test:tools && npm run check:svelte && astro check --root examples/reference && npm run format:check",
     "verify": "npm run check && npm run build:reference && npm run test:browser",
     "test:browser": "playwright test",
     "format": "prettier --write .",
