@@ -110,7 +110,7 @@ export function run() {
 		document.title = `${name} · Shell demo`;
 		// A new page begins at its top.
 		shell.scroller().scrollTop = 0;
-		shell.settle();
+		shell.navigated();
 	}
 	document.addEventListener("click", (event) => {
 		if (
@@ -199,6 +199,6 @@ export function run() {
 			?.classList.add("demo-tip");
 	if (params.has("scrolled")) {
 		shell.scroller().scrollTop = 240;
-		shell.settle();
+		shell.navigated();
 	}
 }
