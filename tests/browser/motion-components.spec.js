@@ -9,15 +9,15 @@ import { compact, curve, ms, table } from "./motion-table.js";
 // motion, every layer stands whole with no animation, and a dialog, drawer or
 // popover leaves the way it came, faster.
 
-const key = readFileSync(
+const keySource = readFileSync(
 	path.join(process.cwd(), "registry/patterns/corner-key/corner-key.html"),
 	"utf8",
-)
-	.replace(/^<!--.*?-->\s*/s, "")
-	.replace(
-		'data-face="rest"',
-		'data-face="working" data-trace="live" id="key"',
-	);
+).replace(/^<!--.*?-->\s*/s, "");
+
+const key = keySource.replace(
+	'data-face="rest"',
+	'data-face="working" data-trace="live" id="key"',
+);
 
 const edge = (state, extra = "") =>
 	`<li class="kin-list__item" style="position: relative"><span class="kin-pattern-live-edge" data-edge="${state}" ${extra} aria-hidden="true"><span class="kin-pattern-live-edge__line" id="edge-${state}${extra ? "-sparks" : ""}"></span></span><div class="kin-list__body"><p class="kin-list__title">${state}</p></div></li>`;
@@ -680,4 +680,126 @@ test("the shell drawer arrives at layer speed and leaves at exit speed", async (
 	const [openSidebar, openBackdrop] = await timing();
 	moves(openSidebar, layer, 0);
 	moves(openBackdrop, layer, 0);
+});
+
+const engine = (tokens = true) => `<!doctype html><html lang="en"><head>
+${tokens ? '<link rel="stylesheet" href="/src/styles/index.css">' : ""}
+<link rel="stylesheet" href="/registry/patterns/corner-key/corner-key.css">
+</head><body><div style="display: flex">${keySource.replace('data-face="rest"', 'data-face="rest" id="key"')}</div></body></html>`;
+
+/** Starts the engine on the key. */
+const start = (page) =>
+	page.evaluate(async () => {
+		const { KeyEngine } =
+			await import("/registry/patterns/corner-key/corner-key.js");
+		window.engine = new KeyEngine(document.getElementById("key"), "rest");
+	});
+
+/** Shows a face and reads the timing of the movements the engine made. */
+function show(page, face, how = {}, before = "") {
+	return page.evaluate(
+		([face, how, before]) => {
+			const key = document.getElementById("key");
+			if (before === "sent") window.engine.expectSent();
+			window.engine.set(face, how);
+			const parts = {};
+			for (const animation of key.getAnimations({ subtree: true })) {
+				// The engine's own, not the CSS on the same elements.
+				if ("animationName" in animation || "transitionProperty" in animation)
+					continue;
+				const target = animation.effect.target;
+				const part = ["fill", "flash", "glyph"].find((name) =>
+					target.matches(`.kin-pattern-corner-key__${name}`),
+				);
+				const { duration, easing } = animation.effect.getTiming();
+				const curves = animation.effect
+					.getKeyframes()
+					.slice(0, -1)
+					.map((frame) => frame.easing);
+				(parts[part ?? "stroke"] ??= []).push({ duration, easing, curves });
+			}
+			return parts;
+		},
+		[face, how, before],
+	);
+}
+
+test("the corner key moves by the terms on its tokens", async ({ page }) => {
+	await open(page, "no-preference", engine());
+	await start(page);
+	const [bloom, morph, standard] = [
+		term("bloom"),
+		term("morph"),
+		curve("standard"),
+	];
+	const same = (parts, part, duration, easing) => {
+		expect(parts[part]?.length, part).toBeGreaterThan(0);
+		for (const move of parts[part]) {
+			expect.soft(move.duration, part).toBe(duration);
+			expect.soft(compact(move.easing), part).toBe(easing);
+		}
+	};
+
+	// A fill blooms on bloom; a change of icon morphs on morph.
+	const woke = await show(page, "send");
+	same(woke, "fill", bloom.duration, bloom.easing);
+	const queued = await show(page, "queue");
+	same(queued, "stroke", morph.duration, morph.easing);
+
+	// Between a line and the solid Stop the strokes fold through the spine,
+	// on the standard curve and then morph's.
+	const sent = await show(page, "working", { turn: true }, "sent");
+	expect(sent.stroke.length).toBeGreaterThan(0);
+	for (const move of sent.stroke) {
+		expect.soft(move.curves.map(compact)).toEqual([standard, morph.easing]);
+	}
+
+	// The deprecated tokens no longer move it: their timing is the key's own.
+	const lifted = sent.fill[0];
+	const spine = sent.stroke[0].duration;
+	await page.evaluate(() => {
+		const key = document.getElementById("key");
+		for (const name of ["retract", "lift", "fold"])
+			key.style.setProperty(`--kin-duration-${name}`, "999ms");
+		key.style.setProperty("--kin-ease-lift", "linear");
+		window.engine.resize();
+	});
+	await show(page, "send");
+	const again = await show(page, "working", { turn: true }, "sent");
+	expect(again.fill[0]).toEqual(lifted);
+	expect(again.stroke[0].duration).toBe(spine);
+	const retracted = await show(page, "rest", { turn: false });
+	expect.soft(retracted.fill?.[0].duration).not.toBe(999);
+	expect.soft(retracted.fill?.[0].easing).not.toBe("linear");
+
+	// A calibration of a term reaches the key when it measures: on resize,
+	// and when the reduced-motion preference changes.
+	await page.evaluate(() => {
+		const key = document.getElementById("key");
+		key.style.setProperty("--kin-duration-bloom", "520ms");
+		window.engine.resize();
+		key.style.setProperty("--kin-duration-morph", "640ms");
+	});
+	same(await show(page, "send"), "fill", 520, bloom.easing);
+	// The preference is read once a frame, so each change gets its own.
+	await page.emulateMedia({ reducedMotion: "reduce" });
+	await frames(page);
+	await page.emulateMedia({ reducedMotion: "no-preference" });
+	await frames(page);
+	same(await show(page, "queue"), "stroke", 640, morph.easing);
+});
+
+test("the corner key will not move without the tokens", async ({ page }) => {
+	await open(page, "no-preference", engine(false));
+	const error = await page.evaluate(async () => {
+		const { KeyEngine } =
+			await import("/registry/patterns/corner-key/corner-key.js");
+		try {
+			new KeyEngine(document.getElementById("key"), "rest");
+			return "";
+		} catch (error) {
+			return String(error.message);
+		}
+	});
+	expect(error).toContain("tokens.css");
 });
