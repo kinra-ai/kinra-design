@@ -621,3 +621,42 @@
 		}
 	}
 }
+
+@layer kinra.components {
+	/* A tooltip in the top layer: a manual popover that script places beside
+	   its target. It comes out of the side it stands on as it fades in. */
+	.kin-tooltip[popover] {
+		border: 0;
+		height: auto;
+		inset: auto;
+		margin: 0;
+		max-width: min(18rem, calc(100vw - 2 * var(--kin-space-2)));
+		overflow: visible;
+	}
+	.kin-tooltip[popover]:popover-open {
+		animation: kin-tooltip-arrive var(--kin-duration-normal) var(--kin-ease-out);
+	}
+	.kin-tooltip[data-side="below"] {
+		--kin-tooltip-from: -0.1875rem;
+	}
+}
+@keyframes kin-tooltip-arrive {
+	from {
+		opacity: 0;
+		translate: 0 var(--kin-tooltip-from, 0.1875rem);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	@layer kinra.components {
+		.kin-tooltip[popover]:popover-open {
+			animation: none;
+		}
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-tooltip[popover] {
+			border: 1px solid currentColor;
+		}
+	}
+}

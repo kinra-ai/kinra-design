@@ -529,3 +529,39 @@
 		}
 	}
 }
+
+@layer kinra.components {
+	/* An item that cannot be used says why beneath its label. It is muted
+	   rather than faded, so the reason stays legible. */
+	.kin-menu__text {
+		display: grid;
+		gap: 0.125rem;
+		min-width: 0;
+	}
+	.kin-menu__reason {
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-xs);
+		font-weight: var(--kin-weight-quiet);
+	}
+	.kin-menu__item[aria-disabled="true"]:has(.kin-menu__reason) {
+		color: var(--kin-color-text-muted);
+		opacity: 1;
+	}
+	/* A checked item's mark, at its end. */
+	.kin-menu__check {
+		color: var(--kin-color-primary);
+		display: inline-flex;
+		margin-inline-start: auto;
+	}
+	.kin-menu__shortcut + .kin-menu__check {
+		margin-inline-start: 0;
+	}
+}
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-menu__item[aria-disabled="true"]:has(.kin-menu__reason),
+		.kin-menu__item[aria-disabled="true"] .kin-menu__reason {
+			color: GrayText;
+		}
+	}
+}

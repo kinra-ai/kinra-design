@@ -5,6 +5,7 @@ export { default as Card } from "./Card.svelte";
 export { default as Check } from "./Check.svelte";
 export { default as Chip } from "./Chip.svelte";
 export { default as ConfirmHost } from "./ConfirmHost.svelte";
+export { default as ContextMenu } from "./ContextMenu.svelte";
 export { default as Dialog } from "./Dialog.svelte";
 export { default as Disclosure } from "./Disclosure.svelte";
 export { default as Drawer } from "./Drawer.svelte";
@@ -15,6 +16,7 @@ export { default as Icon } from "./Icon.svelte";
 export { default as Input } from "./Input.svelte";
 export { default as List } from "./List.svelte";
 export { default as Loading } from "./Loading.svelte";
+export { default as Menu } from "./Menu.svelte";
 export { default as Notice } from "./Notice.svelte";
 export { default as PageHead } from "./PageHead.svelte";
 export { default as Page } from "./Page.svelte";
@@ -37,5 +39,13 @@ export { default as Toaster } from "./Toaster.svelte";
 export { confirm } from "./confirm.svelte.js";
 export { fieldControl } from "./field-context.js";
 export { focusable, restore } from "./focus.js";
+export {
+	ANCHOR_GAP,
+	VIEWPORT_GUTTER,
+	follow,
+	insets,
+	place,
+} from "./placement.js";
 export { chordLabel, isChord, shellState } from "./shell-context.js";
+export { hideTip, tip, told } from "./tip.js";
 export { dismiss, toast, toasts } from "./toast.svelte.js";
