@@ -283,10 +283,9 @@ describe("literal timings by default", () => {
 		);
 	});
 
-	test("every var() is set aside first", () => {
+	test("a product's own property set nowhere it can see is set aside", () => {
 		assert.deepEqual(
-			problems(`:root { --relay-motion: 0.35s ease-out; }
-			.a { transition: opacity var(--relay-motion, 0.35s ease-out); }
+			problems(`.a { transition: opacity var(--relay-motion, 0.35s ease-out); }
 			.b { transition: opacity var(--relay-duration) var(--relay-ease); }`),
 			[],
 		);
@@ -800,6 +799,88 @@ describe("components", () => {
 	});
 });
 
+describe("a product's own properties", () => {
+	test("a literal timing kept in one is read through where it is used", () => {
+		const css = `:root { --relay-motion: 0.35s ease-out; --observatory-journey: 460ms; }
+		.a { transition: opacity var(--relay-motion); }
+		.b { transition: translate var(--observatory-journey) var(--kin-ease-out); }`;
+		const loose = problems(css);
+		assert.equal(loose.length, 1);
+		assert.match(
+			loose[0],
+			/^2:28 .*takes --relay-motion, set to 0\.35s ease-out: no term's timing/,
+		);
+		const firm = strict(css);
+		assert.equal(firm.length, 2);
+		assert.match(
+			firm[0],
+			/takes --relay-motion, set to 0\.35s ease-out: a literal timing/,
+		);
+		assert.match(firm[1], /takes --observatory-journey, set to 460ms/);
+	});
+
+	test("a term's own value kept in one passes by default", () => {
+		assert.deepEqual(
+			problems(`:root { --relay-surface: 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+			.a { transition: box-shadow var(--relay-surface); }`),
+			[],
+		);
+	});
+
+	test("a signature where it is set excuses it", () => {
+		assert.deepEqual(
+			strict(`:root {
+				/* signature: the escapement's own gait */
+				--beat: 100ms cubic-bezier(0.3, 0, 0.25, 1);
+			}
+			.hand { animation: tick var(--beat) infinite; }`),
+			[],
+		);
+	});
+
+	test("one that never moves anything is not read", () => {
+		assert.deepEqual(strict(`:root { --toast-dwell: 4s; }`), []);
+	});
+});
+
+describe("the edges of the rules", () => {
+	test("a copy of a registry pattern keeps its kin-pattern- keyframes", () => {
+		assert.deepEqual(
+			inFile(
+				"@keyframes kin-pattern-live-edge-sweep { from { opacity: 0; } }",
+				"src/edge.css",
+			),
+			[],
+		);
+		assert.equal(
+			inFile("@keyframes kin-fade { from { opacity: 0; } }", "src/app.css")
+				.length,
+			1,
+		);
+	});
+
+	test("only a comment that begins with signature: is one", () => {
+		const css = `.a {
+			/* this is not a signature: just a preference */
+			transition: opacity 999ms ease;
+		}`;
+		assert.equal(strict(css).length, 1);
+	});
+
+	test("a change that takes no time has no curve to answer for", () => {
+		assert.deepEqual(strict(`.a { transition: color 0ms ease; }`), []);
+	});
+
+	test("a scroll-driven animation may name its curve", () => {
+		assert.deepEqual(
+			strict(
+				`.a { animation: reveal linear both; animation-timeline: view(); }`,
+			),
+			[],
+		);
+	});
+});
+
 describe("the command", () => {
 	const directory = mkdtempSync(path.join(os.tmpdir(), "kinra-check-motion-"));
 	after(() => rmSync(directory, { recursive: true, force: true }));
@@ -829,6 +910,8 @@ describe("the command", () => {
 		"warned/app.css",
 		".a { transition: opacity var(--kin-duration-retract) var(--kin-ease-in); }\n",
 	);
+	write("launder/tokens.css", ":root { --relay-motion: 0.35s ease-out; }\n");
+	write("launder/app.css", ".a { transition: opacity var(--relay-motion); }\n");
 	write(
 		"strict/Spinner.svelte",
 		"<span></span>\n<style>\n  @keyframes spin { to { rotate: 1turn } }\n</style>\n",
@@ -904,6 +987,15 @@ describe("the command", () => {
 		assert.match(
 			result.stderr,
 			/2 problems in 1 declaration in 2 files \(strict\)$/m,
+		);
+	});
+
+	test("reads a product's own property set in another file", () => {
+		const result = run("--strict", "launder");
+		assert.equal(result.status, 1);
+		assert.match(
+			result.stdout,
+			/app\.css:1:\d+: .*takes --relay-motion, set to 0\.35s ease-out/,
 		);
 	});
 

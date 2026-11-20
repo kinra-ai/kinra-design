@@ -210,12 +210,18 @@ function declaration(text, start, end, block) {
  * @param {ReturnType<typeof lineIndex>} where
  * @param {string} mark
  */
-export function exceptionNotes(text, comments, where, mark) {
+export function exceptionNotes(text, comments, where, mark, options = {}) {
+	const { leading = false } = options;
 	const notes = [];
 	const unreasoned = [];
 	for (const comment of comments) {
 		const at = comment.text.indexOf(mark);
 		if (at === -1) continue;
+		// A leading mark begins its comment, so a sentence that merely mentions
+		// it ("this is not a signature: …") excuses nothing.
+		if (leading && comment.text.slice(0, at).replace(/[\s*]/g, "") !== "") {
+			continue;
+		}
 		const first = where(comment.start);
 		const before = text.slice(comment.start - first.column + 1, comment.start);
 		const note = {

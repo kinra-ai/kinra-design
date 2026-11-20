@@ -954,7 +954,10 @@ function shorthandLiterals(parts, shown, motion, strict) {
 	}
 	const time =
 		literal(duration) && duration.kind === "literal" ? duration : undefined;
-	const shape = curve?.curve === "literal" ? curve : undefined;
+	// A change that takes no time has no curve to speak of.
+	const still =
+		duration?.time === "literal" && !duration.literals.some((l) => moves(l.ms));
+	const shape = !still && curve?.curve === "literal" ? curve : undefined;
 	if (time || shape) {
 		const durations = durationsOf(duration, motion);
 		const curves = curvesOf(curve, motion);
@@ -1022,6 +1025,32 @@ function zeroes(found, text) {
  *   Design's, where kin- keyframes are defined.
  * @returns {{ declarations: number, problems: { line: number, column: number, message: string, severity: "error" | "warning" }[] }}
  */
+/**
+ * A sheet's own custom properties that are not Design's, by name, each with
+ * the values it is set to and whether a signature excuses the setting.
+ *
+ * @param {string} css
+ * @param {Map<string, { value: string, signed: boolean }[]>} [into]
+ */
+export function definitionsOf(css, into = new Map()) {
+	const { text, comments } = maskCss(css);
+	const where = lineIndex(css);
+	const { declarations } = parseCss(text);
+	const { exempt } = exceptionNotes(text, comments, where, MARK, {
+		leading: true,
+	});
+	for (const found of declarations) {
+		if (!found.custom || found.name.startsWith("--kin-")) continue;
+		const value = text
+			.slice(found.valueStart, found.valueEnd)
+			.replace(/\s*!\s*important\s*$/i, "")
+			.trim();
+		const signed = exempt(where(found.at).line, where(found.valueEnd - 1).line);
+		into.set(found.name, [...(into.get(found.name) ?? []), { value, signed }]);
+	}
+	return into;
+}
+
 export function checkCss(css, options = {}) {
 	const {
 		strict = false,
@@ -1029,9 +1058,20 @@ export function checkCss(css, options = {}) {
 		component = false,
 		own = false,
 	} = options;
+	const definitions = options.definitions ?? definitionsOf(css);
 	const { text, comments } = maskCss(css);
 	const where = lineIndex(css);
 	const { blocks, declarations } = parseCss(text);
+	// A scroll-driven animation's curve maps scroll to progress; no term holds it.
+	const scrolled = new Set(
+		declarations
+			.filter(
+				(d) =>
+					d.property === "animation-timeline" &&
+					!/^\s*(auto|none)\s*$/i.test(text.slice(d.valueStart, d.valueEnd)),
+			)
+			.map((d) => d.block),
+	);
 	const problems = [];
 	const report = (offset, message, warning = false) =>
 		problems.push({
@@ -1040,7 +1080,9 @@ export function checkCss(css, options = {}) {
 			severity: warning && !strict ? "warning" : "error",
 		});
 
-	const { unreasoned, exempt } = exceptionNotes(text, comments, where, MARK);
+	const { unreasoned, exempt } = exceptionNotes(text, comments, where, MARK, {
+		leading: true,
+	});
 	for (const offset of unreasoned) {
 		report(offset, `${MARK} gives no reason (say why)`);
 	}
@@ -1131,12 +1173,86 @@ export function checkCss(css, options = {}) {
 			const broken = structure(parts, kind, shown, motion);
 			for (const { offset, message } of broken) report(offset, message);
 			if (broken.length > 0 || excused) continue;
+			// A literal timing kept in a product's own property is still literal,
+			// and is read with what stands beside it where it is used.
+			for (const part of parts) {
+				if (part.kind !== "var" || part.name.startsWith("--kin-")) continue;
+				for (const definition of definitions.get(part.name) ?? []) {
+					if (definition.signed) continue;
+					const held = splitItems(definition.value, 0, definition.value.length)
+						.flat()
+						.map(classify);
+					const heldTime = held.find(
+						(p) => p.time === "literal" && p.literals.some((l) => moves(l.ms)),
+					);
+					const heldCurve = held.find((p) => p.curve === "literal");
+					if (!heldTime && !heldCurve) continue;
+					const set = `${part.name}, set to ${collapse(definition.value)}`;
+					if (strict) {
+						report(
+							part.start,
+							`${shown} takes ${set}: a literal timing kept in a product's own property (take it from var(--kin-motion-<term>), or mark its signature: where it is set)`,
+						);
+						continue;
+					}
+					const others = parts.filter((p) => p !== part);
+					const heldMs = heldTime?.literals.find((l) => moves(l.ms))?.ms;
+					let fits;
+					if (kind === "shorthand") {
+						const durations =
+							heldMs !== undefined
+								? [heldMs]
+								: durationsOf(
+										others.find((p) => p.time && p.time !== "unknown"),
+										motion,
+									);
+						const curves = heldCurve
+							? [heldCurve.value]
+							: curvesOf(
+									others.find((p) => p.curve && p.curve !== "unknown"),
+									motion,
+								);
+						if (!durations || !curves) continue;
+						const moving = durations.filter(moves);
+						fits =
+							moving.length === 0 ||
+							motion.pairs.some(
+								(p) =>
+									curves.includes(p.curve) &&
+									moving.some((ms) => near(ms, p.ms)),
+							);
+					} else if (kind === "delay") {
+						fits =
+							heldMs === undefined ||
+							motion.delays.some((ms) => near(ms, heldMs));
+					} else if (kind === "curve") {
+						fits = !heldCurve || motion.curvesUsed.has(heldCurve.value);
+					} else {
+						fits =
+							heldMs === undefined ||
+							motion.timesUsed.some((ms) => near(ms, heldMs));
+					}
+					if (!fits) {
+						report(
+							part.start,
+							`${shown} takes ${set}: no term's timing (use var(--kin-motion-<term>) for what moves)`,
+						);
+					}
+				}
+			}
 			const findings =
 				kind === "shorthand"
-					? shorthandLiterals(parts, shown, motion, strict)
+					? shorthandLiterals(
+							scrolled.has(found.block)
+								? parts.filter((part) => part.curve !== "literal")
+								: parts,
+							shown,
+							motion,
+							strict,
+						)
 					: parts.flatMap((part) => {
 							if (kind === "curve") {
-								return part.curve === "literal"
+								return part.curve === "literal" && !scrolled.has(found.block)
 									? curveLiteral(part, shown, motion, strict)
 									: [];
 							}
@@ -1154,7 +1270,9 @@ export function checkCss(css, options = {}) {
 	for (const block of blocks) {
 		const name = keyframesName(css, block);
 		if (name === undefined) continue;
-		if (name.replace(/^-global-/, "").startsWith("kin-") && !own) {
+		const bare = name.replace(/^-global-/, "");
+		// A registry pattern's keyframes keep their name in a product's copy.
+		if (bare.startsWith("kin-") && !bare.startsWith("kin-pattern-") && !own) {
 			report(
 				block.at,
 				`@keyframes ${name} takes a kin- name, which only Kinra Design defines (use ${arrivals}, or a name of the product's own)`,
@@ -1233,19 +1351,36 @@ function run(argv) {
 	const files = targetFiles(targets, COMMAND);
 	if (typeof files === "number") return files;
 
+	// A product's own properties, wherever they are set, are read at each use.
+	const sources = new Map();
+	const definitions = new Map();
+	for (const file of files) {
+		try {
+			sources.set(file, readFileSync(file, "utf8"));
+		} catch (error) {
+			console.error(`${COMMAND}: ${file}: ${error.message}`);
+			return 2;
+		}
+		const source = sources.get(file);
+		const extension = path.extname(file).toLowerCase();
+		for (const css of COMPONENTS.has(extension)
+			? componentSheets(source, extension)
+			: [source]) {
+			definitionsOf(css, definitions);
+		}
+	}
+
 	let declarations = 0;
 	let errors = 0;
 	let warnings = 0;
 	const lines = [];
 	for (const file of files) {
-		let source;
-		try {
-			source = readFileSync(file, "utf8");
-		} catch (error) {
-			console.error(`${COMMAND}: ${file}: ${error.message}`);
-			return 2;
-		}
-		const result = checkSource(source, file, { strict, ...loaded });
+		const source = sources.get(file);
+		const result = checkSource(source, file, {
+			strict,
+			...loaded,
+			definitions,
+		});
 		declarations += result.declarations;
 		for (const { line, column, message, severity } of result.problems) {
 			if (severity === "warning") warnings++;
