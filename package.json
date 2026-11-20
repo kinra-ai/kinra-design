@@ -8,6 +8,7 @@
     "assets",
     "docs",
     "registry",
+    "src/motion",
     "src/styles",
     "src/svelte",
     "tools",
@@ -26,6 +27,7 @@
       "svelte": "./src/svelte/index.js",
       "default": "./src/svelte/index.js"
     },
+    "./motion": "./src/motion/motion.js",
     "./registry": "./registry/registry.json",
     "./registry/*": "./registry/*",
     "./package.json": "./package.json"
