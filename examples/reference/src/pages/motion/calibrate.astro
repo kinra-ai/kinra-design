@@ -135,7 +135,7 @@ const fixed: Specimen[] = [
 		id: "L3",
 		term: "exit",
 		ask: "Exit at 180ms, half the distance. Its curve: in, or (0.4, 0, 1, 1)? Popover exit: 180 or 120ms?",
-		note: "Today's in covers 2.8% of its movement by half time and holds for about 90% of its duration before it snaps. A toast that rose 0.5rem falls 0.25rem as it fades, and so does a menu.",
+		note: "Today's in covers 2.8% of its movement by half time and half of it only at 90%, so a 180ms exit holds for about 140ms and then goes. A toast that rose 0.5rem falls 0.25rem as it fades, and so does a menu.",
 		range: [0, 600, 10],
 		forms: [
 			["toast", "Toast"],
@@ -234,7 +234,7 @@ const agenda: {
 		ids: ["L1", "L2", "L3"],
 	},
 	{
-		text: "The exit curve. Today's in covers 2.8% of its movement by half time and holds for about 90% of its duration before it snaps; compare it with (0.4, 0, 1, 1).",
+		text: "The exit curve. Today's in covers 2.8% of its movement by half time and half of it only at 90%, so a 180ms exit holds for about 140ms and then goes; compare it with (0.4, 0, 1, 1).",
 		ids: ["L3"],
 	},
 	{ text: "Popover exit: 180 or 120ms.", ids: ["L3"] },

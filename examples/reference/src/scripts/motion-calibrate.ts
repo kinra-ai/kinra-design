@@ -1050,6 +1050,14 @@ export function startCalibration(): void {
 
 	/** Every change, in tokens.css's own blocks, one line each with its specimen. */
 	function block(query: string): { text: string; lines: number } {
+		// With the system's less motion every registered token reads 0ms here,
+		// so nothing it says about what was there would be true.
+		if (systemAsksLess()) {
+			return {
+				text: "/* Your system asks for less motion, so the tokens read 0ms on this page.\n   Calibrate with it turned off; nothing here is copied. */\n",
+				lines: 0,
+			};
+		}
 		const out: Record<Block, string[]> = {
 			root: [],
 			productive: [],
@@ -1125,16 +1133,16 @@ export function startCalibration(): void {
 				lines++;
 				continue;
 			}
-			for (const entry of entries) {
-				out[entry.register === "fixed" ? "root" : entry.register].push(
-					line(
-						property,
-						entry.value,
-						`${entry.id}, was ${entry.was}; the registers differ, and tokens.css holds one`,
-					),
-				);
-				lines++;
-			}
+			// tokens.css holds one value for both registers here, so a line in
+			// each register's block would never apply: say so, and let the
+			// round choose.
+			const asked = entries
+				.map((entry) => `${entry.id} (${entry.register}) asks ${entry.value}`)
+				.join("; ");
+			out[home].push(
+				`\t/* ${property}: the registers differ. ${asked}. tokens.css holds one value for both, was ${first.was}: choose one. */`,
+			);
+			lines++;
 		}
 
 		if (!lines) {

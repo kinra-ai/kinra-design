@@ -13,8 +13,9 @@ function runButton(
 		word === "Show" ? "Hide" : "Stop",
 	);
 	button.addEventListener("click", () => {
-		const running = button.getAttribute("aria-pressed") === "true";
-		button.setAttribute("aria-pressed", String(!running));
+		// The label says the state, so the state is not also pressed.
+		const running = button.hasAttribute("data-running");
+		button.toggleAttribute("data-running", !running);
 		button.textContent = running ? label : stopLabel;
 		if (running) stop();
 		else start();
@@ -115,7 +116,6 @@ function escapement(article: HTMLElement) {
 	gait.addEventListener("click", () => {
 		const next = !locked();
 		gait.setAttribute("aria-pressed", String(next));
-		gait.textContent = next ? "Locked to the pulse" : "Coasting";
 		// A change of gait waits until just after a second, and keeps the phase.
 		clearTimeout(pending);
 		pending = window.setTimeout(set, 1000 - (labNow() % 1000) + 120);
@@ -160,7 +160,12 @@ function playback(article: HTMLElement) {
 		const [x2, y2] = ops[index + 1];
 		tool.setAttribute("cx", String(x1 + (x2 - x1) * t));
 		tool.setAttribute("cy", String(y1 + (y2 - y1) * t));
-		const reached = share >= 1 ? ops.length : index + 1;
+		const reached =
+			share >= 1
+				? ops.length
+				: distance >= lengths[index] - 1e-9
+					? index + 2
+					: index + 1;
 		caption.textContent = `Operation ${reached} of ${ops.length}`;
 		if (!playing) late++;
 		drawn++;
@@ -170,7 +175,7 @@ function playback(article: HTMLElement) {
 		playing = false;
 		cancelAnimationFrame(frame);
 		clearTimeout(hop);
-		play.setAttribute("aria-pressed", "false");
+		play.removeAttribute("data-running");
 		play.textContent = "Play";
 		late = 0;
 		line.textContent = `${why}; ${drawn} frames drawn while playing.`;
@@ -194,15 +199,20 @@ function playback(article: HTMLElement) {
 		if (progress >= 1) progress = 0;
 		playing = true;
 		drawn = 0;
-		play.setAttribute("aria-pressed", "true");
+		play.toggleAttribute("data-running", true);
 		play.textContent = "Pause";
 		line.textContent = "Playing.";
 		delete line.dataset.kept;
 		if (lessMotion()) {
 			// An operation at a time: the first after 600ms, then every 900ms.
+			// The share of the path at each operation, so a hop lands on it.
+			const shares = lengths.reduce(
+				(at, length) => [...at, at.at(-1)! + length / total],
+				[0],
+			);
 			const next = () => {
-				const reached = Math.round(progress * (ops.length - 1)) + 1;
-				progress = Math.min(1, reached / (ops.length - 1));
+				const index = shares.findIndex((share) => share > progress + 1e-9);
+				progress = index === -1 ? 1 : shares[index];
 				place(progress);
 				if (progress >= 1) return stop("Stopped at the program's end");
 				hop = window.setTimeout(next, 900);

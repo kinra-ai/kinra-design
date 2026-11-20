@@ -91,12 +91,19 @@ export function install(): void {
 	// simulated preference as well as the system's.
 	window.matchMedia = (query: string) => {
 		const list = nativeMatch(query);
-		if (!/prefers-reduced-motion:\s*reduce/.test(query)) return list;
+		// Only the query itself, exactly: "not (…)" or a combined query is the
+		// browser's to answer.
+		if (!/^\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)\s*$/i.test(query)) {
+			return list;
+		}
 		return new Proxy(list, {
 			get(target, property) {
 				if (property === "matches") return target.matches || simulatedLess;
 				const value = Reflect.get(target, property, target);
 				return typeof value === "function" ? value.bind(target) : value;
+			},
+			set(target, property, value) {
+				return Reflect.set(target, property, value, target);
 			},
 		});
 	};

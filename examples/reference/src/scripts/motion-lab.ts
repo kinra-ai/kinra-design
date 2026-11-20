@@ -191,6 +191,10 @@ export function startLab(): void {
 	}
 
 	function chooseLess(on: boolean) {
+		// Script specimens read less motion when they start: stop those running.
+		for (const running of lab.querySelectorAll<HTMLElement>("[data-running]")) {
+			running.click();
+		}
 		lessSheet?.remove();
 		lessSheet = undefined;
 		if (on) {
@@ -655,8 +659,9 @@ export function startLab(): void {
 				follow();
 				return;
 			}
-			const running = button.getAttribute("aria-pressed") === "true";
-			button.setAttribute("aria-pressed", String(!running));
+			// The label says the state, so the state is not also pressed.
+			const running = button.hasAttribute("data-running");
+			button.toggleAttribute("data-running", !running);
 			button.textContent = running ? "Start the work" : "End the work";
 			if (running) behaviour.end(specimen);
 			else behaviour.start(specimen);

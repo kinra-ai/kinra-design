@@ -127,18 +127,27 @@ test("each correction's before breaks its rule and its after keeps it", async ({
 	await open(page);
 	await page.locator("#K1 [data-lab-run]").click();
 	await page.locator("#K3 [data-lab-run]").click();
-	await page.locator("#K4 [data-lab-run]").click();
 	await page.locator("#K5 [data-lab-visit]").click();
 	await page.locator("#K6 [data-lab-load]").click();
 	await page.locator("#K2 [data-lab-run]").click();
 	await page.locator("#K7 [data-lab-load]").click();
-	await page.locator("#K8 [data-lab-run]").click();
 	await page.locator("#K9 [data-lab-dismiss]").click();
 	await page.locator("#K10 [data-lab-run]").click();
 	await page.locator("#K11 [data-lab-point]").click();
 	// Long enough for the old page to dock itself and the old entry to finish.
 	await page.waitForTimeout(3800);
 	await page.locator("#K6 [data-lab-jump]").click();
+	// K4 and K8 run frame loops, which stop off screen: each is watched in view.
+	for (const id of ["K4", "K8"]) {
+		await page.locator(`#${id}`).scrollIntoViewIfNeeded();
+		await page.locator(`#${id} [data-lab-run]`).click();
+		await expect(
+			page.locator(`#${id} [data-lab-check]`).first(),
+		).toHaveAttribute("data-kept", "false", { timeout: 10000 });
+		await expect(
+			page.locator(`#${id} [data-lab-check]`).last(),
+		).toHaveAttribute("data-kept", "true", { timeout: 10000 });
+	}
 	const ids = [
 		"K1",
 		"K2",
@@ -153,7 +162,7 @@ test("each correction's before breaks its rule and its after keeps it", async ({
 		"K11",
 	];
 	expect(await page.locator("[data-lab-correction]").count()).toBe(ids.length);
-	for (const id of ids) {
+	for (const id of ids.filter((id) => id !== "K4" && id !== "K8")) {
 		const [before, after] = [
 			page.locator(`#${id} [data-lab-check]`).first(),
 			page.locator(`#${id} [data-lab-check]`).last(),

@@ -33,8 +33,9 @@ function runButton(article: HTMLElement, start: () => void, stop: () => void) {
 	const button = article.querySelector<HTMLButtonElement>("[data-lab-run]")!;
 	const label = button.textContent!.trim();
 	button.addEventListener("click", () => {
-		const running = button.getAttribute("aria-pressed") === "true";
-		button.setAttribute("aria-pressed", String(!running));
+		// The label says the state, so the state is not also pressed.
+		const running = button.hasAttribute("data-running");
+		button.toggleAttribute("data-running", !running);
 		button.textContent = running ? label : label.replace(/^Start|^Run/, "Stop");
 		if (running) stop();
 		else start();
@@ -135,6 +136,13 @@ function lamps(article: HTMLElement) {
 		follow();
 	};
 	const measure = () => {
+		if (lessMotion()) {
+			check(
+				side,
+				"With less motion nothing flashes; the lamps hold their colours.",
+			);
+			return;
+		}
 		const now = labNow();
 		flashes = flashes.filter((time) => now - time < 10000);
 		check(
@@ -704,6 +712,13 @@ function entries(article: HTMLElement) {
 			if (frames.length < 8) requestAnimationFrame(sample);
 			else {
 				line.textContent = `Frames after the jump: ${frames.join(" ")}`;
+				if (lessMotion()) {
+					check(
+						page.parentElement!,
+						"With less motion the instrument is whole from the start, on both sides.",
+					);
+					return;
+				}
 				const first = Number(frames[0]);
 				const kept =
 					page.dataset.k6 === "after" ? first > 0.99 || lessMotion() : false;
@@ -1015,6 +1030,15 @@ function signals(article: HTMLElement) {
 			}
 		}
 		const measure = () => {
+			if (lessMotion()) {
+				for (const row of rows) {
+					check(
+						row.parentElement!,
+						"With less motion nothing loops; the caption says the work.",
+					);
+				}
+				return;
+			}
 			for (const row of rows) {
 				const loops = row
 					.getAnimations({ subtree: true })
@@ -1083,6 +1107,14 @@ function hover(article: HTMLElement) {
 	}
 }
 
+/** A specimen whose frame loop runs stops when it leaves the screen. */
+function offScreen(article: HTMLElement) {
+	new IntersectionObserver((entries) => {
+		if (entries.some((entry) => entry.isIntersecting)) return;
+		article.querySelector<HTMLElement>("[data-lab-run][data-running]")?.click();
+	}).observe(article);
+}
+
 export function mountCorrections(container: HTMLElement) {
 	const find = (name: string) =>
 		container.querySelector<HTMLElement>(`[data-lab-correction="${name}"]`);
@@ -1091,7 +1123,10 @@ export function mountCorrections(container: HTMLElement) {
 	const k3 = find("lamps");
 	if (k3) lamps(k3);
 	const k4 = find("strip");
-	if (k4) strip(k4);
+	if (k4) {
+		strip(k4);
+		offScreen(k4);
+	}
 	const k5 = find("dock");
 	if (k5) dock(k5);
 	const k6 = find("entries");
@@ -1101,7 +1136,10 @@ export function mountCorrections(container: HTMLElement) {
 	const k7 = find("ladder");
 	if (k7) ladder(k7);
 	const k8 = find("compositor");
-	if (k8) compositor(k8);
+	if (k8) {
+		compositor(k8);
+		offScreen(k8);
+	}
 	const k9 = find("exits");
 	if (k9) exits(k9);
 	const k10 = find("signals");
