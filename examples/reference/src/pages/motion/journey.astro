@@ -1,0 +1,355 @@
+---
+/*
+ * The navigate specimen's own page, framed by the motion lab: rooms moved
+ * between by real view transitions, timed by the navigate term where it
+ * stands. register=productive|expressive sets data-kin-motion on the
+ * document, and scheme=dark|light|auto its scheme (else the catalog's
+ * remembered one). The keyframes are Observatory's, under their own names, so
+ * the reconstruction is exact.
+ */
+import "@kinra/web/styles";
+import markUrl from "@kinra/web/assets/mark.svg?url";
+
+const rooms = [
+	{
+		name: "Clocks",
+		caption: "Who sets the time",
+		tile: "The reference",
+		detail:
+			"Stratum 1, read from GPS. Every other clock in the room follows it.",
+	},
+	{
+		name: "Scale",
+		caption: "Every clock on one scale",
+		tile: "The spread",
+		detail: "Twelve clocks within 2ms of the reference over the last hour.",
+	},
+	{
+		name: "Almanac",
+		caption: "The Sun and the Moon",
+		tile: "Tonight",
+		detail: "The Sun set at 16:02; the Moon rises at 21:14, a day past full.",
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			name="description"
+			content="Rooms moved between by real view transitions, for the motion lab's navigate specimen."
+		/>
+		<link rel="icon" type="image/svg+xml" href={markUrl} />
+		<title>Navigate specimen · Kinra design</title>
+		<script is:inline>
+			// The register and the scheme apply before the first paint.
+			(() => {
+				const params = new URLSearchParams(location.search);
+				const register = params.get("register");
+				if (register === "productive" || register === "expressive")
+					document.documentElement.dataset.kinMotion = register;
+				let scheme = params.get("scheme");
+				if (!scheme)
+					try {
+						scheme = localStorage.getItem("kin-scheme");
+					} catch {}
+				if (scheme === "light" || scheme === "dark" || scheme === "auto")
+					document.documentElement.dataset.kinScheme = scheme;
+				// A frame follows the catalog when its scheme changes there.
+				addEventListener("storage", (event) => {
+					if (event.key !== "kin-scheme" || params.get("scheme")) return;
+					const next = event.newValue;
+					if (next === "light" || next === "dark" || next === "auto")
+						document.documentElement.dataset.kinScheme = next;
+				});
+			})();
+		</script>
+	</head>
+	<body class="journey-body">
+		<header class="journey-bar">
+			<span class="journey-bar__where">
+				<img src={markUrl} alt="" width="16" height="16" />
+				<span data-journey-where>Clocks</span>
+			</span>
+			<nav class="journey-bar__ways" aria-label="Rooms">
+				<button
+					class="kin-button kin-button--ghost"
+					data-size="compact"
+					type="button"
+					data-journey-go="back">Back</button
+				>
+				<button
+					class="kin-button kin-button--ghost"
+					data-size="compact"
+					type="button"
+					data-journey-go="onward">Onward</button
+				>
+			</nav>
+		</header>
+		<main class="journey-page">
+			{
+				rooms.map((room, index) => (
+					<section
+						class="journey-view"
+						data-journey-room={index}
+						data-journey-name={room.name}
+						aria-labelledby={`room-${index}`}
+						hidden={index !== 0}
+					>
+						<h1 id={`room-${index}`}>{room.name}</h1>
+						<p>{room.caption}</p>
+						<button class="journey-tile" type="button" data-journey-go="open">
+							<span class="journey-tile__name">{room.tile}</span>
+							<span class="journey-tile__hint">Open</span>
+						</button>
+					</section>
+				))
+			}
+			{
+				rooms.map((room, index) => (
+					<section
+						class="journey-view"
+						data-journey-detail={index}
+						aria-labelledby={`detail-${index}`}
+						hidden
+					>
+						<h1 id={`detail-${index}`}>{room.tile}</h1>
+						<p>{room.detail}</p>
+						<button
+							class="kin-button"
+							data-size="compact"
+							type="button"
+							data-journey-go="return"
+						>
+							Return to {room.name}
+						</button>
+					</section>
+				))
+			}
+		</main>
+
+		<script>
+			// The package marks its scripts free of side effects, so the page
+			// starts by a call rather than by being imported.
+			import { startJourney } from "../../scripts/motion-journey.ts";
+			startJourney();
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	html {
+		height: 100%;
+	}
+
+	.journey-body {
+		background: var(--kin-color-ground);
+		color: var(--kin-color-text);
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		min-height: 100%;
+	}
+
+	/* The bar is its own layer, so a navigation leaves it in place. */
+	.journey-bar {
+		align-items: center;
+		background: var(--kin-color-surface);
+		border-bottom: 1px solid var(--kin-color-rule);
+		display: flex;
+		flex: none;
+		gap: var(--kin-space-3);
+		justify-content: space-between;
+		min-height: 2.75rem;
+		padding: var(--kin-space-1) var(--kin-space-2) var(--kin-space-1)
+			var(--kin-space-3);
+		view-transition-name: journey-bar;
+	}
+
+	.journey-bar__where {
+		align-items: center;
+		color: var(--kin-color-text-muted);
+		display: inline-flex;
+		font-size: var(--kin-text-xs);
+		gap: var(--kin-space-2);
+		min-width: 0;
+	}
+
+	.journey-bar__ways {
+		display: flex;
+		gap: var(--kin-space-1);
+	}
+
+	.journey-page {
+		flex: 1;
+		padding: var(--kin-space-4);
+	}
+
+	.journey-view {
+		align-content: start;
+		display: grid;
+		gap: var(--kin-space-2);
+		justify-items: start;
+	}
+
+	.journey-view h1 {
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-lg);
+		font-weight: var(--kin-weight-heading);
+		margin: 0;
+	}
+
+	.journey-view p {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-prose);
+		font-size: var(--kin-text-sm);
+		line-height: 1.55;
+		margin: 0;
+		max-width: 32rem;
+	}
+
+	.journey-tile {
+		background: var(--kin-surface-step);
+		border: 1px solid transparent;
+		border-radius: var(--kin-radius-layer);
+		color: inherit;
+		cursor: pointer;
+		display: grid;
+		font: inherit;
+		gap: var(--kin-space-1);
+		justify-items: start;
+		margin-top: var(--kin-space-2);
+		min-width: min(100%, 12rem);
+		padding: var(--kin-space-3) var(--kin-space-4);
+		text-align: start;
+		transition: background-color var(--kin-motion-control);
+	}
+
+	.journey-tile:hover {
+		background: var(--kin-surface-hover);
+	}
+
+	.journey-tile:focus-visible {
+		outline: 2px solid var(--kin-color-primary);
+		outline-offset: 2px;
+	}
+
+	.journey-tile__name {
+		font-size: var(--kin-text-sm);
+		font-weight: var(--kin-weight-strong);
+	}
+
+	.journey-tile__hint {
+		color: var(--kin-color-text-muted);
+		font-size: var(--kin-text-xs);
+	}
+
+	/* Navigate: a view transition on the document, timed by the term where it
+	   stands, which the pseudo-elements inherit from the document. */
+	::view-transition-group(root) {
+		animation-duration: var(--kin-duration-navigate);
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: var(--kin-motion-navigate) both;
+	}
+
+	html[data-navigate="onward"]::view-transition-old(root) {
+		animation-name: journey-leave-left;
+	}
+
+	html[data-navigate="onward"]::view-transition-new(root) {
+		animation-name: journey-enter-right;
+	}
+
+	html[data-navigate="back"]::view-transition-old(root) {
+		animation-name: journey-leave-right;
+	}
+
+	html[data-navigate="back"]::view-transition-new(root) {
+		animation-name: journey-enter-left;
+	}
+
+	html[data-navigate="open"]::view-transition-old(root) {
+		animation-name: journey-recede;
+		transform-origin: var(--journey-origin, 50% 50%);
+	}
+
+	html[data-navigate="open"]::view-transition-new(root) {
+		animation-name: journey-arrive;
+		transform-origin: var(--journey-origin, 50% 50%);
+	}
+
+	html[data-navigate="return"]::view-transition-old(root) {
+		animation-name: journey-leave;
+	}
+
+	html[data-navigate="return"]::view-transition-new(root) {
+		animation-name: journey-return;
+		transform-origin: var(--journey-origin, 50% 50%);
+	}
+
+	::view-transition-group(journey-bar) {
+		animation-duration: 0s;
+	}
+
+	@keyframes journey-leave-left {
+		to {
+			opacity: 0;
+			transform: translateX(-3rem);
+		}
+	}
+
+	@keyframes journey-enter-right {
+		from {
+			opacity: 0;
+			transform: translateX(3rem);
+		}
+	}
+
+	@keyframes journey-leave-right {
+		to {
+			opacity: 0;
+			transform: translateX(3rem);
+		}
+	}
+
+	@keyframes journey-enter-left {
+		from {
+			opacity: 0;
+			transform: translateX(-3rem);
+		}
+	}
+
+	@keyframes journey-recede {
+		to {
+			opacity: 0;
+			transform: scale(1.5);
+		}
+	}
+
+	@keyframes journey-arrive {
+		from {
+			opacity: 0;
+			transform: scale(0.94);
+		}
+	}
+
+	@keyframes journey-leave {
+		to {
+			opacity: 0;
+			transform: scale(0.97);
+		}
+	}
+
+	@keyframes journey-return {
+		from {
+			opacity: 0;
+			transform: scale(1.35);
+		}
+	}
+</style>

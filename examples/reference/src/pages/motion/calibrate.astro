@@ -1,0 +1,899 @@
+---
+/*
+ * The motion calibration page, unlinked from the navigation, for Blake's
+ * review rounds. Each specimen plays one term on two sides at once: A by its
+ * token as tokens.css declares it, B by the values on its sliders. The values
+ * that differ collect as a block for tokens.css, and the address carries
+ * them, so a session can open exactly what was seen.
+ */
+import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
+import "../../styles/motion-calibrate.css";
+
+type Register = "productive" | "expressive";
+type Choice = readonly [value: string, label: string];
+
+interface Specimen {
+	id: string;
+	term: string;
+	register?: Register;
+	/** What this round asks of the term. */
+	ask: string;
+	note?: string;
+	/** The duration slider: minimum, maximum and step, in ms. */
+	range: readonly [number, number, number];
+	loop?: boolean;
+	forms?: readonly Choice[];
+	/** Custom curves to try on B, as four control points. */
+	presets?: readonly Choice[];
+}
+
+const rise = [
+	["rise", "Rise"],
+	["grow", "Grow"],
+	["open", "Open"],
+] as const;
+
+const registered = (register: Register, asks: Record<string, string>) => {
+	const r = register === "productive" ? "P" : "E";
+	const specimens: Specimen[] = [
+		{
+			id: `S1${r}`,
+			term: "settle",
+			register,
+			ask: asks.settle!,
+			note: "The figure changes at once; only the hand and the bar travel.",
+			range: [0, 3000, 10],
+		},
+		{
+			id: `S2${r}`,
+			term: "draw",
+			register,
+			ask: asks.draw!,
+			note: "The trace draws from its start; its band fades in alongside it.",
+			range: [0, 3000, 10],
+		},
+		{
+			id: `S3${r}`,
+			term: "appear",
+			register,
+			ask: asks.appear!,
+			note: "Rise is the default form. Grow scales a mark up at its anchor, and open grows an inserted row's height once. The rise distance moves only the rise form.",
+			range: [0, 1000, 10],
+			forms: rise,
+		},
+		{
+			id: `S4${r}`,
+			term: "stagger",
+			register,
+			ask: asks.stagger!,
+			note: "Each mark arrives on appear, its index times the step after the first.",
+			range: [0, 200, 5],
+		},
+		{
+			id: `P1${r}`,
+			term: "navigate",
+			register,
+			ask: asks.navigate!,
+			note: "A simulation in the page on the term, with Observatory's keyframes: the bar holds still while the room moves. The lab's P1 runs real view transitions.",
+			range: [0, 1200, 10],
+		},
+	];
+	return specimens;
+};
+
+const productive = registered("productive", {
+	settle: "None, or 320ms?",
+	draw: "None today: a trace is whole when the page is.",
+	appear:
+		"120, 180 or 260ms? A rise of 0, 0.25 or 0.5rem? And its grow and open forms.",
+	stagger: "None today: a group arrives as one.",
+	navigate: "None today: a new page simply arrives.",
+});
+
+const expressive = registered("expressive", {
+	settle: "1400ms?",
+	draw: "1400ms?",
+	appear: "360ms? A rise of 0.25 or 0.3rem?",
+	stagger: "A 45ms step?",
+	navigate: "460ms?",
+});
+
+const fixed: Specimen[] = [
+	{
+		id: "C1",
+		term: "control",
+		ask: "Switch and disclosure: 120 or 180ms?",
+		note: "A press, a switch's thumb and a disclosure's arrow, each on the control term.",
+		range: [0, 600, 10],
+	},
+	{
+		id: "C2",
+		term: "surface",
+		ask: "Progress fill: 180 or 320ms?",
+		note: "A row arrives at the top at once, so the rows below it make room. The fill follows its work.",
+		range: [0, 800, 10],
+	},
+	{
+		id: "L1",
+		term: "layer",
+		ask: "Layers at 320ms, with the backdrop on the same term.",
+		note: "A dialog rises 0.5rem as its backdrop fades in; a drawer comes 1.5rem from its edge.",
+		range: [0, 800, 10],
+		forms: [
+			["dialog", "Dialog"],
+			["drawer", "Drawer"],
+		],
+	},
+	{
+		id: "L2",
+		term: "popover",
+		ask: "Popovers at 180ms.",
+		note: "A menu rises 0.5rem into place under the button that opened it.",
+		range: [0, 600, 10],
+	},
+	{
+		id: "L3",
+		term: "exit",
+		ask: "Exit at 180ms, half the distance. Its curve: in, or (0.4, 0, 1, 1)? Popover exit: 180 or 120ms?",
+		note: "Today's in covers 2.8% of its movement by half time and holds for about 90% of its duration before it snaps. A toast that rose 0.5rem falls 0.25rem as it fades, and so does a menu.",
+		range: [0, 600, 10],
+		forms: [
+			["toast", "Toast"],
+			["menu", "Menu"],
+		],
+		presets: [["0.4, 0, 1, 1", "0.4,0,1,1"]],
+	},
+];
+
+const work: Specimen[] = [
+	{
+		id: "W2",
+		term: "sweep",
+		loop: true,
+		ask: "Sweep on standard or linear? One rhythm for work in flight, or today's periods?",
+		note: "Still, the placeholder is its plain shape and the bar's band rests in the middle.",
+		range: [100, 4000, 50],
+	},
+	{
+		id: "W3",
+		term: "pulse",
+		loop: true,
+		ask: "The pulse's swell? One rhythm, or today's periods?",
+		note: "The status mark swells from 0.9 to 1.15 as it brightens; the log's marker only brightens. Still, both stand lit.",
+		range: [100, 4000, 50],
+	},
+	{
+		id: "W4",
+		term: "pass",
+		loop: true,
+		ask: "One rhythm, or today's periods?",
+		note: "One of three marks lit at a time. Still, every mark is lit.",
+		range: [100, 4000, 50],
+	},
+	{
+		id: "W5",
+		term: "close",
+		ask: "The close fade?",
+		note: "The light's dash closes into a ring on close, and the ring then fades on surface, as the corner key's does.",
+		range: [0, 1200, 10],
+	},
+];
+
+const sections = [
+	{
+		id: "productive",
+		title: "Productive",
+		summary:
+			"Content and place in the default register: content is simply there, and values land at once.",
+		specimens: productive,
+	},
+	{
+		id: "expressive",
+		title: "Expressive",
+		summary:
+			"Content and place where the movement carries the meaning: values travel, traces draw and groups arrive in turn.",
+		specimens: expressive,
+	},
+	{
+		id: "fixed",
+		title: "Controls and layers",
+		summary:
+			"Controls answering and layers arriving and leaving: fixed terms, the same in every register.",
+		specimens: fixed,
+	},
+	{
+		id: "work",
+		title: "Work in flight",
+		summary:
+			"Loops that exist only while their work runs, and the close that ends them. Replay starts both sides in step; at rest each shows its still form.",
+		specimens: work,
+	},
+];
+
+const agenda: {
+	text: string;
+	ids?: readonly string[];
+	href?: string;
+	label?: string;
+}[] = [
+	{
+		text: "Productive appear: 120, 180 or 260ms; a rise of 0, 0.25 or 0.5rem; the grow and open forms.",
+		ids: ["S3P"],
+	},
+	{ text: "Productive settle: none, or 320ms.", ids: ["S1P"] },
+	{
+		text: "Expressive values on Design's specimens: 1400, 1400, 360, 45, 460ms; a rise of 0.25 or 0.3rem.",
+		ids: ["S1E", "S2E", "S3E", "S4E", "P1E"],
+	},
+	{
+		text: "Switch and disclosure: 120 or 180ms. Progress fill: 180 or 320ms.",
+		ids: ["C1", "C2"],
+	},
+	{
+		text: "Layers at 320 and 180ms, and exit at 180ms at half distance.",
+		ids: ["L1", "L2", "L3"],
+	},
+	{
+		text: "The exit curve. Today's in covers 2.8% of its movement by half time and holds for about 90% of its duration before it snaps; compare it with (0.4, 0, 1, 1).",
+		ids: ["L3"],
+	},
+	{ text: "Popover exit: 180 or 120ms.", ids: ["L3"] },
+	{ text: "The backdrop.", ids: ["L1"] },
+	{
+		text: "Work in flight: one rhythm, or today's periods? Sweep on standard or linear? The pulse's swell? The close fade?",
+		ids: ["W2", "W3", "W4", "W5"],
+	},
+	{ text: "Signatures.", href: "/motion/", label: "In the lab" },
+	{
+		text: "Every still form.",
+		href: "/motion/?less=1",
+		label: "The lab, with less motion",
+	},
+];
+
+const sides = [
+	["a", "A · tokens.css"],
+	["b", "B · sliders"],
+] as const;
+
+const ways = [
+	["onward", "Onward"],
+	["back", "Back"],
+	["open", "Open"],
+	["return", "Return"],
+] as const;
+
+const curves = ["out", "in", "standard", "bloom", "morph", "linear", "custom"];
+const points = ["x1", "y1", "x2", "y2"];
+
+const queued = ["Index the archive", "Read the floor", "Sync the drawings"];
+const done = ["Read the floor", "Index the archive", "Sync the drawings"];
+const marks = Array.from({ length: 8 }, (_, index) => index);
+const rooms = [
+	{ name: "Clocks", caption: "Who sets the time", detail: "The reference" },
+	{ name: "Scale", caption: "Every clock on one scale", detail: "The spread" },
+	{ name: "Almanac", caption: "The Sun and the Moon", detail: "Tonight" },
+];
+const trace =
+	"M0 60 C 20 58 30 20 50 28 S 80 70 100 52 S 140 10 160 24 S 190 46 200 40";
+const band =
+	"M0 70 C 20 66 30 32 50 38 S 80 80 100 62 S 140 22 160 34 S 190 56 200 50 L 200 30 C 190 36 170 14 160 14 S 120 2 100 42 S 70 60 50 18 S 20 50 0 50 Z";
+
+const unit = (specimen: Specimen) =>
+	specimen.term === "stagger" ? "Step" : specimen.loop ? "Period" : "Duration";
+---
+
+<ReferenceLayout
+	title="Motion calibration"
+	description="Each motion term beside a value of your choosing, to calibrate by eye, with the values to copy into tokens.css."
+	current="Motion"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Calibrate</h1>
+			<div class="cal-intro">
+				<div class="kin-notice" data-tone="primary" data-density="compact">
+					<p class="kin-notice__title">
+						Calibration instrument: a value changes only in tokens.css.
+					</p>
+				</div>
+				<p class="catalog-header__summary">
+					Each specimen plays one term twice: A by its token as{" "}
+					<code>tokens.css</code> declares it, B by the sliders beneath it. Replay
+					starts both together; Blind shuffles the sides until you reveal them. Every
+					value you change collects at the end, ready for{" "}
+					<code>tokens.css</code>, and the address keeps them all.
+				</p>
+				<p class="cal-intro__links">
+					<a href="/motion/">The motion lab</a>
+					<a href="#copy">Values to copy</a>
+				</p>
+			</div>
+		</div>
+	</header>
+
+	<div class="cal-bar">
+		<div class="cal-bar__inner kin-frame">
+			<div class="cal-bar__group">
+				<span class="cal-bar__label" id="cal-speed-label">Speed</span>
+				<div
+					class="kin-segmented"
+					role="group"
+					aria-labelledby="cal-speed-label"
+				>
+					<button type="button" data-cal-speed="1" aria-pressed="true"
+						>1×</button
+					>
+					<button type="button" data-cal-speed="0.25" aria-pressed="false"
+						>0.25×</button
+					>
+					<button type="button" data-cal-speed="0.1" aria-pressed="false"
+						>0.1×</button
+					>
+				</div>
+			</div>
+			<a class="cal-bar__changes" href="#copy" data-cal-changes>No changes</a>
+		</div>
+	</div>
+
+	<div class="kin-frame" data-cal>
+		<div class="kin-notice cal-notice" data-tone="warning" data-cal-os hidden>
+			<p class="kin-notice__title">Your system asks for less motion</p>
+			<p class="kin-notice__body">
+				Every specimen lands at once, and the registered terms read none. Turn
+				the system setting off to calibrate; this page never overrides it.
+			</p>
+		</div>
+
+		<section class="cal-section" id="agenda" aria-labelledby="agenda-heading">
+			<header class="catalog-heading">
+				<h2 id="agenda-heading">This round</h2>
+				<p>Round 2 of the motion review: the values, by eye.</p>
+			</header>
+			<ol class="cal-agenda">
+				{
+					agenda.map((item) => (
+						<li>
+							{item.text}
+							<span class="cal-agenda__ids">
+								{item.ids?.map((id) => (
+									<a href={`#${id}`}>{id}</a>
+								))}
+								{item.href && <a href={item.href}>{item.label}</a>}
+							</span>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		{
+			sections.map((section) => (
+				<section
+					class="cal-section"
+					id={section.id}
+					aria-labelledby={`${section.id}-heading`}
+				>
+					<header class="catalog-heading">
+						<h2 id={`${section.id}-heading`}>{section.title}</h2>
+						<p>{section.summary}</p>
+					</header>
+					<div class="cal-grid">
+						{section.specimens.map((specimen) => (
+							<article
+								class="cal-specimen"
+								id={specimen.id}
+								data-cal-specimen
+								data-cal-term={specimen.term}
+								data-cal-register={specimen.register ?? "fixed"}
+								data-cal-form={specimen.forms?.[0]?.[0]}
+								aria-labelledby={`${specimen.id}-title`}
+							>
+								<div class="cal-specimen__head">
+									<span class="cal-id">{specimen.id}</span>
+									<h3 class="cal-term" id={`${specimen.id}-title`}>
+										{specimen.term}
+										{specimen.register && (
+											<span class="cal-term__register">
+												{" "}
+												· {specimen.register}
+											</span>
+										)}
+									</h3>
+									<p class="cal-ask">{specimen.ask}</p>
+									{specimen.note && <p class="cal-note">{specimen.note}</p>}
+									<div class="cal-actions">
+										{specimen.term === "navigate" ? (
+											ways.map(([way, label]) => (
+												<button
+													class="kin-button"
+													data-size="compact"
+													type="button"
+													data-cal-way={way}
+													disabled={way === "return"}
+												>
+													{label}
+												</button>
+											))
+										) : (
+											<button
+												class="kin-button"
+												data-size="compact"
+												type="button"
+												data-cal-replay
+											>
+												Replay
+											</button>
+										)}
+										{specimen.loop && (
+											<button
+												class="kin-button"
+												data-size="compact"
+												type="button"
+												data-cal-end
+												disabled
+											>
+												End the work
+											</button>
+										)}
+										{specimen.forms && (
+											<div
+												class="kin-segmented"
+												role="group"
+												aria-label={`${specimen.id} form`}
+											>
+												{specimen.forms.map(([value, label], index) => (
+													<button
+														type="button"
+														data-cal-form-choice={value}
+														aria-pressed={index === 0 ? "true" : "false"}
+													>
+														{label}
+													</button>
+												))}
+											</div>
+										)}
+										<label class="kin-switch">
+											<input type="checkbox" role="switch" data-cal-blind />
+											Blind
+										</label>
+										<button
+											class="kin-button kin-button--ghost"
+											data-size="compact"
+											type="button"
+											data-cal-reveal
+											disabled
+										>
+											Reveal
+										</button>
+										<button
+											class="kin-button kin-button--ghost"
+											data-size="compact"
+											type="button"
+											data-cal-reset
+										>
+											Reset B
+										</button>
+									</div>
+								</div>
+
+								<div class="cal-sides" data-cal-sides>
+									{sides.map(([side, name]) => (
+										<div
+											class="cal-side"
+											data-cal-side={side}
+											data-kin-motion={specimen.register ?? "productive"}
+										>
+											<p class="cal-side__label">
+												<span data-cal-name>{name}</span>
+												<span class="cal-reading" data-cal-reading />
+											</p>
+											<div class="cal-stage" inert>
+												{specimen.term === "control" && (
+													<>
+														<div class="cal-line">
+															<button
+																class="kin-button cal-press"
+																data-size="compact"
+																type="button"
+																data-cal-press
+															>
+																Save
+															</button>
+															<label class="kin-switch">
+																<input
+																	type="checkbox"
+																	role="switch"
+																	data-cal-switch
+																/>
+																Sync
+															</label>
+														</div>
+														<details class="kin-disclosure" data-cal-disclosure>
+															<summary>Details</summary>
+															<div class="kin-disclosure__body">
+																Three files changed.
+															</div>
+														</details>
+													</>
+												)}
+												{specimen.term === "surface" && (
+													<>
+														<ul class="cal-rows" data-cal-rows>
+															{queued.map((row) => (
+																<li class="cal-row">
+																	{row}
+																	<small>queued</small>
+																</li>
+															))}
+														</ul>
+														<div class="cal-meter" data-cal-meter="surface">
+															<span />
+														</div>
+													</>
+												)}
+												{specimen.term === "layer" && (
+													<div class="cal-screen" data-cal-screen>
+														<div class="cal-screen__page">
+															<span />
+															<span />
+															<span />
+														</div>
+														<div class="cal-screen__backdrop" />
+														<div class="cal-screen__dialog">
+															<strong>Rename the board</strong>
+															<span>It rose 0.5rem as it arrived.</span>
+														</div>
+														<div class="cal-screen__drawer">
+															<strong>Filters</strong>
+															<span>It came from its own edge.</span>
+														</div>
+													</div>
+												)}
+												{specimen.term === "popover" && (
+													<div class="cal-anchor" data-cal-anchor>
+														<button
+															class="kin-button"
+															data-size="compact"
+															type="button"
+														>
+															Board
+														</button>
+														<div class="cal-menu">
+															<span>Rename</span>
+															<span>Duplicate</span>
+															<span>Archive</span>
+														</div>
+													</div>
+												)}
+												{specimen.term === "exit" && (
+													<div
+														class="cal-leavers"
+														data-cal-leavers
+														data-cal-show="toast"
+													>
+														<div class="cal-toast">
+															<strong>Copied</strong>
+															<span>The link is ready to paste.</span>
+														</div>
+														<div class="cal-menu">
+															<span>Rename</span>
+															<span>Duplicate</span>
+															<span>Archive</span>
+														</div>
+													</div>
+												)}
+												{specimen.term === "settle" && (
+													<>
+														<div class="cal-line">
+															<div class="cal-dial">
+																<span class="cal-dial__hand" data-cal-hand />
+															</div>
+															<p class="cal-figure" data-cal-figure>
+																30%
+															</p>
+														</div>
+														<div class="cal-meter" data-cal-meter="settle">
+															<span />
+														</div>
+													</>
+												)}
+												{specimen.term === "draw" && (
+													<svg class="cal-trace" viewBox="0 0 200 80">
+														<path
+															class="cal-trace__band"
+															d={band}
+															data-cal-drawn
+														/>
+														<path d={trace} pathLength="1" data-cal-drawn />
+													</svg>
+												)}
+												{specimen.term === "appear" && (
+													<div class="cal-appear">
+														<ul class="cal-rows" data-cal-rows>
+															{done.map((row) => (
+																<li class="cal-row">
+																	{row}
+																	<small>done</small>
+																</li>
+															))}
+														</ul>
+														<div class="cal-marks">
+															{marks.slice(0, 5).map(() => (
+																<span class="cal-mark" />
+															))}
+															<span class="cal-mark" data-cal-grow />
+														</div>
+													</div>
+												)}
+												{specimen.term === "stagger" && (
+													<div class="cal-marks" data-cal-stagger>
+														{marks.map((index) => (
+															<span
+																class="cal-mark"
+																style={`--cal-i: ${index}`}
+															/>
+														))}
+													</div>
+												)}
+												{specimen.term === "navigate" && (
+													<div class="cal-place" data-cal-place>
+														<div class="cal-place__bar">Kinra · Rooms</div>
+														{rooms.map((room, index) => (
+															<div
+																class="cal-place__view"
+																data-cal-view={`room-${index}`}
+																hidden={index !== 0}
+															>
+																<strong>{room.name}</strong>
+																<span class="cal-caption">{room.caption}</span>
+																<span class="cal-place__tile" data-cal-tile>
+																	Open
+																</span>
+															</div>
+														))}
+														{rooms.map((room, index) => (
+															<div
+																class="cal-place__view"
+																data-cal-view={`detail-${index}`}
+																hidden
+															>
+																<strong>{room.detail}</strong>
+																<span class="cal-caption">
+																	Opened from {room.name}
+																</span>
+															</div>
+														))}
+													</div>
+												)}
+												{specimen.term === "sweep" && (
+													<div class="cal-work" data-cal-work>
+														<span class="cal-skeleton" data-shape="heading" />
+														<span class="cal-skeleton" />
+														<span class="cal-skeleton" data-shape="short" />
+														<span class="cal-indeterminate" />
+													</div>
+												)}
+												{specimen.term === "pulse" && (
+													<div class="cal-work" data-cal-work>
+														<span class="cal-status">Running</span>
+														<span class="cal-log">Capture the next pass</span>
+													</div>
+												)}
+												{specimen.term === "pass" && (
+													<div class="cal-work" data-cal-work>
+														<div class="cal-line">
+															<span class="cal-spinner" />
+															<span class="cal-caption">Indexing</span>
+														</div>
+													</div>
+												)}
+												{specimen.term === "close" && (
+													<div class="cal-key">
+														<span class="cal-key__box" data-cal-ring>
+															<svg class="cal-ring" viewBox="0 0 48 48">
+																<path
+																	pathLength="100"
+																	d="M1 1H47V41A6 6 0 0 1 41 47H1Z"
+																/>
+															</svg>
+														</span>
+														<span class="cal-caption" data-cal-close-caption>
+															Idle
+														</span>
+													</div>
+												)}
+											</div>
+										</div>
+									))}
+								</div>
+
+								<fieldset class="cal-controls">
+									<legend class="kin-sr-only">
+										B's values for {specimen.id}, {specimen.term}
+									</legend>
+									<div class="cal-control">
+										<label class="cal-control__label" for={`${specimen.id}-ms`}>
+											{unit(specimen)}
+										</label>
+										<input
+											class="kin-range"
+											type="range"
+											id={`${specimen.id}-ms`}
+											min={specimen.range[0]}
+											max={specimen.range[1]}
+											step={specimen.range[2]}
+											data-cal-ms
+										/>
+										<span class="cal-control__value">
+											<label class="kin-sr-only" for={`${specimen.id}-ms-n`}>
+												{unit(specimen)} in milliseconds
+											</label>
+											<input
+												class="kin-input cal-number"
+												data-size="compact"
+												type="number"
+												id={`${specimen.id}-ms-n`}
+												min={specimen.range[0]}
+												max={specimen.range[1]}
+												step="1"
+												inputmode="numeric"
+												data-cal-ms-number
+											/>
+											ms
+										</span>
+									</div>
+									{specimen.term !== "stagger" && (
+										<div class="cal-curve">
+											<label
+												class="cal-control__label"
+												for={`${specimen.id}-curve`}
+											>
+												Curve
+											</label>
+											<div class="cal-curve__body">
+												<div class="cal-curve__pick">
+													<select
+														class="kin-select"
+														data-size="compact"
+														id={`${specimen.id}-curve`}
+														data-cal-curve
+													>
+														{curves.map((name) => (
+															<option value={name}>{name}</option>
+														))}
+													</select>
+													{specimen.presets?.map(([label, value]) => (
+														<button
+															class="kin-button kin-button--ghost"
+															data-size="compact"
+															type="button"
+															data-cal-preset={value}
+														>
+															B: {label}
+														</button>
+													))}
+												</div>
+												<fieldset class="cal-points" data-cal-points>
+													<legend class="kin-sr-only">
+														Control points, which make the curve custom
+													</legend>
+													{points.map((name, index) => (
+														<label>
+															{name}
+															<input
+																class="kin-input"
+																data-size="compact"
+																type="number"
+																min={index % 2 ? -1 : 0}
+																max={index % 2 ? 2 : 1}
+																step="0.01"
+																inputmode="decimal"
+																data-cal-point={index}
+															/>
+														</label>
+													))}
+												</fieldset>
+												<div class="cal-curve__read">
+													<svg
+														class="cal-plot"
+														viewBox="0 0 100 100"
+														preserveAspectRatio="none"
+														aria-hidden="true"
+													>
+														<path class="cal-plot__axis" d="M0 0V100H100" />
+														<path class="cal-plot__a" data-cal-plot="a" />
+														<path class="cal-plot__b" data-cal-plot="b" />
+													</svg>
+													<p class="cal-facts" data-cal-facts />
+												</div>
+											</div>
+										</div>
+									)}
+									{specimen.term === "appear" && (
+										<div class="cal-control">
+											<label
+												class="cal-control__label"
+												for={`${specimen.id}-rise`}
+											>
+												Rise
+											</label>
+											<input
+												class="kin-range"
+												type="range"
+												id={`${specimen.id}-rise`}
+												min="0"
+												max="1"
+												step="0.05"
+												data-cal-rise
+											/>
+											<span class="cal-control__value">
+												<label
+													class="kin-sr-only"
+													for={`${specimen.id}-rise-n`}
+												>
+													Rise in rem
+												</label>
+												<input
+													class="kin-input cal-number"
+													data-size="compact"
+													type="number"
+													id={`${specimen.id}-rise-n`}
+													min="0"
+													max="1"
+													step="0.01"
+													inputmode="decimal"
+													data-cal-rise-number
+												/>
+												rem
+											</span>
+										</div>
+									)}
+								</fieldset>
+							</article>
+						))}
+					</div>
+				</section>
+			))
+		}
+
+		<section class="cal-section" id="copy" aria-labelledby="copy-heading">
+			<header class="catalog-heading">
+				<h2 id="copy-heading">Values to copy</h2>
+				<p>
+					Every term whose B differs from tokens.css, one line per change with
+					its specimen. The address carries the same values, so paste it with
+					your notes.
+				</p>
+			</header>
+			<div class="kin-field">
+				<label class="kin-field__label" for="cal-copy">For tokens.css</label>
+				<textarea
+					class="kin-textarea cal-copy"
+					id="cal-copy"
+					readonly
+					rows="12"
+					spellcheck="false"
+					data-cal-copy></textarea>
+			</div>
+			<div class="cal-copy__actions">
+				<button class="kin-button" type="button" data-cal-select>Select</button>
+				<button
+					class="kin-button kin-button--ghost"
+					type="button"
+					data-cal-reset-all
+				>
+					Reset every B
+				</button>
+				<p class="cal-copy__status" role="status" data-cal-copy-status></p>
+			</div>
+		</section>
+	</div>
+
+	<script>
+		// The package marks its scripts free of side effects, so the page starts
+		// by a call rather than by being imported.
+		import { startCalibration } from "../../scripts/motion-calibrate.ts";
+		startCalibration();
+	</script>
+</ReferenceLayout>

@@ -1,0 +1,1116 @@
+/*
+ * The motion calibration page (/motion/calibrate/). Layout and tone, and each
+ * specimen's motion: every duration and curve here is the term it shows, read
+ * where it stands. A side reads its term as tokens.css declares it; B's side
+ * reads the values its sliders write on its own register container. This
+ * file declares no duration or curve of its own.
+ */
+
+.cal-bar {
+	background: color-mix(in srgb, var(--kin-color-ground) 92%, transparent);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid var(--kin-color-rule);
+	position: sticky;
+	top: 0;
+	z-index: var(--kin-layer-sticky);
+}
+
+.cal-bar__inner {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-3) var(--kin-space-5);
+	padding-block: var(--kin-space-3);
+}
+
+.cal-bar__group {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-2);
+}
+
+.cal-bar__label {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+}
+
+.cal-bar__changes {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	margin-inline-start: auto;
+}
+
+.cal-bar__changes[data-changed] {
+	color: var(--kin-color-primary);
+}
+
+.cal-intro {
+	display: grid;
+	gap: var(--kin-space-4);
+}
+
+.cal-intro__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2) var(--kin-space-5);
+	margin: 0;
+}
+
+.cal-notice {
+	margin-top: var(--kin-space-4);
+}
+
+.cal-section {
+	padding-block: var(--kin-space-8) 0;
+	scroll-margin-top: 5rem;
+}
+
+.cal-section:last-child {
+	padding-bottom: var(--kin-space-9);
+}
+
+/* The round's agenda */
+.cal-agenda {
+	display: grid;
+	gap: var(--kin-space-3);
+	margin: 0;
+	max-width: var(--kin-measure-prose);
+	padding-inline-start: var(--kin-space-7);
+}
+
+.cal-agenda li {
+	color: var(--kin-color-text-subtle);
+	font-family: var(--kin-font-prose);
+	line-height: 1.55;
+	padding-inline-start: var(--kin-space-1);
+}
+
+.cal-agenda__ids {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+	margin-inline-start: var(--kin-space-2);
+}
+
+.cal-agenda__ids a {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+}
+
+/* Specimens */
+.cal-grid {
+	display: grid;
+	gap: var(--kin-space-5);
+}
+
+.cal-specimen {
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-panel);
+	display: grid;
+	min-width: 0;
+	scroll-margin-top: 5rem;
+}
+
+.cal-specimen__head {
+	align-items: center;
+	display: grid;
+	gap: var(--kin-space-3) var(--kin-space-4);
+	grid-template-columns: auto minmax(0, 1fr);
+	padding: var(--kin-space-5) var(--kin-space-5) var(--kin-space-4);
+}
+
+.cal-id {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-mark);
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	justify-self: start;
+	padding: var(--kin-space-1) var(--kin-space-2);
+}
+
+.cal-term {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-md);
+	margin: 0;
+}
+
+.cal-term__register {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-sm);
+}
+
+.cal-ask,
+.cal-note {
+	font-family: var(--kin-font-prose);
+	grid-column: 1 / -1;
+	line-height: 1.55;
+	margin: 0;
+	max-width: var(--kin-measure-prose);
+}
+
+.cal-ask {
+	color: var(--kin-color-text-subtle);
+}
+
+.cal-note {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-sm);
+}
+
+.cal-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2) var(--kin-space-3);
+	grid-column: 1 / -1;
+}
+
+.cal-actions .kin-switch {
+	min-height: var(--kin-control-height-compact);
+}
+
+/* A beside B, always side by side: the comparison is the point. */
+.cal-sides {
+	border-top: 1px solid var(--kin-color-rule);
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cal-side {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-3);
+	min-width: 0;
+	padding: var(--kin-space-4) var(--kin-space-5);
+}
+
+.cal-side + .cal-side {
+	border-inline-start: 1px solid var(--kin-color-rule);
+}
+
+.cal-side__label {
+	align-items: baseline;
+	color: var(--kin-color-text-muted);
+	display: flex;
+	flex-wrap: wrap;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1) var(--kin-space-2);
+	justify-content: space-between;
+	margin: 0;
+}
+
+.cal-side[data-cal-side="b"] [data-cal-name] {
+	color: var(--kin-color-primary);
+}
+
+[data-cal-blinded]:not([data-cal-revealed]) [data-cal-name] {
+	color: var(--kin-color-text-muted);
+}
+
+.cal-reading {
+	font-family: var(--kin-font-mono);
+}
+
+.cal-stage {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-3);
+	min-height: 5rem;
+	min-width: 0;
+}
+
+.cal-line {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-3);
+}
+
+.cal-caption {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+}
+
+/* B's values */
+.cal-controls {
+	border: 0;
+	border-top: 1px solid var(--kin-color-rule);
+	display: grid;
+	gap: var(--kin-space-4);
+	margin: 0;
+	min-width: 0;
+	padding: var(--kin-space-4) var(--kin-space-5) var(--kin-space-5);
+}
+
+.cal-control {
+	align-items: center;
+	display: grid;
+	gap: var(--kin-space-2) var(--kin-space-3);
+	grid-template-columns: 5.5rem minmax(0, 1fr) auto;
+	min-width: 0;
+}
+
+.cal-control__label {
+	color: var(--kin-color-text);
+	font-size: var(--kin-text-sm);
+	font-weight: var(--kin-weight-strong);
+}
+
+.cal-control__value {
+	align-items: center;
+	color: var(--kin-color-text-muted);
+	display: inline-flex;
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-2);
+}
+
+.cal-number {
+	width: 5.5rem;
+}
+
+.cal-curve {
+	align-items: start;
+	display: grid;
+	gap: var(--kin-space-3) var(--kin-space-4);
+	grid-template-columns: 5.5rem minmax(0, 1fr);
+	min-width: 0;
+}
+
+.cal-curve > .cal-control__label {
+	padding-top: var(--kin-space-2);
+}
+
+.cal-curve__body {
+	display: grid;
+	gap: var(--kin-space-3);
+	min-width: 0;
+}
+
+.cal-curve__pick {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+}
+
+.cal-curve__pick .kin-select {
+	width: auto;
+}
+
+.cal-points {
+	border: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+	margin: 0;
+	min-width: 0;
+	padding: 0;
+}
+
+.cal-points label {
+	align-items: center;
+	color: var(--kin-color-text-muted);
+	display: inline-flex;
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+}
+
+/* Four numbers in a row: their arrow keys step them, without spinners. */
+.cal-points .kin-input {
+	-moz-appearance: textfield;
+	appearance: textfield;
+	padding-inline: var(--kin-space-2);
+	width: 4.25rem;
+}
+
+.cal-points .kin-input::-webkit-inner-spin-button,
+.cal-points .kin-input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.cal-curve__read {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-4);
+	min-width: 0;
+}
+
+.cal-plot {
+	flex: none;
+	height: 4.5rem;
+	overflow: visible;
+	width: 4.5rem;
+}
+
+.cal-plot path {
+	fill: none;
+	vector-effect: non-scaling-stroke;
+}
+
+.cal-plot__axis {
+	stroke: var(--kin-color-rule);
+	stroke-width: 1;
+}
+
+.cal-plot__a {
+	stroke: var(--kin-color-text-muted);
+	stroke-dasharray: 3 3;
+	stroke-width: 1.5;
+}
+
+.cal-plot__b {
+	stroke: var(--kin-color-primary);
+	stroke-width: 2;
+}
+
+.cal-facts {
+	color: var(--kin-color-text-muted);
+	display: grid;
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	margin: 0;
+	min-width: 0;
+}
+
+/* Values to copy */
+.cal-copy {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	line-height: 1.6;
+	min-height: 14rem;
+	tab-size: 2;
+	white-space: pre;
+}
+
+.cal-copy__actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-3);
+	margin-top: var(--kin-space-3);
+}
+
+.cal-copy__status {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-sm);
+	margin: 0;
+}
+
+/* ------------------------------------------------------------- Specimens */
+
+/* Rows */
+.cal-rows {
+	display: grid;
+	gap: var(--kin-space-2);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.cal-row {
+	align-items: center;
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	display: flex;
+	font-size: var(--kin-text-sm);
+	gap: var(--kin-space-2);
+	justify-content: space-between;
+	min-width: 0;
+	overflow: hidden;
+	padding: var(--kin-space-2) var(--kin-space-3);
+}
+
+.cal-row small {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+}
+
+.cal-row[data-cal-new] {
+	box-shadow: inset var(--kin-tone-bar-width) 0 0 var(--kin-color-primary);
+}
+
+.cal-meter {
+	background: var(--kin-surface-step);
+	border-radius: 999px;
+	height: 0.5rem;
+	overflow: hidden;
+	width: 100%;
+}
+
+.cal-meter > span {
+	background: var(--kin-color-primary);
+	display: block;
+	height: 100%;
+	scale: var(--cal-value, 0.3) 1;
+	transform-origin: 0 50%;
+}
+
+/* C1 control: tone, a thumb and an arrow answering. */
+.cal-stage .cal-press {
+	transition:
+		background-color var(--kin-motion-control),
+		color var(--kin-motion-control);
+}
+
+.cal-stage .cal-press[data-cal-on] {
+	background: var(--kin-surface-lift-hover);
+}
+
+.cal-stage .kin-switch input {
+	transition:
+		background-color var(--kin-motion-control),
+		border-color var(--kin-motion-control);
+}
+
+.cal-stage .kin-switch input::before {
+	transition:
+		background-color var(--kin-motion-control),
+		translate var(--kin-motion-control);
+}
+
+.cal-stage .kin-disclosure summary::after {
+	transition: transform var(--kin-motion-control);
+}
+
+.cal-stage .kin-disclosure {
+	width: 100%;
+}
+
+/* C2 surface: rows make room; the fill follows its work. */
+.cal-meter[data-cal-meter="surface"] > span {
+	transition: scale var(--kin-motion-surface);
+}
+
+/* L1 layer: a dialog or a drawer and its backdrop, in a small screen. */
+.cal-screen {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	border-radius: var(--kin-radius-layer);
+	height: 8.5rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.cal-screen__page {
+	display: grid;
+	gap: var(--kin-space-2);
+	padding: var(--kin-space-3);
+}
+
+.cal-screen__page span {
+	background: var(--kin-surface-step);
+	border-radius: 2px;
+	display: block;
+	height: 0.5rem;
+}
+
+.cal-screen__page span:nth-child(2) {
+	width: 70%;
+}
+
+.cal-screen__backdrop,
+.cal-screen__dialog,
+.cal-screen__drawer {
+	display: none;
+}
+
+.cal-screen__backdrop {
+	background: var(--kin-backdrop);
+	inset: 0;
+	position: absolute;
+}
+
+.cal-screen__dialog,
+.cal-screen__drawer {
+	align-content: start;
+	background: var(--kin-color-surface-raised);
+	border: 1px solid var(--kin-float-ring);
+	box-shadow: var(--kin-shadow-panel);
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	padding: var(--kin-space-3);
+	position: absolute;
+}
+
+.cal-screen__dialog {
+	border-radius: var(--kin-radius-layer);
+	inset: 1.25rem 0.75rem auto;
+}
+
+.cal-screen__drawer {
+	border-radius: var(--kin-radius-layer) 0 0 var(--kin-radius-layer);
+	inset: 0 0 0 auto;
+	width: 62%;
+}
+
+.cal-screen strong {
+	font-size: var(--kin-text-sm);
+}
+
+.cal-screen[data-cal-layer] .cal-screen__backdrop {
+	animation: kin-fade var(--kin-motion-layer) both;
+	display: block;
+}
+
+.cal-screen[data-cal-layer="dialog"] .cal-screen__dialog {
+	--kin-appear-from: 0 0.5rem;
+
+	animation: kin-appear var(--kin-motion-layer) both;
+	display: grid;
+}
+
+.cal-screen[data-cal-layer="drawer"] .cal-screen__drawer {
+	--kin-appear-from: calc(1.5rem * var(--kin-flow, 1)) 0;
+
+	animation: kin-appear var(--kin-motion-layer) both;
+	display: grid;
+}
+
+/* L2 popover: a menu from the button that opened it. */
+.cal-anchor {
+	display: grid;
+	gap: var(--kin-space-2);
+	justify-items: start;
+	min-height: 8.5rem;
+}
+
+.cal-menu {
+	background: var(--kin-color-surface-raised);
+	border: 1px solid var(--kin-float-ring);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: var(--kin-shadow-panel);
+	display: grid;
+	font-size: var(--kin-text-sm);
+	min-width: min(100%, 9rem);
+	padding: var(--kin-space-1);
+}
+
+.cal-menu span {
+	border-radius: var(--kin-radius-row);
+	padding: var(--kin-space-1) var(--kin-space-2);
+}
+
+.cal-anchor .cal-menu {
+	visibility: hidden;
+}
+
+.cal-anchor[data-cal-open] .cal-menu {
+	--kin-appear-from: 0 0.5rem;
+
+	animation: kin-appear var(--kin-motion-popover) both;
+	visibility: visible;
+}
+
+/* L3 exit: it leaves the way it came, half the distance. */
+.cal-leavers {
+	display: grid;
+	min-height: 8.5rem;
+}
+
+.cal-toast {
+	align-self: start;
+	background: var(--kin-color-surface-raised);
+	border: 1px solid var(--kin-float-ring);
+	border-radius: var(--kin-radius-layer);
+	box-shadow:
+		inset var(--kin-tone-bar-width) 0 0 var(--kin-color-primary),
+		var(--kin-shadow-panel);
+	display: grid;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	padding: var(--kin-space-3);
+}
+
+.cal-toast strong {
+	font-size: var(--kin-text-sm);
+}
+
+.cal-leavers .cal-menu {
+	align-self: start;
+	justify-self: start;
+}
+
+.cal-leavers:not([data-cal-show="toast"]) .cal-toast,
+.cal-leavers:not([data-cal-show="menu"]) .cal-menu {
+	display: none;
+}
+
+.cal-leavers[data-cal-leaving] > * {
+	animation: cal-exit var(--kin-motion-exit) forwards;
+}
+
+@keyframes cal-exit {
+	to {
+		opacity: 0;
+		translate: 0 0.25rem;
+	}
+}
+
+/* S1 settle: the hand and the bar travel; the figure changes at once. */
+.cal-dial {
+	aspect-ratio: 1;
+	border: 1px solid var(--kin-color-rule-strong);
+	border-radius: 50%;
+	flex: none;
+	position: relative;
+	width: 4.5rem;
+}
+
+.cal-dial::after {
+	background: var(--kin-color-text);
+	border-radius: 50%;
+	content: "";
+	height: 0.375rem;
+	left: calc(50% - 0.1875rem);
+	position: absolute;
+	top: calc(50% - 0.1875rem);
+	width: 0.375rem;
+}
+
+.cal-dial__hand {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	height: 42%;
+	left: calc(50% - 1px);
+	position: absolute;
+	rotate: var(--cal-angle, -60deg);
+	top: 8%;
+	transform-origin: 50% 100%;
+	transition: rotate var(--kin-motion-settle);
+	width: 2px;
+}
+
+.cal-meter[data-cal-meter="settle"] > span {
+	transition: scale var(--kin-motion-settle);
+}
+
+.cal-figure {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-lg);
+	font-variant-numeric: tabular-nums;
+	margin: 0;
+	min-width: 4ch;
+}
+
+/* S2 draw. A dash normalised by pathLength must cover the path the stroke
+   draws, so the trace scales evenly rather than keeping a fixed stroke. */
+.cal-trace {
+	aspect-ratio: 200 / 80;
+	display: block;
+	height: auto;
+	max-height: 7rem;
+	overflow: visible;
+	width: 100%;
+}
+
+.cal-trace path {
+	fill: none;
+	stroke: var(--kin-color-primary);
+	stroke-linecap: round;
+	stroke-width: 1.4;
+}
+
+.cal-trace .cal-trace__band {
+	fill: var(--kin-primary-12);
+	stroke: none;
+}
+
+.cal-trace [data-cal-drawn] {
+	stroke-dasharray: 1;
+}
+
+.cal-trace [data-cal-drawn="on"] {
+	animation: kin-draw var(--kin-motion-draw) both;
+}
+
+.cal-trace .cal-trace__band[data-cal-drawn="on"] {
+	animation: kin-fade var(--kin-motion-draw) both;
+}
+
+/* S3 appear, in its forms: a row rises, a mark grows at its anchor, a row
+   opens its height (script, on the same term). */
+.cal-rise {
+	animation: kin-appear var(--kin-motion-appear) both;
+}
+
+.cal-marks {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+	min-height: 1.5rem;
+}
+
+.cal-mark {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	display: block;
+	flex: none;
+	height: 0.625rem;
+	width: 0.625rem;
+}
+
+.cal-appear .cal-marks {
+	display: none;
+}
+
+[data-cal-form="grow"] .cal-appear .cal-marks {
+	display: flex;
+}
+
+[data-cal-form="grow"] .cal-appear .cal-rows {
+	display: none;
+}
+
+.cal-mark[data-cal-grow="on"] {
+	--kin-appear-from: 0 0;
+	--kin-appear-scale: 0.3;
+
+	animation: kin-appear var(--kin-motion-appear) both;
+}
+
+/* S4 stagger: the marks arrive in reading order, one step apart. */
+.cal-marks[data-cal-on] > .cal-mark {
+	--kin-appear-scale: 0.3;
+
+	animation: kin-appear var(--kin-motion-appear) both;
+	animation-delay: calc(var(--cal-i) * var(--kin-duration-stagger));
+}
+
+/* P1 navigate: the bar holds still while the room moves (script, on the
+   term). */
+.cal-place {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	border-radius: var(--kin-radius-layer);
+	height: 8.5rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.cal-place__bar {
+	align-items: center;
+	border-bottom: 1px solid var(--kin-color-rule);
+	color: var(--kin-color-text-muted);
+	display: flex;
+	font-size: var(--kin-text-xs);
+	height: 1.75rem;
+	padding-inline: var(--kin-space-3);
+	position: relative;
+	z-index: 1;
+}
+
+.cal-place__view {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-1);
+	inset: 1.75rem 0 0;
+	padding: var(--kin-space-3);
+	position: absolute;
+}
+
+.cal-place__view strong {
+	font-size: var(--kin-text-md);
+}
+
+.cal-place__tile {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	font-size: var(--kin-text-xs);
+	justify-self: start;
+	margin-top: var(--kin-space-1);
+	padding: var(--kin-space-1) var(--kin-space-3);
+}
+
+/* W2 sweep: a band crosses the placeholder and the bar while the work runs.
+   Still, the placeholder is its plain shape and the bar's band rests in the
+   middle. */
+.cal-work {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-3);
+	width: 100%;
+}
+
+.cal-skeleton {
+	background: var(--kin-surface-hover);
+	border-radius: 2px;
+	display: block;
+	height: 0.75rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.cal-skeleton[data-shape="heading"] {
+	height: 1.25rem;
+	width: 60%;
+}
+
+.cal-skeleton[data-shape="short"] {
+	width: 75%;
+}
+
+.cal-skeleton::after {
+	background: linear-gradient(
+		to right,
+		transparent,
+		color-mix(in srgb, var(--kin-color-text-muted) 12%, transparent),
+		transparent
+	);
+	content: "";
+	inset: 0;
+	position: absolute;
+	translate: -100% 0;
+}
+
+[data-cal-running] .cal-skeleton::after {
+	animation: cal-sweep-band var(--kin-motion-sweep) infinite;
+}
+
+.cal-indeterminate {
+	background-color: var(--kin-surface-step);
+	background-image: linear-gradient(
+		to right,
+		transparent 0%,
+		var(--kin-color-primary) 50%,
+		transparent 100%
+	);
+	background-position: 50% 0;
+	background-repeat: no-repeat;
+	background-size: 40% 100%;
+	border-radius: 999px;
+	display: block;
+	height: 0.25rem;
+}
+
+[data-cal-running] .cal-indeterminate {
+	animation: cal-sweep-bar var(--kin-motion-sweep) infinite;
+}
+
+@keyframes cal-sweep-band {
+	to {
+		translate: 100% 0;
+	}
+}
+
+@keyframes cal-sweep-bar {
+	from {
+		background-position: -40% 0;
+	}
+
+	to {
+		background-position: 140% 0;
+	}
+}
+
+/* W3 pulse: the mark breathes while its work runs, and stands lit when
+   still. */
+.cal-status {
+	align-items: center;
+	color: var(--kin-color-text-subtle);
+	display: inline-flex;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-2);
+}
+
+.cal-status::before {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	box-shadow: var(--kin-glow-primary);
+	content: "";
+	flex: none;
+	height: var(--kin-mark-size);
+	width: var(--kin-mark-size);
+}
+
+[data-cal-running] .cal-status::before {
+	animation: cal-pulse var(--kin-motion-pulse) infinite;
+}
+
+.cal-log {
+	align-items: center;
+	color: var(--kin-color-text-subtle);
+	display: inline-flex;
+	font-size: var(--kin-text-sm);
+	gap: var(--kin-space-3);
+}
+
+.cal-log::before {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	box-shadow: var(--kin-glow-primary);
+	content: "";
+	flex: none;
+	height: 0.5rem;
+	width: 0.5rem;
+}
+
+[data-cal-running] .cal-log::before {
+	animation: cal-pulse-log var(--kin-motion-pulse) infinite;
+}
+
+@keyframes cal-pulse {
+	0%,
+	100% {
+		opacity: 0.65;
+		transform: scale(0.9);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.15);
+	}
+}
+
+@keyframes cal-pulse-log {
+	0%,
+	100% {
+		opacity: 0.65;
+	}
+
+	50% {
+		opacity: 1;
+	}
+}
+
+/* W4 pass: one of three marks lit at a time; still, every mark lit. */
+.cal-spinner {
+	align-items: center;
+	color: var(--kin-color-primary);
+	display: inline-flex;
+	min-height: 1.5rem;
+}
+
+.cal-spinner::before {
+	background: currentColor;
+	box-shadow:
+		-0.65rem 0 0 currentColor,
+		0.65rem 0 0 currentColor;
+	content: "";
+	height: var(--kin-mark-size);
+	margin-inline: 0.65rem;
+	width: var(--kin-mark-size);
+}
+
+[data-cal-running] .cal-spinner::before {
+	animation: cal-pass var(--kin-motion-pass) infinite;
+}
+
+@keyframes cal-pass {
+	0%,
+	100% {
+		box-shadow:
+			-0.65rem 0 0 currentColor,
+			0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+
+	33% {
+		box-shadow:
+			-0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent);
+		background: currentColor;
+	}
+
+	66% {
+		box-shadow:
+			-0.65rem 0 0 color-mix(in srgb, currentColor 30%, transparent),
+			0.65rem 0 0 currentColor;
+		background: color-mix(in srgb, currentColor 30%, transparent);
+	}
+}
+
+/* W5 close: the light closes into a ring on close, then fades on surface,
+   as the corner key's does. */
+.cal-key {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-4);
+}
+
+.cal-key__box {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	flex: none;
+	height: 3rem;
+	position: relative;
+	width: 3rem;
+}
+
+.cal-ring {
+	height: 100%;
+	inset: 0;
+	opacity: 0;
+	overflow: visible;
+	position: absolute;
+	transition: opacity var(--kin-motion-surface);
+	width: 100%;
+}
+
+.cal-ring path {
+	fill: none;
+	stroke: var(--kin-color-primary);
+	stroke-dasharray: 24 76;
+	stroke-linecap: round;
+	stroke-width: 2;
+}
+
+[data-cal-ring="dash"] .cal-ring,
+[data-cal-ring="closing"] .cal-ring {
+	opacity: 1;
+	transition: none;
+}
+
+[data-cal-ring="closing"] .cal-ring path,
+[data-cal-ring="gone"] .cal-ring path {
+	stroke-dasharray: 100 0;
+}
+
+[data-cal-ring="closing"] .cal-ring path {
+	transition: stroke-dasharray var(--kin-motion-close);
+}
+
+@media (max-width: 42rem) {
+	.cal-specimen__head,
+	.cal-controls {
+		padding-inline: var(--kin-space-4);
+	}
+
+	.cal-side {
+		padding: var(--kin-space-3);
+	}
+
+	.cal-control {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.cal-control > .kin-range {
+		grid-column: 1 / -1;
+		grid-row: 2;
+	}
+
+	.cal-curve {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.cal-curve > .cal-control__label {
+		padding-top: 0;
+	}
+
+	.cal-points .kin-input {
+		width: 3.5rem;
+	}
+
+	.cal-bar__changes {
+		margin-inline-start: 0;
+	}
+}
