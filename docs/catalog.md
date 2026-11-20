@@ -51,7 +51,8 @@ values:
 ```
 
 Small UI text uses 12px and 14px roles at the default root size. Controls use
-`--kin-control-radius` (6px); switches, badges, and avatars keep square corners.
+`--kin-control-radius` (6px), a switch's track included; badges and avatars
+keep `--kin-radius-mark`.
 Fields and segmented tracks use `--kin-surface-well` and `--kin-surface-well-hover`.
 Quiet controls use `--kin-surface-lift` and `--kin-surface-lift-hover`; neutral
 hover remains available as `--kin-surface-hover`. Lines remain for focus,
@@ -75,8 +76,12 @@ chrome compact where its own interaction contract calls for it.
 `--kin-radius-panel`, `--kin-radius-layer`, and `--kin-radius-row` step down
 through a page (12px), its cards (8px), and their rows (6px).
 `--kin-radius-sheet` is 16px for the free corners of a sheet.
-`--kin-radius-mark` keeps marks at 2px; `--kin-edge-width` is the shared 2px
-signal edge. `--kin-tint-primary-hover` deepens a tinted confirmation under
+`--kin-radius-mark` keeps marks at 2px; `--kin-edge-width` is the 2px line of
+the [live edge](../registry/patterns/live-edge/README.md), kept for work in
+flight. `--kin-tone-bar-width` (3px) is the bar that carries a still block's
+tone: set `--kin-space-1` in from the block's start and `--kin-space-2` from
+its top and bottom, with round ends, as notices and toasts draw it.
+`--kin-tint-primary-hover` deepens a tinted confirmation under
 the pointer. `--kin-backdrop` resolves on the root so an overlay's local depth
 does not lighten the backdrop.
 Cards and ordinary surfaces use `--kin-surface-card`; paper keeps a faint
@@ -231,9 +236,10 @@ table scope, descriptions, roles, or native control behavior.
 - `.kin-chip` is an interactive tag for filters, selections, or removal;
   `aria-pressed` renders selection and `.kin-chip__remove` holds the button.
 - `.kin-notice`, `__title`, `__body`, and `__actions`; `data-tone`,
-  `data-density="compact"`. The still signal edge follows both leading
-  corners; `--kin-notice-radius` defaults to the layer radius and steps down
-  inside a card or surface. Direct buttons keep their own width.
+  `data-density="compact"`. Its tone is a bar set in from its start, clear
+  of its corners; `--kin-notice-radius` defaults to the layer radius and steps
+  down inside a card or surface. Direct buttons keep their own width. A
+  notice about work still running carries the live edge instead.
 - `.kin-field`, `__label`, `__hint`, `__error`, `__required`, and
   `__optional`; `data-layout="inline"`.
 - `.kin-fieldset` and `__legend`; `data-variant="bounded"`.
@@ -286,7 +292,7 @@ table scope, descriptions, roles, or native control behavior.
   `--kin-skeleton-width`; mark the group `aria-busy`.
 - `.kin-toast-region` is a fixed region with `data-placement`; `.kin-toast`
   holds `__title`, `__body`, and `__actions`, takes `data-tone`, and animates
-  out when `data-leaving` is set.
+  out when `data-leaving` is set. Its tone is the notice's bar.
 - `.kin-kbd` styles a `kbd`.
 - `.kin-tooltip` with `__hint` styles a `role="tooltip"` element the consumer
   positions.
@@ -548,9 +554,12 @@ navigation, editors, grids, and immersive canvases remain local.
 
 The exported manifest and pattern source live in [`../registry`](../registry).
 Candidates include narrative intro, editorial feature, operations region,
-corner action, corner key, and live edge. The last three bring back evidence
-from Kinra Space and remain candidates until a second consumer proves the
-same responsibility. `/refresh/` demonstrates their states and motion.
+corner action, and corner key. The live edge is stable: Kinra Space's sessions
+and Kinra Relay's readings in flight both copy its contract, so it follows the
+compatibility policy while each product still owns its copy. The corner
+action and corner key bring back evidence from Kinra Space and remain
+candidates until a second consumer proves the same responsibility.
+`/refresh/` demonstrates all three, with their states and motion.
 Read [`registry/README.md`](../registry/README.md) before copying one. Registry
 classes use `kin-pattern-` only in canonical source; a consumer should rename
 them when product-specific behavior or composition enters.

@@ -44,6 +44,20 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Edges by meaning (unreleased, prepared for 0.8.0; 2026-11-20):** Kinra
+  Relay's polish pass found the notice's edge, the live edge's line round both
+  leading corners, reading as a bracket, and drew its still accents as a bar
+  set in from the start. Blake kept both shapes and gave each one meaning: a
+  line along an edge is work in flight, a still block's tone is the bar, and
+  the square marks state rather than every small thing. Notices and toasts
+  draw the bar (`--kin-tone-bar-width`, new), a switch's track takes the
+  control radius with its thumb nested, and the principles, catalog,
+  composing guide and refresh plan say which shape means what. The live edge
+  is a stable registry pattern after a review of both consumers' copies (its
+  README records it). No class, attribute or export is renamed or removed;
+  `docs/adoption.md` has the per-product notes. Not released; consumers keep
+  their pins.
+
 - **Fonts (0.7.1, 2026-11-14):** all five woff2 files and `OFL.txt` come
   from Kinra Type `v0.2.1`, on Blake's authorization. The ampersand is clearer
   in every style; Sans upright and italic have more even shape-based spacing,
@@ -162,7 +176,8 @@ adoption map; this file only tracks current state, not process.
   wells and quiet controls, sentence-case labels, signal edges, and causal
   motion tokens now live in the shared styles. The corner action, corner key,
   and live edge are candidate registry patterns with Space's evidence; none
-  is promoted before a second consumer. `/refresh/` demonstrates both grounds,
+  is promoted before a second consumer (the live edge was, on 2026-11-20,
+  with Relay's). `/refresh/` demonstrates both grounds,
   all key faces without script, and interactive motion. The grammar, source
   boundary, and adoption state live in [`docs/refresh-plan.md`](docs/refresh-plan.md).
 - The second Space polish port uses `0550b0e` (2026-10-01): compact touch
@@ -205,9 +220,14 @@ adoption map; this file only tracks current state, not process.
   alone returned the narrow drawer's focus, and `a30c757` kept its bar's
   controls from scrolling the document until the shared shell took over. It
   has yet to give its stylesheet its breakpoint's query.
-  All three were read from their pushed manifests and lockfiles on 2026-10-12,
-  at Space `4c8934c7`, Home `dcddb9b` and Relay `62235c5`; their own
-  package/lockfile and verification gates remain authoritative.
+- **kinra-thread** pins Design 0.7.0 through `#v0.7.0`, locked to
+  `3708fc229556d57e80720b5f497d581581b80e2a`, since its first commit
+  `097d7b3` (2026-11-13). It uses the shell's frame without the drawer or the
+  fold.
+  All four were read from their manifests and lockfiles on 2026-11-20, in the
+  local checkouts at Space `db1eeae3`, Home `8cfd070`, Relay `6d804088` and
+  Thread `d4be2ad`; Space, Home and Relay are unchanged since 2026-10-12.
+  Their own package/lockfile and verification gates remain authoritative.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retired Depot's vendored copy,
@@ -241,8 +261,11 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Relay gives its stylesheet its breakpoint's query, `(max-width: 59.99rem)`,
-in its own repository, as the catalog's Layout step asks. Design 0.7.1
+Blake reviews the edges-by-meaning change for release as 0.8.0; after it,
+Relay removes its notice override and Space updates its switch wording as each
+upgrades. Relay also gives its stylesheet its breakpoint's query,
+`(max-width: 59.99rem)`, in its own repository, as the catalog's Layout step
+asks. Design 0.7.1
 carries the contract, guide and demo correction; `shell.css` is unchanged. Candidate registry promotion
 still requires a second consumer and compatibility review; package renaming
 stays outside this update.

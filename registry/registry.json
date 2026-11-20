@@ -91,9 +91,9 @@
     {
       "name": "live-edge",
       "kind": "pattern",
-      "status": "candidate",
+      "status": "stable",
       "description": "A leading-edge light that names foreground, background and settled work beside a caption.",
-      "evidence": ["kinra-space"],
+      "evidence": ["kinra-space", "kinra-relay"],
       "requires": [
         "@kinra/web/styles/tokens.css",
         "@kinra/web/styles/data.css"

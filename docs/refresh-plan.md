@@ -6,7 +6,8 @@ composer send control drawn for Kinra Space, as the component to model a
 refresh of Kinra's interfaces against, and amended
 [`principles.md`](principles.md) to adopt its grammar the same day.
 The package now carries Space's shared layer, control, label, and motion roles;
-the corner action, corner key, and live edge are candidate registry source.
+the corner action and corner key are candidate registry source, and the live
+edge has been a stable registry pattern since 2026-11-20.
 The reference catalog's `/refresh/` page demonstrates them. The original
 studies live in [`examples/studies/`](../examples/studies/README.md).
 
@@ -163,8 +164,10 @@ Changes this brings to Space:
    action and the edge light as candidate registry patterns, and the package
    classes brought in line with the amended principles (tone instead of
    dividing borders, radii that step down as layers nest).
-4. **Pending.** Promote no candidate to a stable contract before a second consumer, likely
-   Gateway's request console, uses it.
+4. **Live edge done; the rest pending.** Promote no candidate to a stable
+   contract before a second consumer uses it. Kinra Relay became the live
+   edge's on 2026-11-05 (its `f7905ffc`), and it was promoted on 2026-11-20.
+   The corner action and corner key wait for theirs.
 
 ## Source brought back
 
@@ -230,3 +233,12 @@ product contracts. No package release or consumer deployment is implied.
   or network use, and it honors reduced motion. Contract verification imports
   it outside a browser to reject accidental startup work. It remains copied
   candidate source, not a stable component or shared application runtime.
+- **Edges by meaning (2026-11-20, Blake).** The second port had given notices
+  and toasts the live edge's shape, a line round both leading corners, as a
+  still signal. Kinra Relay's polish pass found it reading as a bracket and
+  drew every still accent as a short bar set in from the start. Blake kept
+  both shapes and gave each one meaning: the line along an edge is work in
+  flight, and a still block's tone is the bar, which notices and toasts now
+  draw. The live edge is promoted to a stable registry pattern with Space and
+  Relay as its consumers. The rule that every small thing is square narrows to
+  the square marking state; a switch takes a control's radius.

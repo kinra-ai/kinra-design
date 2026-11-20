@@ -266,7 +266,7 @@
 		grid-template-columns: minmax(0, 1fr) auto;
 		padding: var(--kin-space-3) var(--kin-space-4);
 		pointer-events: auto;
-		/* Its edge is its border, which the signal edge covers at its start. */
+		/* It floats, so its edge is its border; its tone is a bar inside. */
 		border: 1px solid var(--kin-float-ring);
 		border-radius: var(--kin-radius-layer);
 		box-shadow: var(--kin-shadow-panel);
@@ -525,27 +525,17 @@
 }
 
 @layer kinra.components {
+	/* What just happened is settled, so a toast's tone is the notice's bar,
+	   set in from its start; the live edge's line is for work in flight. */
 	.kin-toast::before {
 		content: "";
 		position: absolute;
-		inset-block: -1px;
-		inset-inline-start: -1px;
-		inline-size: var(--kin-radius-layer);
-		border-radius: 0;
+		inset-block: var(--kin-space-2);
+		inset-inline-start: var(--kin-space-1);
+		inline-size: var(--kin-tone-bar-width);
+		border-radius: 999px;
 		background: var(--kin-toast-signal);
 		pointer-events: none;
-		padding-block: var(--kin-edge-width);
-		padding-inline-start: var(--kin-edge-width);
-		border-start-start-radius: var(--kin-radius-layer);
-		border-end-start-radius: var(--kin-radius-layer);
-		-webkit-mask:
-			linear-gradient(#000 0 0) content-box,
-			linear-gradient(#000 0 0);
-		-webkit-mask-composite: xor, source-over;
-		mask:
-			linear-gradient(#000 0 0) content-box,
-			linear-gradient(#000 0 0);
-		mask-composite: exclude, add;
 	}
 }
 @media (forced-colors: active) {

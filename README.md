@@ -140,9 +140,10 @@ is shipped to consumers.
 
 Open `/refresh/` to review the styling brought back from Kinra Space: soft
 layers on both grounds, quieter controls, the corner key's states and motion,
-labelled corner confirmations, and the live edge. The three new patterns
-remain candidate source to copy and own; the shared defaults and migration
-notes are documented in [`docs/adoption.md`](docs/adoption.md).
+labelled corner confirmations, and the live edge. All three are source to
+copy and own: the corner key and corner action remain candidates, and the
+live edge is stable; the shared defaults and migration notes are documented
+in [`docs/adoption.md`](docs/adoption.md).
 
 Read the focused guides for the work at hand:
 

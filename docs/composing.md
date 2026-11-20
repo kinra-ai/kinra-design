@@ -157,6 +157,13 @@ across or down: a `.kin-rule` ledger with its tick, or a hairline
 cells stand in a page with no frame of their own. Add `data-tone` to a surface or
 card only when the tone reports a real state of that item.
 
+Pick the shape by what the state is doing. A still block in a tone, such as
+a row that changed or waits, takes the bar a notice draws:
+`--kin-tone-bar-width`, set `--kin-space-1` in from its start and
+`--kin-space-2` from its top and bottom, never a stripe that bends round a
+rounded corner. A selected tile takes a ring. Only work in flight runs along
+the edge, with the [live edge](../registry/patterns/live-edge/README.md).
+
 ## Keep numbers honest
 
 Steps carry their index in the document. Figures, tables, key-value lists,

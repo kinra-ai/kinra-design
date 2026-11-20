@@ -34,5 +34,8 @@ The JSON manifest is small enough for tooling to consume later, while the
 source remains usable by Astro, server-rendered templates, and plain HTML.
 
 The corner action, corner key, and live edge bring back Kinra Space's refresh.
-They remain candidates with one consumer's evidence. The reference catalog's
-`/refresh/` page demonstrates their states, static rendering, and motion.
+The corner action and corner key remain candidates with one consumer's
+evidence. The live edge is stable since 2026-11-20, when Kinra Relay's copy
+joined Space's; it is still source each product copies and owns. The
+reference catalog's `/refresh/` page demonstrates all three: their states,
+static rendering, and motion.

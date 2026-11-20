@@ -7,6 +7,31 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+Prepared for 0.8.0; not released. Each small shape now means one thing:
+a line along an edge is work in flight, a bar is a still block's tone, and
+the square marks state. No class, attribute or export is renamed or removed,
+but notices, toasts and switches look different after an upgrade; see
+[Moving to 0.8](docs/adoption.md#moving-to-08-edges-by-meaning).
+
+### Added
+
+- `--kin-tone-bar-width` (3px), the width of the bar that carries a still
+  block's tone.
+
+### Changed
+
+- Notices and toasts draw their tone as a bar set in from their start and
+  clear of their corners, in place of a line round both leading corners. That
+  line was the live edge's shape, which means work in flight, and Kinra
+  Relay's polish pass found it reading as a bracket. Forced colours keep the
+  bar in Highlight.
+- A switch's track takes the control radius (6px) and its thumb nests at 2px.
+  The square is kept for marking state; badges and avatars keep 2px corners.
+- The live edge registry pattern is stable. Kinra Relay's copy for readings in
+  flight joins Kinra Space's sessions, and both keep the candidate's contract.
+- The principles, catalog and composing guide say which shape means what; the
+  adoption map adds Kinra Thread.
+
 ## [0.7.1] - 2026-11-14
 
 Refines the existing font assets from Kinra Type 0.2.1. Font names, exported

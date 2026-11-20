@@ -1,4 +1,5 @@
-/* Candidate source from Kinra Space at 8589b8a (LiveEdge.svelte and live-edge.css).
+/* Stable source from Kinra Space at 8589b8a (LiveEdge.svelte and live-edge.css),
+   also copied by Kinra Relay. Its line is kept for work in flight.
    The container is positioned and its text names the state; the edge is hidden
    from assistive technology. See README.md for lifecycle and ownership. */
 .kin-pattern-live-edge {

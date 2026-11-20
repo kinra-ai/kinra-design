@@ -3,11 +3,15 @@
 Amended 2026-09-28 (Blake): layers, lines, the corner, light, and motion now
 follow the corner key refresh described in [`refresh-plan.md`](refresh-plan.md),
 so that every Kinra surface reads as one integrated system. Version 0.3 carries
-Space's soft layers and controls. Corner actions and
-the live edge remain candidate registry source; the plan records their
-consumer evidence and promotion boundary. Amended 2026-10-12 (Blake): the
-application shell is shared as a stable frame after three products built it,
-with its behaviour documented rather than shipped.
+Space's soft layers and controls. The corner action and corner key remain
+candidate registry source; the plan records their consumer evidence and
+promotion boundary. Amended 2026-10-12 (Blake): the application shell is
+shared as a stable frame after three products built it, with its behaviour
+documented rather than shipped. Amended 2026-11-20 (Blake): each small shape
+means one thing. A line along an edge is kept for work in flight, and the live
+edge is stable now that Kinra Relay uses it beside Kinra Space; a still
+block's tone is a bar set in from its start; the square marks state, and no
+longer every small thing.
 
 ## One identity, different surfaces
 
@@ -53,9 +57,17 @@ the page: a composer over a scrolling conversation, a panel, a dialog. What
 floats has an edge of its own tone, a hairline dark on paper and light on
 graphite, and at most a short shadow, black on graphite, so depth reads as
 cleanly on an OLED screen or over pure black as on paper. Content inside a
-layer stays flat. Marks stay exact: the mark, badges, avatars,
-markers, and switches are square, because nothing small is rounded to look
-friendly.
+layer stays flat.
+
+Small things stay exact: they sit on whole pixels, keep one size for each
+role, and are never softened to look friendly. Their shape follows what they
+mean, and each shape means one thing. The square marks where a state lives. A
+line that runs along a surface's edge and round its corners is work in
+flight. A still block's tone, such as a notice's or a changed row's, is a
+short bar set in from its start, clear of its corners. A ring around a tile
+says it is selected. Anything else small takes the corners its job calls for:
+a switch is a control and takes a control's radius, and badges and avatars
+keep the smallest.
 
 ## A line is a signal, not a divider
 
@@ -98,7 +110,9 @@ lives; the corner action at its end says what happens next.
 
 A fill in the primary colour means an action can happen now, and one thing on
 a screen at a time carries it. A light running along an edge means work is in
-flight; when the work ends it closes into a ring and fades. Status colours
+flight; when the work ends it closes into a ring and fades. That line belongs
+to work in flight alone: a still state never runs along an edge, so a notice
+or a toast carries its tone as a bar set in from its start. Status colours
 stay reserved for actual status, so a destructive corner action takes the
 error tone rather than the primary fill.
 
@@ -160,6 +174,11 @@ Kinra Relay had each built the same rail, column, inset panel and drawer, so
 its frame and states became stable classes. Its behaviour stays with each
 product, written where that product's state lives: Design documents the
 behaviour and keeps a reference of it, not a runtime.
+
+The live edge met it on 2026-11-20. Kinra Relay copied it for readings in
+flight beside Kinra Space's sessions, and both copies keep the candidate's
+contract, so it is a stable registry pattern: still copied source that each
+product owns, now under the compatibility policy.
 
 ## Ownership rises with specificity
 

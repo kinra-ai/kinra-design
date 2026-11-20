@@ -514,12 +514,14 @@
 		width: 2.625rem;
 		background: var(--kin-surface-lift-hover);
 		border: 1px solid transparent;
-		border-radius: var(--kin-radius-mark);
+		/* A switch is a control, not a mark of state, so it takes a control's
+		   corners; its thumb, 4px inside, nests at 2px. */
+		border-radius: var(--kin-control-radius);
 	}
 
 	.kin-switch input::before {
 		background: var(--kin-color-text-muted);
-		border-radius: 2px;
+		border-radius: calc(var(--kin-control-radius) - 0.25rem);
 		content: "";
 		height: 1rem;
 		inset: 0.1875rem auto auto 0.1875rem;
@@ -979,30 +981,17 @@
 }
 
 @layer kinra.components {
+	/* A notice is still, so its tone is a bar set in from its start, clear of
+	   its corners; a line around them would say work is in flight. */
 	.kin-notice::before {
 		content: "";
 		position: absolute;
-		inset-block: -1px;
-		inset-inline-start: -1px;
-		inline-size: var(--kin-notice-radius, var(--kin-radius-layer));
-		border-radius: 0;
+		inset-block: var(--kin-space-2);
+		inset-inline-start: var(--kin-space-1);
+		inline-size: var(--kin-tone-bar-width);
+		border-radius: 999px;
 		background: var(--kin-notice-signal);
 		pointer-events: none;
-		padding-block: var(--kin-edge-width);
-		padding-inline-start: var(--kin-edge-width);
-		border-start-start-radius: var(
-			--kin-notice-radius,
-			var(--kin-radius-layer)
-		);
-		border-end-start-radius: var(--kin-notice-radius, var(--kin-radius-layer));
-		-webkit-mask:
-			linear-gradient(#000 0 0) content-box,
-			linear-gradient(#000 0 0);
-		-webkit-mask-composite: xor, source-over;
-		mask:
-			linear-gradient(#000 0 0) content-box,
-			linear-gradient(#000 0 0);
-		mask-composite: exclude, add;
 	}
 	.kin-empty:has(> .kin-empty__title) {
 		background: var(--kin-surface-card);

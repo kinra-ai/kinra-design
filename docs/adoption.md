@@ -230,6 +230,40 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
   terminal-like text at 1.3 or less where its lines should be continuous.
   Kinra Sans and Kinra Serif leave these characters out.
 
+## Moving to 0.8: edges by meaning
+
+Prepared for 0.8.0 and not yet released. On 2026-11-20 Blake gave each small
+shape one meaning: a line along an edge is work in flight, a bar set in from
+the start is a still block's tone, and the square marks state. No class,
+attribute or export is renamed or removed, but three things look different:
+
+- `.kin-notice` and `.kin-toast` draw their tone as a 3px bar with round
+  ends, `--kin-space-1` in from their start and `--kin-space-2` from top and
+  bottom, in place of the line round both leading corners. Tones,
+  `--kin-notice-radius` and forced colours' Highlight are unchanged. The new
+  `--kin-tone-bar-width` gives a product's own still accents the same width.
+- A switch's track takes `--kin-control-radius` (6px), and its thumb nests
+  at 2px. Badges and avatars keep their 2px corners.
+- The [live edge](../registry/patterns/live-edge/README.md) is a stable
+  registry pattern. Each product still owns its copy; nothing changes unless
+  it follows the source.
+
+A notice that reports work still running carries the live edge in place of
+its bar, as Relay's loading notice does.
+
+Per product:
+
+- **Kinra Relay** drew the bar first. After upgrading, remove its
+  `.kin-notice::before` override in `src/app.css` (from its `bb0abd52`); its
+  other still accents may read `--kin-tone-bar-width` in place of `3px`.
+- **Kinra Space** sees its notices, toasts and switches change. Its interface
+  guide says a switch's track stays square; change that with the upgrade.
+- **Kinra Home** and **Kinra Thread** receive the change with nothing to
+  remove.
+
+Compare notices, toasts and switches on both grounds, right to left, and in
+forced colours before deploying.
+
 ## Moving to 0.7.1: font refinements
 
 Design 0.7.1 adopts all five font files from Kinra Type `v0.2.1`, with the
@@ -559,17 +593,23 @@ consumers for as long as each product needs.
 - **Kinra Relay** pins **0.7.0** through the public codeload archive of
   `3708fc229556d57e80720b5f497d581581b80e2a`, with package-lock integrity, since
   its `a30c757` (2026-10-12), and has used the shared shell since its `e427875`.
-  These three pins were read from each owner's pushed manifest and lockfile on
-  2026-10-12, at Space `4c8934c7`, Home `dcddb9b` and Relay `62235c5`. Each
-  consumer's package/lockfile owns its current revision and its own gates own
-  upgrade evidence.
+- **Kinra Thread** pins **0.7.0** through `#v0.7.0`, resolved by its lockfile
+  to `3708fc229556d57e80720b5f497d581581b80e2a`, since its first commit
+  `097d7b3` (2026-11-13). It uses the shell's frame without the drawer or the
+  fold.
+  These four pins were read from each owner's manifest and lockfile on
+  2026-11-20, in the local checkouts at Space `db1eeae3`, Home `8cfd070`,
+  Relay `6d804088` and Thread `d4be2ad`; Space, Home and Relay are unchanged
+  since 2026-10-12. Each consumer's package/lockfile owns its current revision
+  and its own gates own upgrade evidence.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 
-Site and Gateway retain their earlier exact test pins. Space, Home and Relay
-use the shared application shell. Space's `4c8934c7` and Home's `c6b18c6` give
-their stylesheets the breakpoint query that step 4 of
-[Adopt the shell](#adopt-the-shell) asks for; Relay's does not yet.
+Site and Gateway retain their earlier exact test pins. Space, Home, Relay and
+Thread use the shared application shell. Space's `4c8934c7` and Home's
+`c6b18c6` give their stylesheets the breakpoint query that step 4 of
+[Adopt the shell](#adopt-the-shell) asks for; Relay's does not yet, and Thread
+sets neither the drawer nor the fold.
 Retired Spaces and Kinra OS, and retiring Depot, retain earlier pins as
 recovery evidence.
 A consumer's own upgrade, verification and deployment remain independent.
