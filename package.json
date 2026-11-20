@@ -42,6 +42,7 @@
     }
   },
   "bin": {
+    "kinra-check-motion": "./tools/check-motion.mjs",
     "kinra-check-spacing": "./tools/check-spacing.mjs"
   },
   "scripts": {
@@ -55,6 +56,7 @@
     "format:check": "prettier --check .",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "check:spacing": "node tools/check-spacing.mjs src/styles registry",
+    "check:motion": "node tools/check-motion.mjs --strict src/styles registry",
     "test:tools": "node --test \"tests/unit/**/*.test.js\""
   },
   "repository": {
