@@ -56,13 +56,18 @@ it. Existing tokens keep their values. For what changes per product, see
   hidden state only.
 - Controls that changed tone over 120ms on `ease` answer on the control term,
   120ms on standard. A switch's track and thumb and a disclosure's arrow
-  answer at 120ms, from 180ms.
+  answer at 120ms on standard, from 180ms; the thumb's curve was out.
 - An indeterminate progress bar sweeps once every 1.6s, from 1.4s; a
   determinate fill follows its work at 180ms, from 320ms. Backdrops fade on
   out, from `ease`.
 - Design's loops, toasts and tips take their terms, at their values: the
   spinner on pass, the skeleton on sweep, the running status and live log on
-  pulse, the toast on layer and exit, and a tip on popover.
+  pulse, the toast on layer and exit, and a tip on popover. A tip now leaves
+  as it came, on exit, where the browser transitions `overlay`.
+- Components read each term's pair, paired at the root and at every
+  `data-kin-motion` boundary, so a scale token such as `--kin-duration-fast`
+  overridden on a subtree no longer reaches them; set the term on an element
+  that carries `data-kin-motion` instead.
 - The live edge names its terms, and marks its band, breath, reconnecting
   blink and gathers as signatures; nothing about it moves differently.
 - The candidate corner key keeps its own timings in one `SIGNATURE` object,

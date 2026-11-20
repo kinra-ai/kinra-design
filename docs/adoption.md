@@ -254,14 +254,20 @@ Existing tokens keep their values, so a product that only uses
 - **The corner key.** A copy of the candidate engine no longer reads the
   retract, lift and fold tokens or `--kin-ease-lift`; its own timings are in
   one `SIGNATURE` object, and it needs Design's tokens loaded.
-- **Visible changes.** A switch and a disclosure arrow answer at the control
-  term (120ms, from 180ms). An indeterminate progress bar sweeps at 1.6s
+- **Visible changes.** A switch's track and thumb and a disclosure's arrow
+  answer at the control term (120ms on standard, from 180ms; the thumb's curve
+  was out). Backdrops fade on out, from `ease`. An indeterminate progress bar sweeps at 1.6s
   (from 1.4s), and a determinate fill follows its work at 180ms (from 320ms).
   Controls that changed tone on `ease` take the control term's standard
   curve.
 - **The shell.** `Shell.settle()` is `navigated()`; `settle()` still works
   and is deprecated, since motion owns the word. The drawer closes at the
   exit term.
+- **Overriding motion.** Components read each term's pair, which is paired
+  at the root and at every `data-kin-motion` boundary, so overriding a scale
+  token such as `--kin-duration-fast` on a subtree no longer reaches them. Set
+  the term on an element that carries `data-kin-motion`, as
+  [`motion.md`](motion.md#families-and-registers) describes.
 - **Script.** `@kinra/web/motion` reads a term from the element it moves.
   Replace a module that copies Design's numbers with it: in Svelte, a
   transition's `duration` is `motion(term, node).ms` and its `easing` is

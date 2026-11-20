@@ -379,7 +379,8 @@ and drawers with `showModal()`. Modality and focus move when the close
 starts, and a leaving layer is inert and passes the pointer. Nothing but
 `display` may hang on `[open]` or `:popover-open`: layout keyed on the open
 state would change while the layer leaves. A product that animates its own
-exit for these classes removes it, so nothing leaves twice.
+exit for these classes removes it, so nothing leaves twice. A layer closed
+before its arrival has finished goes at once, as it did in 0.8.
 
 ### Data (`data.css`)
 
@@ -560,7 +561,7 @@ what focus, a caret or an address brings into view below the bar. The bar's
 own controls reach back over that padding, so focusing them never moves the
 reader; the product focuses them with `preventScroll` as well.
 
-With motion, the width and the drawer move at layer speed, the column fades
+With motion, the width moves at layer speed and the drawer arrives at it and leaves at exit speed, the column fades
 as the rail closes over it, a tip waits a moment before naming its item, and
 a closed drawer hides once it has left. Under reduced motion every state is
 the same and nothing travels; a closed drawer is not displayed. In forced

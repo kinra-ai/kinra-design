@@ -531,8 +531,7 @@ reconnecting dashes (1.2s), gather (1.1s, as long as the 1100ms closing
 state) and gather-in (420ms), and the corner key's: its glyph's kick (340ms)
 and the 20ms it waits before rising, its ink (160ms), its flash, its strokes'
 18ms stagger, its spine (400ms), its lift (260ms, followed 40ms later) and
-retract (200ms), its reconnecting dots (1050ms on standard's in-and-out, 175ms
-apart), the 180ms and 20ms it waits when a turn ends, and the 1.5s in which a
+retract (200ms), its reconnecting dots (1050ms on ease-in-out, 175ms apart), the 180ms and 20ms it waits when a turn ends, and the 1.5s in which a
 change counts as a message sent. Each is marked `signature:` where it is
 defined. A product lists its own in its interface guide.
 
@@ -594,8 +593,7 @@ Four checks hold motion to this page.
   pair, and a literal delay only as a step of the scale or a term's duration;
   `--strict` takes every timing from a token, and also refuses deprecated
   tokens, keyframes defined in a component and reduced-motion blocks that only
-  repeat what the register does. A signature says why, in a comment containing
-  `signature:` on its line or the line before. It exits 0 when clean, 1 with
+  repeat what the register does. A signature says why, in a comment that begins with `signature:`, on its line or the line before; a comment that only mentions the word excuses nothing. A product's own property is read through where a transition or animation uses it, so a timing kept in one is held to the same rule, and copies of Design's registry patterns keep their `kin-pattern-` keyframes. A change that takes no time has no curve to answer for, and a scroll-driven animation may name its curve. It exits 0 when clean, 1 with
   problems and 2 when it cannot read; warnings do not fail it. It reads the
   deprecated table above, so that table keeps its markers and columns.
 
@@ -604,8 +602,7 @@ Four checks hold motion to this page.
   ```
 
 - **The guard**, `tests/browser/motion-guard.spec.js` here, checks a running
-  page: at rest only its declared motion runs, content is whole with every
-  animation finished, less motion leaves nothing running, no loop moves
+  page: at rest only its declared motion runs, content is whole with every animation cancelled, less motion leaves nothing running, no loop moves
   layout, and a frame loop stops off screen. It is read rather than imported: a product copies
   it at its pinned tag and fills in its one adapt block.
 - **This page's tables** are tested against `tokens.css`, so a value changed in
