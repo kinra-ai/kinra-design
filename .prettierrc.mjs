@@ -1,6 +1,6 @@
 /** @type {import("prettier").Config} */
 export default {
-	plugins: ["prettier-plugin-astro"],
+	plugins: ["prettier-plugin-astro", "prettier-plugin-svelte"],
 	useTabs: true,
 	trailingComma: "all",
 	overrides: [
@@ -11,6 +11,10 @@ export default {
 		{
 			files: "*.astro",
 			options: { parser: "astro" },
+		},
+		{
+			files: "*.svelte",
+			options: { parser: "svelte" },
 		},
 	],
 };

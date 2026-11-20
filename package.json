@@ -9,6 +9,8 @@
     "docs",
     "registry",
     "src/styles",
+    "src/svelte",
+    "tools",
     "CHANGELOG.md",
     "README.md",
     "STATUS.md",
@@ -19,6 +21,11 @@
     "./styles": "./src/styles/index.css",
     "./styles/*": "./src/styles/*",
     "./assets/*": "./assets/*",
+    "./svelte": {
+      "types": "./src/svelte/index.d.ts",
+      "svelte": "./src/svelte/index.js",
+      "default": "./src/svelte/index.js"
+    },
     "./registry": "./registry/registry.json",
     "./registry/*": "./registry/*",
     "./package.json": "./package.json"
@@ -26,15 +33,24 @@
   "sideEffects": [
     "**/*.css"
   ],
+  "peerDependencies": {
+    "svelte": "^5.57.0"
+  },
+  "peerDependenciesMeta": {
+    "svelte": {
+      "optional": true
+    }
+  },
   "scripts": {
     "dev": "cd examples/reference && astro dev",
     "build:reference": "astro build --root examples/reference",
     "check:contract": "node scripts/check-contract.mjs",
-    "check": "npm run check:contract && astro check --root examples/reference && npm run format:check",
+    "check": "npm run check:contract && npm run check:svelte && astro check --root examples/reference && npm run format:check",
     "verify": "npm run check && npm run build:reference && npm run test:browser",
     "test:browser": "playwright test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings"
   },
   "repository": {
     "type": "git",
@@ -65,10 +81,14 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@astrojs/svelte": "9.1.2",
     "@playwright/test": "1.63.0",
     "astro": "7.4.12",
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",
+    "prettier-plugin-svelte": "4.1.1",
+    "svelte": "5.57.3",
+    "svelte-check": "4.7.8",
     "typescript": "6.0.3"
   },
   "allowScripts": {
