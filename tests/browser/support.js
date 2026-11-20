@@ -12,8 +12,11 @@ export async function serve(page, html) {
 		if (url.pathname === "/fixture") {
 			return route.fulfill({ contentType: "text/html", body: html });
 		}
+		// Shipped source (styles, scripts, registry patterns) and the fonts come
+		// from the checkout; everything else from the built reference site.
 		const source =
-			url.pathname.startsWith("/src/styles/") ||
+			url.pathname.startsWith("/src/") ||
+			url.pathname.startsWith("/registry/") ||
 			url.pathname.startsWith("/assets/fonts/");
 		const base = source ? root : path.join(root, "examples/reference/dist");
 		const name = decodeURIComponent(url.pathname).replace(/^\//, "");
