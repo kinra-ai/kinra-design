@@ -210,7 +210,7 @@ adoption map; this file only tracks current state, not process.
   package/lockfile and verification gates remain authoritative.
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
-- Retired Spaces and Kinra OS pins, and retiring Depot's vendored copy,
+- Retired Spaces and Kinra OS pins, and retired Depot's vendored copy,
   remain recovery evidence in their owners. Site and Gateway retain earlier
   test pins; adoption follows each owner's deliberate upgrade.
 

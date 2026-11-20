@@ -1,8 +1,10 @@
 # Kinra design
 
 Kind: product · Lifecycle: active · Versioning: semver
+Deviations: none.
 
-Follow the portfolio's [`CONVENTIONS.md`](../../CONVENTIONS.md).
+Start with the portfolio's [session context](../../CONVENTIONS.md#session-context);
+consult the relevant sections as the work requires.
 
 Kinra's shared, framework-light design system for web products and public
 surfaces.
@@ -10,12 +12,11 @@ The package is consumed at build time; deployed sites remain self-contained.
 Real consumers pin an exact release or commit. See `STATUS.md` and
 `docs/adoption.md` for the current release and adoption map; each owner's
 lockfile or vendored manifest remains authoritative. Retired Kinra OS and
-retiring Depot retain historical pins but are no longer current consumers.
+Depot retain historical pins but are no longer current consumers.
 
 ## Start here
 
-1. Check `git status --short --branch` and preserve existing work. Read
-   `STATUS.md` for current release and adoption state.
+1. Read `STATUS.md` for current release and adoption state.
 2. Read `README.md`, `docs/principles.md`, and `docs/catalog.md` before changing
    a public token, class, recipe, or registry status. Read `docs/brand.md`
    before changing a brand asset or how a product is named or marked. Read
