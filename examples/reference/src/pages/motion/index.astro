@@ -212,8 +212,7 @@ const band =
 						</div>
 						<p class="lab-meaning">{meaning("control")}</p>
 						<p class="lab-note">
-							The lab drives these with the control term. Design's switch and
-							disclosure arrow still take 180ms until they move to control.
+							Design's own button, switch and disclosure, on the control term.
 						</p>
 					</div>
 					<div class="lab-columns">
@@ -420,8 +419,9 @@ const band =
 						</div>
 						<p class="lab-meaning">{meaning("layer")}</p>
 						<p class="lab-note">
-							Design's own dialog, drawer and toast. A dialog and a drawer still
-							close at once; their exits arrive with the next round.
+							Design's own dialog, drawer and toast. Each leaves the way it came
+							on the exit term where the browser transitions overlay, and at
+							once elsewhere.
 						</p>
 					</div>
 					<div class="lab-columns">
@@ -768,8 +768,8 @@ const band =
 			<header class="catalog-heading">
 				<h2 id="place-heading">Place</h2>
 				<p>
-					The reader moving to another place. A simulation inside the page until
-					the next round adds real view transitions.
+					The reader moving to another place: real view transitions, one page in
+					each frame, at the lab's speed and less motion.
 				</p>
 			</header>
 			<div class="lab-grid">
@@ -777,28 +777,12 @@ const band =
 					<div class="lab-specimen__head">
 						<span class="lab-id">P1</span>
 						<h3 class="lab-term">navigate</h3>
-						<div class="lab-actions">
-							<button
-								class="kin-button"
-								data-size="compact"
-								type="button"
-								data-lab-replay
-							>
-								Onward
-							</button>
-							<button
-								class="kin-button"
-								data-size="compact"
-								type="button"
-								data-lab-back
-							>
-								Back
-							</button>
-						</div>
 						<p class="lab-meaning">{meaning("navigate")}</p>
 						<p class="lab-note">
-							The bar holds still while the page slides 3rem the way the index
-							runs.
+							Inside each frame, Onward and Back slide the page 3rem the way the
+							index runs while its bar holds still; Open zooms from where it was
+							touched, and Return zooms back out. Productive pages change at
+							once.
 						</p>
 					</div>
 					<div class="lab-columns">
@@ -813,21 +797,13 @@ const band =
 										{label}{" "}
 										<span class="lab-reading" data-lab-reading="navigate" />
 									</p>
-									<div class="lab-place" data-lab-place>
-										<div class="lab-place__bar">Kinra · Rooms</div>
-										<div class="lab-place__room" data-lab-room="0">
-											<strong>Clocks</strong>
-											<span class="lab-caption">Who sets the time</span>
-										</div>
-										<div class="lab-place__room" data-lab-room="1" hidden>
-											<strong>Scale</strong>
-											<span class="lab-caption">Every clock on one scale</span>
-										</div>
-										<div class="lab-place__room" data-lab-room="2" hidden>
-											<strong>Almanac</strong>
-											<span class="lab-caption">The Sun and the Moon</span>
-										</div>
-									</div>
+									<iframe
+										class="lab-journey"
+										src={`/motion/journey/?register=${register}`}
+										title={`navigate, ${register}: rooms moved between by view transitions`}
+										loading="lazy"
+										data-lab-journey
+									/>
 								</div>
 							))
 						}

@@ -520,57 +520,27 @@ export function startLab(): void {
 		}
 	});
 
-	// P1 navigate: the bar holds still while the page slides the way the index
-	// runs. A simulation of a view transition, at the term's timing.
-	function navigate(specimen: HTMLElement, direction: 1 | -1) {
-		for (const column of columns(specimen)) {
-			const place = column.querySelector<HTMLElement>("[data-lab-place]")!;
-			const rooms = Array.from(
-				place.querySelectorAll<HTMLElement>("[data-lab-room]"),
-			);
-			const current = rooms.findIndex((room) => !room.hidden);
-			const next = (current + direction + rooms.length) % rooms.length;
-			const leaving = rooms[current];
-			const arriving = rooms[next];
-			for (const room of rooms)
-				for (const animation of room.getAnimations()) animation.finish();
-			const { ms: duration, easing } = term(place, "navigate");
-			arriving.hidden = false;
-			if (!duration) {
-				leaving.hidden = true;
-				continue;
-			}
-			const away = `${-3 * direction}rem 0`;
-			const toward = `${3 * direction}rem 0`;
-			leaving
-				.animate(
-					[
-						{ opacity: 1, translate: "0 0" },
-						{ opacity: 0, translate: away },
-					],
-					{
-						duration,
-						easing,
-					},
-				)
-				.finished.then(() => {
-					leaving.hidden = true;
-				})
-				.catch(() => {});
-			arriving.animate(
-				[
-					{ opacity: 0, translate: toward },
-					{ opacity: 1, translate: "0 0" },
-				],
-				{
-					duration,
-					easing,
-				},
-			);
-		}
+	// P1 navigate: the journey frames run real view transitions. They hear the
+	// lab's speed and its simulated less motion when each loads and whenever
+	// either changes.
+	const journeys = Array.from(
+		lab.querySelectorAll<HTMLIFrameElement>("[data-lab-journey]"),
+	);
+	function tellJourney(frame: HTMLIFrameElement) {
+		frame.contentWindow?.postMessage(
+			{ type: "kin-lab-speed", rate: getRate() },
+			location.origin,
+		);
+		frame.contentWindow?.postMessage(
+			{ type: "kin-lab-less", less: lessMotion() },
+			location.origin,
+		);
 	}
-	on("navigate", "[data-lab-replay]", (specimen) => navigate(specimen, 1));
-	on("navigate", "[data-lab-back]", (specimen) => navigate(specimen, -1));
+	for (const frame of journeys) {
+		frame.addEventListener("load", () => tellJourney(frame));
+		tellJourney(frame);
+	}
+	onChange(() => journeys.forEach(tellJourney));
 
 	// Work in flight: nothing runs until the work starts, and stops when it ends.
 	type Work = {

@@ -189,7 +189,18 @@ for (const loop of ADAPT.offscreen) {
 		const playing = await page.evaluate(() => window.__frames);
 		expect(playing, "the loop draws while it is seen").toBeGreaterThan(5);
 		await loop.leave(page);
-		await page.waitForTimeout(300);
+		// An observer reports leaving after the fact, so the loop is given a
+		// moment to notice, then held to rest.
+		await expect
+			.poll(
+				async () => {
+					const start = await page.evaluate(() => window.__frames);
+					await page.waitForTimeout(150);
+					return (await page.evaluate(() => window.__frames)) - start;
+				},
+				{ timeout: 3000 },
+			)
+			.toBe(0);
 		const before = await page.evaluate(() => window.__frames);
 		await page.waitForTimeout(500);
 		const after = await page.evaluate(() => window.__frames);

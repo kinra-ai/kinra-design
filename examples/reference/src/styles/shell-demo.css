@@ -123,11 +123,12 @@
 /* Author display only on an open popover, or a closed one would show. */
 .demo-account {
 	--kin-popover-width: 17rem;
+	/* Its layout holds while it leaves; only display waits on the open state. */
+	gap: var(--kin-space-4);
 }
 
 .demo-account:popover-open {
 	display: grid;
-	gap: var(--kin-space-4);
 }
 
 .demo-identity {

@@ -261,13 +261,6 @@
 		color var(--kin-motion-control);
 }
 
-.lab-specimen .kin-switch input,
-.lab-specimen .kin-switch input::before,
-.lab-specimen .kin-disclosure summary::after {
-	transition-duration: var(--kin-duration-control);
-	transition-timing-function: var(--kin-ease-standard);
-}
-
 .lab-rows {
 	display: grid;
 	gap: var(--kin-space-2);
@@ -450,41 +443,14 @@
 	);
 }
 
-/* Place */
-.lab-place {
+/* Place: a page in a frame, moving between its rooms by view transitions. */
+.lab-journey {
 	background: var(--kin-color-ground);
 	border: 1px solid var(--kin-color-rule);
 	border-radius: var(--kin-radius-layer);
-	height: 8rem;
-	overflow: hidden;
-	position: relative;
+	display: block;
+	height: 14rem;
 	width: 100%;
-}
-
-.lab-place__bar {
-	align-items: center;
-	border-bottom: 1px solid var(--kin-color-rule);
-	color: var(--kin-color-text-muted);
-	display: flex;
-	font-size: var(--kin-text-xs);
-	height: 1.75rem;
-	padding-inline: var(--kin-space-3);
-}
-
-.lab-place__room {
-	display: grid;
-	gap: var(--kin-space-1);
-	inset: 1.75rem 0 0;
-	padding: var(--kin-space-3);
-	position: absolute;
-}
-
-.lab-place__room[hidden] {
-	display: none;
-}
-
-.lab-place__room strong {
-	font-size: var(--kin-text-md);
 }
 
 /* Work in flight */
