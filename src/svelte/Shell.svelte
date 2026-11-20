@@ -18,7 +18,7 @@ remembers the fold.
 </Shell>
 ```
 
-In SvelteKit, call `settle()` from `afterNavigate` as well, since the router
+In SvelteKit, call `navigated()` from `afterNavigate` as well, since the router
 moves focus after the page has changed.
 -->
 <script lang="ts">
@@ -202,7 +202,7 @@ moves focus after the page has changed.
 		scrolled = !!element && element.scrollTop > 0;
 	}
 
-	function settle() {
+	function navigated() {
 		measure();
 		if (owesPage) {
 			owesPage = false;
@@ -267,7 +267,7 @@ moves focus after the page has changed.
 
 	// Layout: the breakpoint's query, read once mounted and on every change.
 	// Crossing it closes the drawer, moves focus out of what the new layout
-	// hides, and settles without moving.
+	// hides, and comes to rest without moving.
 	$effect(() => {
 		const query = matchMedia(breakpoint);
 		untrack(() => {
@@ -297,7 +297,7 @@ moves focus after the page has changed.
 	// A new page: measure the hairline, and deliver focus a link owed it.
 	$effect(() => {
 		void path;
-		void tick().then(settle);
+		void tick().then(navigated);
 	});
 
 	setShellState({
@@ -313,7 +313,8 @@ moves focus after the page has changed.
 		fold: setFold,
 		drawer: (next, restore) => void setDrawer(next, restore),
 		toggle,
-		settle,
+		navigated,
+		settle: navigated,
 		scroller: scrollingElement,
 	});
 
@@ -323,7 +324,9 @@ moves focus after the page has changed.
 	export function drawer(next: boolean, restore?: "menu" | "page") {
 		void setDrawer(next, restore);
 	}
-	export { toggle, settle };
+	/** @deprecated Since 0.9.0: call `navigated()`. */
+	const settle = navigated;
+	export { toggle, navigated, settle };
 	export function scroller() {
 		return scrollingElement();
 	}

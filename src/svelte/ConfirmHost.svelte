@@ -34,7 +34,7 @@ meant for the first never confirms the second.
 		}
 	});
 
-	// The answer is settled the moment the reader gives it; the dialog then
+	// The answer is decided the moment the reader gives it; the dialog then
 	// closes and gives focus back before it leaves the page.
 	function answer(value: boolean) {
 		shown?.answer(value);

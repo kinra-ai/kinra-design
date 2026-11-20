@@ -98,7 +98,7 @@ preferences.
   let { children } = $props();
   let shell = $state<ReturnType<typeof Shell>>();
   let folded = $state(preferences.folded);
-  afterNavigate(() => shell?.settle());
+  afterNavigate(() => shell?.navigated());
 </script>
 
 <Shell
@@ -128,7 +128,7 @@ preferences.
 - **Navigation.** A link followed in the drawer closes it and gives focus to
   the page. A rail button that routes takes `navigates`. Pass the location as
   `path` so a new page measures the hairline again; in SvelteKit also call
-  `settle()` from `afterNavigate`, since the router moves focus after the page
+  `navigated()` from `afterNavigate`, since the router moves focus after the page
   has changed. A plain Svelte product with its own router passes its route as
   `path` and needs nothing more.
 - **The chord.** The shell answers ⌘B on a Mac and Ctrl+B elsewhere. A
@@ -136,7 +136,9 @@ preferences.
   calls `toggle()` itself.
 - **What it holds can move it.** A part of the shell reads `shellState()` for
   `narrow`, `folded` and `open`, and calls `fold()`, `drawer()`, `toggle()` or
-  `settle()`. The component exposes the same moves on `bind:this`.
+  `navigated()`. The component exposes the same moves on `bind:this`.
+  `settle()`, its name in 0.8, still works and is deprecated: motion owns
+  the word ([`motion.md`](motion.md#settle)).
 - **A scroller of the product's own.** When the page scrolls in an element
   inside the page, such as a pane, pass `scroller` so the hairline measures
   it.

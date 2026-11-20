@@ -14,7 +14,12 @@ export interface ShellState {
 	drawer(open: boolean, restore?: "menu" | "page"): void;
 	/** Fold beside the page, or open and close the drawer, as the chord does. */
 	toggle(): void;
-	/** Measure the hairline again and give the page any focus it is owed. */
+	/**
+	 * A new page has arrived: measure the hairline again and give the page any
+	 * focus it is owed. SvelteKit calls it from `afterNavigate`.
+	 */
+	navigated(): void;
+	/** @deprecated Since 0.9.0: call `navigated()`. */
 	settle(): void;
 	/** The element the page scrolls in now: the page, or the document. */
 	scroller(): Element | null;

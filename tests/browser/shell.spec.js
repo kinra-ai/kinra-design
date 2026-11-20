@@ -8,7 +8,7 @@ const phone = { width: 390, height: 844 };
 const rem = 16;
 
 /** Opens the demo. Motion is reduced unless a check asks for it, so every
-    state settles at once. */
+    state is reached at once. */
 async function open(
 	page,
 	query = "",
@@ -460,7 +460,7 @@ test("crossing the breakpoint closes the drawer and moves focus out of it", asyn
 	await expect(shell(page)).toHaveAttribute("data-drawer", "closed");
 	await expect(page.locator(".kin-shell__menu")).toBeFocused();
 	expect(await inert(sidebar(page))).toBe(true);
-	// It settles without travelling across the new width.
+	// It comes to rest without travelling across the new width.
 	expect(
 		await sidebar(page).evaluate((element) => element.getAnimations().length),
 	).toBe(0);
@@ -758,7 +758,7 @@ for (const scheme of ["dark", "light"]) {
 	});
 }
 
-test("the fold moves at layer speed, and settles at once under reduced motion", async ({
+test("the fold moves at layer speed, and lands at once under reduced motion", async ({
 	page,
 }) => {
 	await open(page, "fold=open", { motion: true });

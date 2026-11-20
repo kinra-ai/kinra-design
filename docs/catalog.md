@@ -475,16 +475,16 @@ state on both grounds and right to left, running the reference behaviour.
 
 The product sets the state:
 
-| Attribute                       | Effect                                                             |
-| ------------------------------- | ------------------------------------------------------------------ |
-| `data-folded`                   | the rail alone beside the page; the drawer ignores it              |
-| `data-drawer="closed\|open"`    | the drawer layout, from the product's own breakpoint               |
-| `data-scroll="document"`        | as a drawer, the page scrolls with the document under a sticky bar |
-| `data-labels="drawer"`          | as a drawer, items carrying a label show it, on a wider rail       |
-| `data-resizing`                 | no transitions while the shell settles after a change of shape     |
-| `data-scrolled` on the bar      | the hairline: the page is scrolled beneath the bar                 |
-| `data-tip="hidden"` on an item  | its tip, put away by Escape                                        |
-| `inert` on the sidebar or panel | the closed drawer, or the page behind an open one                  |
+| Attribute                       | Effect                                                               |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `data-folded`                   | the rail alone beside the page; the drawer ignores it                |
+| `data-drawer="closed\|open"`    | the drawer layout, from the product's own breakpoint                 |
+| `data-scroll="document"`        | as a drawer, the page scrolls with the document under a sticky bar   |
+| `data-labels="drawer"`          | as a drawer, items carrying a label show it, on a wider rail         |
+| `data-resizing`                 | no transitions while the shell comes to rest after a change of shape |
+| `data-scrolled` on the bar      | the hairline: the page is scrolled beneath the bar                   |
+| `data-tip="hidden"` on an item  | its tip, put away by Escape                                          |
+| `inert` on the sidebar or panel | the closed drawer, or the page behind an open one                    |
 
 Its measures and tones are custom properties, set on `:root` or the shell:
 

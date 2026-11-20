@@ -79,7 +79,7 @@ test("a row's main control and trail are siblings, and either lights the row", a
 	const paint = () =>
 		row.evaluate((element) => getComputedStyle(element).backgroundColor);
 	// A colour that has stopped moving: two reads a frame apart agree.
-	const settled = async () => {
+	const atRest = async () => {
 		let last = "";
 		await expect
 			.poll(async () => {
@@ -91,18 +91,18 @@ test("a row's main control and trail are siblings, and either lights the row", a
 			.toBe(true);
 		return last;
 	};
-	const rest = await settled();
+	const rest = await atRest();
 	await row.locator(".kin-list__trail button").hover();
-	const lit = await settled();
+	const lit = await atRest();
 	expect(lit).not.toBe(rest);
 	await main.hover();
-	expect(await settled()).toBe(lit);
+	expect(await atRest()).toBe(lit);
 	// A click leaves no light behind once the pointer has gone.
 	await main.click();
 	await page.mouse.move(700, 880);
 	await main.click();
 	await page.mouse.move(700, 880);
-	expect(await settled()).toBe(rest);
+	expect(await atRest()).toBe(rest);
 	await main.click();
 	await expect(main).toHaveAttribute("aria-current", "true");
 	await expect(row.locator(".kin-list__after .kin-caption")).toBeVisible();

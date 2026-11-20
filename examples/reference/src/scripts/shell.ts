@@ -25,8 +25,8 @@ export type ShellOptions = {
 export type Shell = {
 	fold(folded: boolean): void;
 	drawer(open: boolean): void;
-	/** Measures the page's scroller again, after navigation. */
-	settle(): void;
+	/** A new page has arrived: measure the page's scroller again. */
+	navigated(): void;
 	/** The element the page scrolls in now: the page, or the document. */
 	scroller(): Element;
 	disconnect(): void;
@@ -215,7 +215,7 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 	}
 
 	/* Crossing the breakpoint closes the drawer, moves focus out of whatever
-	   the new layout hides, and settles it without moving: transitions are
+	   the new layout hides, and brings it to rest without moving: transitions are
 	   off for the one reflow. */
 	function relayout() {
 		const active = document.activeElement;
@@ -249,7 +249,7 @@ export function connectShell(shell: HTMLElement, options: ShellOptions): Shell {
 	return {
 		fold: setFold,
 		drawer: (next) => setDrawer(next),
-		settle: measure,
+		navigated: measure,
 		scroller,
 		disconnect: () => listening.abort(),
 	};

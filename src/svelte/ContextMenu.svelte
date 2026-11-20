@@ -137,7 +137,7 @@ used is still reached, and says why. An anchor that carries
 				? event
 				: null;
 		const mine = ++ticket;
-		settle();
+		reset();
 		if (owner && owner !== element) expanded(owner, false);
 		owner = element;
 		given = choices ?? null;
@@ -182,7 +182,7 @@ used is still reached, and says why. An anchor that carries
 		ticket++;
 		pending = false;
 		open = false;
-		settle();
+		reset();
 		if (!popover?.matches(":popover-open")) return;
 		const active = document.activeElement;
 		const held =
@@ -191,7 +191,7 @@ used is still reached, and says why. An anchor that carries
 		if (held) restore();
 	}
 
-	function settle() {
+	function reset() {
 		clearTimeout(timer);
 		finished = -1;
 		working = false;
@@ -370,7 +370,7 @@ used is still reached, and says why. An anchor that carries
 		open = showing;
 		if (owner) expanded(owner, showing);
 		if (!showing) {
-			settle();
+			reset();
 			// Light dismiss hid what held focus: return it to the anchor.
 			const active = document.activeElement;
 			if (!active || active === document.body) restore();
