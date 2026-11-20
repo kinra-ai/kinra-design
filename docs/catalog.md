@@ -308,7 +308,8 @@ table scope, descriptions, roles, or native control behavior.
   out when `data-leaving` is set. Its tone is the notice's bar.
 - `.kin-kbd` styles a `kbd`.
 - `.kin-tooltip` with `__hint` styles a `role="tooltip"` element the consumer
-  positions.
+  positions. As a `[popover]` it loses the browser's popover box and arrives
+  from its target's side; `data-side="below"` turns that arrival.
 
 ### Overlays (`overlays.css`)
 
@@ -327,7 +328,11 @@ table scope, descriptions, roles, or native control behavior.
 - `.kin-popover` on any `[popover]` element; `__title`, `__body`,
   `data-padding="none"`, `--kin-popover-width`.
 - `.kin-menu` with `__item`, `__shortcut`, `__separator`, and `__label`; items
-  take `data-tone="error"`, `aria-checked`, and `aria-disabled`.
+  take `data-tone="error"`, `aria-checked`, and `aria-disabled`. An item that
+  says why it is unavailable wraps its words in `__text` with a `__reason`
+  beneath them, and stays legible; `__check` marks the chosen item or a done
+  action at the item's end. A shortcut reads left to right in either
+  direction.
 
 ### Data (`data.css`)
 

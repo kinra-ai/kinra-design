@@ -41,8 +41,12 @@ and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
   `Dialog`, `Drawer`, `confirm()` with `ConfirmHost`, `toast()` with
   `Toaster`, and `Notice`; `Button`, `IconButton`, `Badge`, `Chip`, `Status`,
   `Spinner`, `Icon`, `Field`, `Input`, `Select`, `Textarea`, `Check`,
-  `Radio`, `Switch`, `Segmented` and `Disclosure`. Svelte is an optional
+  `Radio`, `Switch`, `Segmented` and `Disclosure`; `Menu` and `ContextMenu`
+  with the platform's menu keyboard, disabled reasons and done confirmations,
+  the `tip()` attachment and the `place()` helper. Svelte is an optional
   peer.
+- Menu parts `.kin-menu__text`, `__reason` and `__check`; a popover
+  `.kin-tooltip` arrives from its target's side (`data-side`).
 
 ### Changed
 
@@ -63,6 +67,7 @@ and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
   card's footer now matches its other parts at 16px.
 - Paragraphs inside a notice, empty-state or toast body keep their rhythm
   without margins at the body's edges.
+- A menu shortcut reads left to right in either direction: `⌘C`, never `C⌘`.
 - Design's own optical values off the spacing scale each carry an
   `off-scale:` reason, and Design passes its own spacing check.
 - `/applications/` writes the shared heads in place of its reference-only

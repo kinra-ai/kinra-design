@@ -257,8 +257,9 @@ Per product:
 
 - **Kinra Space** moves its `.page-head`, `.section-heading` and
   `.section-head` CSS to the shared heads, or its `PageHead`, `SectionHead`,
-  `Row`, `Card`, `Disclosure`, `Empty`, `Loading`, `Confirm` and shell wiring
-  to the layer's, and retires `scripts/check-layout-css.mjs` with its
+  `Row`, `Card`, `Disclosure`, `Empty`, `Loading`, `Confirm`, `ContextMenu`,
+  `Hint` and shell wiring to the layer's (its `ContextMenu.show(event, items,
+anchor)` keeps its shape; icons by name become snippets), and retires `scripts/check-layout-css.mjs` with its
   suppressions file for `npx kinra-check-spacing --strict src`. Read
   2026-11-20 at `db1eeae3`, the strict check finds 21 lengths in about 16
   declarations. Fifteen of Space's 28 suppressions go away, since zero in a
@@ -267,7 +268,8 @@ Per product:
   `off-scale:` reason. Its interface guide's
   page and section head rules point at the catalog's.
 - **Kinra Relay** moves its inline `.page-head` and `.section-head` to the
-  shared heads, its dialog, toasts and shell wiring to the layer's, and
+  shared heads, its dialog, toasts, `ActionMenu`, `tip` and shell wiring to
+  the layer's (`{@attach tip(text, hint)}` keeps its shape), and
   retires `scripts/scale.py` for `npx kinra-check-spacing src`. The default
   mode keeps Relay's own rule, on-scale lengths; it also checks insets and
   scroll margins, which `scale.py` did not, and finds 20 values in 19

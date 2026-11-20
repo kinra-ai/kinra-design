@@ -317,10 +317,13 @@
 		width: 1rem;
 	}
 
+	/* A chord reads left to right in any direction: ⌘C, never C⌘. */
 	.kin-menu__shortcut {
 		color: var(--kin-color-text-muted);
+		direction: ltr;
 		font-size: var(--kin-text-xs);
 		margin-inline-start: auto;
+		unicode-bidi: isolate;
 	}
 
 	.kin-menu__separator {

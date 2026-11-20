@@ -186,6 +186,32 @@ removed.
 - `Notice` stays in the page. Pass `role="status"` or `role="alert"` when it
   arrives after the page has loaded.
 
+## Menus and tips
+
+- `Menu` is a trigger and the `.kin-menu` it opens: an `IconButton` named by
+  the required `label`, or the product's own button from the `trigger`
+  snippet, which receives the attributes to spread on it. Items are commands
+  (`onselect`, which may return a promise), links (`href`, `external`,
+  `download`), checkboxes (`checked`), radios in a group (`role:
+"menuitemradio"`), separators and labelled groups. An item can be
+  unavailable and say why (`disabled: "Only the owner can delete it"`), carry
+  a `shortcut`, or confirm itself with `done` words before the menu closes.
+  The keyboard is the platform's menu: arrows that wrap, Home and End,
+  typeahead, Escape back to the trigger, Tab out. ArrowDown and ArrowUp on the
+  trigger open on the first and last item.
+- `ContextMenu` is the same menu opened from script:
+  `menu.show(event, items)` opens at the pointer for a right-click, or beneath
+  an element, and returns focus to it on closing.
+- `place()` puts a popover beside an anchor or at a point, inside the viewport
+  and its safe areas, flipping when it would cross an edge and right to left
+  aware; `follow()` keeps it there while the page scrolls. Use them for a
+  product's own popovers.
+- `{@attach tip("Undo", "Your last change")}` shows one shared `.kin-tooltip`
+  after the pointer rests, or at once for the keyboard, and gives the words to
+  the control as its description. The control keeps its own name; the tip
+  only describes. `told()` is for a mark that is no control and whose words
+  appear nowhere else: it also takes focus.
+
 ## Forms
 
 `Field` names one control and wires its hint and error: the control gets the
@@ -210,7 +236,8 @@ line. The products keep their own icon sets; Design does not ship one.
   settings never meet the layer's source.
 - The catalog renders every component on the server and hydrates it, and the
   browser tests in Chromium and WebKit drive them there: `/svelte/controls/`,
-  and `/svelte/shell/`, a whole application built from the layer alone.
+  `/svelte/menus/`, and `/svelte/shell/`, a whole application built from the
+  layer alone.
 - A packed copy installed into a plain Vite and Svelte consumer, under
   `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`, type-checks
   and builds for the server and the browser.
