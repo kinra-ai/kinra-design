@@ -246,7 +246,14 @@ Existing tokens keep their values, so a product that only uses
 - **Layers leave.** Dialogs, drawers and popovers leave the way they came, at
   the exit term's 180ms, where the browser supports `overlay`; elsewhere they
   close at once. A product that animates its own exits removes them, so
-  nothing leaves twice. Modality and focus move when the close starts.
+  nothing leaves twice: Relay's `@supports (overlay: auto)` block in
+  `src/app.css` and Space's `dismiss` and `sink`. An unlayered product
+  transition overrides Design's exit. Move layout keyed on `[open]` or
+  `:popover-open` to the base selector, so it holds while the layer leaves.
+  Modality and focus move when the close starts.
+- **The corner key.** A copy of the candidate engine no longer reads the
+  retract, lift and fold tokens or `--kin-ease-lift`; its own timings are in
+  one `SIGNATURE` object, and it needs Design's tokens loaded.
 - **Visible changes.** A switch and a disclosure arrow answer at the control
   term (120ms, from 180ms). An indeterminate progress bar sweeps at 1.6s
   (from 1.4s), and a determinate fill follows its work at 180ms (from 320ms).

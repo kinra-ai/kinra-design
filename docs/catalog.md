@@ -359,8 +359,7 @@ table scope, descriptions, roles, or native control behavior.
   Header icons are compact, footer actions use the default control height,
   and body/footer focus rings sit inside their edges. A form body may wrap its
   fields in a `fieldset.kin-dialog__fields`, disabled while work is in
-  flight; the fields keep the body's rhythm. Consumers own focus
-  placement, dismissal and any replacement for the default arrival motion.
+  flight; the fields keep the body's rhythm. Consumers own focus placement and dismissal.
 - `.kin-drawer` on a native `dialog` anchored to an edge: the line's end by
   default, or `data-side="start|bottom"`, mirrored right to left;
   `--kin-drawer-width`. It reuses the dialog parts.
@@ -372,6 +371,15 @@ table scope, descriptions, roles, or native control behavior.
   beneath them, and stays legible; `__check` marks the chosen item or a done
   action at the item's end. A shortcut reads left to right in either
   direction.
+
+Dialogs, drawers and popovers arrive on the layer or popover term and leave on
+exit, the way they came at half the distance, where the browser transitions
+`overlay`; elsewhere, and with less motion, they close at once. Open dialogs
+and drawers with `showModal()`. Modality and focus move when the close
+starts, and a leaving layer is inert and passes the pointer. Nothing but
+`display` may hang on `[open]` or `:popover-open`: layout keyed on the open
+state would change while the layer leaves. A product that animates its own
+exit for these classes removes it, so nothing leaves twice.
 
 ### Data (`data.css`)
 
