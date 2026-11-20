@@ -59,8 +59,9 @@ adoption map; this file only tracks current state, not process.
   the tokens to the contract. `/motion/` plays every term and rebuilds eleven
   corrections, each measured against its rule. Blake approved the vocabulary
   and the lab on 2026-11-20; the defaults listed in `docs/motion.md` await
-  his review, and his calibration round may move values. `npm run verify`
-  passes with 381 browser cases. Consumers keep their pins.
+  his review, and his calibration round may move values. A fresh-context review found no
+  blockers; its three important findings and the minor ones are fixed. `npm
+run verify` passes with 389 browser cases. Consumers keep their pins.
 
 - **Shared structure and the Svelte layer (0.8.0, 2026-11-20):** a review of
   Kinra Space's and Kinra Relay's layout passes found both building the same
