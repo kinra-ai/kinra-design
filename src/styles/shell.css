@@ -658,7 +658,7 @@
 	   state and drops the movement between them. The width moves at layer
 	   speed, the column fades out as the rail closes over it and back as it
 	   opens, a tip waits a moment before naming its item, and the drawer
-	   leaves before it hides. */
+	   arrives at layer speed and leaves at exit speed before it hides. */
 	@media (prefers-reduced-motion: no-preference) {
 		.kin-shell__sidebar {
 			transition: width var(--kin-motion-layer);
@@ -671,13 +671,13 @@
 		}
 
 		.kin-shell[data-folded]:not([data-drawer]) .kin-shell__column {
-			transition-delay: 0s, var(--kin-duration-fast);
+			transition-delay: 0s, var(--kin-duration-control);
 		}
 
 		.kin-shell__marks {
 			transition:
 				opacity var(--kin-motion-control),
-				visibility 0s var(--kin-duration-fast);
+				visibility 0s var(--kin-duration-control);
 		}
 
 		.kin-shell[data-folded]:not([data-drawer]) .kin-shell__marks {
@@ -708,22 +708,33 @@
 			transition: box-shadow var(--kin-motion-surface);
 		}
 
+		/* Closing, the drawer and its dim leave the way they came, faster, and
+		   hide once they have gone. */
 		.kin-shell[data-drawer] .kin-shell__sidebar {
 			transition:
-				translate var(--kin-motion-layer),
-				box-shadow var(--kin-motion-layer),
-				visibility 0s var(--kin-duration-slow);
+				translate var(--kin-motion-exit),
+				box-shadow var(--kin-motion-exit),
+				visibility 0s var(--kin-duration-exit);
 		}
 
 		.kin-shell[data-drawer] .kin-shell__backdrop {
 			transition:
-				opacity var(--kin-motion-layer),
-				visibility 0s var(--kin-duration-slow);
+				opacity var(--kin-motion-exit),
+				visibility 0s var(--kin-duration-exit);
 		}
 
-		.kin-shell[data-drawer="open"]
-			:is(.kin-shell__sidebar, .kin-shell__backdrop) {
-			transition-delay: 0s;
+		/* Opening, they show at once and arrive at layer speed. */
+		.kin-shell[data-drawer="open"] .kin-shell__sidebar {
+			transition:
+				translate var(--kin-motion-layer),
+				box-shadow var(--kin-motion-layer),
+				visibility 0s;
+		}
+
+		.kin-shell[data-drawer="open"] .kin-shell__backdrop {
+			transition:
+				opacity var(--kin-motion-layer),
+				visibility 0s;
 		}
 
 		/* Nothing travels while the shell settles: a breakpoint crossed, a
