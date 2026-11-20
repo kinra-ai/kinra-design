@@ -7,15 +7,19 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Motion is named by what moves. In review with Blake for 0.9.0; names and
-values may change before release.
+Prepared for 0.9.0, not yet tagged. Motion is named by what moves: a
+control, a layer, content, the place or work in flight. "Settle" had come to
+mean three things in three products; now every motion word has one meaning,
+its mechanics, examples and counterexamples, and checks that hold products to
+it. Existing tokens keep their values. For what changes per product, see
+[moving to 0.9](docs/adoption.md#moving-to-09-motion-by-what-moves).
 
 ### Added
 
 - [`docs/motion.md`](docs/motion.md), the motion standard: seventeen terms in
-  five families (controls, layers, content, place and work in flight), each
-  with its mechanics, still form, examples, counterexamples and the words it
-  replaces, with rules a reviewer or a test can check.
+  five families, each with its mechanics, still form, examples,
+  counterexamples and the words it replaces; thirteen rules a reviewer or a
+  test can check; signatures; corrections; and retired words.
 - A token pair for every term: `--kin-duration-<term>` and
   `--kin-motion-<term>` for control, surface, bloom, morph, layer, popover,
   exit, settle, draw, appear, navigate, trace, sweep, pulse, pass and close,
@@ -25,15 +29,55 @@ values may change before release.
   move. With less motion, content and place are 0ms.
 - `kin-fade`, `kin-appear` and `kin-draw`, shared arrivals that run from a
   hidden state only, with `--kin-appear-from` and `--kin-appear-scale`.
+- `@kinra/web/motion`, a framework-free reader: `motion(term, element)`,
+  `period()`, `stagger()`, `bezier()`, `easing()`, `reduced()` and
+  `onReduced()`, read from the element a script moves.
+- `kinra-check-motion`, a command that checks a product's CSS and component
+  styles against the terms, with `signature:` reasons for timing that belongs
+  to the thing itself and a `--strict` mode.
+- The candidate [entries pattern](registry/patterns/entries/README.md):
+  Observatory's first-sight entries, held until their instrument is seen.
+- `tests/browser/motion-guard.spec.js`, a guard for running pages that a
+  product reads and adapts.
 - `/motion/` in the reference catalog: every term in both registers, the
-  curves, a lab speed and simulated less motion, and five corrections from
-  Kinra Observatory rebuilt with their measured rule.
+  curves, real view transitions for navigate, signatures, two context
+  specimens and eleven corrections rebuilt from their commits, each measured
+  against its rule; and `/motion/calibrate/`, which compares a token with a
+  proposed value.
+- `scripts/public-tokens.json`: the contract check now fails when a public
+  token disappears or appears unlisted.
+
+### Changed
+
+- Layers leave the way they came, faster. Dialogs, drawers and popovers exit
+  at 180ms on the in curve, half their arrival distance, where the browser
+  transitions `overlay`; elsewhere, and with less motion, they close at once.
+  The shell's drawer closes at the same speed. Arrival keyframes run from a
+  hidden state only.
+- Controls that changed tone over 120ms on `ease` answer on the control term,
+  120ms on standard. A switch's track and thumb and a disclosure's arrow
+  answer at 120ms, from 180ms.
+- An indeterminate progress bar sweeps once every 1.6s, from 1.4s; a
+  determinate fill follows its work at 180ms, from 320ms. Backdrops fade on
+  out, from `ease`.
+- Design's loops, toasts and tips take their terms, at their values: the
+  spinner on pass, the skeleton on sweep, the running status and live log on
+  pulse, the toast on layer and exit, and a tip on popover.
+- The live edge names its terms, and marks its band, breath, reconnecting
+  blink and gathers as signatures; nothing about it moves differently.
+- The candidate corner key keeps its own timings in one `SIGNATURE` object,
+  reads its terms from the tokens on the key, and measures again when the
+  reduced-motion preference changes.
+- The Svelte `Shell`'s `settle()` is `navigated()`.
+- The principles amend "Motion has a cause"; composing adds motion as a fourth
+  axis.
 
 ### Deprecated
 
 - `--kin-duration-retract`, `--kin-duration-lift`, `--kin-duration-fold` and
-  `--kin-ease-lift` keep their values; a control changing meaning is morph,
-  and leaving is exit.
+  `--kin-ease-lift` keep their values: leaving is exit, and a control changing
+  meaning is morph.
+- `Shell.settle()` still works; call `navigated()`.
 
 ## [0.8.0] - 2026-11-20
 

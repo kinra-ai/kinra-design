@@ -10,8 +10,11 @@ adoption map; this file only tracks current state, not process.
 - Latest immutable tag: `v0.8.0` (2026-11-20, authorized by Blake). It ships
   shared page and list structure, spacing roles and the spacing check, the
   optional Svelte 5 layer, and the revised notice, toast and switch styling.
-  `package.json` and both root lockfile versions match 0.8.0. Consumer
-  upgrades follow the [adoption guide](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer).
+  Consumer upgrades follow the
+  [adoption guide](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer).
+- Prepared: `0.9.0`, motion by what moves, on `design/motion`. `package.json`
+  and both root lockfile versions read 0.9.0; it is not tagged, and tagging
+  and pushing wait for Blake's authorization.
 - Prior releases: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
   spacing refinements and the shell guide and first-paint correction;
   authorized by Blake), `v0.7.0` (2026-10-12, shared application shell and
@@ -44,15 +47,20 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
-- **Motion by what moves (unreleased, for 0.9.0; on `design/motion`):**
-  [`docs/motion.md`](docs/motion.md) defines seventeen terms in five
-  families, each with its mechanics, examples and counterexamples, after
-  "settle" had come to mean three things in three products. Controls, layers
-  and work in flight move the same everywhere; content and place take a
-  register, productive or expressive, set by `data-kin-motion`. `/motion/`
-  plays every term and rebuilds five of Observatory's corrections, each
-  measured against the rule it breaks or keeps. Round 1 of 3 with Blake is
-  next; consumers keep their pins.
+- **Motion by what moves (prepared for 0.9.0; on `design/motion`):**
+  [`docs/motion.md`](docs/motion.md) defines seventeen terms in five families,
+  each with its mechanics, examples and counterexamples, after "settle" had
+  come to mean three things in three products. Controls, layers and work in
+  flight move the same everywhere; content and place take a register,
+  productive or expressive, set by `data-kin-motion`. Design's own CSS moves
+  by the terms and passes `kinra-check-motion --strict`; dialogs, drawers and
+  popovers now leave the way they came. `@kinra/web/motion` reads terms for
+  script, the entries pattern is a candidate, and a public token list holds
+  the tokens to the contract. `/motion/` plays every term and rebuilds eleven
+  corrections, each measured against its rule. Blake approved the vocabulary
+  and the lab on 2026-11-20; the defaults listed in `docs/motion.md` await
+  his review, and his calibration round may move values. `npm run verify`
+  passes with 381 browser cases. Consumers keep their pins.
 
 - **Shared structure and the Svelte layer (0.8.0, 2026-11-20):** a review of
   Kinra Space's and Kinra Relay's layout passes found both building the same
@@ -294,8 +302,9 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Blake's first motion review: whether `/motion/` shows what he corrected, and
-whether the terms in `docs/motion.md` are the right words.
+Blake's review of 0.9.0: the defaults in `docs/motion.md`, values on
+`/motion/calibrate/`, then authorization to tag. Observatory, Space and Relay
+then adopt it in their own sessions, as `docs/adoption.md` describes.
 
 Each product can adopt 0.8.0 in its own repository. Relay removes its notice
 override, Space updates its switch wording, and each moves its heads, rows,
