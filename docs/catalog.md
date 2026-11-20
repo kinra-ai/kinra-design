@@ -25,20 +25,27 @@ npm run dev
 | `@kinra/web/styles/feedback.css`     | progress, meters, spinners, skeletons, toasts, and hints  |
 | `@kinra/web/styles/overlays.css`     | dialogs, drawers, popovers, and menus                     |
 | `@kinra/web/styles/data.css`         | figures, key-value lists, logs, code, avatars, cards      |
+| `@kinra/web/styles/page.css`         | the page, its head, sections and section heads            |
 | `@kinra/web/styles/recipes.css`      | opt-in surface, scheme, and voice role adjustments        |
 | `@kinra/web/styles/prose.css`        | scoped long-form typography                               |
 | `@kinra/web/styles/shell.css`        | the application shell: rail, column, panel, bar, drawer   |
 | `@kinra/web/registry`                | source registry manifest                                  |
+| `@kinra/web/svelte`                  | optional Svelte 5 components; see [svelte.md](svelte.md)  |
 
 Every entry point imports `tokens.css` and can be used alone. `base.css`
 declares the cascade layer order `kinra.reset, kinra.base, kinra.type,
 kinra.compositions, kinra.components, kinra.shell, kinra.prose`; a consumer
 that skips `base.css` receives layers in import order instead.
 
+The package also installs one command, `kinra-check-spacing`, which checks a
+product's CSS and component styles against the spacing scale and radii it
+reads from these tokens ([composing](composing.md#space-by-role)).
+
 ## Foundations
 
 Tokens cover semantic colour on two grounds, brand, signal tints and edges,
-three typographic voices, a twelve-step spacing scale, causal motion, shape
+three typographic voices, a twelve-step spacing scale and the roles that name
+its steps by job, causal motion, shape
 and depth, named layers, controls, reading measures, shell measures, and
 responsive region spacing. Consumers override roles rather than copying
 values:
@@ -233,6 +240,9 @@ table scope, descriptions, roles, or native control behavior.
 
 - `.kin-badge` labels taxonomy or bounded state; `data-tone`,
   `data-variant="solid"`, `data-numeric`.
+- `.kin-icon` sizes a product's glyph to 20px, `data-size="sm|lg"` 16px or
+  24px; `data-along` mirrors a glyph that points along the line right to
+  left. It is decoration: the control around it carries the name.
 - `.kin-chip` is an interactive tag for filters, selections, or removal;
   `aria-pressed` renders selection and `.kin-chip__remove` holds the button.
 - `.kin-notice`, `__title`, `__body`, and `__actions`; `data-tone`,
@@ -290,6 +300,9 @@ table scope, descriptions, roles, or native control behavior.
   `role="status"`. `data-size="large"`, `data-tone="reason|muted"`.
 - `.kin-skeleton` with `data-shape="text|heading|square|block"` and
   `--kin-skeleton-width`; mark the group `aria-busy`.
+- `.kin-loading` lays skeletons out as `data-shape="lines|rows|cards"`, the
+  shape of what is on its way; show it only after a read has taken long
+  enough to notice.
 - `.kin-toast-region` is a fixed region with `data-placement`; `.kin-toast`
   holds `__title`, `__body`, and `__actions`, takes `data-tone`, and animates
   out when `data-leaving` is set. Its tone is the notice's bar.
@@ -304,7 +317,9 @@ table scope, descriptions, roles, or native control behavior.
   footer `data-justify="between"`. Header and footer stay fixed around the
   scrolling body; body children use one 1rem rhythm, including `kin-stack`.
   Header icons are compact, footer actions use the default control height,
-  and body/footer focus rings sit inside their edges. Consumers own focus
+  and body/footer focus rings sit inside their edges. A form body may wrap its
+  fields in a `fieldset.kin-dialog__fields`, disabled while work is in
+  flight; the fields keep the body's rhythm. Consumers own focus
   placement, dismissal and any replacement for the default arrival motion.
 - `.kin-drawer` on a native `dialog` anchored to an edge: the line's end by
   default, or `data-side="start|bottom"`, mirrored right to left;
@@ -333,12 +348,40 @@ table scope, descriptions, roles, or native control behavior.
   `data-link`, `data-density="compact"`.
 - `.kin-list` on a `ul` with `__item`, `__lead`, `__body`, `__title`, `__meta`,
   and `__trail`; `data-variant="bounded|bare"`, `data-density="compact"`,
-  `data-wrap`, item `data-link` and `aria-selected`.
+  `data-wrap`, item `data-link` and `aria-selected`. A row that opens puts
+  its lead and body in `__main`, a link or button, beside its `__trail`, never
+  around it; either lights the whole row, `aria-current` on `__main` tints the
+  open row, and `__after` holds what the row opens, beneath it. Item
+  `data-tone` draws the still tone bar at its start. List `data-rules` divides
+  rows with hairlines and fills a lit row square to its edges;
+  `data-trail="reveal"` keeps trails hidden, in their room, until their row is
+  pointed at or focused, and always shows them on touch.
+
+### Page anatomy (`page.css`)
+
+Kinra Space and Kinra Relay each built a page head and a section head, under
+the same names and to different rules; these are the one version.
+
+- `.kin-page` holds the work in an application's panel at
+  `--kin-page-inset`, up to `--kin-page-max`; a page head first in it stands
+  20px above the work.
+- `.kin-page-head` with `__lead` (a glyph or face), `__title` (the page's
+  heading), `__summary` (a quiet count or state beside it), `__actions` (at the
+  end of the title's line, or of the next when it wraps; one primary at most)
+  and `__description` (one line beneath). Parts wrap by room and keep DOM
+  order.
+- `.kin-section` is an open group of the page: its head 16px above its
+  content, `--kin-gap-section` after the section before it.
+- `.kin-section-head` with `__title`, `__summary`, `__actions` (compact, with
+  the touch target on a coarse pointer) and `__description`; `data-tone` puts
+  the group's state square beside its name.
 
 Consumers remain responsible for validation logic, table column priorities,
 tab selection and keyboard movement, menu focus management, popover
 positioning, toast lifetimes, asynchronous state, and product-specific
-behavior.
+behavior. A Svelte product takes the shared parts of that behaviour, such as
+dialog focus, confirmation, toast timing and the shell, from the
+[Svelte layer](svelte.md).
 
 The `/examples/` reference page composes these primitives into a filterable
 collection with inspectors, a preferences form with a live reading preview,
@@ -477,6 +520,9 @@ draw their edges, and the fold at rest draws none.
 The product moves the shell between its states, in its own framework, where
 its state already lives. The catalog runs a framework-free reference of this
 list, `examples/reference/src/scripts/shell.ts`, to read rather than import.
+A Svelte product uses `Shell` from the [Svelte layer](svelte.md) instead,
+which carries every item below and writes the Layout guard for its own
+breakpoint.
 
 - **Layout.** Set `data-drawer` from your own breakpoint's `matchMedia`,
   `closed` or `open`; leave it off beside the page. The page lays out before

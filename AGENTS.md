@@ -53,6 +53,15 @@ credential may become a consumer installation requirement.
 - Keep the CSS entry points framework-independent. Astro may provide the
   reference site and optional components, but tokens and base styles must not
   require an Astro runtime.
+- `src/svelte/` is the optional Svelte 5 layer (`docs/svelte.md`), approved by
+  Blake on 2026-11-20. It writes the catalog's markup and carries shared
+  behaviour; it adds no styles, names no class outside `kin-`, imports only
+  Svelte, and ships source with a hand-written `.d.ts` beside every helper.
+  Svelte stays an optional peer. A change to a component's markup is a change
+  to the CSS contract it writes: update the catalog with it.
+- `tools/` holds commands consumers run from their own checks, such as
+  `kinra-check-spacing`. They run on Node alone, with no dependency, since a
+  consumer installs Design without its development tools.
 - Use `kin-` for custom properties and public class names. Avoid unscoped
   component selectors.
 - Name colour by role, not hue. Colour is information and should remain

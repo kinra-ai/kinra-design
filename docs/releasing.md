@@ -48,16 +48,19 @@ npm audit
 npm pack --dry-run
 ```
 
-`npm run verify` checks the registry/export contract, Astro and TypeScript,
-formatting, the production reference build, and Chromium/WebKit browser checks
-for typography scope, the application examples and the application shell. Install browser engines
+`npm run verify` checks the registry/export contract and the Svelte layer's
+conventions, Design's own CSS against its spacing scale and that check's own
+tests, Svelte, Astro and TypeScript types, formatting, the production
+reference build, and Chromium/WebKit browser checks for typography scope, the
+application examples, the application shell and the Svelte layer. Install browser engines
 once per toolchain setup (and their OS dependencies where needed). The checks
 fulfill requests from local source/build bytes, without live services. Review the rendered catalog at
 desktop and mobile widths, including keyboard focus and reduced motion.
 
 Review the dry-run manifest. It should contain only public styles, assets,
 registry source, guides, README, license, trademark terms, and package
-metadata—not the reference site, scripts, development dependencies, or
+metadata, the Svelte layer's source and the `tools/` commands—not the
+reference site, scripts, development dependencies, or
 generated output.
 
 Confirm that:

@@ -44,6 +44,24 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Shared structure and the Svelte layer (unreleased, prepared for 0.8.0;
+  2026-11-20):** a review of Kinra Space's and Kinra Relay's layout passes
+  found both building the same page head, section head, row with actions and
+  spacing check, to different rules, and four Svelte products each wiring
+  the shell, dialogs and toasts around the CSS. Blake asked for the
+  structural recommendations and a robust Svelte layer. Design now ships
+  `page.css`, row parts of `.kin-list`, spacing roles, the
+  `kinra-check-spacing` command (which Design's own CSS passes, with a reason
+  beside each optical value), and `@kinra/web/svelte`, an optional Svelte 5
+  layer with Svelte as an optional peer. `docs/svelte.md` is its guide and
+  `docs/adoption.md` has per-product notes and the rule that a product fixes
+  a shared problem in Design first. Verified on the branch: the contract
+  check, the spacing check and its tests, `svelte-check`, Astro, formatting,
+  the reference build and the browser tests in Chromium and WebKit, plus a
+  packed copy installed into a Vite and Svelte consumer that type-checks
+  under the strictest options and builds for the server and the browser.
+  Not released; consumers keep their pins.
+
 - **Edges by meaning (unreleased, prepared for 0.8.0; 2026-11-20):** Kinra
   Relay's polish pass found the notice's edge, the live edge's line round both
   leading corners, reading as a bracket, and drew its still accents as a bar
@@ -261,11 +279,13 @@ adoption map; this file only tracks current state, not process.
 
 ## Next event
 
-Blake reviews the edges-by-meaning change for release as 0.8.0; after it,
-Relay removes its notice override and Space updates its switch wording as each
-upgrades. Relay also gives its stylesheet its breakpoint's query,
-`(max-width: 59.99rem)`, in its own repository, as the catalog's Layout step
-asks. Design 0.7.1
+Blake reviews the edges-by-meaning change, the shared structure and the
+Svelte layer for release as 0.8.0. After it, each product upgrades in its own
+repository: Relay removes its notice override, Space updates its switch
+wording, and each moves its heads, rows, shell wiring and spacing script to
+the shared ones as `docs/adoption.md` lists. Until Relay moves to `Shell`, it
+still needs its breakpoint's query, `(max-width: 59.99rem)`, in its own
+stylesheet, as the catalog's Layout step asks. Design 0.7.1
 carries the contract, guide and demo correction; `shell.css` is unchanged. Candidate registry promotion
 still requires a second consumer and compatibility review; package renaming
 stays outside this update.

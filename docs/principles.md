@@ -169,6 +169,17 @@ consumer copies and owns that code. Promotion to a stable package contract
 still requires two consumers and compatibility review. The shared package
 should remove duplication, not centralize speculation.
 
+Structure earns its place by the same rule. On 2026-11-20 the page head, the
+section head and the row with actions met it: Kinra Space and Kinra Relay had
+each built all three, under the same names and to different rules, and each
+had written its own spacing check from Design's numbers. Design now holds one
+of each, names the spacing scale's steps by their job, and ships the check.
+The same day Blake approved an optional Svelte layer, because four of the
+products build on Svelte 5 and each had rewritten the same markup and
+behaviour around the CSS. The layer writes the catalog's markup and adds no
+style, so the CSS stays the contract and a product that does not use Svelte
+loses nothing.
+
 The application shell met that bar on 2026-10-12. Kinra Space, Kinra Home and
 Kinra Relay had each built the same rail, column, inset panel and drawer, so
 its frame and states became stable classes. Its behaviour stays with each

@@ -9,14 +9,40 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 Prepared for 0.8.0; not released. Each small shape now means one thing:
 a line along an edge is work in flight, a bar is a still block's tone, and
-the square marks state. No class, attribute or export is renamed or removed,
-but notices, toasts and switches look different after an upgrade; see
-[Moving to 0.8](docs/adoption.md#moving-to-08-edges-by-meaning).
+the square marks state. The page head, section head and row with actions that
+Kinra Space and Kinra Relay each built are shared, spacing has roles and a
+check, and an optional Svelte layer writes the markup and carries the
+behaviour. No class, attribute or export is renamed or removed, but notices,
+toasts, switches and list rows look different after an upgrade; see
+[shared structure](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer)
+and [edges by meaning](docs/adoption.md#moving-to-08-edges-by-meaning).
 
 ### Added
 
 - `--kin-tone-bar-width` (3px), the width of the bar that carries a still
   block's tone.
+- `page.css`: `.kin-page`, `.kin-page-head`, `.kin-section` and
+  `.kin-section-head`, the one version of the heads Space and Relay each
+  built.
+- Row parts of `.kin-list`: a main control (`__main`) beside the trail, both
+  lighting the row; `__after`; item `data-tone`; list `data-rules` and
+  `data-trail="reveal"`.
+- Spacing roles: `--kin-gap-tight`, `-inline`, `-stack`, `-surface`, `-head`
+  and `-section`, `--kin-row-pad-block` and `-inline`, `--kin-surface-pad`,
+  `--kin-page-inset` and `--kin-page-max`.
+- `kinra-check-spacing`, a command that checks a product's CSS and component
+  styles against the spacing scale and radii it reads from the tokens, with
+  `off-scale:` reasons for deliberate exceptions and a `--strict` mode.
+- `.kin-icon`, `.kin-loading` and `.kin-dialog__fields`; a card title may be a
+  button that opens the card.
+- `@kinra/web/svelte`, an optional Svelte 5 layer: `Shell` and `ShellItem`
+  with the shell's whole behaviour list; `Page`, `PageHead`, `Section`,
+  `SectionHead`, `List`, `Row`, `Card`, `Empty`, `Loading` and `Skeleton`;
+  `Dialog`, `Drawer`, `confirm()` with `ConfirmHost`, `toast()` with
+  `Toaster`, and `Notice`; `Button`, `IconButton`, `Badge`, `Chip`, `Status`,
+  `Spinner`, `Icon`, `Field`, `Input`, `Select`, `Textarea`, `Check`,
+  `Radio`, `Switch`, `Segmented` and `Disclosure`. Svelte is an optional
+  peer.
 
 ### Changed
 
@@ -31,6 +57,16 @@ but notices, toasts and switches look different after an upgrade; see
   flight joins Kinra Space's sessions, and both keep the candidate's contract.
 - The principles, catalog and composing guide say which shape means what; the
   adoption map adds Kinra Thread.
+- List rows take the row roles: 8px above and below and 12px at their ends
+  (16px in a bounded list), where they took 12px and 8px.
+- Cards and notices take their inset from `--kin-surface-pad`; a compact
+  card's footer now matches its other parts at 16px.
+- Paragraphs inside a notice, empty-state or toast body keep their rhythm
+  without margins at the body's edges.
+- Design's own optical values off the spacing scale each carry an
+  `off-scale:` reason, and Design passes its own spacing check.
+- `/applications/` writes the shared heads in place of its reference-only
+  ones, and the catalog's `/svelte/` pages render the layer.
 
 ## [0.7.1] - 2026-11-14
 

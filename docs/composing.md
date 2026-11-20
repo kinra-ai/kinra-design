@@ -87,13 +87,67 @@ work surface:
   same. Keep the content inset even when a product's media intentionally
   reaches the edge.
 
-The page and section heads are reference-only, not exported application-head
-classes. What fills the shell stays local: routes, the column's contents, page
-measures, scroll restoration, saved state, action placement policy, gestures,
-safe-area readings beyond the shell's own and native-host behavior. A second
-product that looks similar is not evidence for promoting a registry candidate
-unless it proves the same responsibility; the shell was shared once three
-products had built the same one.
+The page and section heads are `.kin-page-head` and `.kin-section-head`
+(`page.css`), shared once Kinra Space and Kinra Relay had each built both;
+`.kin-page` holds the page at one inset and measure, and `.kin-section` spaces
+open sections. A Svelte product writes them with `Page`, `PageHead`, `Section`
+and `SectionHead` from the [Svelte layer](svelte.md), and the shell with
+`Shell`. What fills the shell stays local: routes, the column's contents,
+scroll restoration, saved state, action placement policy, gestures, safe-area
+readings beyond the shell's own and native-host behavior. A second product
+that looks similar is not evidence for promoting a registry candidate unless
+it proves the same responsibility; the shell was shared once three products
+had built the same one.
+
+## Space by role
+
+Spacing roles name the scale's steps by their job, so two products that space
+the same thing choose the same step. Use the role, not the step it resolves
+to, and override a role for a product or a region rather than copying its
+value.
+
+| Role                   | Step    | Job                                                                                  |
+| ---------------------- | ------- | ------------------------------------------------------------------------------------ |
+| `--kin-gap-tight`      | 4px     | a title to its line, a label to its value                                            |
+| `--kin-gap-inline`     | 8px     | side by side: an icon and its words, a group's buttons                               |
+| `--kin-gap-stack`      | 12px    | parts stacked inside one surface                                                     |
+| `--kin-gap-surface`    | 16px    | bounded surfaces beside each other, such as cards                                    |
+| `--kin-gap-head`       | 16px    | a section head to what it heads                                                      |
+| `--kin-gap-section`    | 40px    | open sections, with no surface between them                                          |
+| `--kin-row-pad-block`  | 8px     | a row's inset above and below; 4px in a compact list                                 |
+| `--kin-row-pad-inline` | 12px    | a row's inset at its ends; 16px in a bounded list                                    |
+| `--kin-surface-pad`    | 20px    | a card's or notice's inset; a compact card takes 16px                                |
+| `--kin-page-inset`     | 16–24px | the page's inset in the panel, by the window's width, up to `--kin-page-max` (80rem) |
+
+- **Every length is on the scale.** Padding, margins, gaps, insets and radii
+  take the scale's steps, through a role or `--kin-space-*`. Only the 1px and
+  2px hairlines sit under it. A value between two steps rounds: a repeated row
+  keeps its density and takes the smaller, a card may take the larger.
+- **A deliberate exception says why**, in a comment beginning `off-scale:` on
+  its line or the line before. Design's own optical values, such as a line
+  centred on a marker, carry one.
+- **Check it.** `kinra-check-spacing`, which the package installs, reads the
+  scale from Design's tokens and fails on a length off it, on an unknown
+  `--kin-*` name, and on an exception without a reason. Run it from the
+  product's own check: `npx kinra-check-spacing src`, with `--strict` to admit
+  only roles and steps, not raw lengths that happen to be on the scale.
+- **Corners nest.** A rounded surface inside another is flat, or rounds at the
+  outer radius less the padding between them: panel, then layer, then row.
+- **A rounded fill never meets a line.** In a list with rules
+  (`.kin-list[data-rules]`) a lit row fills edge to edge and square; a list of
+  rounded rows has no rules.
+
+## Rows that act
+
+A row opens, and its trail acts on it. Give the row a main control,
+`.kin-list__main` on its link or button (`Row` with `href` or `onopen`), and
+put its actions in `.kin-list__trail` beside it, never inside it: each is its
+own tab stop. Pointing at or focusing either lights the whole row. What the
+row opens goes in `.kin-list__after`, beneath it and inside its light. A row's
+still state is the tone bar (`data-tone`); the open row is a tint
+(`aria-current` on its main control), never an edge. A trail that should keep
+quiet until wanted takes `data-trail="reveal"` on the list: it keeps its
+room, so the name never moves, and shows on touch.
 
 ## Write titles as descriptions
 

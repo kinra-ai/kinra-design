@@ -76,3 +76,141 @@ These hold for every component, so a product can guess one from another.
 
 Product state, routes, data, copy and analytics stay with the product. A
 component that would need to know them takes a snippet or a callback instead.
+
+## The application
+
+`Shell` is the [application shell](catalog.md#application-shell-shellcss)
+with the behaviour the catalog lists under "Behaviour each product writes":
+the breakpoint and its first-paint guard, the fold and its chord, focus
+handed out of whatever a change hides, `inert`, Escape after the top layer,
+tips put away, links that close the drawer, the hairline and the scroller.
+The product fills its snippets (`home`, `pages`, `marks`, `column`, `foot`,
+`crumbs`, `end`, or a whole `bar`) and keeps the fold wherever it keeps
+preferences.
+
+```svelte
+<script lang="ts">
+  import { afterNavigate } from "$app/navigation";
+  import { page } from "$app/state";
+  import house from "@phosphor-icons/core/regular/house.svg?raw";
+  import { Icon, Shell, ShellItem } from "@kinra/web/svelte";
+
+  let { children } = $props();
+  let shell = $state<ReturnType<typeof Shell>>();
+  let folded = $state(preferences.folded);
+  afterNavigate(() => shell?.settle());
+</script>
+
+<Shell
+  bind:this={shell}
+  bind:folded
+  breakpoint="(max-width: 48rem)"
+  path={page.url.pathname}
+  onfold={(value) => save({ folded: value })}
+>
+  {#snippet pages()}
+    <ul>
+      <li>
+        <ShellItem href="/" label="Home" current={page.url.pathname === "/"}>
+          <Icon svg={house} />
+        </ShellItem>
+      </li>
+    </ul>
+  {/snippet}
+  {@render children()}
+</Shell>
+```
+
+- **The breakpoint is the product's.** `breakpoint` is a media query; the
+  shell reads it once mounted and on every change, and writes the matching
+  first-paint guard into the document's head, so the stylesheet and the
+  script can no longer disagree. Bind `narrow` to read the layout.
+- **Navigation.** A link followed in the drawer closes it and gives focus to
+  the page. A rail button that routes takes `navigates`. Pass the location as
+  `path` so a new page measures the hairline again; in SvelteKit also call
+  `settle()` from `afterNavigate`, since the router moves focus after the page
+  has changed. A plain Svelte product with its own router passes its route as
+  `path` and needs nothing more.
+- **The chord.** The shell answers ⌘B on a Mac and Ctrl+B elsewhere. A
+  product with a command palette that owns its keys sets `chord={false}` and
+  calls `toggle()` itself.
+- **What it holds can move it.** A part of the shell reads `shellState()` for
+  `narrow`, `folded` and `open`, and calls `fold()`, `drawer()`, `toggle()` or
+  `settle()`. The component exposes the same moves on `bind:this`.
+- **A scroller of the product's own.** When the page scrolls in an element
+  inside the page, such as a pane, pass `scroller` so the hairline measures
+  it.
+
+`ShellItem` is a rail item: its glyph, a count (`badge`) or state (`status`)
+on the glyph's corner, its name said as `label` and `says` together, its label
+in a labelled drawer, and its tip. Put each in an `li`.
+
+`Page`, `PageHead`, `Section` and `SectionHead` write
+[page anatomy](catalog.md#page-anatomy-pagecss). A `Section` labels itself by
+its head. `PageHead` defaults to an `h1`, `SectionHead` to an `h2`; pass
+`level` where the outline needs another, such as an `h3` in a dialog. Bind
+`heading` to move focus to it, for example after the thing focus was on is
+removed.
+
+## Collections
+
+- `List` and `Row`: a row with `href` or `onopen` has a main control and a
+  trail beside it, both lighting the whole row
+  ([rows that act](composing.md#rows-that-act)). Without either, the row only
+  reads. `current` marks the open row; `tone` draws its still state; `after`
+  holds what it opens.
+- `Card`: with `href` or `onopen` its title opens it and the whole card
+  answers the pointer, while actions in its body and footer stay above.
+- `Empty`: with a title the full shape; without one a sentence, which inside a
+  list takes `as="li"`.
+- `Loading` shows its shape only after `delay` (200ms), so a quick read never
+  flashes, and says its `label` meanwhile. `Skeleton` is one placeholder.
+
+## Overlays and messages
+
+- `Dialog` opens with `bind:open`. It takes first focus to `initialFocus`,
+  else the first control in its body, else its title, never the close button;
+  it gives focus back to whatever held it, unless that has gone or stands
+  behind something inert. Escape, the close button and, with `light`, the
+  backdrop ask `canClose` first, and nothing closes while `busy`. With
+  `onsubmit` its body is a form whose fields wait while `busy`; the footer
+  snippet receives `{ form, close }`.
+- `Drawer` is a dialog from an edge (`side`), closed by its backdrop.
+- `confirm({ title, body, items, action, tone })` resolves `true` or `false`.
+  Mount one `ConfirmHost`. Its focus starts on the way back, Escape answers no,
+  and a new request answers the one before it no.
+- `toast({ title, body, tone, action, duration })` raises a toast; mount one
+  `Toaster` outside the shell. Its time stops while the reader points at or
+  focuses it, an error stays until dismissed, and every toast has a dismiss
+  button.
+- `Notice` stays in the page. Pass `role="status"` or `role="alert"` when it
+  arrives after the page has loaded.
+
+## Forms
+
+`Field` names one control and wires its hint and error: the control gets the
+field's `id`, `aria-describedby`, `aria-invalid` while there is an error, and
+`required`. `Input`, `Select` and `Textarea` take these on their own inside a
+field; any other control takes them from the snippet's argument, or reads
+`fieldControl()`. `Check`, `Radio`, `Switch` and `Segmented` wrap native
+inputs, so the keyboard and forms behave as the platform does.
+
+## Icons
+
+`Icon` sizes a product's own glyph to 16, 20 or 24 pixels (`size`), hides it
+from assistive technology, and with `along` mirrors one that points along the
+line. The products keep their own icon sets; Design does not ship one.
+
+## What the layer is checked against
+
+- `svelte-check` with strict settings types every component.
+- The contract check holds the conventions: every component exported and
+  typed, no `<style>`, no class outside `kin-`, no import beyond Svelte, and a
+  hand-written declaration beside every helper, so a product's TypeScript
+  settings never meet the layer's source.
+- The catalog renders every component on the server and hydrates it, and the
+  browser tests in Chromium and WebKit drive them there: `/svelte/controls/`,
+  and `/svelte/shell/`, a whole application built from the layer alone.
+- A packed copy installed into a plain Vite and Svelte consumer, under
+  `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`, type-checks
+  and builds for the server and the browser.

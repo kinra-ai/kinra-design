@@ -230,6 +230,65 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
   terminal-like text at 1.3 or less where its lines should be continuous.
   Kinra Sans and Kinra Serif leave these characters out.
 
+## Moving to 0.8: shared structure and the Svelte layer
+
+Prepared for 0.8.0 with the edges below. Everything here is additive except
+two small changes to existing spacing:
+
+- `.kin-list__item` takes the row roles, 8px above and below and 12px at its
+  ends (16px in a bounded list), where it took 12px and 8px; its minimum
+  height is unchanged.
+- A compact card's footer takes 16px all round, as its other parts do,
+  through `--kin-surface-pad`.
+
+What arrives:
+
+- `page.css`: `.kin-page`, `.kin-page-head`, `.kin-section` and
+  `.kin-section-head` ([page anatomy](catalog.md#page-anatomy-pagecss)).
+- Row parts of `.kin-list`: `__main`, `__after`, item `data-tone`, list
+  `data-rules` and `data-trail="reveal"`
+  ([rows that act](composing.md#rows-that-act)).
+- Spacing roles ([space by role](composing.md#space-by-role)) and the
+  `kinra-check-spacing` command.
+- `.kin-icon`, `.kin-loading` and `.kin-dialog__fields`.
+- `@kinra/web/svelte`, the optional [Svelte layer](svelte.md).
+
+Per product:
+
+- **Kinra Space** moves its `.page-head`, `.section-heading` and
+  `.section-head` CSS to the shared heads, or its `PageHead`, `SectionHead`,
+  `Row`, `Card`, `Disclosure`, `Empty`, `Loading`, `Confirm` and shell wiring
+  to the layer's, and retires `scripts/check-layout-css.mjs` with its
+  suppressions file for `npx kinra-check-spacing --strict src`. Read
+  2026-11-20 at `db1eeae3`, the strict check finds 21 lengths in about 16
+  declarations. Fifteen of Space's 28 suppressions go away, since zero in a
+  fallback passes; the rest, and a few its own script never reached (insets,
+  radii, pages outside `src/styles`), need a value on the scale or an
+  `off-scale:` reason. Its interface guide's
+  page and section head rules point at the catalog's.
+- **Kinra Relay** moves its inline `.page-head` and `.section-head` to the
+  shared heads, its dialog, toasts and shell wiring to the layer's, and
+  retires `scripts/scale.py` for `npx kinra-check-spacing src`. The default
+  mode keeps Relay's own rule, on-scale lengths; it also checks insets and
+  scroll margins, which `scale.py` did not, and finds 20 values in 19
+  declarations there, read 2026-11-20 at `6d804088`. Its
+  five `off-scale:` reasons carry over. Moving to `Shell` brings the
+  first-paint guard Relay lacks, Escape that waits for a modal, and a chord
+  that refuses both modifiers.
+- **Kinra Thread** gains a drawer, a fold and a hairline by moving its frame
+  to `Shell`; today its sidebar stands beside the page on a phone.
+- **Kinra Home** moves its shell wiring, the closest copy of the reference,
+  to `Shell`, keeping its router by passing its route as `path`.
+
+### When a product finds a Design problem
+
+Fix it in Design and pin the new commit; do not override it locally and log
+it as Design's work. Relay's notice edge and Space's row parts both waited in
+a product's journal while the next product copied the workaround. A product
+pass that changes how something shared looks or behaves either lands in
+Design first or records why it cannot, and updates the adoption map below in
+the same pass.
+
 ## Moving to 0.8: edges by meaning
 
 Prepared for 0.8.0 and not yet released. On 2026-11-20 Blake gave each small
