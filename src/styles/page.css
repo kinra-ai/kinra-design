@@ -1,0 +1,192 @@
+@import "./tokens.css";
+
+/*
+ * Page anatomy: the page inside an application's panel, its head, and the
+ * sections that follow it. Kinra Space and Kinra Relay each built a page
+ * head and a section head of their own, under the same names and to
+ * different rules; these are the one version both use.
+ *
+ * A page head names the work: its title, a quiet summary beside it, its
+ * actions at the end, and one description on the next line. A section head
+ * does the same one step down, with compact actions. Both wrap by the room
+ * they have and keep the DOM's reading order.
+ */
+
+@layer kinra.components {
+	/* The work in an application's panel, at one inset and measure. */
+	.kin-page {
+		box-sizing: border-box;
+		inline-size: 100%;
+		margin-inline: auto;
+		max-inline-size: var(--kin-page-max);
+		min-inline-size: 0;
+		padding: var(--kin-page-inset);
+		padding-block-end: max(
+			var(--kin-page-inset),
+			var(--kin-shell-safe-bottom, 0px)
+		);
+	}
+
+	.kin-page > .kin-page-head {
+		margin-block-end: var(--kin-space-5);
+	}
+
+	/* Page head */
+
+	.kin-page-head {
+		align-items: baseline;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-gap-inline) var(--kin-gap-stack);
+		min-inline-size: 0;
+	}
+
+	.kin-page-head__lead {
+		align-self: center;
+		display: inline-flex;
+		flex: none;
+	}
+
+	.kin-page-head__title {
+		color: var(--kin-color-text);
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-section);
+		font-weight: var(--kin-weight-heading);
+		letter-spacing: var(--kin-tracking-heading);
+		line-height: var(--kin-leading-heading);
+		margin: 0;
+		min-inline-size: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.kin-page-head__summary,
+	.kin-section-head__summary {
+		color: var(--kin-color-text-muted);
+		font-family: var(--kin-font-ui);
+		font-size: var(--kin-text-sm);
+		font-variant-numeric: tabular-nums;
+		margin: 0;
+		overflow-wrap: anywhere;
+	}
+
+	/* The actions keep the end edge, on the title's line or the next. */
+	.kin-page-head__actions,
+	.kin-section-head__actions {
+		align-items: center;
+		align-self: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-gap-inline);
+		justify-content: flex-end;
+		margin-inline-start: auto;
+		max-inline-size: 100%;
+	}
+
+	.kin-page-head__description,
+	.kin-section-head__description {
+		color: var(--kin-color-text-muted);
+		flex-basis: 100%;
+		font-size: var(--kin-text-sm);
+		line-height: 1.55;
+		margin: 0;
+		max-inline-size: var(--kin-measure-prose);
+	}
+
+	/* Sections: open groups of the page, spaced by room rather than rules. */
+
+	.kin-section {
+		align-content: start;
+		display: grid;
+		gap: var(--kin-gap-head);
+		min-inline-size: 0;
+	}
+
+	.kin-section + .kin-section {
+		margin-block-start: var(--kin-gap-section);
+	}
+
+	.kin-section-head {
+		align-items: baseline;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--kin-gap-tight) var(--kin-gap-stack);
+		min-inline-size: 0;
+	}
+
+	.kin-section-head__title {
+		align-items: center;
+		color: var(--kin-color-text);
+		display: inline-flex;
+		font-family: var(--kin-font-heading);
+		font-size: var(--kin-text-lg);
+		font-weight: var(--kin-weight-strong);
+		gap: var(--kin-gap-inline);
+		line-height: var(--kin-leading-heading);
+		margin: 0;
+		min-inline-size: 0;
+		overflow-wrap: anywhere;
+	}
+
+	/* A group's state is its square, beside its name. */
+	.kin-section-head[data-tone] > .kin-section-head__title::before {
+		background: var(--kin-section-tone, var(--kin-color-text-muted));
+		border-radius: 1px;
+		content: "";
+		flex: none;
+		block-size: var(--kin-mark-size);
+		inline-size: var(--kin-mark-size);
+	}
+
+	.kin-section-head[data-tone="primary"] {
+		--kin-section-tone: var(--kin-color-primary);
+	}
+
+	.kin-section-head[data-tone="reason"] {
+		--kin-section-tone: var(--kin-color-reason);
+	}
+
+	.kin-section-head[data-tone="success"] {
+		--kin-section-tone: var(--kin-color-success);
+	}
+
+	.kin-section-head[data-tone="warning"] {
+		--kin-section-tone: var(--kin-color-warning);
+	}
+
+	.kin-section-head[data-tone="error"] {
+		--kin-section-tone: var(--kin-color-error);
+	}
+
+	/* A section's actions are compact, as a list row's trail is. */
+	.kin-section-head__actions .kin-button {
+		font-size: var(--kin-text-xs);
+		min-height: var(--kin-control-height-compact);
+		padding: var(--kin-space-1) var(--kin-space-3);
+	}
+
+	.kin-section-head__actions .kin-button--icon {
+		padding: 0;
+		width: var(--kin-control-height-compact);
+	}
+}
+
+@media (pointer: coarse) {
+	@layer kinra.components {
+		.kin-section-head__actions .kin-button {
+			min-height: var(--kin-hit-target);
+		}
+
+		.kin-section-head__actions .kin-button--icon {
+			width: var(--kin-hit-target);
+		}
+	}
+}
+
+@media (forced-colors: active) {
+	@layer kinra.components {
+		.kin-section-head[data-tone] > .kin-section-head__title::before {
+			background: CanvasText;
+			forced-color-adjust: none;
+		}
+	}
+}

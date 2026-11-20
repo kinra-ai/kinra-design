@@ -195,6 +195,7 @@ const styleEntries = [
 	"./feedback.css",
 	"./overlays.css",
 	"./data.css",
+	"./page.css",
 	"./prose.css",
 	"./shell.css",
 ];

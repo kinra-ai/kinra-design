@@ -276,6 +276,23 @@
 	--kin-space-11: 5rem;
 	--kin-space-12: 6.5rem;
 
+	/*
+	 * Spacing roles name the steps by their job, so two products that space
+	 * the same thing choose the same step (composing.md, "Space by role").
+	 * Override a role for a product or a region; never copy its value.
+	 */
+	--kin-gap-tight: var(--kin-space-1);
+	--kin-gap-inline: var(--kin-space-2);
+	--kin-gap-stack: var(--kin-space-3);
+	--kin-gap-surface: var(--kin-space-4);
+	--kin-gap-head: var(--kin-space-4);
+	--kin-gap-section: var(--kin-space-8);
+	--kin-row-pad-block: var(--kin-space-2);
+	--kin-row-pad-inline: var(--kin-space-3);
+	--kin-surface-pad: var(--kin-space-5);
+	--kin-page-inset: clamp(var(--kin-space-4), 3vw, var(--kin-space-6));
+	--kin-page-max: 80rem;
+
 	/* Shape and depth */
 	--kin-radius-sm: 0.25rem;
 	--kin-radius-md: 0.5rem;

@@ -800,3 +800,13 @@
 .depth-layer {
 	padding: var(--kin-space-4);
 }
+
+/* The Svelte specimen's contract line, as Specimen.astro scopes it. */
+.specimen__contract {
+	color: var(--kin-color-text-muted);
+	display: block;
+	font-size: var(--kin-text-xs);
+	line-height: 1.65;
+	margin-top: var(--kin-space-2);
+	overflow-wrap: anywhere;
+}

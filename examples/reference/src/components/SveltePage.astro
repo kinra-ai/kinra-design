@@ -1,0 +1,23 @@
+---
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<ReferenceLayout title={title} description={description} current="Svelte">
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<p class="kin-eyebrow"><a href="/svelte/">@kinra/web/svelte</a></p>
+			<h1 class="kin-title">{title}</h1>
+			<p class="catalog-header__summary">{description}</p>
+		</div>
+	</header>
+	<div class="catalog-section kin-frame">
+		<slot />
+	</div>
+</ReferenceLayout>
