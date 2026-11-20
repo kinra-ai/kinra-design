@@ -323,12 +323,158 @@ for (const file of svelteFiles) {
 	}
 }
 
+/*
+ * The public tokens are a contract. scripts/public-tokens.json lists every
+ * custom property tokens.css defines, so no token is renamed, dropped or
+ * added without a deliberate change to the list.
+ */
+const LIST = "scripts/public-tokens.json";
+const tokenList = JSON.parse(await readFile(path.join(root, LIST), "utf8"));
+const listed = Array.isArray(tokenList.tokens) ? tokenList.tokens : [];
+const listedNames = listed.map((token) => token?.name);
+const byName = new Map(listed.map((token) => [token?.name, token]));
+const VERSION = /^\d+\.\d+\.\d+$/;
+const FIELDS = new Set(["name", "since", "deprecated", "use"]);
+check(listed.length > 0, `${LIST} must list the public tokens`);
+for (const [index, token] of listed.entries()) {
+	const entry = typeof token === "object" && token !== null ? token : {};
+	const name = entry.name;
+	check(
+		typeof name === "string" && /^--kin-[a-z0-9-]+$/.test(name),
+		`${LIST}: token ${index} needs a --kin- name`,
+	);
+	for (const field of Object.keys(entry))
+		check(FIELDS.has(field), `${LIST}: ${name} has an unknown field ${field}`);
+	check(
+		VERSION.test(entry.since),
+		`${LIST}: ${name} needs since, the release it first shipped in`,
+	);
+	if ("deprecated" in entry) {
+		check(
+			VERSION.test(entry.deprecated),
+			`${LIST}: ${name} must name the release that deprecated it`,
+		);
+		const instead = byName.get(entry.use);
+		check(
+			instead && !instead.deprecated,
+			`${LIST}: deprecated ${name} must name a current token to use instead`,
+		);
+	} else {
+		check(
+			!("use" in entry),
+			`${LIST}: ${name} names a token to use instead, but is not deprecated`,
+		);
+	}
+	if (index > 0)
+		check(
+			listedNames[index - 1] < name,
+			`${LIST}: ${name} is out of order or repeated; keep the list sorted by name`,
+		);
+}
+const tokensCss = stripStrings(
+	stripComments(
+		await readFile(path.join(root, "src/styles/tokens.css"), "utf8"),
+	),
+);
+const defined = new Set(
+	[...tokensCss.matchAll(/(?:^|[\s{;])(--kin-[\w-]+)\s*:/g)].map(
+		(match) => match[1],
+	),
+);
+for (const name of listedNames) {
+	check(
+		typeof name !== "string" || defined.has(name),
+		`src/styles/tokens.css no longer defines ${name}, which ${LIST} lists as public. Removing or renaming a token breaks the products that read it: restore it, or deprecate it first (keep its value and set "deprecated" and "use" in the list), and remove it from both files only after at least one minor release, with a migration note.`,
+	);
+}
+for (const name of defined) {
+	check(
+		byName.has(name),
+		`src/styles/tokens.css defines ${name}, which ${LIST} does not list. Every token tokens.css defines is public: add it to the list in name order, with "since" set to the release it first ships in, or keep it out of tokens.css.`,
+	);
+}
+
+/*
+ * @kinra/web/motion reads the motion terms where an element stands. It ships
+ * source with a hand-written motion.d.ts, loads outside a browser, and its
+ * types name every term tokens.css pairs with a curve.
+ */
+check(
+	packageJson.files.includes("src/motion"),
+	"package files must include src/motion",
+);
+check(
+	packageJson.exports["./motion"] === "./src/motion/motion.js",
+	"package must export ./motion as ./src/motion/motion.js",
+);
+const motionTypes = await readFile(
+	path.join(root, "src/motion/motion.d.ts"),
+	"utf8",
+);
+let reader;
+try {
+	reader = await import(
+		pathToFileURL(path.join(root, "src/motion/motion.js")).href
+	);
+} catch (error) {
+	check(
+		false,
+		`src/motion/motion.js must import without a browser: ${error.message}`,
+	);
+}
+const typed = new Set(
+	[...motionTypes.matchAll(/export (?:declare )?function (\w+)\(/g)].map(
+		(match) => match[1],
+	),
+);
+for (const name of reader ? Object.keys(reader) : []) {
+	check(
+		typed.has(name),
+		`src/motion/motion.d.ts must declare ${name}(): consumers must not type-check the source`,
+	);
+}
+for (const name of reader ? typed : []) {
+	check(
+		typeof reader[name] === "function",
+		`src/motion/motion.d.ts declares ${name}(), which src/motion/motion.js does not export`,
+	);
+}
+// The string literals of a union type the declarations export.
+const union = (type) => {
+	const body =
+		new RegExp(`export type ${type} =([^;]+);`).exec(motionTypes)?.[1] ?? "";
+	return new Set([...body.matchAll(/"([\w-]+)"/g)].map((match) => match[1]));
+};
+const terms = union("Term");
+const paired = [...defined]
+	.filter((name) => name.startsWith("--kin-motion-"))
+	.filter((name) => !byName.get(name)?.deprecated)
+	.map((name) => name.slice("--kin-motion-".length));
+for (const term of paired) {
+	check(
+		terms.has(term),
+		`src/motion/motion.d.ts: Term omits ${term}, which tokens.css pairs as --kin-motion-${term}`,
+	);
+}
+for (const term of terms) {
+	check(
+		paired.includes(term),
+		`src/motion/motion.d.ts: Term names ${term}, but tokens.css defines no --kin-motion-${term}`,
+	);
+}
+for (const loop of union("Loop")) {
+	check(
+		terms.has(loop),
+		`src/motion/motion.d.ts: Loop names ${loop}, which is not a term`,
+	);
+}
+
 if (failures.length > 0) {
 	console.error("Design contract check failed:");
 	for (const failure of failures) console.error(`- ${failure}`);
 	process.exitCode = 1;
 } else {
 	console.log(
-		`Design contract check passed (${items.length} registry items, ${styleFiles.length} style files).`,
+		`Design contract check passed (${items.length} registry items, ${styleFiles.length} style files, ${listed.length} public tokens).`,
 	);
 }
