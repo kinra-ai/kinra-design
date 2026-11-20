@@ -88,6 +88,8 @@
 }
 .kin-pattern-corner-key__layer {
 	color: var(--kin-pattern-key-ink);
+	/* signature: the key's ink changes between faces over 160ms, linear, as
+	   Kinra Space's key draws it. */
 	transition: color 160ms linear;
 }
 .kin-pattern-corner-key__layer--on {
@@ -126,8 +128,10 @@
 	stroke-width: var(--kin-pattern-key-trace-width);
 	stroke-linecap: round;
 	stroke-dasharray: 24 76;
+	/* signature: the light's colour follows the key's ink, 160ms and linear;
+	   its dash closes into a ring on the close term. */
 	transition:
-		stroke-dasharray var(--kin-duration-close) var(--kin-ease-out),
+		stroke-dasharray var(--kin-motion-close),
 		stroke 160ms linear;
 }
 .kin-pattern-corner-key__layer--on .kin-pattern-corner-key__trace path {
@@ -138,7 +142,7 @@
 	opacity: 1;
 }
 .kin-pattern-corner-key[data-trace] .kin-pattern-corner-key__trace path {
-	animation: kin-pattern-key-trace var(--kin-duration-trace) linear infinite;
+	animation: kin-pattern-key-trace var(--kin-motion-trace) infinite;
 }
 /* The fill's copy of the light shows only where the fill does, so it runs
      only while the fill is out of its corner; the engine sets it going again

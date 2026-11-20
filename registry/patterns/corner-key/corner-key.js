@@ -15,11 +15,66 @@ const LOOKS = {
 	watching: { glyph: "arrow", ink: "faint" },
 	waiting: { glyph: "dots", pulse: true },
 };
+/*
+ * SIGNATURE: the key's own timing (docs/motion.md#signatures), defined once,
+ * here. Each belongs to the key's drawing and no term carries it. The terms
+ * the key moves by, bloom, morph and close, and the standard curve its spine
+ * folds on, are read from the tokens each time the key measures itself.
+ */
+const SIGNATURE = Object.freeze({
+	// signature: the icon's own gesture. It kicks up and back over 340ms as a
+	// message leaves, and rises into a blooming fill 20ms behind it.
+	glyph: { duration: 340, kick: "cubic-bezier(0.3, 0, 0.2, 1)", lag: 20 },
+	// signature: the fill flashes once as it lands, for as long as the
+	// deliberate step of the duration scale.
+	flash: { duration: "--kin-duration-deliberate", easing: "ease-out" },
+	// signature: a morph's strokes leave 18ms apart, so the icon turns as one
+	// shape rather than in lockstep.
+	strokes: { step: 18 },
+	// signature: between a line icon and the solid Stop, the strokes fold into
+	// one upright line by 45% of 400ms, and only then widen.
+	spine: { duration: 400, at: 0.45 },
+	// signature: a sent message's fill lifts out of the top over 260ms,
+	// gathering speed toward where the message went; the new icon follows 40ms
+	// behind.
+	lift: { duration: 260, easing: "cubic-bezier(0.4, 0, 1, 1)", follow: 40 },
+	// signature: a fill that is no longer possible falls back into its corner
+	// over 200ms, on the lift's curve.
+	retract: { duration: 200, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+	// signature: when a turn ends the icon waits 180ms, so its light is seen to
+	// close first, and the closing state outlasts the close by 20ms, so the
+	// ring is whole before it clears.
+	ended: { wait: 180, grace: 20 },
+	// signature: while the connection comes back the three dots dim in turn,
+	// 175ms apart, each over 1050ms.
+	reconnect: { duration: 1050, step: 175, easing: "ease-in-out" },
+	// signature: a dwell, not a motion. After expectSent(), the next change
+	// within 1.5s is the message leaving.
+	sent: 1500,
+});
+// The terms the key moves by (docs/motion.md), each a duration and a curve.
+const TERMS = ["bloom", "morph", "close"];
+// A custom property on the key, which must come from Design's tokens.
+function token(style, name) {
+	const value = style.getPropertyValue(name).trim();
+	if (!value)
+		throw new Error(
+			`Corner key: ${name} is not set; load @kinra/web/styles/tokens.css.`,
+		);
+	return value;
+}
+const milliseconds = (value) =>
+	parseFloat(value) * (value.endsWith("ms") ? 1 : 1000);
+// A term's duration from --kin-duration-<term>, and its curve from
+// --kin-ease-<term> or, where the term has no curve of its own, its pair.
+function term(style, name) {
+	const time = token(style, `--kin-duration-${name}`);
+	const easing =
+		style.getPropertyValue(`--kin-ease-${name}`).trim() ||
+		token(style, `--kin-motion-${name}`).replace(/^[\d.]+m?s\s*/, "");
+	return { duration: milliseconds(time), easing };
+}
 const STROKE = 2.25;
-const EASE_IN = "cubic-bezier(0.4, 0, 1, 1)";
-const EASE_MORPH = "cubic-bezier(0.4, 0, 0, 1)";
-const EASE_BLOOM = "cubic-bezier(0.2, 0, 0, 1)";
-const EASE_FOLD = "cubic-bezier(0.4, 0, 0.2, 1)";
 const line = (x1, y1, x2, y2, w = STROKE, r = w / 2) => ({
 	x1,
 	y1,
@@ -140,19 +195,11 @@ export class KeyEngine {
 	slots;
 	reduce;
 	resizeObserver;
-	onMotion = () => {
-		if (this.face) this.set(this.face, { instant: true, force: true });
-	};
-	motion = {
-		bloom: 260,
-		retract: 200,
-		lift: 260,
-		morph: 320,
-		fold: 400,
-		close: 300,
-		blink: 480,
-	};
-	easing = { bloom: EASE_BLOOM, lift: EASE_IN, morph: EASE_MORPH };
+	// The preference changed: measure again and redraw the face in place.
+	onMotion = () => this.resize();
+	// Bloom, morph and close as { duration, easing }, the flash's length and
+	// the spine's first curve, read from the key's tokens by measure().
+	motion = {};
 	face;
 	glyph;
 	turn = false;
@@ -222,23 +269,13 @@ export class KeyEngine {
 	}
 	// The icon is 44% of the key: 21px with a 2px stroke in a 48px key. The
 	// light runs just inside the key's own edge and bends with its one rounded
-	// corner, which is the end corner of the surface it sits in.
+	// corner, which is the end corner of the surface it sits in. The terms come
+	// from the tokens on the key itself, so a product's calibration reaches it.
 	measure() {
 		const style = getComputedStyle(this.key);
-		const duration = (name, fallback) => {
-			const value = style.getPropertyValue("--kin-duration-" + name).trim();
-			const number = parseFloat(value);
-			return Number.isFinite(number)
-				? number * (value.endsWith("ms") ? 1 : 1000)
-				: fallback;
-		};
-		for (const name of ["bloom", "retract", "lift", "morph", "fold", "close"])
-			this.motion[name] = duration(name, this.motion[name]);
-		this.motion.blink = duration("deliberate", this.motion.blink);
-		for (const name of ["bloom", "lift", "morph"])
-			this.easing[name] =
-				style.getPropertyValue("--kin-ease-" + name).trim() ||
-				this.easing[name];
+		for (const name of TERMS) this.motion[name] = term(style, name);
+		this.motion.flash = milliseconds(token(style, SIGNATURE.flash.duration));
+		this.motion.standard = token(style, "--kin-ease-standard");
 		const size = this.key.offsetWidth || 48;
 		const icon = size * 0.44;
 		this.u = icon / 24;
@@ -346,20 +383,18 @@ export class KeyEngine {
 			if (!timing) return;
 			if (middle) {
 				const turn = this.css(middle);
+				const { standard, morph } = this.motion;
+				const at = SIGNATURE.spine.at;
 				const options = {
-					duration: this.motion.fold,
+					duration: SIGNATURE.spine.duration,
 					delay: timing.delay,
 					fill: "backwards",
 				};
 				slot.nodes.forEach((node) =>
 					node.animate(
 						[
-							{ transform: start.transform, easing: EASE_FOLD },
-							{
-								transform: turn.transform,
-								offset: 0.45,
-								easing: this.easing.morph,
-							},
+							{ transform: start.transform, easing: standard },
+							{ transform: turn.transform, offset: at, easing: morph.easing },
 							{ transform: end.transform },
 						],
 						options,
@@ -368,8 +403,8 @@ export class KeyEngine {
 				slot.bars.forEach((bar) =>
 					bar.animate(
 						[
-							{ ...start.bar, easing: EASE_FOLD },
-							{ ...turn.bar, offset: 0.45, easing: this.easing.morph },
+							{ ...start.bar, easing: standard },
+							{ ...turn.bar, offset: at, easing: morph.easing },
 							end.bar,
 						],
 						options,
@@ -380,7 +415,7 @@ export class KeyEngine {
 			const options = {
 				duration: timing.duration,
 				delay: timing.delay + index * timing.stagger,
-				easing: this.easing.morph,
+				easing: this.motion.morph.easing,
 				fill: "backwards",
 			};
 			slot.nodes.forEach((node) =>
@@ -420,18 +455,17 @@ export class KeyEngine {
 			() => {},
 		);
 	}
-	// Waking: the fill grows out of the pinned corner and blinks once as it lands.
+	// Waking: the fill grows out of the pinned corner and flashes once as it
+	// lands.
 	bloom() {
 		const now = this.readFill();
+		const { bloom } = this.motion;
 		this.settleGlyphs();
 		this.lit(true);
 		this.fill.style.clipPath = clip([0, 0, 0, 0]);
 		this.fill.animate(
 			[{ clipPath: clip(now) }, { clipPath: clip([0, 0, 0, 0]) }],
-			{
-				duration: this.motion.bloom,
-				easing: this.easing.bloom,
-			},
+			{ duration: bloom.duration, easing: bloom.easing },
 		);
 		this.flash.animate(
 			[
@@ -440,7 +474,7 @@ export class KeyEngine {
 				{ opacity: 0.38, offset: 0.36 },
 				{ opacity: 0 },
 			],
-			{ duration: this.motion.blink, easing: "ease-out" },
+			{ duration: this.motion.flash, easing: SIGNATURE.flash.easing },
 		);
 		this.glyphs.forEach((glyph) =>
 			glyph.animate(
@@ -449,9 +483,9 @@ export class KeyEngine {
 					{ transform: "translateY(0px)" },
 				],
 				{
-					duration: 340,
-					delay: 20,
-					easing: this.easing.bloom,
+					duration: SIGNATURE.glyph.duration,
+					delay: SIGNATURE.glyph.lag,
+					easing: bloom.easing,
 					fill: "backwards",
 				},
 			),
@@ -465,8 +499,8 @@ export class KeyEngine {
 			this.fill.animate(
 				[{ clipPath: clip(now) }, { clipPath: clip(this.corner) }],
 				{
-					duration: this.motion.retract,
-					easing: this.easing.lift,
+					duration: SIGNATURE.retract.duration,
+					easing: SIGNATURE.retract.easing,
 				},
 			),
 		);
@@ -483,7 +517,10 @@ export class KeyEngine {
 					{ clipPath: clip(now) },
 					{ clipPath: clip([now[0], now[1], 100 - now[0], now[3]]) },
 				],
-				{ duration: this.motion.lift, easing: this.easing.lift },
+				{
+					duration: SIGNATURE.lift.duration,
+					easing: SIGNATURE.lift.easing,
+				},
 			),
 		);
 		this.glyphs.forEach((glyph) =>
@@ -493,7 +530,7 @@ export class KeyEngine {
 					{ transform: `translateY(${-this.u * 3}px)`, offset: 0.35 },
 					{ transform: "translateY(0px)" },
 				],
-				{ duration: 340, easing: "cubic-bezier(0.3, 0, 0.2, 1)" },
+				{ duration: SIGNATURE.glyph.duration, easing: SIGNATURE.glyph.kick },
 			),
 		);
 	}
@@ -507,7 +544,7 @@ export class KeyEngine {
 			dataset.trace = "closing";
 			this.fading = setTimeout(
 				() => delete this.key.dataset.trace,
-				this.motion.close + 20,
+				this.motion.close.duration + SIGNATURE.ended.grace,
 			);
 		} else delete dataset.trace;
 	}
@@ -515,15 +552,16 @@ export class KeyEngine {
 		this.loops.forEach((animation) => animation.cancel());
 		this.loops = [];
 		if (!look.pulse || this.still()) return;
+		const { reconnect } = SIGNATURE;
 		this.slots.slice(0, 3).forEach((slot, index) =>
 			this.loops.push(
 				slot.bars[0].animate(
 					[{ opacity: 1 }, { opacity: 0.25, offset: 0.45 }, { opacity: 1 }],
 					{
-						duration: 1050,
-						delay: index * 175,
+						duration: reconnect.duration,
+						delay: index * reconnect.step,
 						iterations: Infinity,
-						easing: "ease-in-out",
+						easing: reconnect.easing,
 					},
 				),
 			),
@@ -563,7 +601,7 @@ export class KeyEngine {
 		this.timers = [];
 		this.loops.forEach((animation) => animation.cancel());
 		this.loops = [];
-		const sent = performance.now() - this.sent < 1500;
+		const sent = performance.now() - this.sent < SIGNATURE.sent;
 		this.sent = -Infinity;
 		this.trace(light, ended && !still);
 		if (still) {
@@ -581,20 +619,21 @@ export class KeyEngine {
 		else if (prev.fill && !next.fill) {
 			if (sent || face === "sending") {
 				this.lift();
-				delay = 40;
+				delay = SIGNATURE.lift.follow;
 			} else this.retract();
 		}
-		if (ended) delay = 180;
+		if (ended) delay = SIGNATURE.ended.wait;
+		const { morph } = this.motion;
 		// Only a change of icon interrupts strokes that are still moving.
 		if (prev.glyph !== next.glyph) {
 			this.slots.forEach((slot) => this.read(slot));
 			this.morph(next.glyph, {
-				duration: this.motion.morph,
+				duration: morph.duration,
 				delay,
-				stagger: 18,
+				stagger: SIGNATURE.strokes.step,
 			});
 		}
 		if (next.pulse)
-			this.later(() => this.pulse(LOOKS[this.face]), delay + this.motion.morph);
+			this.later(() => this.pulse(LOOKS[this.face]), delay + morph.duration);
 	}
 }

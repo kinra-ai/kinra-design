@@ -62,11 +62,39 @@ an unavailable key to a visible explanation. The strokes are decorative and
 hidden from assistive technology. `faceNames` and `pressable` are defaults to
 adapt, not an application state machine.
 
-The engine observes size, corner, direction, and reduced-motion changes. A
-reduced-motion key changes in place and holds a complete outline. Forced
-colours retain the stroke ink and the separate inset focus ring. The motion
-reads the shared bloom, retract, lift, morph, fold, and close tokens.
+The engine observes size, corner, direction, and reduced-motion changes, and
+measures again on each. A reduced-motion key changes in place and holds a
+complete outline. Forced colours retain the stroke ink and the separate inset
+focus ring.
 
 Rename the copied classes and properties when product-specific choices enter.
 Other icons remain static; use this engine only for a control that changes
 meaning.
+
+## Motion
+
+The key moves by three terms of the
+[motion standard](../../../docs/motion.md), read from the tokens on the key
+each time it measures, so a product's calibration reaches it: its fill
+grows by bloom, its icon changes meaning by morph, and its light closes into
+a ring by close. Its light runs as a trace. Without the tokens the engine
+throws.
+
+Its other timings are signatures, the key's own gait, defined once in the
+`SIGNATURE` object in `corner-key.js`, or marked `signature:` in
+`corner-key.css`:
+
+| Signature         | Timing                                                             |
+| ----------------- | ------------------------------------------------------------------ |
+| Glyph kick        | 340ms on (0.3, 0, 0.2, 1); a bloom's rise follows its fill by 20ms |
+| Ink               | 160ms, linear, for the icon's ink and the light's colour           |
+| Flash             | `--kin-duration-deliberate`, ease-out                              |
+| Stroke step       | 18ms between a morph's strokes                                     |
+| Spine             | 400ms, folded upright by 45%                                       |
+| Lift and retract  | 260ms and 200ms on (0.4, 0, 1, 1); the icon follows a lift by 40ms |
+| A turn ending     | the icon waits 180ms; the closing state outlasts the close by 20ms |
+| Reconnecting dots | 1050ms each, 175ms apart, ease-in-out                              |
+
+With less motion every face changes at once, the light is a whole, still
+outline while work runs, and the reconnecting dots stand lit. Nothing loops
+but the light and the dots, and each only while its state holds.
