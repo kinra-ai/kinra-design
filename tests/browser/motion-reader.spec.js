@@ -160,7 +160,7 @@ test("without the stylesheet, reading names the missing token", async ({
 			}
 		}),
 	);
-	expect(errors[0]).toContain("--kin-duration-appear");
+	expect(errors[0]).toContain("--kin-motion-appear");
 	expect(errors[1]).toContain("--kin-duration-trace");
 	expect(errors[2]).toContain("--kin-duration-stagger");
 	for (const message of errors) expect(message).toContain("tokens.css");
@@ -182,7 +182,7 @@ test("a term the vocabulary lacks is refused by name", async ({ page }) => {
 			}
 		}),
 	);
-	expect(errors[0]).toContain("--kin-duration-fade");
+	expect(errors[0]).toContain("--kin-motion-fade");
 	expect(errors[1]).toContain("stagger(element)");
 	expect(errors[2]).toContain("needs an element");
 });
@@ -209,4 +209,34 @@ test("onReduced hears the preference change until it unsubscribes", async ({
 	await page.emulateMedia({ reducedMotion: "reduce" });
 	expect(await page.evaluate(() => window.reader.reduced())).toBe(true);
 	expect(await page.evaluate(() => window.heard)).toEqual([true, false]);
+});
+
+test("a duration set below a boundary, or computed, reads as the pair runs", async ({
+	page,
+}) => {
+	await open(page);
+	const read = await page.evaluate(() => {
+		const loose = document.createElement("div");
+		// Set without a register of its own: the pair, and so a transition
+		// naming it, keeps the expressive 360ms.
+		loose.style.setProperty("--kin-duration-appear", "900ms");
+		document.querySelector("#expressive").append(loose);
+		const computed = document.createElement("div");
+		computed.dataset.kinMotion = "expressive";
+		computed.style.setProperty("--kin-duration-appear", "calc(120ms * 3)");
+		document.body.append(computed);
+		loose.style.transition = "opacity var(--kin-motion-appear)";
+		return {
+			loose: window.reader.motion("appear", loose).ms,
+			runs: getComputedStyle(loose).transitionDuration,
+			typed: typeof CSSNumericValue !== "undefined",
+			computed:
+				typeof CSSNumericValue !== "undefined"
+					? window.reader.motion("appear", computed).ms
+					: null,
+		};
+	});
+	expect(read.loose).toBe(360);
+	expect(read.runs).toBe("0.36s");
+	if (read.typed) expect(read.computed).toBe(360);
 });

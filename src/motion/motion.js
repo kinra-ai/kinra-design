@@ -70,17 +70,19 @@ export function motion(term, element = globalThis.document?.documentElement) {
 			`${PREFIX}: stagger is the step between members arriving together, with no curve of its own. Read it with stagger(element).`,
 		);
 	const style = computed(element, `motion("${term}")`);
-	const ms = duration(style, `--kin-duration-${term}`);
 	const name = `--kin-motion-${term}`;
 	const pair = token(style, name);
-	// The pair is a duration and a curve, in either order. The duration comes
-	// from its own token, above; the pair gives the curve.
-	const parts = pair.match(/[^\s()]+(?:\([^()]*\))?/g) ?? [];
-	const curves = parts.filter((part) => !TIME.test(part.toLowerCase()));
-	if (curves.length > 1 || parts.length - curves.length !== 1)
+	// The pair is a duration and a curve, in either order. Both come from the
+	// pair, since that is what a transition naming it runs: a duration set
+	// below a register boundary changes --kin-duration-* but not the pair.
+	const parts = topLevel(pair);
+	const times = parts.filter(isTime);
+	const curves = parts.filter((part) => !isTime(part));
+	if (curves.length > 1 || times.length !== 1)
 		throw new SyntaxError(
 			`${PREFIX}: ${name} is "${pair}", not a duration and a curve`,
 		);
+	const ms = toMs(times[0], name, element.ownerDocument);
 	// A pair with no curve takes CSS's own default.
 	const css = curves[0] ?? "ease";
 	let ease;
@@ -105,7 +107,11 @@ export function period(loop, element = globalThis.document?.documentElement) {
 			`${PREFIX}: ${loop} is not a loop. The loops of work in flight are trace, sweep, pulse and pass.`,
 		);
 	const name = `--kin-duration-${loop}`;
-	const ms = duration(computed(element, `period("${loop}")`), name);
+	const ms = duration(
+		computed(element, `period("${loop}")`),
+		name,
+		element.ownerDocument,
+	);
 	if (ms > 0) return ms;
 	throw new RangeError(
 		`${PREFIX}: ${name} is 0ms, but a loop's period is never 0: it also times the loop's still form`,
@@ -117,7 +123,11 @@ export function period(loop, element = globalThis.document?.documentElement) {
  * where `element` stands: 0 in the productive register and with less motion.
  */
 export function stagger(element = globalThis.document?.documentElement) {
-	const ms = duration(computed(element, "stagger()"), "--kin-duration-stagger");
+	const ms = duration(
+		computed(element, "stagger()"),
+		"--kin-duration-stagger",
+		element.ownerDocument,
+	);
 	return reduced() ? 0 : ms;
 }
 
@@ -239,16 +249,70 @@ function token(style, name) {
 	);
 }
 
-function duration(style, name) {
-	const text = token(style, name);
-	const match = TIME.exec(text.toLowerCase());
+function duration(style, name, document) {
+	return toMs(token(style, name), name, document);
+}
+
+/** A value's parts at the top level, with any function kept whole. */
+function topLevel(value) {
+	const parts = [];
+	let depth = 0;
+	let part = "";
+	for (const character of value.trim()) {
+		if (character === "(") depth++;
+		if (character === ")") depth = Math.max(0, depth - 1);
+		if (depth === 0 && /\s/.test(character)) {
+			if (part) parts.push(part);
+			part = "";
+		} else part += character;
+	}
+	if (part) parts.push(part);
+	return parts;
+}
+
+/** Whether a part is a time: written in ms or s, or computed to one. */
+function isTime(part) {
+	const text = part.toLowerCase();
+	return TIME.test(text) || /^(calc|min|max|clamp)\(/.test(text);
+}
+
+function toMs(text, name, document) {
+	const match = TIME.exec(text.trim().toLowerCase());
 	// Shift the decimal point rather than multiply, since 1.005 * 1000 is
 	// 1004.9999999999999; adding 0 turns -0ms into 0.
-	const ms = match
+	let ms = match
 		? Number(
 				`${match[1]}e${Number(match[2] ?? 0) + (match[3] === "s" ? 3 : 0)}`,
 			) + 0
 		: NaN;
+	// A computed time, such as calc(120ms * 1.5), is worked out by the
+	// browser's typed CSS where it has one.
+	if (!match && typeof globalThis.CSSNumericValue?.parse === "function") {
+		try {
+			ms = globalThis.CSSNumericValue.parse(text.trim()).to("ms").value + 0;
+		} catch {
+			ms = NaN;
+		}
+	}
+	// Where typed CSS cannot convert it, the browser computes it on a hidden
+	// probe, only when a computed time is met.
+	if (!match && !Number.isFinite(ms) && document?.body) {
+		const probe = document.createElement("span");
+		probe.style.cssText = `position: absolute; visibility: hidden; transition-duration: ${text}`;
+		document.body.append(probe);
+		const computed = probe.ownerDocument.defaultView
+			.getComputedStyle(probe)
+			.transitionDuration.trim()
+			.toLowerCase();
+		probe.remove();
+		const seconds = TIME.exec(computed);
+		if (seconds && probe.style.transitionDuration) {
+			ms =
+				Number(
+					`${seconds[1]}e${Number(seconds[2] ?? 0) + (seconds[3] === "s" ? 3 : 0)}`,
+				) + 0;
+		}
+	}
 	if (Number.isFinite(ms) && ms >= 0) return ms;
 	throw new SyntaxError(
 		`${PREFIX}: ${name} is "${text}", not a duration in ms or s`,

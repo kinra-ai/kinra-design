@@ -290,8 +290,9 @@ test("a duration reads in ms, written in ms or s", () => {
 	assert.equal(read("120MS"), 120);
 	assert.equal(read("1e3ms"), 1000);
 	assert.ok(Object.is(read("-0ms"), 0));
+	// Node has no typed CSS, so a computed time cannot be worked out here.
 	for (const time of ["", "0", "120", "-5ms", "1e400s", "calc(1s)", "fast"]) {
-		assert.throws(() => read(time), /--kin-duration-appear/, time);
+		assert.throws(() => read(time), /--kin-motion-appear/, time);
 	}
 	const pass = standing({ "--kin-duration-pass": "1.05s" });
 	assert.equal(reader.period("pass", pass), 1050);
@@ -299,6 +300,19 @@ test("a duration reads in ms, written in ms or s", () => {
 		() => reader.period("pass", standing({ "--kin-duration-pass": "0ms" })),
 		/never 0/,
 	);
+});
+
+test("motion() reads the duration a transition runs: the pair's", () => {
+	// Set below a register boundary, --kin-duration-appear changes but the
+	// inherited pair does not, and a transition naming the pair runs 360ms.
+	const read = reader.motion(
+		"appear",
+		standing({
+			"--kin-duration-appear": "900ms",
+			"--kin-motion-appear": "360ms cubic-bezier(0.16, 1, 0.3, 1)",
+		}),
+	);
+	assert.equal(read.ms, 360);
 });
 
 test("motion() takes the curve from the term's pair", () => {
