@@ -467,7 +467,7 @@
 	}
 
 	.kin-status[data-state="running"]::before {
-		animation: kin-status-pulse 1.8s var(--kin-ease-standard) infinite;
+		animation: kin-status-pulse var(--kin-motion-pulse) infinite;
 		background: var(--kin-color-primary);
 		box-shadow: var(--kin-glow-primary);
 	}

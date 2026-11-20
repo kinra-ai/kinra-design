@@ -39,7 +39,7 @@
 		padding: var(--kin-space-2) 0;
 		position: relative;
 		text-decoration: none;
-		transition: color var(--kin-duration-fast) ease;
+		transition: color var(--kin-motion-control);
 		white-space: nowrap;
 	}
 
@@ -54,7 +54,7 @@
 		height: 2px;
 		inset-inline: 0;
 		position: absolute;
-		transition: background var(--kin-duration-fast) ease;
+		transition: background var(--kin-motion-control);
 	}
 
 	.kin-tabs__tab:is(
@@ -214,8 +214,8 @@
 		padding: 0 var(--kin-space-3);
 		text-decoration: none;
 		transition:
-			background var(--kin-duration-fast) ease,
-			border-color var(--kin-duration-fast) ease;
+			background var(--kin-motion-control),
+			border-color var(--kin-motion-control);
 		border-radius: var(--kin-radius-row);
 	}
 
@@ -287,8 +287,8 @@
 		text-align: start;
 		text-decoration: none;
 		transition:
-			background var(--kin-duration-fast) ease,
-			color var(--kin-duration-fast) ease;
+			background var(--kin-motion-control),
+			color var(--kin-motion-control);
 		width: 100%;
 		border-radius: var(--kin-radius-row);
 	}

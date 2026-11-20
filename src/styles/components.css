@@ -97,9 +97,9 @@
 		padding: var(--kin-space-1) var(--kin-space-3);
 		text-decoration: none;
 		transition:
-			background var(--kin-duration-fast) ease,
-			border-color var(--kin-duration-fast) ease,
-			color var(--kin-duration-fast) ease;
+			background var(--kin-motion-control),
+			border-color var(--kin-motion-control),
+			color var(--kin-motion-control);
 		background: var(--kin-surface-lift);
 		border: 1px solid transparent;
 	}
@@ -333,8 +333,8 @@
 		min-width: 0;
 		padding-inline: var(--kin-control-padding-inline);
 		transition:
-			background var(--kin-duration-fast) ease,
-			border-color var(--kin-duration-fast) ease;
+			background var(--kin-motion-control),
+			border-color var(--kin-motion-control);
 		width: 100%;
 		background: var(--kin-surface-well);
 		border: 1px solid transparent;
@@ -539,8 +539,8 @@
 		margin: 0;
 		position: relative;
 		transition:
-			background var(--kin-duration-normal) var(--kin-ease-standard),
-			border-color var(--kin-duration-normal) var(--kin-ease-standard);
+			background var(--kin-motion-control),
+			border-color var(--kin-motion-control);
 		width: 2.625rem;
 		background: var(--kin-surface-lift-hover);
 		border: 1px solid transparent;
@@ -558,8 +558,8 @@
 		inset: 0.1875rem auto auto 0.1875rem;
 		position: absolute;
 		transition:
-			background var(--kin-duration-normal) var(--kin-ease-standard),
-			translate var(--kin-duration-normal) var(--kin-ease-out);
+			background var(--kin-motion-control),
+			translate var(--kin-motion-control);
 		width: 1rem;
 	}
 
@@ -676,8 +676,8 @@
 		position: relative;
 		text-decoration: none;
 		transition:
-			background var(--kin-duration-fast) ease,
-			color var(--kin-duration-fast) ease;
+			background var(--kin-motion-control),
+			color var(--kin-motion-control);
 		color: var(--kin-color-text-subtle);
 	}
 
@@ -894,7 +894,7 @@
 		list-style: none;
 		min-height: var(--kin-hit-target);
 		padding-block: var(--kin-space-3);
-		transition: color var(--kin-duration-fast) var(--kin-ease-standard);
+		transition: color var(--kin-motion-control);
 	}
 
 	.kin-disclosure summary:hover {
@@ -919,7 +919,7 @@
 		height: 0.45rem;
 		margin-inline-end: var(--kin-space-1);
 		transform: rotate(calc(45deg * var(--kin-flow, 1)));
-		transition: transform var(--kin-duration-normal) var(--kin-ease-standard);
+		transition: transform var(--kin-motion-control);
 		width: 0.45rem;
 	}
 

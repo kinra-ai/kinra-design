@@ -288,7 +288,7 @@
 	}
 
 	.kin-log__entry[data-live] .kin-log__marker {
-		animation: kin-log-working 1.8s var(--kin-ease-standard) infinite;
+		animation: kin-log-working var(--kin-motion-pulse) infinite;
 		box-shadow: var(--kin-glow-primary);
 	}
 
@@ -755,7 +755,7 @@
 	}
 
 	.kin-list__item[data-link] {
-		transition: background var(--kin-duration-fast) ease;
+		transition: background var(--kin-motion-control);
 	}
 
 	.kin-list__item[data-link]:hover {
