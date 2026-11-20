@@ -1,0 +1,113 @@
+---
+import SveltePage from "../../components/SveltePage.astro";
+
+const groups = [
+	{
+		title: "Application",
+		page: "/svelte/shell/",
+		pageName: "A whole application",
+		items: [
+			["Shell", "The shell and every behaviour the catalog asks for"],
+			["ShellItem", "A rail item with its name, count, state and tip"],
+			["Page", "The work in the panel, at the page inset and measure"],
+			["PageHead", "Title, summary, actions and one description"],
+			["Section", "An open group of the page, labelled by its head"],
+			["SectionHead", "A section's name, count, tone and compact actions"],
+		],
+	},
+	{
+		title: "Collections",
+		page: "/svelte/shell/",
+		pageName: "A whole application",
+		items: [
+			["List", "Rows of one kind, bounded, ruled or revealing their trails"],
+			["Row", "A main link or button, a trail beside it, what it opens"],
+			["Card", "A bounded item whose title can open it"],
+			["Empty", "What nothing means, full or as one sentence"],
+			["Loading", "The shape of what is coming, after a short wait"],
+			["Skeleton", "One placeholder"],
+		],
+	},
+	{
+		title: "Overlays and messages",
+		page: "/svelte/shell/",
+		pageName: "A whole application",
+		items: [
+			["Dialog", "A modal with guarded closing, first focus and a form body"],
+			["Drawer", "A dialog from an edge"],
+			["ConfirmHost", "Renders confirm(), a promise of yes or no"],
+			["Toaster", "Renders toast(), paused while read"],
+			["Notice", "A message that stays in the page"],
+		],
+	},
+	{
+		title: "Controls",
+		page: "/svelte/controls/",
+		pageName: "Controls",
+		items: [
+			["Button", "A button that never submits by accident, or a link"],
+			["IconButton", "An icon with a required name"],
+			["Badge", "A label for a category or bounded state"],
+			["Chip", "A toggle, or a value with its remove button"],
+			["Status", "A square and a word"],
+			["Spinner", "Work in flight, in words"],
+			["Icon", "A product's glyph at 16, 20 or 24 pixels"],
+			["Field", "Label, hint and error wired to one control"],
+			["Input", "A text control that joins its field"],
+			["Select", "A native select that joins its field"],
+			["Textarea", "A text area that joins its field"],
+			["Check", "A checkbox and its words"],
+			["Radio", "One radio of a bound group"],
+			["Switch", "A setting that takes effect at once"],
+			["Segmented", "One choice among a few peers"],
+			["Disclosure", "A summary that opens beneath itself"],
+		],
+	},
+];
+---
+
+<SveltePage
+	title="Svelte layer"
+	description="Svelte 5 components that write the catalog's markup and carry the behaviour each product used to write for itself. The CSS stays the contract; nothing here adds a style."
+>
+	<div class="kin-stack" data-space="loose">
+		<div class="kin-stack">
+			<p class="kin-body">
+				Import the styles once, then the components from
+				<code>@kinra/web/svelte</code>. Svelte is an optional peer; a product
+				that never imports the layer never needs it. Every page here renders on
+				the server and hydrates, as SvelteKit does. See
+				<code>docs/svelte.md</code> for the conventions every component keeps.
+			</p>
+		</div>
+		{
+			groups.map((group) => (
+				<section class="kin-section" aria-labelledby={`group-${group.title}`}>
+					<header class="kin-section-head">
+						<h2 class="kin-section-head__title" id={`group-${group.title}`}>
+							{group.title}
+						</h2>
+						<p class="kin-section-head__summary">{group.items.length}</p>
+						<div class="kin-section-head__actions">
+							<a class="kin-button" href={group.page}>
+								{group.pageName}
+							</a>
+						</div>
+					</header>
+					<ul class="kin-list" data-variant="bounded" data-rules>
+						{group.items.map(([name, says]) => (
+							<li class="kin-list__item">
+								<span class="kin-list__body">
+									<p class="kin-list__title">
+										<code>{name}</code>
+									</p>
+									<p class="kin-list__meta">{says}</p>
+								</span>
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		}
+	</div>
+</SveltePage>

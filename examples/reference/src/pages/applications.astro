@@ -7,7 +7,7 @@ import "../styles/examples.css";
 
 <ReferenceLayout
 	title="Applications"
-	description="Two reference-only applications using the same typography and compositions without sharing a product shell."
+	description="Two sample applications using the same heads, typography and compositions without sharing a product shell."
 	current="Applications"
 >
 	<header class="catalog-header">
@@ -21,9 +21,10 @@ import "../styles/examples.css";
 	</header>
 	<div class="catalog-section kin-frame kin-stack" data-space="loose">
 		<p class="kin-caption">
-			Illustrative, reference-only compositions, not package classes or registry
-			candidates. The page and section heads describe relationships; they do not
-			prescribe which product action goes where.
+			Illustrative compositions. The page and section heads are the shared
+			<code>.kin-page-head</code> and <code>.kin-section-head</code>
+			(<code>page.css</code>); the arrangements around them are the examples'
+			own, and the product still decides which action goes where.
 		</p>
 		<section
 			class="application-example"
@@ -42,14 +43,15 @@ import "../styles/examples.css";
 				<a class="kin-tabs__tab" href="#application-status">Reading states</a>
 			</nav>
 			<div class="application-example__page kin-stack" data-space="loose">
-				<header class="application-page-head">
-					<h2 class="kin-title" id="collection-title">Library</h2>
-					<p class="application-head-summary">4 entries · sample data</p>
-					<a
-						class="kin-button kin-button--quiet application-head-actions"
-						href="#application-status">Compare states</a
-					>
-					<p class="kin-caption application-head-description">
+				<header class="kin-page-head">
+					<h2 class="kin-page-head__title" id="collection-title">Library</h2>
+					<p class="kin-page-head__summary">4 entries · sample data</p>
+					<div class="kin-page-head__actions">
+						<a class="kin-button kin-button--quiet" href="#application-status"
+							>Compare states</a
+						>
+					</div>
+					<p class="kin-page-head__description">
 						Find an entry and inspect its details without leaving the
 						collection.
 					</p>
@@ -61,10 +63,12 @@ import "../styles/examples.css";
 					data-space="compact"
 					aria-labelledby="reading-title"
 				>
-					<header class="application-section-head">
-						<h3 class="kin-heading" id="reading-title">Reading states</h3>
-						<span class="application-head-summary">One bounded region</span>
-						<label class="kin-field application-head-actions"
+					<header class="kin-section-head">
+						<h3 class="kin-section-head__title" id="reading-title">
+							Reading states
+						</h3>
+						<p class="kin-section-head__summary">One bounded region</p>
+						<label class="kin-field kin-section-head__actions"
 							><span class="kin-field__label">Sample state</span><select
 								class="kin-select"
 								data-size="compact"
@@ -76,7 +80,7 @@ import "../styles/examples.css";
 								></select
 							></label
 						>
-						<p class="kin-caption application-head-description">
+						<p class="kin-section-head__description">
 							A failed read stays where it happened. This selector simulates
 							states without a service or timer.
 						</p>
@@ -153,14 +157,16 @@ import "../styles/examples.css";
 					data-space="loose"
 					id="application-work"
 				>
-					<header class="application-page-head">
-						<h2 class="kin-title" id="work-title">Release review</h2>
-						<p class="application-head-summary">2 checks · sample data</p>
-						<a
-							class="kin-button kin-button--quiet application-head-actions"
-							href="#application-checklist">Review checklist</a
-						>
-						<p class="kin-caption application-head-description">
+					<header class="kin-page-head">
+						<h2 class="kin-page-head__title" id="work-title">Release review</h2>
+						<p class="kin-page-head__summary">2 checks · sample data</p>
+						<div class="kin-page-head__actions">
+							<a
+								class="kin-button kin-button--quiet"
+								href="#application-checklist">Review checklist</a
+							>
+						</div>
+						<p class="kin-page-head__description">
 							A navigation region beside a work surface. No fixed rail,
 							resizing, saved state or viewport lock is implied.
 						</p>
@@ -172,14 +178,18 @@ import "../styles/examples.css";
 							id="application-checklist"
 							aria-labelledby="checklist-title"
 						>
-							<header class="application-section-head">
-								<h3 class="kin-heading" id="checklist-title">Checklist</h3><span
-									class="application-head-summary">2 items</span
-								><a
-									class="kin-button kin-button--ghost application-head-actions"
-									data-size="compact"
-									href="#application-details">Read details</a
-								><p class="kin-caption application-head-description">
+							<header class="kin-section-head">
+								<h3 class="kin-section-head__title" id="checklist-title">
+									Checklist
+								</h3>
+								<p class="kin-section-head__summary">2 items</p>
+								<div class="kin-section-head__actions">
+									<a
+										class="kin-button kin-button--ghost"
+										href="#application-details">Read details</a
+									>
+								</div>
+								<p class="kin-section-head__description">
 									Native controls keep their labels and keyboard behavior. These
 									sample choices are not saved.
 								</p>
