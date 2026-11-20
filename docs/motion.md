@@ -590,8 +590,8 @@ Four checks hold motion to this page.
 
 - **The guard**, `tests/browser/motion-guard.spec.js` here, checks a running
   page: at rest only its declared motion runs, content is whole with every
-  animation finished, less motion leaves nothing running, and loops move only
-  transforms and opacity. It is read rather than imported: a product copies
+  animation finished, less motion leaves nothing running, no loop moves
+  layout, and a frame loop stops off screen. It is read rather than imported: a product copies
   it at its pinned tag and fills in its one adapt block.
 - **This page's tables** are tested against `tokens.css`, so a value changed in
   one and not the other fails.
