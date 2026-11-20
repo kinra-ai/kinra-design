@@ -103,6 +103,21 @@
         "registry/patterns/live-edge/live-edge.css",
         "registry/patterns/live-edge/README.md"
       ]
+    },
+    {
+      "name": "entries",
+      "kind": "pattern",
+      "status": "candidate",
+      "description": "Entries that play once, from their start, when an expressive instrument is first seen, and frame loops that run only on screen.",
+      "evidence": ["kinra-observatory"],
+      "requires": ["@kinra/web/styles/tokens.css"],
+      "files": [
+        "registry/patterns/entries/entries.html",
+        "registry/patterns/entries/entries.css",
+        "registry/patterns/entries/entries.js",
+        "registry/patterns/entries/entries.d.ts",
+        "registry/patterns/entries/README.md"
+      ]
     }
   ]
 }

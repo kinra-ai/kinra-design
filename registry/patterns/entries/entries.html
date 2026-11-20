@@ -1,0 +1,51 @@
+<!--
+	An instrument in an expressive subtree. Without script it is whole. Call
+	inview(figure) from entries.js once it is in the document: its entries
+	wait until it is first seen, then play once. The caption states the
+	reading in words, which never wait.
+-->
+<figure data-kin-motion="expressive">
+	<svg viewBox="0 0 240 80" role="img" aria-labelledby="offset-reading">
+		<path
+			class="kin-pattern-entry-fade"
+			d="M0 28H240V52H0Z"
+			fill="currentColor"
+			fill-opacity="0.08"
+		></path>
+		<path
+			class="kin-pattern-entry-draw"
+			pathLength="1"
+			d="M0 44C30 30 50 52 80 40S130 30 160 42 210 36 236 38"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+		></path>
+		<!-- The marks arrive in turn once the trace is half drawn. -->
+		<g style="--kin-pattern-entry-after: calc(var(--kin-duration-draw) / 2)">
+			<circle
+				class="kin-pattern-entry-appear"
+				style="--kin-pattern-entry-i: 0"
+				cx="80"
+				cy="40"
+				r="2.5"
+			></circle>
+			<circle
+				class="kin-pattern-entry-appear"
+				style="--kin-pattern-entry-i: 1"
+				cx="160"
+				cy="42"
+				r="2.5"
+			></circle>
+			<circle
+				class="kin-pattern-entry-appear"
+				style="--kin-pattern-entry-i: 2"
+				cx="236"
+				cy="38"
+				r="2.5"
+			></circle>
+		</g>
+	</svg>
+	<figcaption id="offset-reading">
+		Offset over the last hour: within 2 µs.
+	</figcaption>
+</figure>

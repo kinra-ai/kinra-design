@@ -1,0 +1,54 @@
+/*
+ * Candidate entries, from Kinra Observatory at cd38936
+ * (frontend/src/lib/motion/motion.css). See README.md for evidence and
+ * ownership.
+ *
+ * How an instrument's parts arrive the first time it is seen, in an
+ * expressive subtree: a trace draws, what belongs to it fades in alongside,
+ * and a mark or a word appears on its own. Each runs from its hidden state to
+ * the element's own style, so with no animation at all the drawing is whole.
+ * --kin-pattern-entry-i is a member's place in its group, set on the group
+ * for its children or on each member; --kin-pattern-entry-after waits for an
+ * earlier part, written in terms: calc(var(--kin-duration-draw) / 2).
+ */
+.kin-pattern-entry-draw,
+.kin-pattern-entry-fade,
+.kin-pattern-entry-appear {
+	--kin-pattern-entry-delay: calc(
+		var(--kin-pattern-entry-after, 0ms) + var(--kin-pattern-entry-i, 0) *
+			var(--kin-duration-stagger)
+	);
+}
+
+/* A trace, drawn from its start: give the path pathLength="1". */
+.kin-pattern-entry-draw {
+	stroke-dasharray: 1;
+	animation: kin-draw var(--kin-motion-draw) var(--kin-pattern-entry-delay) both;
+}
+
+/* A band, an area or a cloud of marks, arriving with the trace it belongs to. */
+.kin-pattern-entry-fade {
+	animation: kin-fade var(--kin-motion-draw) var(--kin-pattern-entry-delay) both;
+}
+
+/* A mark or a word arriving on its own. */
+.kin-pattern-entry-appear {
+	animation: kin-appear var(--kin-motion-appear) var(--kin-pattern-entry-delay)
+		both;
+}
+
+/* An instrument not yet seen has no entry at all: it is whole, and its
+   entries start from their beginning the moment it is first seen. */
+[data-inview="waiting"],
+[data-inview="waiting"] * {
+	animation-name: none !important;
+}
+
+/* With less motion an entry does not happen at all. */
+@media (prefers-reduced-motion: reduce) {
+	.kin-pattern-entry-draw,
+	.kin-pattern-entry-fade,
+	.kin-pattern-entry-appear {
+		animation: none;
+	}
+}
