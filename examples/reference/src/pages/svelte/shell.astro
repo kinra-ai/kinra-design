@@ -1,0 +1,25 @@
+---
+import "@kinra/web/styles";
+import markUrl from "@kinra/web/assets/mark.svg?url";
+import Demo from "../../svelte/demos/ShellDemo.svelte";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href={markUrl} />
+		<title>Shell in Svelte · Kinra design</title>
+		<script is:inline>
+			try {
+				const scheme = localStorage.getItem("kin-scheme");
+				if (scheme) document.documentElement.dataset.kinScheme = scheme;
+			} catch {}
+		</script>
+	</head>
+	<body data-kin-surface="application">
+		<a class="kin-sr-only" href="#main">Skip to content</a>
+		<Demo client:load />
+	</body>
+</html>

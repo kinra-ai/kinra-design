@@ -252,6 +252,77 @@ for (const file of styleFiles) {
 	}
 }
 
+/*
+ * The optional Svelte layer (docs/svelte.md) ships source, so its contract is
+ * checked here: every component and helper is exported and typed, nothing
+ * styles itself or names a class outside kin-, and nothing reaches outside
+ * the package or into a framework the layer does not require.
+ */
+const svelteRoot = path.join(root, "src/svelte");
+const svelteFiles = await readdir(svelteRoot);
+const barrel = await readFile(path.join(svelteRoot, "index.js"), "utf8");
+const barrelTypes = await readFile(path.join(svelteRoot, "index.d.ts"), "utf8");
+const svelteExport = packageJson.exports["./svelte"] ?? {};
+check(
+	packageJson.files.includes("src/svelte"),
+	"package files must include src/svelte",
+);
+check(
+	svelteExport.types === "./src/svelte/index.d.ts" &&
+		svelteExport.svelte === "./src/svelte/index.js" &&
+		svelteExport.default === "./src/svelte/index.js",
+	"package must export ./svelte with types, svelte and default conditions",
+);
+check(
+	packageJson.peerDependenciesMeta?.svelte?.optional === true,
+	"svelte must stay an optional peer: the CSS needs no framework",
+);
+for (const file of svelteFiles) {
+	const source = await readFile(path.join(svelteRoot, file), "utf8");
+	if (file.endsWith(".svelte")) {
+		const name = file.replace(/\.svelte$/, "");
+		const line = `export { default as ${name} } from "./${file}";`;
+		check(barrel.includes(line), `src/svelte/index.js omits ${name}`);
+		check(barrelTypes.includes(line), `src/svelte/index.d.ts omits ${name}`);
+		check(
+			!/^<style[\s>]/m.test(source.replace(/<!--[\s\S]*?-->/g, "")),
+			`src/svelte/${file} styles itself; styles belong to the CSS entry points`,
+		);
+		check(
+			/<script lang="ts"/.test(source),
+			`src/svelte/${file} needs <script lang="ts">`,
+		);
+		for (const match of source.matchAll(/\bclass="([^"{]*)"/g)) {
+			for (const name of match[1].split(/\s+/).filter(Boolean)) {
+				check(
+					name.startsWith("kin-"),
+					`src/svelte/${file}: class lacks kin- prefix: ${name}`,
+				);
+			}
+		}
+	}
+	if (/\.(svelte|js)$/.test(file)) {
+		for (const match of source.matchAll(
+			/\bimport\s[^;]*?from\s+["']([^"']+)["']/g,
+		)) {
+			const target = match[1];
+			check(
+				target.startsWith("./") ||
+					target === "svelte" ||
+					target.startsWith("svelte/"),
+				`src/svelte/${file} imports ${target}; the layer needs only Svelte`,
+			);
+		}
+	}
+	if (file.endsWith(".js") && file !== "index.js") {
+		const types = file.replace(/\.js$/, ".d.ts");
+		check(
+			svelteFiles.includes(types),
+			`src/svelte/${file} needs ${types}: consumers must not type-check its source`,
+		);
+	}
+}
+
 if (failures.length > 0) {
 	console.error("Design contract check failed:");
 	for (const failure of failures) console.error(`- ${failure}`);

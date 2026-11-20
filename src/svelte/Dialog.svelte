@@ -116,6 +116,8 @@ it:
 		if (busy) return;
 		if (canClose && !(await canClose())) return;
 		open = false;
+		// A dialog a product opened itself closes as well.
+		if (element?.open) element.close();
 	}
 
 	const controls: DialogControls = {
