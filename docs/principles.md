@@ -11,7 +11,11 @@ documented rather than shipped. Amended 2026-11-20 (Blake): each small shape
 means one thing. A line along an edge is kept for work in flight, and the live
 edge is stable now that Kinra Relay uses it beside Kinra Space; a still
 block's tone is a bar set in from its start; the square marks state, and no
-longer every small thing.
+longer every small thing. Amended 2026-11-20 (Blake): motion is named by what
+moves. Controls, layers and work in flight move the same on every surface;
+content and place take a register, productive or expressive, set on a page or
+any subtree as a scheme is. [`motion.md`](motion.md) owns the vocabulary,
+each term's mechanics and their checks.
 
 ## One identity, different surfaces
 
@@ -135,15 +139,18 @@ editorial pattern.
 
 ## Motion has a cause
 
-Motion explains causality, progress, or spatial change. It does not make an
-idle surface look alive. Kinra's motion has five verbs: bloom grows from an
-anchor when something becomes possible, lift moves toward where a thing went,
-fold changes a control's meaning in one movement, trace shows work in flight,
-and close ends it. Layers arrive from where they live and leave with a fade. A
-looping animation must correspond to work that is currently happening. Settled
-states are still, and every frame of a transition stays legible.
-Reduced-motion users receive the same meaning through text, colour, shape,
-position, and focus.
+Motion explains causality, progress, or spatial change, and it is named by
+what moves: a control, a layer, content, the place, or work in flight.
+Controls, layers and work in flight move the same on every surface. Content
+and place take a register: productive for work, where a value lands and data
+is simply there, and expressive where the movement carries the meaning.
+Nothing moves to look alive. A loop is work in flight or one of the few
+continuous motions a product declares, and nothing blinks. Content is whole
+without motion, and a value never waits to be seen. Timing that belongs to the
+thing drawn is a signature, declared where it is defined. Every frame stays
+legible, and reduced-motion readers receive every meaning through text,
+colour, shape, position, and focus. [`motion.md`](motion.md) defines each term,
+its mechanics and its checks.
 
 ## Accessible at the foundation
 

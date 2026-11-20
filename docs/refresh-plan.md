@@ -42,7 +42,10 @@ how things move, not from repeating the mark.
   content scrolled beneath a bar, a drop target.
 - **Motion has five verbs.** Bloom grows from an anchor, lift moves toward
   where the thing went, fold changes a control's meaning, trace shows work in
-  flight and close ends it. Settled states are still.
+  flight and close ends it. Settled states are still. Since 2026-11-20 motion
+  is named by what moves ([`motion.md`](motion.md)): bloom, trace and close
+  remain terms, fold is morph, and lift is exit's rule that what the reader
+  sent leaves toward where it went.
 - **Only controls that change meaning morph.** Their icons are four strokes on
   a 24-unit grid, so any state becomes any other in one movement. Every other
   icon stays a static Phosphor glyph.

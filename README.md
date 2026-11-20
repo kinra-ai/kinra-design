@@ -165,6 +165,13 @@ needed). `npm run test:browser` reruns the tests against source styles and the
 last reference build; rebuild first after changing examples. No browser tooling
 is shipped to consumers.
 
+Open `/motion/` to see every motion term in both registers, the curves they
+run on, signatures, and eleven corrections from Kinra Observatory, Space and
+Design rebuilt from their commits, each measured against the rule it breaks
+or keeps. Slow the page to a tenth, or simulate less motion. Its calibration
+page, `/motion/calibrate/`, compares a token with a proposed value for a
+review round; a value changes only in `tokens.css`.
+
 Open `/refresh/` to review the styling brought back from Kinra Space: soft
 layers on both grounds, quieter controls, the corner key's states and motion,
 labelled corner confirmations, and the live edge. All three are source to
@@ -177,6 +184,7 @@ Read the focused guides for the work at hand:
 - [`docs/principles.md`](docs/principles.md) — visual and abstraction doctrine
 - [`docs/catalog.md`](docs/catalog.md) — public layers and contracts
 - [`docs/composing.md`](docs/composing.md) — choosing axes and elements for a page
+- [`docs/motion.md`](docs/motion.md) — the motion vocabulary, its registers and checks
 - [`docs/adoption.md`](docs/adoption.md) — installing and integrating a release
 - [`docs/releasing.md`](docs/releasing.md) — versioning, verification, and tags
 - [`STATUS.md`](STATUS.md) — current release and adoption state

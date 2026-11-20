@@ -12,7 +12,7 @@ registry patterns; consumer evidence is still required before promotion.
 
 ## Choose the axes first
 
-Before placing a component, decide three things for the page or region:
+Before placing a component, decide four things for the page or region:
 
 1. **Ground.** `data-kin-scheme="dark"` for operating surfaces and tools,
    `light` for reading and authored work, `auto` when the reader should
@@ -26,8 +26,14 @@ Before placing a component, decide three things for the page or region:
    releases, mono for consoles and references. To keep an entire application's
    UI and headings mono, use the explicit role override in
    [adoption](adoption.md#moving-to-06-application-typography).
+4. **Motion.** `data-kin-motion="productive"`, the default, for work: a value
+   lands and data is simply there. `expressive` where the movement carries
+   the meaning: values travel to their reading and traces draw when first
+   seen. A bounded subtree may differ, such as a productive settings form
+   inside an expressive instrument. Controls, layers and work in flight read
+   no register.
 
-Two products that share all three choices should still differ in composition
+Two products that share all four choices should still differ in composition
 and content. Two products that differ in even one look related without looking
 identical.
 
@@ -224,18 +230,29 @@ Steps carry their index in the document. Figures, tables, key-value lists,
 and logs keep tabular figures. Do not number sections for rhythm; use
 `.kin-rule--labeled` or a `.kin-label` instead.
 
-## Let motion mean something
+## Move by what moves
 
-Render `.kin-spinner`, an indeterminate `.kin-progress`, a `.kin-skeleton`, or
-a `data-live` log entry only while work is in flight, and remove them when it
-stops. Layers arrive from where they live and leave with a fade: toasts,
-dialogs, drawers, and panels. A control that changes meaning folds into its
-new shape in one movement. Nothing else moves.
+Name what moves, then take its term and tokens from [`motion.md`](motion.md).
+A control answers in tone, on `--kin-motion-control`. A layer arrives from
+where it lives (`--kin-motion-layer`, `--kin-motion-popover`) and every layer
+leaves at one speed (`--kin-motion-exit`). Content takes the register:
+`--kin-motion-settle`, `-draw` and `-appear`, with `kin-appear`, `kin-fade`
+and `kin-draw` for arrivals. Render `.kin-spinner`, an indeterminate
+`.kin-progress`, a `.kin-skeleton` or a `data-live` log entry only while work
+is in flight, and remove them when it stops. A timing no term carries is a
+signature, marked `signature:` with its reason where it is defined. Nothing
+else moves.
+
+Run `npx kinra-check-motion` on your styles, and replay anything new at a
+tenth of its speed in `/motion/`.
 
 ## Before handing off
 
 - Both schemes render legibly, including any subtree that changes scheme.
 - Keyboard focus is visible on every control.
-- Reduced motion leaves the meaning intact.
+- With less motion every term lands at once and every meaning stays.
+- At rest, with no work in flight, nothing moves but what the product
+  declares.
+- `kinra-check-motion` passes, and each signature says why.
 - Every icon-only button has a label.
 - The page does not scroll horizontally at 400px wide.

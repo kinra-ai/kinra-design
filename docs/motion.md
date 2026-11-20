@@ -1,7 +1,8 @@
 # Motion
 
-Status: draft for 0.9.0, in review with Blake (round 1 of 3). Names and
-values may change until the review signs it off.
+Status: draft for 0.9.0. Blake approved the vocabulary and the lab on
+2026-11-20. The defaults under [Decisions](#decisions) await his review, and
+values may change when he calibrates them on `/motion/calibrate/`.
 
 How everything that moves on a Kinra surface moves, and why. This page is
 the motion standard: consumers apply it rather than reinterpreting it, and a
@@ -136,9 +137,13 @@ register boundary, so a duration set anywhere else changes `--kin-duration-*`
 but not the pair, and a value set outside that media query would survive less
 motion.
 
-Script reads the duration and curve from the element it moves, with
-`getComputedStyle(element)`, never from the root, so a subtree's register
-holds.
+Script reads the duration and curve from the element it moves, never from
+the root, so a subtree's register holds. `@kinra/web/motion` does it:
+`motion("appear", element)` gives the term's milliseconds, its CSS curve for
+the Web Animations API and a progress function for a tweening library, and 0ms
+for every term with less motion; `period("trace")` gives a loop's period,
+never 0, for a still form's timer. Copying the numbers into a product's own
+module is how they drifted before.
 
 Without the CSS, a native surface takes the same numbers: each duration in
 milliseconds and each curve's four control points. SwiftUI's
@@ -236,7 +241,8 @@ replaces. Its values are in the [table](#values).
   stays where it is.
 - **Less motion.** It lands at once.
 - **Examples.** A button's fill under the pointer; a switch's thumb crossing;
-  a disclosure's arrow turning; a tip fading in after its wait.
+  a disclosure's arrow turning; a selection indicator moving to the chosen
+  tab; a tip fading in after its wait.
 - **Counterexamples.** The focus ring, which never moves. A card rising under
   the pointer: a control answers in tone, not position. A menu opening:
   popover.
@@ -380,8 +386,9 @@ replaces. Its values are in the [table](#values).
 - **Less motion.** Whole. When the motion is how the reader learns that
   something is new, a still mark, a tint or the tone bar, holds for one trace
   period instead.
-- **Examples.** A new row in a list; a section opening; the words of a
-  reading arriving with each new choice.
+- **Examples.** A new row in a list, whether the reader added it or new data
+  brought it; a section opening; the words of a reading arriving with each
+  new choice.
 - **Counterexamples.** The first paint in the productive register: content
   is simply there. A value changing: settle. An element placed by
   `translate`: it fades instead, so the rise does not move it.
@@ -450,7 +457,8 @@ replaces. Its values are in the [table](#values).
   bar.
 - **Counterexamples.** A determinate progress bar, whose fill follows its
   work: surface. A shimmer on a card with nothing loading.
-- **Replaces.** "Shimmer" and "skeleton pulse".
+- **Replaces.** "Skeleton pulse". Space's caption shimmer is Space's own
+  signature.
 
 #### pulse
 
@@ -549,7 +557,9 @@ hiding a still form, which leaves the reader without the meaning.
 - A frame loop starts and stops with `IntersectionObserver` and
   `visibilitychange`.
 - An entry waits behind `data-inview="waiting"` until its element is first
-  seen, released by the scroll before the frame paints.
+  seen, released by the scroll before the frame paints. The candidate
+  [entries pattern](../registry/patterns/entries/README.md) carries the
+  classes, the hold and a frame loop that runs only on screen.
 - A dwell runs on a timer, is cancelled when the state it waits for is
   superseded, and is skipped when it exists only to show a movement that
   less motion removes.
@@ -563,40 +573,69 @@ the reader caused, never in a loop; move things with FLIP instead. A frame
 loop is work on every frame, so a turning hand is one compositor animation
 whose start time is set from the clock, not a redraw each second.
 
+## Checking it
+
+Four checks hold motion to this page.
+
+- **`kinra-check-motion`** ships with the package. It reads Design's tokens and
+  checks a product's CSS and component styles: no literal duration, delay or
+  curve outside a signature, no pair followed by another curve, no unknown or
+  deprecated motion token, and no `kin-` keyframes of the product's own.
+  `--strict` also refuses keyframes and redundant reduced-motion blocks in
+  components. A signature says why, in a comment containing `signature:`.
+
+  ```sh
+  npx kinra-check-motion --strict src
+  ```
+
+- **The guard**, `tests/browser/motion-guard.spec.js` here, checks a running
+  page: at rest only its declared motion runs, content is whole with every
+  animation finished, less motion leaves nothing running, and loops move only
+  transforms and opacity. It is read rather than imported: a product copies
+  it at its pinned tag and fills in its one adapt block.
+- **This page's tables** are tested against `tokens.css`, so a value changed in
+  one and not the other fails.
+- **`/motion/`** plays every term, and its corrections measure themselves
+  against their rules. Replay anything new there at a tenth of its speed
+  before handing it off.
+
 ## Corrections
 
 What was tried, how it read, and what replaced it. A correction teaches a
 rule; a new one is added only when no entry here already shows it.
 
-| Tried                                                          | Read as                                  | Replaced by                                                          | Rule | Source                |
-| -------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------- | ---- | --------------------- |
-| Light trailing the seconds hand, arcs riding in lanes, a glow  | Noise following the one movement         | The hands and their shadows alone                                    | 13   | Observatory `eb896ff` |
-| Connectors between tiles, and a light running them each second | A busy console rather than a clear one   | Group labels; nothing running                                        | 2    | Observatory `cde5fbe` |
-| Ten lamps flashing as each instrument reported                 | Blinking                                 | One steady line naming what needs a look                             | 3    | Observatory `7a780d5` |
-| A strip gliding on one clock while its dots moved on another   | A jump of a column on every other second | One animation locked to the clock; each dot placed by its own second | 8    | Observatory `7a780d5` |
-| The face docking itself once it had played                     | Motion the reader did not ask for        | Docking only when the console is chosen                              | 2    | Observatory `2be338a` |
-| Entries playing before they were seen, or glimpsed finished    | A finished frame, then a replay          | Entries released by the scroll, in the frame they appear             | 7    | Observatory `fbbf00b` |
-| Marks waiting off to one side until the ladder was seen        | Values held back                         | Every mark standing at its value until the entry plays               | 6    | Observatory `d68265b` |
-| Hands redrawn by script every second                           | A page that never rests                  | One compositor animation per hand, started from the clock            | 11   | Observatory `55fa672` |
-| A spinner beside the activity shimmer                          | Two signals for one piece of work        | The shimmer alone                                                    | 3    | Space 0011            |
-| Layers leaving at their own speeds                             | Exits that wait to be seen               | One exit speed                                                       | 1    | Space 0065            |
-| Buttons lifting under the pointer                              | Decoration                               | A change of tone                                                     | 2    | Design 0.2            |
+| Tried                                                          | Read as                                  | Replaced by                                                          | Rule    | Source                |
+| -------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------- | ------- | --------------------- |
+| Light trailing the seconds hand, arcs riding in lanes, a glow  | Noise following the one movement         | The hands and their shadows alone                                    | 13      | Observatory `eb896ff` |
+| Connectors between tiles, and a light running them each second | A busy console rather than a clear one   | Group labels; nothing running                                        | 2       | Observatory `cde5fbe` |
+| Ten lamps flashing as each instrument reported                 | Blinking                                 | One steady line naming what needs a look                             | 3       | Observatory `7a780d5` |
+| A strip gliding on one clock while its dots moved on another   | A jump of a column on every other second | One animation locked to the clock; each dot placed by its own second | 8       | Observatory `7a780d5` |
+| The face docking itself once it had played                     | Motion the reader did not ask for        | Docking only when the console is chosen                              | 2       | Observatory `2be338a` |
+| Entries playing before they were seen, or glimpsed finished    | A finished frame, then a replay          | Entries released by the scroll, in the frame they appear             | 7       | Observatory `fbbf00b` |
+| Marks waiting off to one side until the ladder was seen        | Values held back                         | Every mark standing at its value until the entry plays               | 6       | Observatory `d68265b` |
+| Hands redrawn by script every second                           | A page that never rests                  | One compositor animation per hand, started from the clock            | 11      | Observatory `55fa672` |
+| A spinner beside the activity shimmer                          | Two signals for one piece of work        | The shimmer alone                                                    | 3       | Space 0011            |
+| Layers leaving at their own speeds                             | Exits that wait to be seen               | One exit speed                                                       | exit    | Space 0065            |
+| Buttons lifting under the pointer                              | Decoration                               | A change of tone                                                     | control | Design 0.2            |
 
 ## Words we retired
 
-| Word                | Where                  | What it meant              | Now                   |
-| ------------------- | ---------------------- | -------------------------- | --------------------- |
-| animations          | conversation           | everything that moves      | motion                |
-| `@keyframes settle` | Space                  | an entrance                | appear                |
-| `settle`            | Relay                  | an exit                    | exit                  |
-| `lift`              | Relay                  | a post rising into a list  | appear                |
-| `bloom`             | Relay                  | a row growing its height   | appear, its open form |
-| `rise`, `present`   | Space                  | a layer arriving           | layer                 |
-| `dismiss`, `sink`   | Space                  | a layer leaving            | exit                  |
-| journey             | Observatory            | moving between rooms       | navigate              |
-| fold                | Design, the principles | a control changing meaning | morph                 |
-| lift, retract       | Design, the principles | a fill leaving             | exit                  |
-| blink               | the live edge          | a state calling for a look | retired               |
+| Word                                       | Where                  | What it meant              | Now                                   |
+| ------------------------------------------ | ---------------------- | -------------------------- | ------------------------------------- |
+| animations                                 | conversation           | everything that moves      | motion                                |
+| `@keyframes settle`                        | Space                  | an entrance                | appear                                |
+| `settle`                                   | Relay                  | an exit                    | exit                                  |
+| `lift`                                     | Relay                  | a post rising into a list  | appear                                |
+| `bloom`                                    | Relay                  | a row growing its height   | appear, its open form                 |
+| `rise`, `present`                          | Space                  | a layer arriving           | layer                                 |
+| `dismiss`, `sink`                          | Space                  | a layer leaving            | exit                                  |
+| journey                                    | Observatory            | moving between rooms       | navigate                              |
+| fold                                       | Design, the principles | a control changing meaning | morph                                 |
+| lift, retract                              | Design, the principles | a fill leaving             | exit                                  |
+| blink                                      | a mark or a badge      | a call for attention       | retired                               |
+| `settle()`                                 | Design's Svelte shell  | measuring after navigation | not motion: `navigated()`             |
+| `--motion-*` roles                         | Observatory            | its own role tokens        | the `--kin-*` terms                   |
+| `entry-draw`, `entry-fade`, `entry-appear` | Observatory            | entries on first sight     | draw, appear, and the entries pattern |
 
 Specs for motion do not use smooth, subtle, snappy, natural, fluid,
 delightful or playful. Write the mechanics instead.
@@ -615,3 +654,19 @@ delightful or playful. Write the mechanics instead.
   real gap.
 - 2026-11-20 (Blake): the standard is calibrated by eye in `/motion/` before
   it is released.
+- 2026-11-20 (Blake): the vocabulary and the lab are right, and the work goes
+  on to 0.9.0.
+
+### Defaults awaiting Blake's review
+
+Taken so the work could continue; each is shown on `/motion/`.
+
+- The shell's `settle()` is `navigated()`, with `settle()` deprecated.
+- The live edge keeps its breath and blink as signatures; their still
+  alternatives are beside them on `/motion/` (X1).
+- Space's caption shimmer is Space's signature, not a sweep.
+- Relay's line down a row a change has touched becomes the tone bar.
+- Cards answer the pointer in tone, as buttons do; nothing lifts.
+- Content that arrives on its own appears as content the reader asked for
+  does.
+- A selection indicator moving between options is part of its control.
