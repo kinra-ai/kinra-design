@@ -48,6 +48,28 @@ in Highlight.
 Settled states never loop. Rename the copied classes and properties when
 product-specific decisions enter; no session or network logic belongs here.
 
+## Motion
+
+The edge moves by two terms of the [motion standard](../../../docs/motion.md):
+its sparks are a trace, and the waiting line pours in by bloom. Its other
+timings are signatures, the pattern's own gait, each marked `signature:`
+where `live-edge.css` defines it.
+
+| Part                                       | Motion    | Timing                              | Less motion                                      |
+| ------------------------------------------ | --------- | ----------------------------------- | ------------------------------------------------ |
+| `working` band                             | signature | 2.4s, ease-in-out, looping          | A still line that fades at each end              |
+| Sparks (`working` with sparks, `agents`)   | trace     | `--kin-motion-trace`, looping       | The same still line; for `agents`, a dotted line |
+| `waiting` pour                             | bloom     | `--kin-motion-bloom`                | The amber line, whole                            |
+| `waiting` breath, once the pour has landed | signature | 3.2s, ease-in-out, looping          | The amber line, lit                              |
+| `closing` gather                           | signature | 1.1s on `--kin-ease-standard`, once | Cleared at once                                  |
+| `finished` gather-in                       | signature | 420ms on `--kin-ease-bloom`, once   | The held line, at once                           |
+| `reconnecting` dashes                      | signature | 1.2s each way, ease-in-out, looping | The dashed amber line, still                     |
+
+The gather lasts the 1100ms the consumer shows `closing` for, so the two
+change together. Each loop runs only while its state holds and stops when
+the state changes or the row leaves the page; the pattern declares no
+continuous motion.
+
 ## Compatibility review
 
 Before the promotion on 2026-11-20, both consumers' copies were compared with
