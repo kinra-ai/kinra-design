@@ -555,11 +555,12 @@ hiding a still form, which leaves the reader without the meaning.
   clock: `animation.startTime = now - phase`. It never runs on a timer of the
   browser's own, and one picture has one clock.
 - A frame loop starts and stops with `IntersectionObserver` and
-  `visibilitychange`.
+  `visibilitychange`: the entries pattern's `frames()` runs one only while its
+  element is on screen and its tab is shown.
 - An entry waits behind `data-inview="waiting"` until its element is first
-  seen, released by the scroll before the frame paints. The candidate
-  [entries pattern](../registry/patterns/entries/README.md) carries the
-  classes, the hold and a frame loop that runs only on screen.
+  seen, released by the scroll before the frame paints: the candidate
+  [entries pattern](../registry/patterns/entries/README.md)'s `inview()`, or
+  `firstSight()` for an entry made in script. With less motion nothing waits.
 - A dwell runs on a timer, is cancelled when the state it waits for is
   superseded, and is skipped when it exists only to show a movement that
   less motion removes.
@@ -581,8 +582,14 @@ Four checks hold motion to this page.
   checks a product's CSS and component styles: no literal duration, delay or
   curve outside a signature, no pair followed by another curve, no unknown or
   deprecated motion token, and no `kin-` keyframes of the product's own.
-  `--strict` also refuses keyframes and redundant reduced-motion blocks in
-  components. A signature says why, in a comment containing `signature:`.
+  By default a literal duration and curve pass only together as a term's
+  pair, and a literal delay only as a step of the scale or a term's duration;
+  `--strict` takes every timing from a token, and also refuses deprecated
+  tokens, keyframes defined in a component and reduced-motion blocks that only
+  repeat what the register does. A signature says why, in a comment containing
+  `signature:` on its line or the line before. It exits 0 when clean, 1 with
+  problems and 2 when it cannot read; warnings do not fail it. It reads the
+  deprecated table above, so that table keeps its markers and columns.
 
   ```sh
   npx kinra-check-motion --strict src

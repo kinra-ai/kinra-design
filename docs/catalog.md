@@ -78,7 +78,7 @@ operations recipes raise their default controls to the same target. Touch text
 inputs use at least 16px to avoid focus zoom. A consumer may keep product
 chrome compact where its own interaction contract calls for it.
 
-### Layers and motion
+### Layers
 
 `--kin-radius-panel`, `--kin-radius-layer`, and `--kin-radius-row` step down
 through a page (12px), its cards (8px), and their rows (6px).
@@ -106,19 +106,55 @@ dialog paints inside and a drawer only on the side facing the page, and
 its edge. Tooltips, chips in the text's own colour, take neither. Ordinary
 cards have no elevation shadow.
 
-`--kin-motion-control`, `--kin-motion-surface`, and `--kin-motion-layer`
-pair the existing durations and easing. The corner key uses
-`--kin-duration-bloom|retract|lift|morph|fold|trace|close` and
-`--kin-ease-bloom|lift|morph`: respectively 260, 200, 260, 320, 400, 1600,
-and 300ms. Its optional module reads those tokens. Reduced motion renders
-the same face in place and holds the working outline still.
+### Motion
 
-Under reduced motion `base.css` removes every transition and runs each
-animation that remains once, at once. A change lands in the frame that makes
-it, so focus sent into a panel just shown arrives, and `transitionend` does
-not fire. An animation a component keeps, such as a toast's exit, still ends
-with its event; the arrivals of dialogs, drawers, popovers and toasts are
-removed and send none.
+[`motion.md`](motion.md) owns what each term means, how it moves and its
+values; this list names the contract. Every term is `--kin-duration-<term>`
+and `--kin-motion-<term>`, a duration and curve ready for `transition` or
+`animation`:
+
+| Family         | Terms                                      | Register   |
+| -------------- | ------------------------------------------ | ---------- |
+| Controls       | `control`, `surface`, `bloom`, `morph`     | fixed      |
+| Layers         | `layer`, `popover`, `exit`                 | fixed      |
+| Content        | `settle`, `draw`, `appear`, `stagger`      | registered |
+| Place          | `navigate`                                 | registered |
+| Work in flight | `trace`, `sweep`, `pulse`, `pass`, `close` | fixed      |
+
+Stagger is `--kin-duration-stagger` alone, a step between members. The curves
+are `--kin-ease-out`, `-in`, `-standard`, `-bloom` and `-morph`, and the scale
+the terms draw from is `--kin-duration-fast`, `-normal`, `-slow` and
+`-deliberate`. `kin-fade`, `kin-appear` and `kin-draw` are shared arrivals
+that run from a hidden state only; `--kin-appear-from` and
+`--kin-appear-scale` set where an appearance rises and grows from.
+`--kin-duration-retract`, `-lift`, `-fold` and `--kin-ease-lift` are
+deprecated and keep their values.
+
+| `data-kin-motion` | Content and place                                             |
+| ----------------- | ------------------------------------------------------------- |
+| `productive`      | the default: a value lands and data is simply there           |
+| `expressive`      | values settle, traces draw when first seen, places transition |
+
+Set it on the document or any bounded subtree, as a scheme is set; the
+nearest one decides. A product changes a registered term only on an element
+that carries `data-kin-motion`, inside
+`@media (prefers-reduced-motion: no-preference)`.
+
+Under reduced motion content and place are 0ms, and `base.css` removes every
+transition and runs each animation that remains once, at once. A change lands
+in the frame that makes it, so focus sent into a panel just shown arrives,
+and `transitionend` does not fire. An animation a component keeps, such as a
+toast's exit, still ends with its event; the arrivals of dialogs, drawers,
+popovers and toasts are removed and send none.
+
+Script reads a term through `@kinra/web/motion`: `motion(term, element)`
+gives its milliseconds, its CSS curve and a progress function, read from the
+element it moves and 0ms with less motion; `period(loop)` gives a loop's
+period, never 0; `stagger()`, `reduced()` and `onReduced()` complete it, and
+`bezier()` and `easing()` turn a curve into a function. `kinra-check-motion`
+checks a product's styles against the terms. The
+[entries pattern](../registry/patterns/entries/README.md) is a candidate for
+first-sight entries in an expressive subtree.
 
 ### Scheme
 

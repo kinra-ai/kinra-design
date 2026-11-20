@@ -16,12 +16,13 @@ The system has five layers:
   application work, with independent scheme and voice axes; and
 - a source registry of candidate patterns that consumers copy and own.
 
-Two optional additions sit beside them: a Svelte 5 layer,
-`@kinra/web/svelte`, that writes the same markup and carries the behaviour
-products otherwise write themselves, from the application shell to dialogs
-and toasts ([`docs/svelte.md`](docs/svelte.md)); and `kinra-check-spacing`,
-which holds a product's CSS to the spacing scale and radii it reads from
-Design's tokens.
+Optional additions sit beside them: a Svelte 5 layer, `@kinra/web/svelte`,
+that writes the same markup and carries the behaviour products otherwise
+write themselves, from the application shell to dialogs and toasts
+([`docs/svelte.md`](docs/svelte.md)); `@kinra/web/motion`, which reads a
+motion term for script from the element it moves; and two checks,
+`kinra-check-spacing` and `kinra-check-motion`, which hold a product's CSS to
+the spacing scale, radii and motion terms they read from Design's tokens.
 
 Routes, copy, product claims, workflows, analytics, deployment configuration,
 and release artifacts stay with the repository that owns their outcome.
@@ -109,10 +110,11 @@ A Svelte 5 product can write the same markup through components:
 </Page>
 ```
 
-Check a product's spacing from its own check script:
+Check a product's spacing and motion from its own check script:
 
 ```bash
 npx kinra-check-spacing src
+npx kinra-check-motion --strict src
 ```
 
 Product naming and mark use are settled in [`docs/brand.md`](docs/brand.md).

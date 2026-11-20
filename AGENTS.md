@@ -61,15 +61,25 @@ credential may become a consumer installation requirement.
   Svelte, and ships source with a hand-written `.d.ts` beside every helper.
   Svelte stays an optional peer. A change to a component's markup is a change
   to the CSS contract it writes: update the catalog with it.
-- `tools/` holds commands consumers run from their own checks, such as
-  `kinra-check-spacing`. They run on Node alone, with no dependency, since a
-  consumer installs Design without its development tools.
+- `tools/` holds commands consumers run from their own checks:
+  `kinra-check-spacing` and `kinra-check-motion`. They run on Node alone, with
+  no dependency, since a consumer installs Design without its development
+  tools. `kinra-check-motion` reads `docs/motion.md`'s deprecated table, so its
+  markers and columns stay.
+- `src/motion/` is `@kinra/web/motion`, the framework-free reader of the
+  motion terms. It reads every duration and curve from the computed tokens of
+  the element it moves and holds no number of its own. It does no work on
+  import and ships source with a hand-written `motion.d.ts`;
+  `scripts/check-contract.mjs` imports it in Node and checks its types against
+  the tokens. A token added or renamed in `tokens.css` is added to
+  `scripts/public-tokens.json` in the same change.
 - Use `kin-` for custom properties and public class names. Avoid unscoped
   component selectors.
 - Name colour by role, not hue. Colour is information and should remain
   reserved for signal, reasoning, success, warning, and failure.
-- Motion must explain causality, progress, or spatial change. Settled state is
-  static, and reduced motion retains equivalent meaning.
+- Motion is named by what moves and timed by tokens (`docs/motion.md`): it
+  explains causality, progress, or spatial change, settled state is still,
+  and with less motion every meaning stays.
 - `build:reference` is intentionally not named `build`. npm treats a Git
   dependency with a `build`, `prepare`, `prepack`, or install lifecycle script
   as source that must be rebuilt during installation. Do not add one of those

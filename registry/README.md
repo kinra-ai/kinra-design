@@ -39,3 +39,8 @@ evidence. The live edge is stable since 2026-11-20, when Kinra Relay's copy
 joined Space's; it is still source each product copies and owns. The
 reference catalog's `/refresh/` page demonstrates all three: their states,
 static rendering, and motion.
+
+The entries pattern carries Kinra Observatory's first-sight entries: a trace
+that draws, a band that fades and marks that arrive in turn, held until their
+instrument is first seen. It is a candidate with Observatory's evidence, for
+expressive subtrees only; `/motion/` plays the terms it uses.

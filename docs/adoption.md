@@ -230,6 +230,78 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
   terminal-like text at 1.3 or less where its lines should be continuous.
   Kinra Sans and Kinra Serif leave these characters out.
 
+## Moving to 0.9: motion by what moves
+
+Version 0.9.0 names motion by what moves, in [`motion.md`](motion.md).
+Existing tokens keep their values, so a product that only uses
+`--kin-motion-control`, `-surface` and `-layer` sees no change from them.
+
+- **Terms and registers.** Every term is `--kin-duration-<term>` and
+  `--kin-motion-<term>`. Content and place read `data-kin-motion`: productive
+  by default, where settle, draw, stagger and navigate are 0ms and appear is
+  180ms; set `expressive` on the document or a subtree for an instrument.
+- **Deprecated.** `--kin-duration-retract`, `-lift`, `-fold` and
+  `--kin-ease-lift` keep their values; move to exit and morph.
+  `kinra-check-motion` names each use.
+- **Layers leave.** Dialogs, drawers and popovers leave the way they came, at
+  the exit term's 180ms, where the browser supports `overlay`; elsewhere they
+  close at once. A product that animates its own exits removes them, so
+  nothing leaves twice. Modality and focus move when the close starts.
+- **Visible changes.** A switch and a disclosure arrow answer at the control
+  term (120ms, from 180ms). An indeterminate progress bar sweeps at 1.6s
+  (from 1.4s), and a determinate fill follows its work at 180ms (from 320ms).
+  Controls that changed tone on `ease` take the control term's standard
+  curve.
+- **The shell.** `Shell.settle()` is `navigated()`; `settle()` still works
+  and is deprecated, since motion owns the word. The drawer closes at the
+  exit term.
+- **Script.** `@kinra/web/motion` reads a term from the element it moves.
+  Replace a module that copies Design's numbers with it: in Svelte, a
+  transition's `duration` is `motion(term, node).ms` and its `easing` is
+  `motion(term, node).ease`, and `reduced()` replaces a product's own
+  `prefersReducedMotion` or `still()`. Deprecated tokens map as
+  `scripts/public-tokens.json` lists: retract and lift to
+  `--kin-duration-exit`, fold to `--kin-duration-morph`, and
+  `--kin-ease-lift` to `--kin-ease-in`.
+- **Checks.** Add `npx kinra-check-motion --strict src` to the product's own
+  check, and copy `tests/browser/motion-guard.spec.js` at the pinned tag,
+  filling in its adapt block.
+- **Entries.** The candidate [entries pattern](../registry/patterns/entries/README.md)
+  carries first-sight entries for expressive subtrees.
+
+Per product, each in its own session:
+
+- **Kinra Observatory** sets `data-kin-motion="expressive"` on its root and
+  maps `--motion-settle`, `-draw`, `-appear`, `-stagger` and `-journey`, with
+  their `-ease` partners, to Design's terms, read through `@kinra/web/motion`;
+  journey becomes navigate. Fix three things: `--motion-journey` is not
+  zeroed with less motion, `lamp-blink` is unused, and its components'
+  reduced-motion rules repeat what the register does. List its signatures
+  with their `signature:` reasons: the hands' sweep and beat, the pulse
+  strip's glide, the ribbon, the solar wind, the zoom's pace, the NTP
+  exchange, the Sun's breath and light, and the time-lapse. Keep its
+  off-screen, hands-only and pulse-strip tests.
+- **Kinra Space** replaces `motion.ts`'s Svelte curves and duration mirror
+  with Design's terms; renames `@keyframes settle` and `settle-still` to
+  appear's, and its `settle()` gate; removes its own layer exits where
+  Design's apply, and the global `animation: none !important` in
+  `responsive.css`, which keeps `animationend` from firing; keeps its caption
+  shimmer as its signature; follows the live edge's source; restates the
+  Motion table in `docs/interface.md` in the standard's terms; and calls
+  `navigated()`.
+- **Kinra Relay** fixes `src/app.css:4059`, where
+  `var(--kin-motion-control, 120ms) ease` is invalid and the row gets no
+  transition; gives a row a change has touched the tone bar, held still with
+  less motion, in place of its edge line; renames `settle` to exit, `lift` to
+  appear and `bloom` to appear's open form; uses Design's curves; lets cards
+  answer the pointer in tone; records Play as a signature; and removes its own
+  layer exits where Design's apply.
+- **Kinra Home, Kinra Thread, Kinra Site, Kin and Scope** take the release
+  with nothing to change.
+
+Compare dialogs, drawers, popovers and toasts closing, the switch and the
+disclosure, on both grounds, in both engines, with and without less motion.
+
 ## Moving to 0.8: shared structure and the Svelte layer
 
 Version 0.8.0 adds shared structure and adjusts list rows and card footers.
