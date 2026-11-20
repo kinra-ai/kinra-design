@@ -1,0 +1,1094 @@
+---
+import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
+import Corrections from "../../components/motion/Corrections.astro";
+import keySource from "@kinra/web/registry/patterns/corner-key/corner-key.html?raw";
+import motionDoc from "../../../../../docs/motion.md?raw";
+import "@kinra/web/registry/patterns/corner-key/corner-key.css";
+import "@kinra/web/registry/patterns/live-edge/live-edge.css";
+import "../../styles/motion-lab.css";
+import "../../styles/motion-corrections.css";
+
+// docs/motion.md is the source of every meaning shown here, so the lab and
+// the standard cannot say different things.
+function meaning(term: string) {
+	const entry = motionDoc
+		.split(/^#### /m)
+		.find((part) => part.startsWith(`${term}\n`));
+	const found = entry?.match(/\*\*Meaning\.\*\*\s+([\s\S]*?)\n- \*\*/);
+	if (!found) throw new Error(`docs/motion.md has no meaning for ${term}`);
+	return found[1].replace(/\s+/g, " ").trim();
+}
+
+function key(id: string, label = "Send message") {
+	return keySource
+		.replace("<button", `<button id="${id}"`)
+		.replace('aria-label="Send message"', `aria-label="${label}"`)
+		.replace(" disabled", "");
+}
+
+const registers = [
+	["productive", "Productive"],
+	["expressive", "Expressive"],
+] as const;
+
+const curves = [
+	["out", "--kin-ease-out", [0.16, 1, 0.3, 1]],
+	["in", "--kin-ease-in", [0.7, 0, 0.84, 0]],
+	["standard", "--kin-ease-standard", [0.4, 0, 0.2, 1]],
+	["bloom", "--kin-ease-bloom", [0.2, 0, 0, 1]],
+	["morph", "--kin-ease-morph", [0.4, 0, 0, 1]],
+	["linear", "linear", [0, 0, 1, 1]],
+] as const;
+
+const rows = ["Index the archive", "Read the floor", "Sync the drawings"];
+const marks = Array.from({ length: 8 }, (_, index) => index);
+const trace =
+	"M0 60 C 20 58 30 20 50 28 S 80 70 100 52 S 140 10 160 24 S 190 46 200 40";
+const band =
+	"M0 70 C 20 66 30 32 50 38 S 80 80 100 62 S 140 22 160 34 S 190 56 200 50 L 200 30 C 190 36 170 14 160 14 S 120 2 100 42 S 70 60 50 18 S 20 50 0 50 Z";
+---
+
+<ReferenceLayout
+	title="Motion"
+	description="Every motion term in both registers, the curves they run on, and the corrections the standard was taken from."
+	current="Motion"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Motion</h1>
+			<p class="catalog-header__summary">
+				Every term in <code>docs/motion.md</code>, moving by the tokens it
+				names, in both registers where it takes one. Nothing moves until you
+				ask. Slow it to a tenth to see a single frame.
+			</p>
+		</div>
+	</header>
+
+	<div class="lab-bar" data-lab-bar>
+		<div class="lab-bar__inner kin-frame">
+			<div class="lab-bar__group">
+				<span class="lab-bar__label" id="lab-speed-label">Speed</span>
+				<div
+					class="kin-segmented"
+					role="group"
+					aria-labelledby="lab-speed-label"
+				>
+					<button type="button" data-lab-speed="1" aria-pressed="true"
+						>1×</button
+					>
+					<button type="button" data-lab-speed="0.25" aria-pressed="false"
+						>0.25×</button
+					>
+					<button type="button" data-lab-speed="0.1" aria-pressed="false"
+						>0.1×</button
+					>
+				</div>
+			</div>
+			<div class="lab-bar__group">
+				<span class="lab-bar__label" id="lab-register-label">Register</span>
+				<div
+					class="kin-segmented"
+					role="group"
+					aria-labelledby="lab-register-label"
+				>
+					<button
+						type="button"
+						data-lab-register-choice="both"
+						aria-pressed="true">Both</button
+					>
+					<button
+						type="button"
+						data-lab-register-choice="productive"
+						aria-pressed="false">Productive</button
+					>
+					<button
+						type="button"
+						data-lab-register-choice="expressive"
+						aria-pressed="false">Expressive</button
+					>
+				</div>
+			</div>
+			<label class="kin-switch">
+				<input type="checkbox" role="switch" data-lab-less-toggle />
+				Less motion
+			</label>
+			<p class="lab-bar__status" role="status" data-lab-status></p>
+		</div>
+	</div>
+
+	<div class="kin-frame" data-lab>
+		<div class="kin-notice lab-notice" data-tone="primary" data-lab-os hidden>
+			<p class="kin-notice__title">Your system asks for less motion</p>
+			<p class="kin-notice__body">
+				Every specimen shows its still form. Turn the system setting off to
+				watch the motion; the lab never overrides it.
+			</p>
+		</div>
+
+		<section class="lab-section" id="curves" aria-labelledby="curves-heading">
+			<header class="catalog-heading">
+				<h2 id="curves-heading">Curves</h2>
+				<p>
+					How much of a change is done at each moment of its time. The dashed
+					lines mark when it has covered half, 83% and 95% of its distance. Play
+					runs a dot along the curve in one second at the lab's speed.
+				</p>
+			</header>
+			<div class="lab-curves">
+				{
+					curves.map(([name, token, points]) => (
+						<article
+							class="lab-curve"
+							data-lab-curve={name}
+							data-points={points.join(",")}
+						>
+							<h3>{name}</h3>
+							<code>
+								{token === "linear"
+									? "linear"
+									: `${token}: cubic-bezier(${points.join(", ")})`}
+							</code>
+							<div class="lab-curve__plot">
+								<svg
+									viewBox="0 0 100 100"
+									preserveAspectRatio="none"
+									aria-hidden="true"
+								>
+									<path class="lab-curve__axis" d="M0 0V100H100" />
+									<g data-lab-marks />
+									<path
+										class="lab-curve__path"
+										d={`M0 100 C ${points[0] * 100} ${100 - points[1] * 100} ${points[2] * 100} ${100 - points[3] * 100} 100 0`}
+									/>
+								</svg>
+								<div class="lab-curve__time" aria-hidden="true">
+									<span class="lab-curve__dot" data-lab-dot />
+								</div>
+							</div>
+							<p class="lab-curve__facts" data-lab-facts />
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-play-curve
+							>
+								Play {name}
+							</button>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section
+			class="lab-section"
+			id="controls"
+			aria-labelledby="controls-heading"
+		>
+			<header class="catalog-heading">
+				<h2 id="controls-heading">Controls</h2>
+				<p>
+					A control answering, a surface making room, an action becoming
+					possible, a control changing meaning. The same in every register.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<article class="lab-specimen" id="C1" data-lab-specimen="control">
+					<div class="lab-specimen__head">
+						<span class="lab-id">C1</span>
+						<h3 class="lab-term">control</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Replay control
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("control")}</p>
+						<p class="lab-note">
+							The lab drives these with the control term. Design's switch and
+							disclosure arrow still take 180ms until they move to control.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="control"></span>
+							</p>
+							<div class="lab-stage">
+								<button
+									class="kin-button lab-press"
+									type="button"
+									data-lab-press
+								>
+									Save
+								</button>
+								<label class="kin-switch">
+									<input type="checkbox" role="switch" data-lab-switch />
+									Keep in sync
+								</label>
+								<details class="kin-disclosure" data-lab-disclosure>
+									<summary>Details</summary>
+									<div class="kin-disclosure__body">Three files changed.</div>
+								</details>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="C2" data-lab-specimen="surface">
+					<div class="lab-specimen__head">
+						<span class="lab-id">C2</span>
+						<h3 class="lab-term">surface</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Make room
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("surface")}</p>
+						<p class="lab-note">
+							A row arrives at the top at once, so only the rows below it move:
+							they make room. The fill follows its work.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="surface"></span>
+							</p>
+							<ul class="lab-rows" data-lab-rows>
+								{
+									rows.map((row) => (
+										<li class="lab-row">
+											{row}
+											<small>queued</small>
+										</li>
+									))
+								}
+							</ul>
+							<div class="lab-meter" data-lab-term="surface" data-lab-meter>
+								<span></span>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="C3" data-lab-specimen="bloom">
+					<div class="lab-specimen__head">
+						<span class="lab-id">C3</span>
+						<h3 class="lab-term">bloom</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Something to send
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-withdraw
+							>
+								Nothing to send
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("bloom")}</p>
+						<p class="lab-note">
+							The corner key's engine. Its fill grows from the pinned corner;
+							when the draft empties it goes back into the corner, an exit at
+							the key's own 200ms.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="bloom"></span>
+							</p>
+							<div class="lab-key" set:html={key("lab-key-bloom")} />
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="C4" data-lab-specimen="morph">
+					<div class="lab-specimen__head">
+						<span class="lab-id">C4</span>
+						<h3 class="lab-term">morph</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-face="working"
+							>
+								Send → Stop
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-face="send"
+							>
+								Stop → Send
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-face="queue"
+							>
+								Queue
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("morph")}</p>
+						<p class="lab-note">
+							Four strokes travel between poses. Into Stop they fold through an
+							upright spine first, the corner key's 400ms signature.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="morph"></span>
+							</p>
+							<div class="lab-key" set:html={key("lab-key-morph")} />
+						</div>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="lab-section" id="layers" aria-labelledby="layers-heading">
+			<header class="catalog-heading">
+				<h2 id="layers-heading">Layers</h2>
+				<p>
+					A layer arrives from where it lives or from its control, and leaves
+					the way it came, faster. The same in every register.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<article class="lab-specimen" id="L1" data-lab-specimen="layer">
+					<div class="lab-specimen__head">
+						<span class="lab-id">L1</span>
+						<h3 class="lab-term">layer</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-open="lab-dialog"
+							>
+								Open dialog
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-open="lab-drawer"
+							>
+								Open drawer
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Raise toast
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("layer")}</p>
+						<p class="lab-note">
+							Design's own dialog, drawer and toast. A dialog and a drawer still
+							close at once; their exits arrive with the next round.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="layer"></span>
+							</p>
+							<div class="lab-toasts" data-lab-toasts aria-live="polite"></div>
+						</div>
+					</div>
+					<dialog
+						class="kin-dialog"
+						id="lab-dialog"
+						aria-labelledby="lab-dialog-title"
+					>
+						<div class="kin-dialog__header">
+							<h2 class="kin-dialog__title" id="lab-dialog-title">
+								Rename the board
+							</h2>
+						</div>
+						<div class="kin-dialog__body">
+							<p>The dialog rose 0.5rem from its place as it arrived.</p>
+						</div>
+						<div class="kin-dialog__footer">
+							<button class="kin-button" type="button" data-lab-close
+								>Close</button
+							>
+						</div>
+					</dialog>
+					<dialog
+						class="kin-drawer"
+						id="lab-drawer"
+						aria-labelledby="lab-drawer-title"
+					>
+						<div class="kin-dialog__header">
+							<h2 class="kin-dialog__title" id="lab-drawer-title">Filters</h2>
+						</div>
+						<div class="kin-dialog__body">
+							<p>The drawer came from its own edge.</p>
+							<button class="kin-button" type="button" data-lab-close
+								>Close</button
+							>
+						</div>
+					</dialog>
+				</article>
+
+				<article class="lab-specimen" id="L2" data-lab-specimen="popover">
+					<div class="lab-specimen__head">
+						<span class="lab-id">L2</span>
+						<h3 class="lab-term">popover</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								popovertarget="lab-popover"
+							>
+								Open menu
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("popover")}</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="popover"></span>
+							</p>
+							<p class="lab-caption">
+								The menu arrives from the button that opened it.
+							</p>
+						</div>
+					</div>
+					<div class="kin-popover" popover id="lab-popover" data-padding="none">
+						<div class="kin-menu" role="menu" aria-label="Board">
+							<button class="kin-menu__item" role="menuitem" type="button"
+								>Rename</button
+							>
+							<button class="kin-menu__item" role="menuitem" type="button"
+								>Duplicate</button
+							>
+							<button class="kin-menu__item" role="menuitem" type="button"
+								>Archive</button
+							>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="L3" data-lab-specimen="exit">
+					<div class="lab-specimen__head">
+						<span class="lab-id">L3</span>
+						<h3 class="lab-term">exit</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Raise and dismiss
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("exit")}</p>
+						<p class="lab-note">
+							On today's in curve the toast holds almost still for nine tenths
+							of its 180ms, then goes. Round 2 compares it with a gentler in.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span class="lab-reading" data-lab-reading="exit"
+								></span>
+							</p>
+							<div class="lab-toasts" data-lab-toasts aria-live="polite"></div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="lab-section" id="content" aria-labelledby="content-heading">
+			<header class="catalog-heading">
+				<h2 id="content-heading">Content</h2>
+				<p>
+					Information arriving or changing. Content takes the register:
+					productive content is simply there; expressive values travel and
+					traces draw.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<article class="lab-specimen" id="S1" data-lab-specimen="settle">
+					<div class="lab-specimen__head">
+						<span class="lab-id">S1</span>
+						<h3 class="lab-term">settle</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								New value
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-twice
+							>
+								Two values
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("settle")}</p>
+						<p class="lab-note">
+							The figure changes at once; only the hand and the bar travel. Two
+							values in quick succession turn from wherever the first had
+							reached.
+						</p>
+					</div>
+					<div class="lab-columns">
+						{
+							registers.map(([register, label]) => (
+								<div
+									class="lab-col"
+									data-kin-motion={register}
+									data-lab-register={register}
+								>
+									<p class="lab-col__label">
+										{label}{" "}
+										<span class="lab-reading" data-lab-reading="settle" />
+									</p>
+									<div class="lab-stage">
+										<div class="lab-dial" aria-hidden="true">
+											<span class="lab-dial__hand" data-lab-hand />
+										</div>
+										<p class="lab-figure" data-lab-figure>
+											30%
+										</p>
+									</div>
+									<div class="lab-meter" data-lab-term="settle" data-lab-meter>
+										<span />
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="S2" data-lab-specimen="draw">
+					<div class="lab-specimen__head">
+						<span class="lab-id">S2</span>
+						<h3 class="lab-term">draw</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								First sight
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("draw")}</p>
+					</div>
+					<div class="lab-columns">
+						{
+							registers.map(([register, label]) => (
+								<div
+									class="lab-col"
+									data-kin-motion={register}
+									data-lab-register={register}
+								>
+									<p class="lab-col__label">
+										{label} <span class="lab-reading" data-lab-reading="draw" />
+									</p>
+									<svg
+										class="lab-trace"
+										viewBox="0 0 200 80"
+										aria-hidden="true"
+									>
+										<path class="lab-trace__band" d={band} data-lab-drawn />
+										<path d={trace} pathLength="1" data-lab-drawn />
+									</svg>
+								</div>
+							))
+						}
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="S3" data-lab-specimen="appear">
+					<div class="lab-specimen__head">
+						<span class="lab-id">S3</span>
+						<h3 class="lab-term">appear</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								A new row
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-choice
+							>
+								A new choice
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("appear")}</p>
+						<p class="lab-note">
+							A row rises from 0.25rem as it fades in. A new choice's reading
+							arrives afresh, so it reads as new.
+						</p>
+					</div>
+					<div class="lab-columns">
+						{
+							registers.map(([register, label]) => (
+								<div
+									class="lab-col"
+									data-kin-motion={register}
+									data-lab-register={register}
+								>
+									<p class="lab-col__label">
+										{label}{" "}
+										<span class="lab-reading" data-lab-reading="appear" />
+									</p>
+									<p class="lab-reading-line" data-lab-reading-line>
+										The last hour: 12 readings, all within 2ms.
+									</p>
+									<ul class="lab-rows" data-lab-rows>
+										{rows.map((row) => (
+											<li class="lab-row">
+												{row}
+												<small>done</small>
+											</li>
+										))}
+									</ul>
+								</div>
+							))
+						}
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="S4" data-lab-specimen="stagger">
+					<div class="lab-specimen__head">
+						<span class="lab-id">S4</span>
+						<h3 class="lab-term">stagger</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Arrive together
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("stagger")}</p>
+						<p class="lab-note">
+							The trace draws, and the marks wait until it is half drawn, then
+							grow in reading order, one step apart.
+						</p>
+					</div>
+					<div class="lab-columns">
+						{
+							registers.map(([register, label]) => (
+								<div
+									class="lab-col"
+									data-kin-motion={register}
+									data-lab-register={register}
+								>
+									<p class="lab-col__label">
+										{label}{" "}
+										<span class="lab-reading" data-lab-reading="stagger" />
+									</p>
+									<svg
+										class="lab-trace"
+										viewBox="0 0 200 80"
+										aria-hidden="true"
+									>
+										<path d={trace} pathLength="1" data-lab-drawn />
+									</svg>
+									<div class="lab-marks" data-lab-marks>
+										{marks.map((index) => (
+											<span class="lab-mark" style={`--lab-i: ${index}`} />
+										))}
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="lab-section" id="place" aria-labelledby="place-heading">
+			<header class="catalog-heading">
+				<h2 id="place-heading">Place</h2>
+				<p>
+					The reader moving to another place. A simulation inside the page until
+					the next round adds real view transitions.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<article class="lab-specimen" id="P1" data-lab-specimen="navigate">
+					<div class="lab-specimen__head">
+						<span class="lab-id">P1</span>
+						<h3 class="lab-term">navigate</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-replay
+							>
+								Onward
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-back
+							>
+								Back
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("navigate")}</p>
+						<p class="lab-note">
+							The bar holds still while the page slides 3rem the way the index
+							runs.
+						</p>
+					</div>
+					<div class="lab-columns">
+						{
+							registers.map(([register, label]) => (
+								<div
+									class="lab-col"
+									data-kin-motion={register}
+									data-lab-register={register}
+								>
+									<p class="lab-col__label">
+										{label}{" "}
+										<span class="lab-reading" data-lab-reading="navigate" />
+									</p>
+									<div class="lab-place" data-lab-place>
+										<div class="lab-place__bar">Kinra · Rooms</div>
+										<div class="lab-place__room" data-lab-room="0">
+											<strong>Clocks</strong>
+											<span class="lab-caption">Who sets the time</span>
+										</div>
+										<div class="lab-place__room" data-lab-room="1" hidden>
+											<strong>Scale</strong>
+											<span class="lab-caption">Every clock on one scale</span>
+										</div>
+										<div class="lab-place__room" data-lab-room="2" hidden>
+											<strong>Almanac</strong>
+											<span class="lab-caption">The Sun and the Moon</span>
+										</div>
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="lab-section" id="work" aria-labelledby="work-heading">
+			<header class="catalog-heading">
+				<h2 id="work-heading">Work in flight</h2>
+				<p>
+					Loops that exist only while their work runs, and the close that ends
+					them. The same in every register. Nothing runs until you start the
+					work.
+				</p>
+			</header>
+			<div class="lab-grid">
+				<article class="lab-specimen" id="W1" data-lab-specimen="trace">
+					<div class="lab-specimen__head">
+						<span class="lab-id">W1</span>
+						<h3 class="lab-term">trace</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-work
+								aria-pressed="false"
+							>
+								Start the work
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("trace")}</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="trace"></span>
+							</p>
+							<div class="lab-work">
+								<div class="lab-key">
+									<Fragment set:html={key("lab-key-trace", "Stop work")} />
+									<p class="lab-caption" data-lab-work-caption>Idle</p>
+								</div>
+								<ul class="lab-edge-row">
+									<li
+										class="kin-list__item"
+										style="position: relative; --kin-pattern-edge-radius: var(--kin-radius-row)"
+									>
+										<span
+											class="kin-pattern-live-edge"
+											data-edge="ready"
+											aria-hidden="true"
+										>
+											<span class="kin-pattern-live-edge__line"></span>
+										</span>
+										<div class="kin-list__body">
+											<p class="kin-list__title">Background work</p>
+											<p class="kin-list__meta" data-lab-edge-caption>Ready</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="W2" data-lab-specimen="sweep">
+					<div class="lab-specimen__head">
+						<span class="lab-id">W2</span>
+						<h3 class="lab-term">sweep</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-work
+								aria-pressed="false"
+							>
+								Start the work
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("sweep")}</p>
+						<p class="lab-note">
+							Design's skeleton sweeps at 1.6s today and its indeterminate bar
+							at 1.4s; round 2 decides whether they share the sweep's period.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="sweep"></span>
+							</p>
+							<div class="lab-work" data-lab-sweep>
+								<p class="lab-caption">The report has loaded.</p>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="W3" data-lab-specimen="pulse">
+					<div class="lab-specimen__head">
+						<span class="lab-id">W3</span>
+						<h3 class="lab-term">pulse</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-work
+								aria-pressed="false"
+							>
+								Start the work
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("pulse")}</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="pulse"></span>
+							</p>
+							<div class="lab-work">
+								<span class="kin-status" data-lab-status-mark>Idle</span>
+								<ol class="kin-log" aria-label="Run">
+									<li class="kin-log__entry" data-lab-log>
+										<time class="kin-log__time" datetime="2026-11-20T10:02"
+											>10:02</time
+										>
+										<span class="kin-log__marker" aria-hidden="true"></span>
+										<div class="kin-log__body">Capture the next pass</div>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="W4" data-lab-specimen="pass">
+					<div class="lab-specimen__head">
+						<span class="lab-id">W4</span>
+						<h3 class="lab-term">pass</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-work
+								aria-pressed="false"
+							>
+								Start the work
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("pass")}</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span class="lab-reading" data-lab-reading="pass"
+								></span>
+							</p>
+							<div class="lab-stage" data-lab-pass>
+								<p class="lab-caption">Indexed.</p>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="lab-specimen" id="W5" data-lab-specimen="close">
+					<div class="lab-specimen__head">
+						<span class="lab-id">W5</span>
+						<h3 class="lab-term">close</h3>
+						<div class="lab-actions">
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-work
+							>
+								Start the work
+							</button>
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-lab-end
+							>
+								End the work
+							</button>
+						</div>
+						<p class="lab-meaning">{meaning("close")}</p>
+						<p class="lab-note">
+							The key's light closes into a ring over 300ms and fades. The live
+							edge gathers for 1.1s, its own signature, and the row shows its
+							closing state for exactly as long.
+						</p>
+					</div>
+					<div class="lab-columns">
+						<div class="lab-col" data-kin-motion="productive">
+							<p class="lab-col__label">
+								Every register <span
+									class="lab-reading"
+									data-lab-reading="close"></span>
+							</p>
+							<div class="lab-work">
+								<div class="lab-key">
+									<Fragment set:html={key("lab-key-close", "Stop work")} />
+									<p class="lab-caption" data-lab-work-caption>Idle</p>
+								</div>
+								<ul class="lab-edge-row">
+									<li
+										class="kin-list__item"
+										style="position: relative; --kin-pattern-edge-radius: var(--kin-radius-row)"
+									>
+										<span
+											class="kin-pattern-live-edge"
+											data-edge="ready"
+											aria-hidden="true"
+										>
+											<span class="kin-pattern-live-edge__line"></span>
+										</span>
+										<div class="kin-list__body">
+											<p class="kin-list__title">Read the floor</p>
+											<p class="kin-list__meta" data-lab-edge-caption>Ready</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section
+			class="lab-section"
+			id="corrections"
+			aria-labelledby="corrections-heading"
+		>
+			<header class="catalog-heading">
+				<h2 id="corrections-heading">Corrections</h2>
+				<p>
+					What was tried, and what replaced it, rebuilt from the commits with
+					the same timings and curves and synthetic data. Each before breaks the
+					rule its after keeps.
+				</p>
+			</header>
+			<div class="lab-grid" data-lab-corrections>
+				<Corrections />
+			</div>
+		</section>
+	</div>
+
+	<script>
+		// The package marks its scripts free of side effects, so the lab starts
+		// by a call rather than by being imported.
+		import { startLab } from "../../scripts/motion-lab.ts";
+		startLab();
+	</script>
+</ReferenceLayout>

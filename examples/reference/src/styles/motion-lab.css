@@ -1,0 +1,561 @@
+/*
+ * The motion lab (/motion/). Layout and tone only: every specimen moves by
+ * the motion terms in tokens.css, read where it stands, so a column's register
+ * and the lab's speed, slider and less-motion controls reach it. A "before"
+ * reconstruction marks its own timing with the commit it reproduces.
+ */
+
+.lab-bar {
+	background: color-mix(in srgb, var(--kin-color-ground) 92%, transparent);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid var(--kin-color-rule);
+	position: sticky;
+	top: 0;
+	z-index: var(--kin-layer-sticky);
+}
+
+.lab-bar__inner {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-3) var(--kin-space-5);
+	padding-block: var(--kin-space-3);
+}
+
+.lab-bar__group {
+	align-items: center;
+	display: flex;
+	gap: var(--kin-space-2);
+}
+
+.lab-bar__label {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+}
+
+.lab-bar__status {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	margin: 0 0 0 auto;
+}
+
+.lab-notice {
+	margin-top: var(--kin-space-4);
+}
+
+.lab-section {
+	padding-block: var(--kin-space-8) 0;
+	scroll-margin-top: 5rem;
+}
+
+.lab-grid {
+	display: grid;
+	gap: var(--kin-space-5);
+}
+
+.lab-specimen {
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-panel);
+	display: grid;
+	min-width: 0;
+	scroll-margin-top: 5rem;
+}
+
+.lab-specimen__head {
+	align-items: start;
+	display: grid;
+	gap: var(--kin-space-2) var(--kin-space-4);
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	padding: var(--kin-space-5) var(--kin-space-5) var(--kin-space-4);
+}
+
+.lab-id {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-mark);
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	padding: var(--kin-space-1) var(--kin-space-2);
+}
+
+.lab-term {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-md);
+	margin: 0;
+}
+
+.lab-meaning,
+.lab-note {
+	font-family: var(--kin-font-prose);
+	line-height: 1.55;
+}
+
+.lab-meaning {
+	color: var(--kin-color-text-subtle);
+	grid-column: 2 / -1;
+	margin: 0;
+	max-width: var(--kin-measure-prose);
+}
+
+.lab-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-2);
+	grid-column: 3;
+	grid-row: 1;
+	justify-content: end;
+}
+
+.lab-note {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-sm);
+	grid-column: 2 / -1;
+	margin: 0;
+	max-width: var(--kin-measure-prose);
+}
+
+.lab-columns {
+	border-top: 1px solid var(--kin-color-rule);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.lab-col {
+	display: grid;
+	gap: var(--kin-space-4);
+	align-content: start;
+	min-width: 0;
+	padding: var(--kin-space-5);
+}
+
+.lab-col + .lab-col {
+	border-inline-start: 1px solid var(--kin-color-rule);
+}
+
+.lab-col__label {
+	align-items: baseline;
+	color: var(--kin-color-text-muted);
+	display: flex;
+	flex-wrap: wrap;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-2);
+	justify-content: space-between;
+	letter-spacing: 0.04em;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.lab-reading {
+	font-family: var(--kin-font-mono);
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+[data-lab-show="productive"] .lab-col[data-lab-register="expressive"],
+[data-lab-show="expressive"] .lab-col[data-lab-register="productive"] {
+	display: none;
+}
+
+.lab-stage {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kin-space-4);
+	min-height: 4rem;
+}
+
+/* Curves */
+.lab-curves {
+	display: grid;
+	gap: var(--kin-space-4);
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+}
+
+.lab-curve {
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-layer);
+	display: grid;
+	gap: var(--kin-space-3);
+	padding: var(--kin-space-4);
+}
+
+.lab-curve h3 {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-sm);
+	margin: 0;
+}
+
+.lab-curve code {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+}
+
+.lab-curve__plot {
+	aspect-ratio: 1;
+	position: relative;
+}
+
+.lab-curve__plot svg {
+	height: 100%;
+	inset: 0;
+	overflow: visible;
+	position: absolute;
+	width: 100%;
+}
+
+.lab-curve__axis {
+	fill: none;
+	stroke: var(--kin-color-rule);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.lab-curve__path {
+	fill: none;
+	stroke: var(--kin-color-primary);
+	stroke-width: 2;
+	vector-effect: non-scaling-stroke;
+}
+
+.lab-curve__mark {
+	fill: none;
+	stroke: var(--kin-color-text-muted);
+	stroke-dasharray: 2 3;
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.lab-curve__time {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.lab-curve__dot {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	box-shadow: var(--kin-glow-primary);
+	height: 0.625rem;
+	left: -0.3125rem;
+	position: absolute;
+	top: calc(100% - 0.3125rem);
+	width: 0.625rem;
+}
+
+.lab-curve__facts {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+}
+
+/* Controls */
+.lab-press[data-lab-on] {
+	background: var(--kin-surface-lift-hover);
+}
+
+.lab-specimen .lab-press {
+	transition:
+		background-color var(--kin-motion-control),
+		color var(--kin-motion-control);
+}
+
+.lab-specimen .kin-switch input,
+.lab-specimen .kin-switch input::before,
+.lab-specimen .kin-disclosure summary::after {
+	transition-duration: var(--kin-duration-control);
+	transition-timing-function: var(--kin-ease-standard);
+}
+
+.lab-rows {
+	display: grid;
+	gap: var(--kin-space-2);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.lab-row {
+	align-items: center;
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	display: flex;
+	gap: var(--kin-space-3);
+	justify-content: space-between;
+	padding: var(--kin-space-2) var(--kin-space-3);
+}
+
+.lab-row small {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+}
+
+.lab-row[data-lab-new] {
+	box-shadow: inset var(--kin-tone-bar-width) 0 0 var(--kin-color-primary);
+}
+
+.lab-meter {
+	background: var(--kin-surface-step);
+	border-radius: 999px;
+	height: 0.5rem;
+	overflow: hidden;
+	width: 100%;
+}
+
+.lab-meter > span {
+	background: var(--kin-color-primary);
+	display: block;
+	height: 100%;
+	scale: var(--lab-value, 0.3) 1;
+	transform-origin: 0 50%;
+}
+
+.lab-meter[data-lab-term="surface"] > span {
+	transition: scale var(--kin-motion-surface);
+}
+
+.lab-meter[data-lab-term="settle"] > span {
+	transition: scale var(--kin-motion-settle);
+}
+
+.lab-key {
+	display: flex;
+	gap: var(--kin-space-4);
+	align-items: center;
+}
+
+.lab-key .kin-pattern-corner-key {
+	--kin-pattern-key-size: 3rem;
+}
+
+.lab-caption {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+}
+
+.lab-toasts {
+	display: grid;
+	gap: var(--kin-space-2);
+	min-height: 4.5rem;
+	width: min(100%, 22rem);
+}
+
+/* Content */
+.lab-dial {
+	aspect-ratio: 1;
+	border: 1px solid var(--kin-color-rule-strong);
+	border-radius: 50%;
+	flex: none;
+	position: relative;
+	width: 4.5rem;
+}
+
+.lab-dial::after {
+	background: var(--kin-color-text);
+	border-radius: 50%;
+	content: "";
+	height: 0.375rem;
+	left: calc(50% - 0.1875rem);
+	position: absolute;
+	top: calc(50% - 0.1875rem);
+	width: 0.375rem;
+}
+
+.lab-dial__hand {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	height: 42%;
+	left: calc(50% - 1px);
+	position: absolute;
+	rotate: var(--lab-angle, -60deg);
+	top: 8%;
+	transform-origin: 50% 100%;
+	transition: rotate var(--kin-motion-settle);
+	width: 2px;
+}
+
+.lab-figure {
+	font-family: var(--kin-font-mono);
+	font-size: var(--kin-text-lg);
+	font-variant-numeric: tabular-nums;
+	margin: 0;
+	min-width: 4ch;
+}
+
+/* A trace scales evenly: a dash normalised by pathLength must cover the path
+   the stroke draws, which a non-scaling stroke would measure on screen. */
+.lab-trace {
+	aspect-ratio: 200 / 80;
+	display: block;
+	height: auto;
+	max-height: 7rem;
+	overflow: visible;
+	width: 100%;
+}
+
+.lab-trace path {
+	fill: none;
+	stroke: var(--kin-color-primary);
+	stroke-linecap: round;
+	stroke-width: 1.4;
+}
+
+.lab-trace .lab-trace__band {
+	fill: var(--kin-primary-12);
+	stroke: none;
+}
+
+.lab-trace [data-lab-drawn] {
+	stroke-dasharray: 1;
+}
+
+.lab-trace [data-lab-drawn="on"] {
+	animation: kin-draw var(--kin-motion-draw) both;
+}
+
+.lab-trace .lab-trace__band[data-lab-drawn="on"] {
+	animation: kin-fade var(--kin-motion-draw) both;
+}
+
+.lab-appear {
+	animation: kin-appear var(--kin-motion-appear) both;
+}
+
+.lab-reading-line {
+	margin: 0;
+}
+
+.lab-marks {
+	display: flex;
+	gap: var(--kin-space-3);
+}
+
+.lab-mark {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	display: block;
+	height: 0.625rem;
+	width: 0.625rem;
+}
+
+.lab-marks[data-lab-on] .lab-mark {
+	--kin-appear-scale: 0.3;
+	animation: kin-appear var(--kin-motion-appear) both;
+	animation-delay: calc(
+		var(--kin-duration-draw) / 2 + var(--lab-i) * var(--kin-duration-stagger)
+	);
+}
+
+/* Place */
+.lab-place {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	border-radius: var(--kin-radius-layer);
+	height: 8rem;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+
+.lab-place__bar {
+	align-items: center;
+	border-bottom: 1px solid var(--kin-color-rule);
+	color: var(--kin-color-text-muted);
+	display: flex;
+	font-size: var(--kin-text-xs);
+	height: 1.75rem;
+	padding-inline: var(--kin-space-3);
+}
+
+.lab-place__room {
+	display: grid;
+	gap: var(--kin-space-1);
+	inset: 1.75rem 0 0;
+	padding: var(--kin-space-3);
+	position: absolute;
+}
+
+.lab-place__room[hidden] {
+	display: none;
+}
+
+.lab-place__room strong {
+	font-size: var(--kin-text-md);
+}
+
+/* Work in flight */
+.lab-work {
+	display: grid;
+	gap: var(--kin-space-3);
+	width: 100%;
+}
+
+.lab-edge-row {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lab-edge-row .kin-list__item {
+	background: var(--kin-surface-step);
+}
+
+/* Corrections */
+.lab-pair {
+	border-top: 1px solid var(--kin-color-rule);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.lab-pair > div {
+	display: grid;
+	gap: var(--kin-space-3);
+	align-content: start;
+	padding: var(--kin-space-5);
+}
+
+.lab-pair > div + div {
+	border-inline-start: 1px solid var(--kin-color-rule);
+}
+
+.lab-pair__label {
+	font-size: var(--kin-text-xs);
+	letter-spacing: 0.04em;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.lab-pair__label[data-side="before"] {
+	color: var(--kin-color-warning);
+}
+
+.lab-pair__label[data-side="after"] {
+	color: var(--kin-color-success);
+}
+
+@media (max-width: 42rem) {
+	.lab-specimen__head {
+		grid-template-columns: auto minmax(0, 1fr);
+	}
+
+	.lab-actions {
+		grid-column: 1 / -1;
+		grid-row: auto;
+		justify-content: start;
+	}
+
+	.lab-col + .lab-col,
+	.lab-pair > div + div {
+		border-inline-start: 0;
+		border-top: 1px solid var(--kin-color-rule);
+	}
+
+	.lab-bar__status {
+		margin-left: 0;
+		width: 100%;
+	}
+}

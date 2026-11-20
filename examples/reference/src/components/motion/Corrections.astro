@@ -1,0 +1,509 @@
+---
+// Corrections from Kinra Observatory's history, rebuilt for the motion lab
+// (docs/motion.md, Corrections). Each pair reproduces the motion exactly, from
+// the commits named; the drawing is simplified and the data is synthetic.
+
+// The dial (Observatory's timepiece, simplified): a 1000-unit face with its
+// seconds track, two slow hands and the seconds hand.
+const ticks = Array.from({ length: 60 }, (_, index) => {
+	const angle = (index * 6 * Math.PI) / 180;
+	const major = index % 5 === 0;
+	const [inner, outer] = major ? [424, 446] : [433, 445];
+	return {
+		x1: (Math.sin(angle) * inner).toFixed(1),
+		y1: (-Math.cos(angle) * inner).toFixed(1),
+		x2: (Math.sin(angle) * outer).toFixed(1),
+		y2: (-Math.cos(angle) * outer).toFixed(1),
+		major,
+	};
+});
+
+// Before eb896ff: stations riding in lanes behind the seconds hand, each at
+// its clock's lag (seconds behind Kepler, times six degrees).
+const stations = [
+	[-0.975, -0.965],
+	[-2.4, -1.9],
+	[-0.3, -0.1],
+	[-4.1, -3.6],
+	[-1.25, -1.2],
+].sort((a, b) => b[0] + b[1] - (a[0] + a[1]));
+const gap = Math.min(3.4, 29 / Math.max(1, stations.length - 1));
+const point = (radius: number, degrees: number) => {
+	const angle = (degrees * Math.PI) / 180;
+	return [Math.sin(angle) * radius, -Math.cos(angle) * radius];
+};
+const lanes = stations.map(([low, high], index) => {
+	const radius = 419 - index * gap;
+	if ((high - low) * 6 >= 0.6) {
+		const [x1, y1] = point(radius, low * 6);
+		const [x2, y2] = point(radius, high * 6);
+		return {
+			arc: `M${x1.toFixed(1)} ${y1.toFixed(1)}A${radius} ${radius} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`,
+		};
+	}
+	const [cx, cy] = point(radius, ((low + high) / 2) * 6);
+	return { cx: cx.toFixed(1), cy: cy.toFixed(1) };
+});
+
+const lamps = [
+	["Pulse", "ok"],
+	["chrony", "look"],
+	["Receiver", "ok"],
+	["Tuner", "look"],
+	["NTP", "ok"],
+	["TMP117", "ok"],
+	["Weather board", "ok"],
+	["X550", "look"],
+	["Watch crystal", "ok"],
+	["NOAA SWPC", "look"],
+];
+
+const sides = [
+	["before", "Before"],
+	["after", "After"],
+] as const;
+---
+
+<article class="lab-specimen" id="K1" data-lab-correction="hand">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K1</span>
+		<h3 class="lab-term">The seconds hand sweeps alone</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Start the clocks
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: half a minute of light held on the ticks behind the seconds hand,
+			stations riding in lanes behind it, and a glow on its tip. Read as: noise
+			following the one movement. Replaced by: the hands and their shadows
+			alone.
+		</p>
+		<p class="lab-note">
+			Observatory <code>eb896ff</code>. Every part turns once a minute on one
+			linear animation started from the clock, as the hand does. The hands'
+			first settle is left out: it is the same on both sides.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "eb896ff^" : "eb896ff"}
+					</p>
+					<div class="k1-dial" data-k1={side}>
+						<svg
+							class="k1-layer"
+							viewBox="-500 -500 1000 1000"
+							aria-hidden="true"
+						>
+							<circle class="k1-face" r="498" />
+							{ticks.map((tick) => (
+								<line
+									class={tick.major ? "k1-tick k1-tick--major" : "k1-tick"}
+									x1={tick.x1}
+									y1={tick.y1}
+									x2={tick.x2}
+									y2={tick.y2}
+								/>
+							))}
+						</svg>
+						{side === "before" && (
+							<div class="k1-afterglow" aria-hidden="true">
+								<div
+									class="k1-sweep"
+									data-k1-turn="60000"
+									data-k1-follower="the afterglow"
+								/>
+							</div>
+						)}
+						{side === "before" && (
+							<div
+								class="k1-layer k1-stations"
+								data-k1-turn="60000"
+								data-k1-follower="the stations"
+								aria-hidden="true"
+							>
+								<svg viewBox="-500 -500 1000 1000">
+									<defs>
+										<filter
+											id="k1-bloom"
+											x="-100%"
+											y="-100%"
+											width="300%"
+											height="300%"
+										>
+											<feGaussianBlur stdDeviation="11" />
+										</filter>
+									</defs>
+									{lanes.map((lane) =>
+										lane.arc ? (
+											<path class="k1-arc" d={lane.arc} />
+										) : (
+											<g>
+												<circle
+													class="k1-point-bloom"
+													cx={lane.cx}
+													cy={lane.cy}
+													r="11"
+													filter="url(#k1-bloom)"
+												/>
+												<circle
+													class="k1-point"
+													cx={lane.cx}
+													cy={lane.cy}
+													r="6.5"
+												/>
+											</g>
+										),
+									)}
+								</svg>
+							</div>
+						)}
+						<div
+							class="k1-layer"
+							data-k1-turn="43200000"
+							data-k1-local
+							aria-hidden="true"
+						>
+							<svg viewBox="-500 -500 1000 1000">
+								<path class="k1-hand" d="M0 -233L8.6 -40L4 30H-4L-8.6 -40Z" />
+							</svg>
+						</div>
+						<div
+							class="k1-layer"
+							data-k1-turn="3600000"
+							data-k1-local
+							aria-hidden="true"
+						>
+							<svg viewBox="-500 -500 1000 1000">
+								<path class="k1-hand" d="M0 -405L6.2 -60L3 36H-3L-6.2 -60Z" />
+							</svg>
+						</div>
+						<div
+							class="k1-layer k1-shadow"
+							data-k1-turn="60000"
+							aria-hidden="true"
+						>
+							<svg viewBox="-500 -500 1000 1000">
+								<rect x="-1.2" y="-446" width="2.4" height="524" />
+							</svg>
+						</div>
+						<div class="k1-layer" data-k1-turn="60000" aria-hidden="true">
+							<svg viewBox="-500 -500 1000 1000">
+								{side === "before" && (
+									<circle
+										class="k1-head"
+										cy="-439"
+										r="16"
+										filter="url(#k1-bloom)"
+										data-k1-follower="the glow on its tip"
+									/>
+								)}
+								<rect
+									class="k1-second"
+									x="-2.4"
+									y="-446"
+									width="4.8"
+									height="524"
+								/>
+								<circle class="k1-second" cy="58" r="12" />
+							</svg>
+						</div>
+						<svg
+							class="k1-layer"
+							viewBox="-500 -500 1000 1000"
+							aria-hidden="true"
+						>
+							<circle class="k1-cap" r="16" />
+							<circle class="k1-second" r="7" />
+						</svg>
+					</div>
+					<p class="lab-check" data-lab-check>
+						Stopped.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K3" data-lab-correction="lamps">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K3</span>
+		<h3 class="lab-term">Nothing blinks</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Run the console
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: ten lamps, each flashing as its instrument reported and the pulse
+			lamp on every second. Read as: blinking. Replaced by: one steady line that
+			says what needs a look.
+		</p>
+		<p class="lab-note">
+			Observatory <code>1d6d875</code> to <code>7a780d5</code>. A flash grew
+			from 0.6 to 1.9 over 360ms on ease-out as it faded; reports arrived with
+			each five-second snapshot, and the pulse lamp flashed on Kepler's second.
+		</p>
+	</div>
+	<div class="lab-pair">
+		<div>
+			<p class="lab-pair__label" data-side="before">Before · 1d6d875</p>
+			<ul class="k3-lamps" data-k3-lamps>
+				{
+					lamps.map(([name, glow]) => (
+						<li>
+							<span class="k3-bulb" data-glow={glow} data-k3-lamp={name} />
+							<span class="k3-name">{name}</span>
+						</li>
+					))
+				}
+			</ul>
+			<p class="lab-check" data-lab-check>Stopped.</p>
+		</div>
+		<div>
+			<p class="lab-pair__label" data-side="after">After · 7a780d5</p>
+			<button class="k3-line" type="button">
+				<span class="k3-bulb" data-glow="look"></span>
+				Four of ten instruments need a look
+				<span aria-hidden="true">›</span>
+			</button>
+			<p class="lab-check" data-lab-check data-kept="true">
+				Rule 3 · keeps: nothing moves at rest.
+			</p>
+		</div>
+	</div>
+</article>
+
+<article class="lab-specimen" id="K4" data-lab-correction="strip">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K4</span>
+		<h3 class="lab-term">One picture has one clock</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-run
+				aria-pressed="false"
+			>
+				Start the pulses
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: a strip that glided one column a second on Kepler's clock while its
+			dots moved on a timer a frame or more later. Read as: a jump of a column
+			on about every other second, and every dot moving when one stray widened
+			the scale. Replaced by: one animation locked to the clock, each dot placed
+			once by its own second, and a scale that widens at once but narrows only
+			after half a minute.
+		</p>
+		<p class="lab-note">
+			Observatory <code>7a780d5</code>. One pulse a second with synthetic
+			offsets and a stray every 23 seconds. The line under each strip follows
+			one dot, as Observatory's test does: every frame should move it by the
+			strip's speed, to within a pixel. Slow it to a tenth to see the jump.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "7a780d5^" : "7a780d5"}
+					</p>
+					<div class="k4-plot" data-k4={side}>
+						<div class="k4-band" data-k4-band />
+						<div class="k4-strip" data-k4-strip />
+					</div>
+					<svg
+						class="k4-error"
+						viewBox="0 0 120 20"
+						preserveAspectRatio="none"
+						aria-hidden="true"
+					>
+						<line class="k4-error__limit" x1="0" x2="120" y1="5" y2="5" />
+						<line class="k4-error__limit" x1="0" x2="120" y1="15" y2="15" />
+						<polyline class="k4-error__line" data-k4-error points="" />
+					</svg>
+					<p class="lab-check" data-lab-check>
+						Stopped.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K5" data-lab-correction="dock">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K5</span>
+		<h3 class="lab-term">Nothing moves that the reader did not ask for</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-visit
+			>
+				Visit the page
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: the face docking itself into the header once its hands had landed
+			and a moment had passed. Read as: motion the reader did not ask for.
+			Replaced by: docking only when the console is chosen.
+		</p>
+		<p class="lab-note">
+			Observatory <code>1d6d875</code> to <code>2be338a</code>. The hands land
+			over a settle; the old page then held 1400ms unless the pointer or focus
+			was on the dial, and flew the dial to its slot over 460ms. Choosing again
+			in flight turns it back.
+		</p>
+	</div>
+	<div class="lab-pair" data-kin-motion="expressive">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "1d6d875" : "2be338a"}
+					</p>
+					<div class="k5-page" data-k5={side}>
+						<div class="k5-header">
+							<span class="k5-slot" data-k5-slot />
+							<span class="lab-caption">Console</span>
+						</div>
+						<div
+							class="k5-dial"
+							data-k5-dial
+							tabindex="0"
+							aria-label="The timepiece"
+						>
+							<span class="k5-hand" data-k5-hand />
+						</div>
+					</div>
+					<div class="lab-stage">
+						{side === "after" && (
+							<button
+								class="kin-button"
+								data-size="compact"
+								type="button"
+								data-k5-open
+							>
+								Open console
+							</button>
+						)}
+						<button
+							class="kin-button"
+							data-size="compact"
+							type="button"
+							data-k5-return
+						>
+							Return to the face
+						</button>
+					</div>
+					<p class="lab-check" data-lab-check>
+						Not visited.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>
+
+<article class="lab-specimen" id="K6" data-lab-correction="entries">
+	<div class="lab-specimen__head">
+		<span class="lab-id">K6</span>
+		<h3 class="lab-term">An entry starts when it is first seen</h3>
+		<div class="lab-actions">
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-load
+			>
+				Load the page
+			</button>
+			<button
+				class="kin-button"
+				data-size="compact"
+				type="button"
+				data-lab-jump
+			>
+				Jump to the instrument
+			</button>
+		</div>
+		<p class="lab-meaning">
+			Tried: entries playing when the page loaded, so an instrument below the
+			fold had drawn itself before anyone reached it. Read as: decoration spent
+			unseen. Replaced by: an instrument whole while it waits, and its entry
+			released by the scroll that reveals it, in the frame it first appears.
+		</p>
+		<p class="lab-note">
+			Observatory <code>fbbf00b</code>. Scroll each page, or jump. The release
+			runs in the scroll event, before the frame paints; an observer's callback
+			comes after it, and would show one whole frame before the entry began. The
+			numbers are the trace's first frames after the jump: 1 is hidden, 0 drawn.
+		</p>
+	</div>
+	<div class="lab-pair">
+		{
+			sides.map(([side, label]) => (
+				<div>
+					<p class="lab-pair__label" data-side={side}>
+						{label} · {side === "before" ? "fbbf00b^" : "fbbf00b"}
+					</p>
+					<div
+						class="k6-page"
+						data-k6={side}
+						data-kin-motion="expressive"
+						tabindex="0"
+						aria-label={`${label}: a room`}
+					>
+						<p>The broadcast room</p>
+						<p class="lab-caption">
+							Six stations heard tonight. Their clocks against Kepler's second,
+							the round as a strip, and each station's dossier.
+						</p>
+						<div class="k6-spacer" />
+						<div class="k6-instrument" data-k6-instrument>
+							<p class="lab-caption">Band · 474 MHz</p>
+							<svg class="lab-trace" viewBox="0 0 200 80" aria-hidden="true">
+								<path
+									class="lab-trace__band k6-area"
+									d="M0 70 C 20 66 30 32 50 38 S 80 80 100 62 S 140 22 160 34 S 190 56 200 50 L 200 80 L 0 80 Z"
+								/>
+								<path
+									class="k6-trace"
+									d="M0 60 C 20 58 30 20 50 28 S 80 70 100 52 S 140 10 160 24 S 190 46 200 40"
+									pathLength="1"
+								/>
+							</svg>
+						</div>
+					</div>
+					<p class="lab-caption" data-k6-frames>
+						Frames after the jump: —
+					</p>
+					<p class="lab-check" data-lab-check>
+						Not loaded.
+					</p>
+				</div>
+			))
+		}
+	</div>
+</article>

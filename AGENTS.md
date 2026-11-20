@@ -21,7 +21,9 @@ Depot retain historical pins but are no longer current consumers.
    a public token, class, recipe, or registry status. Read `docs/brand.md`
    before changing a brand asset or how a product is named or marked. Read
    `docs/adoption.md` or `docs/releasing.md` when changing the consumer or
-   release contract. Read `docs/refresh-plan.md` before extending the corner
+   release contract. Read `docs/motion.md` before adding or changing anything
+   that moves: a transition, an animation, a motion token or register, or the
+   `/motion/` lab. Read `docs/refresh-plan.md` before extending the corner
    key refresh.
 3. Run `npm run verify` before handing off a change (`npm run check` alone
    for a docs-only change). Verification includes local-only Chromium and

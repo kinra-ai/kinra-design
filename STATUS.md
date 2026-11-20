@@ -42,22 +42,17 @@ adoption map; this file only tracks current state, not process.
   and `OFL.txt` match the frozen Type release byte for byte. See
   [`assets/fonts/VENDORED.md`](assets/fonts/VENDORED.md) for the hashes.
 
-## Verification of 0.7.1
-
-- A fresh `npm ci`, `npm run verify`, `npm audit` and `npm pack --dry-run`
-  pass on the pinned Node 26/npm 11.17 toolchain. The gate includes the
-  public contract, Astro/type checks, formatting, production reference build
-  and 102 Chromium/WebKit browser cases. The dependency audit reports zero
-  vulnerabilities; the package manifest contains 59 public files, including
-  all five fonts, `OFL.txt` and their exact source/hash provenance, and
-  excludes the reference site, browser tests and development tools.
-- The adopted woff2 files match Type 0.2.1's frozen release files byte for
-  byte. Type's release passes 372 structural and 212 real build tests;
-  every glyph, advance and feature matches its checked refinement at nine
-  weights. The release's source commit and SHA-256 hashes are recorded in
-  `assets/fonts/VENDORED.md`.
-
 ## Development
+
+- **Motion by what moves (unreleased, for 0.9.0; on `design/motion`):**
+  [`docs/motion.md`](docs/motion.md) defines seventeen terms in five
+  families, each with its mechanics, examples and counterexamples, after
+  "settle" had come to mean three things in three products. Controls, layers
+  and work in flight move the same everywhere; content and place take a
+  register, productive or expressive, set by `data-kin-motion`. `/motion/`
+  plays every term and rebuilds five of Observatory's corrections, each
+  measured against the rule it breaks or keeps. Round 1 of 3 with Blake is
+  next; consumers keep their pins.
 
 - **Shared structure and the Svelte layer (0.8.0, 2026-11-20):** a review of
   Kinra Space's and Kinra Relay's layout passes found both building the same
@@ -298,6 +293,9 @@ adoption map; this file only tracks current state, not process.
   coordinated migration.
 
 ## Next event
+
+Blake's first motion review: whether `/motion/` shows what he corrected, and
+whether the terms in `docs/motion.md` are the right words.
 
 Each product can adopt 0.8.0 in its own repository. Relay removes its notice
 override, Space updates its switch wording, and each moves its heads, rows,

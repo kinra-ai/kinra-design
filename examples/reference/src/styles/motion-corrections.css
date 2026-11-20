@@ -1,0 +1,448 @@
+/*
+ * The motion lab's corrections, rebuilt from Kinra Observatory. A "before"
+ * keeps the timing its commit removed, written out and marked with that
+ * commit; an "after" moves by the terms. The drawing is simplified.
+ */
+
+.lab-check {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-prose);
+	font-size: var(--kin-text-sm);
+	margin: 0;
+}
+
+.lab-check[data-kept="false"] {
+	color: var(--kin-color-warning);
+}
+
+.lab-check[data-kept="true"] {
+	color: var(--kin-color-success);
+}
+
+/* K1: the dial. */
+.k1-dial {
+	--k1-signal: var(--kin-color-primary);
+	aspect-ratio: 1;
+	margin-inline: auto;
+	position: relative;
+	width: min(100%, 15rem);
+}
+
+.k1-layer {
+	display: block;
+	height: 100%;
+	inset: 0;
+	overflow: visible;
+	position: absolute;
+	width: 100%;
+}
+
+.k1-layer > svg {
+	display: block;
+	height: 100%;
+	overflow: visible;
+	width: 100%;
+}
+
+.k1-face {
+	fill: var(--kin-color-ground);
+	stroke: var(--kin-color-rule);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.k1-tick {
+	stroke: var(--kin-color-text-muted);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.k1-tick--major {
+	stroke: var(--kin-color-text);
+	stroke-width: 1.6;
+}
+
+.k1-hand,
+.k1-cap {
+	fill: var(--kin-color-text);
+}
+
+.k1-second {
+	fill: var(--k1-signal);
+}
+
+.k1-shadow {
+	filter: blur(2px);
+	opacity: 0.55;
+	translate: 0.8% 1.2%;
+}
+
+.k1-shadow rect {
+	fill: light-dark(rgb(52 42 28 / 0.4), rgb(0 0 0 / 0.8));
+}
+
+.k1-head {
+	fill: var(--k1-signal);
+	opacity: 0.55;
+}
+
+.k1-arc {
+	fill: none;
+	opacity: 0.62;
+	stroke: light-dark(var(--k1-signal), #9fdcec);
+	stroke-linecap: round;
+	stroke-width: 1.6;
+	vector-effect: non-scaling-stroke;
+}
+
+.k1-point {
+	fill: light-dark(var(--k1-signal), #f2fbfd);
+}
+
+.k1-point-bloom {
+	fill: var(--k1-signal);
+	opacity: 0.8;
+}
+
+/* Before eb896ff: half a minute of light behind the hand, a turning conic
+   gradient seen through a still mask of the sixty ticks. */
+.k1-afterglow {
+	-webkit-mask-composite: source-in;
+	-webkit-mask-image:
+		radial-gradient(
+			closest-side,
+			transparent 86.5%,
+			#000 86.7%,
+			#000 89.1%,
+			transparent 89.3%
+		),
+		repeating-conic-gradient(
+			from -0.24deg,
+			#000 0deg 0.48deg,
+			transparent 0.48deg 6deg
+		);
+	border-radius: 50%;
+	inset: 0;
+	mask-composite: intersect;
+	mask-image:
+		radial-gradient(
+			closest-side,
+			transparent 86.5%,
+			#000 86.7%,
+			#000 89.1%,
+			transparent 89.3%
+		),
+		repeating-conic-gradient(
+			from -0.24deg,
+			#000 0deg 0.48deg,
+			transparent 0.48deg 6deg
+		);
+	position: absolute;
+}
+
+.k1-sweep {
+	background: conic-gradient(
+		transparent 0turn 0.5turn,
+		color-mix(in oklab, var(--k1-signal) 9%, transparent) 0.66turn,
+		color-mix(in oklab, var(--k1-signal) 26%, transparent) 0.82turn,
+		color-mix(in oklab, var(--k1-signal) 55%, transparent) 0.93turn,
+		color-mix(in oklab, var(--k1-signal) 85%, transparent) 0.985turn,
+		var(--k1-signal) 1turn
+	);
+	border-radius: 50%;
+	inset: 0;
+	position: absolute;
+}
+
+/* Before eb896ff: the afterglow and the stations lit once the clock ran,
+   over 1.6s on standard after 0.8s and 1.2s. */
+.k1-dial :is(.k1-afterglow, .k1-stations) {
+	opacity: 0;
+	transition: opacity var(--kin-duration-slow) var(--kin-ease-standard);
+}
+
+.k1-dial[data-k1-running] :is(.k1-afterglow, .k1-stations) {
+	opacity: 1;
+}
+
+.k1-dial[data-k1-running] .k1-afterglow {
+	animation: k1-light-up 1.6s var(--kin-ease-standard) 0.8s backwards;
+}
+
+.k1-dial[data-k1-running] .k1-stations {
+	animation: k1-light-up 1.6s var(--kin-ease-standard) 1.2s backwards;
+}
+
+@keyframes k1-light-up {
+	from {
+		opacity: 0;
+	}
+}
+
+/* K3: the lamps. */
+.k3-lamps {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem 0.95rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.k3-lamps li {
+	align-items: center;
+	display: flex;
+	gap: 0.35rem;
+}
+
+.k3-bulb {
+	--k3-glow: var(--kin-color-success);
+	border-radius: 50%;
+	display: inline-block;
+	flex: none;
+	height: 0.46rem;
+	position: relative;
+	width: 0.46rem;
+}
+
+.k3-bulb[data-glow="ok"] {
+	background: var(--kin-color-success);
+	box-shadow: 0 0 6px color-mix(in srgb, var(--k3-glow) 55%, transparent);
+}
+
+.k3-bulb[data-glow="look"] {
+	--k3-glow: var(--kin-color-warning);
+	background: var(--kin-color-warning);
+}
+
+.k3-name {
+	color: var(--kin-color-text-muted);
+	font-family: var(--kin-font-mono);
+	font-size: 0.64rem;
+}
+
+.k3-flash {
+	background: var(--k3-glow);
+	border-radius: 50%;
+	inset: -0.2rem;
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+}
+
+/* Before 7a780d5: Observatory's lamp-blink, at its appear role of 360ms. */
+.k3-flash[data-on] {
+	animation: k3-lamp-blink 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes k3-lamp-blink {
+	from {
+		opacity: 0.85;
+		scale: 0.6;
+	}
+
+	to {
+		scale: 1.9;
+	}
+}
+
+.k3-line {
+	align-items: center;
+	background: none;
+	border: 0;
+	color: var(--kin-color-warning);
+	cursor: pointer;
+	display: inline-flex;
+	font: inherit;
+	font-size: var(--kin-text-sm);
+	gap: var(--kin-space-2);
+	padding: 0;
+}
+
+/* K4: the pulse strip. */
+.k4-plot {
+	background: var(--kin-surface-step);
+	border-radius: var(--kin-radius-row);
+	height: 3.5rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.k4-plot[data-k4="after"] {
+	-webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
+	mask-image: linear-gradient(to right, transparent, #000 14%);
+}
+
+.k4-strip {
+	inset: 0 auto 0 0;
+	position: absolute;
+	width: 0;
+}
+
+.k4-band {
+	background: var(--kin-color-primary);
+	left: 0;
+	opacity: 0.09;
+	position: absolute;
+	right: 0;
+}
+
+.k4-plot[data-k4="before"] .k4-band {
+	display: none;
+}
+
+.k4-dot {
+	background: var(--kin-color-primary);
+	border-radius: 50%;
+	height: 3.8px;
+	margin: -1.9px 0 0 -1.9px;
+	opacity: 0.72;
+	position: absolute;
+	width: 3.8px;
+}
+
+.k4-plot[data-k4="before"] .k4-dot {
+	background: var(--kin-color-warning);
+	height: 3.4px;
+	margin: -1.7px 0 0 -1.7px;
+	opacity: 0.8;
+	width: 3.4px;
+}
+
+.k4-dot[data-newest] {
+	height: 5.4px;
+	margin: -2.7px 0 0 -2.7px;
+	opacity: 1;
+	width: 5.4px;
+}
+
+.k4-dot[data-stray] {
+	border-radius: 0;
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.k4-error {
+	display: block;
+	height: 1.25rem;
+	width: 100%;
+}
+
+.k4-error__limit {
+	stroke: var(--kin-color-rule);
+	stroke-dasharray: 2 3;
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.k4-error__line {
+	fill: none;
+	stroke: var(--kin-color-text-muted);
+	stroke-width: 1.2;
+	vector-effect: non-scaling-stroke;
+}
+
+/* K5: the face and its dock. */
+.k5-page {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	border-radius: var(--kin-radius-layer);
+	height: 13rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.k5-header {
+	align-items: center;
+	border-bottom: 1px solid var(--kin-color-rule);
+	display: flex;
+	gap: var(--kin-space-3);
+	height: 3rem;
+	inset: 0 0 auto;
+	padding-inline: var(--kin-space-3);
+	position: absolute;
+}
+
+.k5-slot {
+	border: 1px dashed var(--kin-color-rule);
+	border-radius: 50%;
+	flex: none;
+	height: 2.25rem;
+	width: 2.25rem;
+}
+
+.k5-dial {
+	background: var(--kin-color-surface);
+	border: 1px solid var(--kin-color-rule-strong);
+	border-radius: 50%;
+	height: 7.5rem;
+	left: calc(50% - 3.75rem);
+	position: absolute;
+	top: 4.25rem;
+	transform-origin: 0 0;
+	width: 7.5rem;
+}
+
+.k5-hand {
+	background: var(--kin-color-primary);
+	border-radius: 1px;
+	height: 40%;
+	left: calc(50% - 1px);
+	position: absolute;
+	rotate: var(--k5-angle, 186deg);
+	top: 10%;
+	transform-origin: 50% 100%;
+	transition: rotate var(--kin-motion-settle);
+	width: 2px;
+}
+
+/* K6: a room with an instrument below the fold. */
+.k6-page {
+	background: var(--kin-color-ground);
+	border: 1px solid var(--kin-color-rule);
+	border-radius: var(--kin-radius-layer);
+	height: 12rem;
+	overflow: auto;
+	padding: var(--kin-space-4);
+}
+
+.k6-page > p {
+	margin: 0 0 var(--kin-space-2);
+}
+
+.k6-spacer {
+	height: 22rem;
+}
+
+.k6-instrument {
+	background: var(--kin-color-surface);
+	border-radius: var(--kin-radius-row);
+	padding: var(--kin-space-3);
+}
+
+.k6-trace {
+	stroke-dasharray: 1;
+}
+
+/* Before fbbf00b: the band's own entry, played at mount: its trace over 2.2s
+   after 0.15s, its area over 1.6s after 0.9s. */
+.k6-page[data-k6="before"] [data-k6-mounted] .k6-trace {
+	animation: kin-draw 2.2s var(--kin-ease-out) 0.15s both;
+}
+
+.k6-page[data-k6="before"] [data-k6-mounted] .k6-area {
+	animation: kin-fade 1.6s var(--kin-ease-out) 0.9s both;
+}
+
+/* After: the draw term, held until the instrument is first seen. */
+.k6-page[data-k6="after"] [data-k6-mounted] .k6-trace {
+	animation: kin-draw var(--kin-motion-draw) both;
+}
+
+.k6-page[data-k6="after"] [data-k6-mounted] .k6-area {
+	animation: kin-fade var(--kin-motion-draw) both;
+}
+
+.k6-page [data-inview="waiting"],
+.k6-page [data-inview="waiting"] * {
+	animation-name: none !important;
+}

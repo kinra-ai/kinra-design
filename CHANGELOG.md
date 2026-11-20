@@ -7,6 +7,34 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+Motion is named by what moves. In review with Blake for 0.9.0; names and
+values may change before release.
+
+### Added
+
+- [`docs/motion.md`](docs/motion.md), the motion standard: seventeen terms in
+  five families (controls, layers, content, place and work in flight), each
+  with its mechanics, still form, examples, counterexamples and the words it
+  replaces, with rules a reviewer or a test can check.
+- A token pair for every term: `--kin-duration-<term>` and
+  `--kin-motion-<term>` for control, surface, bloom, morph, layer, popover,
+  exit, settle, draw, appear, navigate, trace, sweep, pulse, pass and close,
+  and `--kin-duration-stagger`.
+- Motion registers: `data-kin-motion="productive"` (the default) or
+  `"expressive"` on the document or any subtree sets how content and place
+  move. With less motion, content and place are 0ms.
+- `kin-fade`, `kin-appear` and `kin-draw`, shared arrivals that run from a
+  hidden state only, with `--kin-appear-from` and `--kin-appear-scale`.
+- `/motion/` in the reference catalog: every term in both registers, the
+  curves, a lab speed and simulated less motion, and five corrections from
+  Kinra Observatory rebuilt with their measured rule.
+
+### Deprecated
+
+- `--kin-duration-retract`, `--kin-duration-lift`, `--kin-duration-fold` and
+  `--kin-ease-lift` keep their values; a control changing meaning is morph,
+  and leaving is exit.
+
 ## [0.8.0] - 2026-11-20
 
 A line along an edge is work in flight, a bar is a still block's tone, and

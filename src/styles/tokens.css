@@ -351,28 +351,63 @@
 	--kin-layer-dialog: 40;
 	--kin-layer-toast: 50;
 
-	/* Causal motion */
+	/*
+	 * Motion, named by what moves. docs/motion.md owns each term's meaning,
+	 * mechanics and still form; its tables are tested against these values.
+	 * Every term is a duration and a pair of duration and curve. Controls,
+	 * layers and work in flight move the same everywhere; content and place
+	 * take the register declared below the root block.
+	 */
 	--kin-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--kin-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 	--kin-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--kin-ease-bloom: cubic-bezier(0.2, 0, 0, 1);
+	--kin-ease-morph: cubic-bezier(0.4, 0, 0, 1);
+	/* The scale the terms take their durations from. */
 	--kin-duration-fast: 120ms;
 	--kin-duration-normal: 180ms;
 	--kin-duration-slow: 320ms;
 	--kin-duration-deliberate: 480ms;
-	--kin-motion-control: var(--kin-duration-fast) var(--kin-ease-standard);
-	--kin-motion-surface: var(--kin-duration-normal) var(--kin-ease-out);
-	--kin-motion-layer: var(--kin-duration-slow) var(--kin-ease-out);
-	/* Corner key verbs, proved in Space. Settled states remain still. */
-	--kin-ease-bloom: cubic-bezier(0.2, 0, 0, 1);
-	--kin-ease-lift: cubic-bezier(0.4, 0, 1, 1);
-	--kin-ease-morph: cubic-bezier(0.4, 0, 0, 1);
+	/* Controls: a control answers, a surface makes room, an action becomes
+	   possible, a control changes meaning. */
+	--kin-duration-control: var(--kin-duration-fast);
+	--kin-motion-control: var(--kin-duration-control) var(--kin-ease-standard);
+	--kin-duration-surface: var(--kin-duration-normal);
+	--kin-motion-surface: var(--kin-duration-surface) var(--kin-ease-out);
 	--kin-duration-bloom: 260ms;
+	--kin-motion-bloom: var(--kin-duration-bloom) var(--kin-ease-bloom);
+	--kin-duration-morph: 320ms;
+	--kin-motion-morph: var(--kin-duration-morph) var(--kin-ease-morph);
+	/* Layers: arrive from where they live or from their control, and leave
+	   the way they came, faster. */
+	--kin-duration-layer: var(--kin-duration-slow);
+	--kin-motion-layer: var(--kin-duration-layer) var(--kin-ease-out);
+	--kin-duration-popover: var(--kin-duration-normal);
+	--kin-motion-popover: var(--kin-duration-popover) var(--kin-ease-out);
+	--kin-duration-exit: var(--kin-duration-normal);
+	--kin-motion-exit: var(--kin-duration-exit) var(--kin-ease-in);
+	/* Work in flight: loops that exist only while their work runs, and the
+	   close that ends them. */
+	--kin-duration-trace: 1.6s;
+	--kin-motion-trace: var(--kin-duration-trace) linear;
+	--kin-duration-sweep: 1.6s;
+	--kin-motion-sweep: var(--kin-duration-sweep) var(--kin-ease-standard);
+	--kin-duration-pulse: 1.8s;
+	--kin-motion-pulse: var(--kin-duration-pulse) var(--kin-ease-standard);
+	--kin-duration-pass: 1.05s;
+	--kin-motion-pass: var(--kin-duration-pass) steps(1, end);
+	--kin-duration-close: 300ms;
+	--kin-motion-close: var(--kin-duration-close) var(--kin-ease-out);
+	/* Where appearing content rises from, and the scale it grows from. */
+	--kin-appear-from: 0 var(--kin-space-1);
+	--kin-appear-scale: 1;
+	/* Deprecated: the corner key's own timings, kept at their values for at
+	   least one minor. "Fold" is the shell's word and "lift" a surface tone;
+	   a control changing meaning is morph, and leaving is exit. */
+	--kin-ease-lift: cubic-bezier(0.4, 0, 1, 1);
 	--kin-duration-retract: 200ms;
 	--kin-duration-lift: 260ms;
-	--kin-duration-morph: 320ms;
 	--kin-duration-fold: 400ms;
-	--kin-duration-trace: 1.6s;
-	--kin-duration-close: 300ms;
 
 	/* Controls, reading, and shell measures */
 	--kin-control-radius: var(--kin-radius-row);
@@ -425,6 +460,76 @@
 :where([dir="ltr"]) {
 	--kin-shell-safe-start: env(safe-area-inset-left, 0px);
 	--kin-shell-safe-end: env(safe-area-inset-right, 0px);
+}
+
+/*
+ * Motion registers. Content and place take the register of the nearest
+ * data-kin-motion, on the document or any bounded subtree; productive is the
+ * default. Productive content is simply there; expressive values travel,
+ * traces draw when first seen and a new place arrives (docs/motion.md).
+ */
+:root,
+[data-kin-motion="productive"] {
+	--kin-duration-settle: 0ms;
+	--kin-duration-draw: 0ms;
+	--kin-duration-appear: var(--kin-duration-normal);
+	--kin-duration-stagger: 0ms;
+	--kin-duration-navigate: 0ms;
+}
+
+[data-kin-motion="expressive"] {
+	--kin-duration-settle: 1400ms;
+	--kin-duration-draw: 1400ms;
+	--kin-duration-appear: 360ms;
+	--kin-duration-stagger: 45ms;
+	--kin-duration-navigate: 460ms;
+}
+
+/* With less motion, content is whole at once and a new place simply arrives.
+   Controls, layers and work keep their values: base.css lands their CSS at
+   once, and the values double as delays and the periods of still forms. */
+@media (prefers-reduced-motion: reduce) {
+	:root,
+	[data-kin-motion] {
+		--kin-duration-settle: 0ms;
+		--kin-duration-draw: 0ms;
+		--kin-duration-appear: 0ms;
+		--kin-duration-stagger: 0ms;
+		--kin-duration-navigate: 0ms;
+	}
+}
+
+/* A var() in a custom property is replaced where it is declared and inherited
+   as the result, so every register boundary pairs its own durations again. */
+:root,
+[data-kin-motion] {
+	--kin-motion-settle: var(--kin-duration-settle) var(--kin-ease-out);
+	--kin-motion-draw: var(--kin-duration-draw) var(--kin-ease-out);
+	--kin-motion-appear: var(--kin-duration-appear) var(--kin-ease-out);
+	--kin-motion-navigate: var(--kin-duration-navigate) var(--kin-ease-out);
+}
+
+/* Shared arrivals. Each runs from its hidden state to the element's own
+   style, so with no animation at all the content is whole. */
+@keyframes kin-fade {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes kin-appear {
+	from {
+		opacity: 0;
+		translate: var(--kin-appear-from);
+		scale: var(--kin-appear-scale);
+	}
+}
+
+/* A path with pathLength="1" and stroke-dasharray: 1 draws from its start. */
+@keyframes kin-draw {
+	from {
+		stroke-dashoffset: 1;
+	}
 }
 
 /* Scheme switch. Applies to the document or any bounded subtree. */
