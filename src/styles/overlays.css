@@ -428,6 +428,14 @@
 		.kin-drawer[open]::backdrop {
 			animation: none;
 		}
+
+		/* And it closes at once, even where this file is used without
+		   base.css: no exit holds it in the top layer. */
+		dialog:is(.kin-dialog, .kin-drawer):not([open]),
+		dialog:is(.kin-dialog, .kin-drawer):not([open])::backdrop,
+		.kin-popover[popover]:not(:popover-open) {
+			transition: none;
+		}
 	}
 }
 

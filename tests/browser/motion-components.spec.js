@@ -605,6 +605,52 @@ test("with less motion every layer closes at once", async ({ page }) => {
 	}
 });
 
+test("with less motion, overlays.css alone closes every layer at once", async ({
+	page,
+}) => {
+	// An entry point stands alone: without base.css, its own reduced-motion
+	// rules still keep a layer from leaving slowly.
+	const alone = fixture.replace(
+		'<link rel="stylesheet" href="/src/styles/index.css">',
+		'<link rel="stylesheet" href="/src/styles/overlays.css">',
+	);
+	await open(page, "reduce", alone);
+	for (const id of ["dialog", "drawer", "popover"]) {
+		const read = await closing(page, id);
+		expect.soft(read.exits, id).toEqual([]);
+		expect.soft(read.display, id).toBe("none");
+	}
+});
+
+for (const reducedMotion of ["no-preference", "reduce"]) {
+	test(`a tip leaves the way it came, faster (${reducedMotion})`, async ({
+		page,
+	}) => {
+		await open(page, reducedMotion);
+		const read = await page.evaluate(async () => {
+			const tip = document.getElementById("tip");
+			tip.showPopover();
+			tip.getAnimations().forEach((animation) => animation.finish());
+			await new Promise((resolve) => requestAnimationFrame(resolve));
+			tip.hidePopover();
+			return {
+				supports: CSS.supports("overlay", "auto"),
+				exits: tip.getAnimations().map((animation) => ({
+					property: animation.transitionProperty,
+					duration: animation.effect.getTiming().duration,
+				})),
+			};
+		});
+		const leaves = read.exits.filter((exit) => exit.property === "opacity");
+		if (read.supports && reducedMotion === "no-preference") {
+			expect(leaves).toHaveLength(1);
+			expect(leaves[0].duration).toBe(term("exit").duration);
+		} else {
+			expect(read.exits).toEqual([]);
+		}
+	});
+}
+
 test("a leaving toast still says it has gone with less motion", async ({
 	page,
 }) => {

@@ -645,10 +645,36 @@
 		translate: 0 var(--kin-tooltip-from, 0.1875rem);
 	}
 }
+/* A tip leaves the way it came, faster: back toward its side at half the
+   distance, on the exit term, where the browser transitions overlay;
+   elsewhere it goes at once. */
+@supports (overlay: auto) {
+	@layer kinra.components {
+		.kin-tooltip[popover]:not(:popover-open) {
+			interactivity: inert;
+			opacity: 0;
+			pointer-events: none;
+			transition:
+				opacity var(--kin-motion-exit),
+				translate var(--kin-motion-exit),
+				display var(--kin-duration-exit) allow-discrete,
+				overlay var(--kin-duration-exit) allow-discrete;
+			translate: 0 calc(var(--kin-tooltip-from, 0.1875rem) / 2);
+		}
+
+		.kin-tooltip[popover]:popover-open {
+			transition: none;
+		}
+	}
+}
 @media (prefers-reduced-motion: reduce) {
 	@layer kinra.components {
 		.kin-tooltip[popover]:popover-open {
 			animation: none;
+		}
+
+		.kin-tooltip[popover]:not(:popover-open) {
+			transition: none;
 		}
 	}
 }
