@@ -24,9 +24,26 @@
  *
  * Zero dependencies: products install Design without its devDependencies.
  */
-import { readdirSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import {
+	COMPONENTS,
+	componentSheets,
+	customProperties,
+	exceptionNotes,
+	invokedDirectly,
+	lineIndex,
+	listFiles,
+	maskCss,
+	parseArguments,
+	parseCss,
+	plural,
+	targetFiles,
+} from "./css.mjs";
+
+export { maskCss, styleBlocks } from "./css.mjs";
 
 const TOKENS = new URL("../src/styles/tokens.css", import.meta.url);
 const STYLES = new URL("../src/styles/", import.meta.url);
@@ -37,10 +54,6 @@ const PILL_PX = 999;
 const EPSILON = 1e-6;
 const HAIRLINES = { spacing: [1, 2], radius: [1] };
 const MARK = "off-scale:";
-
-const EXTENSIONS = new Set([".css", ".svelte", ".astro", ".vue"]);
-const COMPONENTS = new Set([".svelte", ".astro", ".vue"]);
-const SKIPPED = new Set(["node_modules", ".svelte-kit", "dist", "build"]);
 
 const SPACING =
 	/^(?:(?:padding|margin|scroll-padding|scroll-margin)(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?|inset(?:-(?:block|inline)(?:-(?:start|end))?)?|top|right|bottom|left|(?:grid-)?(?:row-|column-)?gap)$/;
@@ -61,75 +74,6 @@ Checks spacing and corner radii in .css files and in the <style> blocks of
 
 A deliberate exception says why in a comment containing "off-scale:" on the
 declaration's line or on the line before it.`;
-
-/**
- * Blank comments, strings and url() contents to spaces, keeping every line and
- * column where it was, and return the comments for their `off-scale:` notes.
- *
- * @param {string} css
- * @returns {{ text: string, comments: { start: number, end: number, text: string }[] }}
- */
-export function maskCss(css) {
-	const out = css.split("");
-	const comments = [];
-	const blank = (from, to) => {
-		for (let k = from; k < to; k++) {
-			if (out[k] !== "\n" && out[k] !== "\r") out[k] = " ";
-		}
-	};
-	// From an opening quote to just past its close, or to the line's end.
-	const skipString = (k) => {
-		const quote = css[k++];
-		while (k < css.length && css[k] !== quote && css[k] !== "\n") {
-			k += css[k] === "\\" ? 2 : 1;
-		}
-		return css[k] === quote ? k + 1 : k;
-	};
-	for (let i = 0; i < css.length;) {
-		const c = css[i];
-		if (c === "/" && css[i + 1] === "*") {
-			const close = css.indexOf("*/", i + 2);
-			const end = close === -1 ? css.length : close + 2;
-			comments.push({ start: i, end, text: css.slice(i + 2, end - 2) });
-			blank(i, end);
-			i = end;
-		} else if (c === '"' || c === "'") {
-			const end = skipString(i);
-			blank(i, end);
-			i = end;
-		} else if (
-			(c === "u" || c === "U") &&
-			/^url\(/i.test(css.slice(i, i + 4)) &&
-			!/[\w-]/.test(css[i - 1] ?? "")
-		) {
-			let k = i + 4;
-			while (k < css.length && css[k] !== ")") {
-				if (css[k] === '"' || css[k] === "'") k = skipString(k);
-				else k += css[k] === "\\" ? 2 : 1;
-			}
-			blank(i + 4, k);
-			i = k;
-		} else {
-			i++;
-		}
-	}
-	return { text: out.join(""), comments };
-}
-
-/** Every custom property definition: name to its values, in source order. */
-function customProperties(css) {
-	const { text } = maskCss(css);
-	const found = new Map();
-	for (const [, name, value] of text.matchAll(
-		/(?<![\w-])(--[\w-]+)\s*:\s*([^;{}]*)/g,
-	)) {
-		found.set(name, [
-			...(found.get(name) ?? []),
-			value.trim().replace(/\s+/g, " "),
-		]);
-	}
-	return found;
-}
 
 const round = (n) => Number(n.toFixed(4));
 const near = (a, b) => Math.abs(a - b) < EPSILON;
@@ -213,69 +157,15 @@ export function loadDesign() {
 	return design;
 }
 
-function lineIndex(text) {
-	const starts = [0];
-	for (let i = 0; i < text.length; i++) {
-		if (text[i] === "\n") starts.push(i + 1);
-	}
-	return (offset) => {
-		let low = 0;
-		let high = starts.length - 1;
-		while (low < high) {
-			const middle = (low + high + 1) >> 1;
-			if (starts[middle] <= offset) low = middle;
-			else high = middle - 1;
-		}
-		return { line: low + 1, column: offset - starts[low] + 1 };
-	};
-}
-
 /**
  * Each declaration in masked CSS, at any nesting depth (rules, @media,
  * @layer, @container, @supports, & rules), with its property and the offsets
  * of its name and value. Declarations in @keyframes are left out.
  */
 function* declarations(text) {
-	const keyframes = [];
-	let start = 0;
-	let parens = 0;
-	for (let i = 0; i < text.length; i++) {
-		const c = text[i];
-		if (c === "(") parens++;
-		else if (c === ")") parens = Math.max(0, parens - 1);
-		else if (c === "{") {
-			const prelude = text.slice(start, i).trim();
-			keyframes.push(
-				keyframes.at(-1) === true ||
-					/^@(?:-[a-z]+-)?keyframes\b/i.test(prelude),
-			);
-			start = i + 1;
-			parens = 0;
-		} else if (c === "}" || (c === ";" && parens === 0)) {
-			if (keyframes.length > 0 && keyframes.at(-1) === false) {
-				const found = declaration(text, start, i);
-				if (found) yield found;
-			}
-			if (c === "}") {
-				keyframes.pop();
-				parens = 0;
-			}
-			start = i + 1;
-		}
+	for (const found of parseCss(text).declarations) {
+		if (!found.custom && !found.block.keyframes) yield found;
 	}
-}
-
-function declaration(text, start, end) {
-	const match = /^(\s*)(-?-?[A-Za-z_][\w-]*)\s*:/.exec(text.slice(start, end));
-	if (!match || match[2].startsWith("--")) return null;
-	let valueEnd = end;
-	while (valueEnd > start && /\s/.test(text[valueEnd - 1])) valueEnd--;
-	return {
-		property: match[2].toLowerCase(),
-		at: start + match[1].length,
-		valueStart: start + match[0].length,
-		valueEnd,
-	};
 }
 
 /** The steps a value may take, in px, ascending, without the pill. */
@@ -343,32 +233,10 @@ export function checkCss(css, options = {}) {
 	const report = (offset, message) =>
 		problems.push({ ...where(offset), message });
 
-	const notes = [];
-	for (const comment of comments) {
-		const mark = comment.text.indexOf(MARK);
-		if (mark === -1) continue;
-		const first = where(comment.start);
-		const before = text.slice(comment.start - first.column + 1, comment.start);
-		const reason = comment.text.slice(mark + MARK.length);
-		const note = {
-			first: first.line,
-			last: where(comment.end - 1).line,
-			// A comment trailing a declaration belongs to that line only.
-			alone: /^\s*$|[{}]\s*$/.test(before),
-			reason: /[\p{L}\p{N}]/u.test(reason),
-		};
-		if (!note.reason) {
-			report(comment.start + 2 + mark, `${MARK} gives no reason (say why)`);
-		}
-		notes.push(note);
+	const { unreasoned, exempt } = exceptionNotes(text, comments, where, MARK);
+	for (const offset of unreasoned) {
+		report(offset, `${MARK} gives no reason (say why)`);
 	}
-	const exempt = (first, last) =>
-		notes.some(
-			(note) =>
-				note.reason &&
-				((note.first <= last && note.last >= first) ||
-					(note.alone && note.last === first - 1)),
-		);
 
 	let count = 0;
 	for (const found of declarations(text)) {
@@ -409,33 +277,6 @@ export function checkCss(css, options = {}) {
 }
 
 /**
- * The content ranges of a component's <style> blocks, skipping HTML comments,
- * <script> blocks and an Astro frontmatter fence. A block in another language
- * (lang="scss") is skipped.
- *
- * @param {string} source
- * @param {string} [extension]
- * @returns {{ start: number, end: number }[]}
- */
-export function styleBlocks(source, extension = ".svelte") {
-	const blocks = [];
-	const pattern =
-		/<!--[\s\S]*?(?:-->|$)|<script(?=[\s>])[^>]*>[\s\S]*?(?:<\/script\s*>|$)|<style(?=[\s>])([^>]*)>([\s\S]*?)<\/style\s*>/gi;
-	if (extension === ".astro") {
-		pattern.lastIndex =
-			/^﻿?\s*---[^\n]*\n[\s\S]*?\n---/.exec(source)?.[0].length ?? 0;
-	}
-	for (let match; (match = pattern.exec(source));) {
-		if (match[2] === undefined) continue;
-		const lang = /\blang\s*=\s*["']?([\w-]+)/i.exec(match[1])?.[1];
-		if (lang && !/^(?:css|postcss)$/i.test(lang)) continue;
-		const start = match.index + "<style".length + match[1].length + 1;
-		blocks.push({ start, end: start + match[2].length });
-	}
-	return blocks;
-}
-
-/**
  * Check a file's text: all of a stylesheet, or each <style> block of a
  * .svelte, .astro or .vue component, with lines and columns in the file.
  *
@@ -447,11 +288,7 @@ export function checkSource(source, file, options = {}) {
 	const extension = path.extname(file).toLowerCase();
 	if (!COMPONENTS.has(extension)) return checkCss(source, options);
 	const result = { declarations: 0, problems: [] };
-	for (const { start, end } of styleBlocks(source, extension)) {
-		// Blank everything before the block so positions stay the file's own.
-		const css =
-			source.slice(0, start).replace(/[^\r\n]/g, " ") +
-			source.slice(start, end);
+	for (const css of componentSheets(source, extension)) {
 		const { declarations, problems } = checkCss(css, options);
 		result.declarations += declarations;
 		result.problems.push(...problems);
@@ -459,56 +296,10 @@ export function checkSource(source, file, options = {}) {
 	return result;
 }
 
-function listFiles(directory, extensions = EXTENSIONS) {
-	const files = [];
-	const entries = readdirSync(directory, { withFileTypes: true }).sort(
-		(a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0),
-	);
-	for (const entry of entries) {
-		if (entry.name.startsWith(".") || SKIPPED.has(entry.name)) continue;
-		const full = path.join(directory, entry.name);
-		if (entry.isDirectory()) files.push(...listFiles(full, extensions));
-		else if (
-			extensions.has(path.extname(entry.name).toLowerCase()) &&
-			(entry.isFile() || (entry.isSymbolicLink() && isFile(full)))
-		) {
-			files.push(full);
-		}
-	}
-	return files;
-}
-
-function isFile(file) {
-	try {
-		return statSync(file).isFile();
-	} catch {
-		return false;
-	}
-}
-
-const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
-
 function run(argv) {
-	let strict = false;
-	let quiet = false;
-	let options = true;
-	const targets = [];
-	for (const arg of argv) {
-		if (options && arg === "--") options = false;
-		else if (options && arg === "--strict") strict = true;
-		else if (options && arg === "--quiet") quiet = true;
-		else if (options && (arg === "--help" || arg === "-h")) {
-			console.log(USAGE);
-			return 0;
-		} else if (options && arg.startsWith("-") && arg !== "-") {
-			console.error(`kinra-check-spacing: unknown option ${arg}\n\n${USAGE}`);
-			return 2;
-		} else targets.push(arg);
-	}
-	if (targets.length === 0) {
-		console.error(USAGE);
-		return 2;
-	}
+	const parsed = parseArguments(argv, "kinra-check-spacing", USAGE);
+	if (typeof parsed === "number") return parsed;
+	const { strict, quiet, targets } = parsed;
 
 	let loaded;
 	try {
@@ -517,21 +308,8 @@ function run(argv) {
 		console.error(`kinra-check-spacing: cannot read Kinra's scale: ${error}`);
 		return 2;
 	}
-	const files = new Set();
-	for (const target of targets) {
-		let stats;
-		try {
-			stats = statSync(target);
-		} catch {
-			console.error(
-				`kinra-check-spacing: ${target}: no such file or directory`,
-			);
-			return 2;
-		}
-		for (const file of stats.isDirectory() ? listFiles(target) : [target]) {
-			files.add(file);
-		}
-	}
+	const files = targetFiles(targets, "kinra-check-spacing");
+	if (typeof files === "number") return files;
 
 	let declarations = 0;
 	let problems = 0;
@@ -564,15 +342,5 @@ function run(argv) {
 	return 0;
 }
 
-function invokedDirectly() {
-	try {
-		return (
-			realpathSync(process.argv[1]) ===
-			realpathSync(fileURLToPath(import.meta.url))
-		);
-	} catch {
-		return false;
-	}
-}
-
-if (invokedDirectly()) process.exitCode = run(process.argv.slice(2));
+if (invokedDirectly(import.meta.url))
+	process.exitCode = run(process.argv.slice(2));
