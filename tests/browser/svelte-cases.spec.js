@@ -53,8 +53,12 @@ test("a busy form keeps focus, refuses a second submit and gives focus back", as
 	await expect(note).toBeFocused();
 	await note.fill("Tide at six");
 	// Time stands still until the test runs it, so the 300ms save cannot
-	// finish between the two submits however slowly the page is driven.
-	await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10));
+	// finish between the two submits however slowly the page is driven. The
+	// pause lands two seconds ahead of the page's clock: a pause must lie in
+	// the future, and under load the round trip to set it can take longer than
+	// a few milliseconds. Nothing on the page is waiting yet, so the jump fires
+	// nothing the test reads.
+	await page.clock.pauseAt(await page.evaluate(() => Date.now() + 2000));
 	await page.keyboard.press("Enter");
 	const dialog = page.locator("#busy");
 	await expect(dialog).toHaveAttribute("aria-busy", "true");
