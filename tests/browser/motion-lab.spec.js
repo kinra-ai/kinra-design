@@ -16,6 +16,12 @@ async function open(page) {
 	return errors;
 }
 
+// Buttons are pressed from the keyboard. base.css scrolls smoothly, and under
+// load in WebKit a pointer that lands while a button far down the lab is still
+// gliding into view clicks nothing: K10's and K11's were lost that way at
+// eight workers.
+const press = (page, selector) => page.locator(selector).press("Enter");
+
 const readings = (page) =>
 	page.evaluate(() =>
 		[...document.querySelectorAll("[data-lab-reading]")].map((element) => ({
@@ -100,7 +106,7 @@ test("simulated less motion shows what the system's shows", async ({
 test("work in flight runs only while its work does", async ({ page }) => {
 	await open(page);
 	for (const id of ["W1", "W2", "W3", "W4"]) {
-		await page.locator(`#${id} [data-lab-work]`).click();
+		await press(page, `#${id} [data-lab-work]`);
 	}
 	const loops = () =>
 		page.evaluate(
@@ -115,7 +121,7 @@ test("work in flight runs only while its work does", async ({ page }) => {
 		);
 	await expect.poll(loops).toBeGreaterThanOrEqual(4);
 	for (const id of ["W1", "W2", "W3", "W4"]) {
-		await page.locator(`#${id} [data-lab-work]`).click();
+		await press(page, `#${id} [data-lab-work]`);
 	}
 	await expect.poll(loops, { timeout: 5000 }).toBe(0);
 });
@@ -125,27 +131,29 @@ test("each correction's before breaks its rule and its after keeps it", async ({
 }) => {
 	test.setTimeout(60000);
 	await open(page);
-	await page.locator("#K1 [data-lab-run]").click();
-	await page.locator("#K3 [data-lab-run]").click();
-	await page.locator("#K5 [data-lab-visit]").click();
-	await page.locator("#K6 [data-lab-load]").click();
-	await page.locator("#K2 [data-lab-run]").click();
-	await page.locator("#K7 [data-lab-load]").click();
-	await page.locator("#K9 [data-lab-dismiss]").click();
-	await page.locator("#K10 [data-lab-run]").click();
-	await page.locator("#K11 [data-lab-point]").click();
+	await press(page, "#K1 [data-lab-run]");
+	await press(page, "#K3 [data-lab-run]");
+	await press(page, "#K5 [data-lab-visit]");
+	await press(page, "#K6 [data-lab-load]");
+	await press(page, "#K2 [data-lab-run]");
+	await press(page, "#K7 [data-lab-load]");
+	await press(page, "#K9 [data-lab-dismiss]");
+	await press(page, "#K10 [data-lab-run]");
+	await press(page, "#K11 [data-lab-point]");
 	// Long enough for the old page to dock itself and the old entry to finish.
 	await page.waitForTimeout(3800);
-	await page.locator("#K6 [data-lab-jump]").click();
+	await press(page, "#K6 [data-lab-jump]");
 	// K4 and K8 run frame loops, which stop off screen: each is watched in view.
 	for (const id of ["K4", "K8"]) {
 		await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-		await page.locator(`#${id} [data-lab-run]`).click();
+		await press(page, `#${id} [data-lab-run]`);
 		await expect(
 			page.locator(`#${id} [data-lab-check]`).first(),
+			`${id} before`,
 		).toHaveAttribute("data-kept", "false", { timeout: 10000 });
 		await expect(
 			page.locator(`#${id} [data-lab-check]`).last(),
+			`${id} after`,
 		).toHaveAttribute("data-kept", "true", { timeout: 10000 });
 	}
 	const ids = [
@@ -180,7 +188,7 @@ test("one exit speed reads in ms, however the build writes it", async ({
 	page,
 }) => {
 	await open(page);
-	await page.locator("#K9 [data-lab-dismiss]").click();
+	await press(page, "#K9 [data-lab-dismiss]");
 	await expect(page.locator("#K9 [data-lab-check]").last()).toHaveText(
 		/every layer leaves at 180ms/,
 	);
@@ -190,7 +198,7 @@ test("the escapement beats on its own gait, and playback draws nothing once stop
 	page,
 }) => {
 	await open(page);
-	await page.locator("#X2 [data-lab-run]").click();
+	await press(page, "#X2 [data-lab-run]");
 	const hand = page.locator("[data-x2-hand]");
 	// One minute-long animation of 181 keyframes, started from the clock.
 	expect(
@@ -203,9 +211,9 @@ test("the escapement beats on its own gait, and playback draws nothing once stop
 		}),
 	).toEqual([181, 60000]);
 	await page.locator("#X3").scrollIntoViewIfNeeded();
-	await page.locator("#X3 [data-lab-play]").click();
+	await press(page, "#X3 [data-lab-play]");
 	await page.waitForTimeout(400);
-	await page.locator("#X3 [data-lab-play]").click();
+	await press(page, "#X3 [data-lab-play]");
 	await expect(page.locator("#X3 [data-lab-check]")).toHaveAttribute(
 		"data-kept",
 		"true",
