@@ -7,7 +7,9 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
-Prepared for 0.9.0, not yet tagged. Motion is named by what moves: a
+## [0.9.0] - 2026-11-20
+
+Motion is named by what moves: a
 control, a layer, content, the place or work in flight. "Settle" had come to
 mean three things in three products; now every motion word has one meaning,
 its mechanics, examples and counterexamples, and checks that hold products to
@@ -593,7 +595,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.8.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.9.0...main
+[0.9.0]: https://github.com/kinra-ai/kinra-design/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/kinra-ai/kinra-design/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/kinra-ai/kinra-design/compare/v0.6.0...v0.7.0

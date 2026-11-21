@@ -1,8 +1,9 @@
 # Motion
 
-Status: draft for 0.9.0. Blake approved the vocabulary and the lab on
-2026-11-20. The defaults under [Decisions](#decisions) await his review, and
-values may change when he calibrates them on `/motion/calibrate/`.
+Status: released in 0.9.0 on 2026-11-20. Blake approved the vocabulary and
+the lab and released the standard with the defaults under
+[Decisions](#decisions), which await his review; a calibration round on
+`/motion/calibrate/` may move values in a later release.
 
 How everything that moves on a Kinra surface moves, and why. This page is
 the motion standard: consumers apply it rather than reinterpreting it, and a
@@ -668,6 +669,8 @@ delightful or playful. Write the mechanics instead.
   it is released.
 - 2026-11-20 (Blake): the vocabulary and the lab are right, and the work goes
   on to 0.9.0.
+- 2026-11-20 (Blake): 0.9.0 releases the standard, beside graphite's wider
+  tones.
 
 ### Defaults awaiting Blake's review
 

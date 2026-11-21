@@ -43,12 +43,12 @@ adoption map.
 
 ## Install
 
-The latest immutable release is `v0.8.0`:
+The latest immutable release is `v0.9.0`:
 
 ```json
 {
   "dependencies": {
-    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.8.0"
+    "@kinra/web": "git+https://github.com/kinra-ai/kinra-design.git#v0.9.0"
   }
 }
 ```

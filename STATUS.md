@@ -7,16 +7,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.8.0` (2026-11-20, authorized by Blake). It ships
-  shared page and list structure, spacing roles and the spacing check, the
-  optional Svelte 5 layer, and the revised notice, toast and switch styling.
-  Consumer upgrades follow the
-  [adoption guide](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer).
-- Prepared: `0.9.0`, motion by what moves, on `design/motion`. `package.json`
-  and both root lockfile versions read 0.9.0; it is not tagged, and tagging
-  and pushing wait for Blake's authorization. Graphite's wider tones sit on
-  `design/tones`, cut from it; whether they join 0.9.0 is Blake's call.
-- Prior releases: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
+- Latest immutable tag: `v0.9.0` (2026-11-20, authorized by Blake). It names
+  motion by what moves, with registers, checks, a script reader and the
+  `/motion/` lab, and stands graphite's tones a full step apart. Consumer
+  upgrades follow the
+  [adoption guide](docs/adoption.md#moving-to-09-motion-by-what-moves).
+- Prior releases: `v0.8.0` (2026-11-20, shared page and list structure,
+  spacing roles and check, and the optional Svelte 5 layer; authorized by
+  Blake), `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
   spacing refinements and the shell guide and first-paint correction;
   authorized by Blake), `v0.7.0` (2026-10-12, shared application shell and
   accessibility fixes; authorized by Blake), `v0.6.0` (2026-10-11, sans application language,
@@ -32,23 +30,22 @@ adoption map; this file only tracks current state, not process.
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
 
-## Verification of 0.8.0
+## Verification of 0.9.0
 
 - `npm ci`, `npm run verify`, `npm audit` and `npm pack --dry-run` pass on
-  Node 26.7.0 and npm 11.17.0. Verification covers the public contract,
-  spacing, 44 unit tests, Svelte and Astro types, formatting, the production
-  reference build and 226 Chromium and WebKit cases. The audit reports zero
-  vulnerabilities. The manifest includes 114 public files, including the
-  Svelte source, declarations and spacing command. A CSS-only install
-  resolves the stylesheet and runs the spacing command with Svelte absent.
-- GitHub reports `v0.2.1` as the latest Kinra Type tag at
-  `fe38f4d6b72afccacff1d94784499d4e7da74474`. The five vendored WOFF2 files
-  and `OFL.txt` match the frozen Type release byte for byte. See
-  [`assets/fonts/VENDORED.md`](assets/fonts/VENDORED.md) for the hashes.
+  Node 26.9.0 and npm 11.17.0. Verification covers the public contract and
+  token list, the spacing and motion checks, 139 unit tests, Svelte and Astro
+  types, formatting, the production reference build and 389 Chromium and
+  WebKit cases, one more skipped where WebKit cannot run it. The audit
+  reports zero vulnerabilities. The manifest includes 124 public files. A
+  CSS-only install resolves the stylesheet and the motion reader and runs
+  both commands with Svelte absent.
+- The vendored Kinra Type `v0.2.1` fonts are unchanged since 0.8.0; see
+  [`assets/fonts/VENDORED.md`](assets/fonts/VENDORED.md) for their hashes.
 
 ## Development
 
-- **Graphite tones (2026-11-20; on `design/tones`):** Blake felt graphite's
+- **Graphite tones (0.9.0, 2026-11-20):** Blake felt graphite's
   panels and header bands needed a line to hold their edge. Its tones stood
   about 0.026 apart in OKLCH lightness, half of what dark systems step
   without lines, and a lit room's veil took a third of that. On `/tones/` he
@@ -57,7 +54,7 @@ adoption map; this file only tracks current state, not process.
   the rule and `tests/unit/tones.test.js` checks it; paper is unchanged. The
   adoption guide lists the products that copy graphite values.
 
-- **Motion by what moves (prepared for 0.9.0; on `design/motion`):**
+- **Motion by what moves (0.9.0, 2026-11-20):**
   [`docs/motion.md`](docs/motion.md) defines seventeen terms in five families,
   each with its mechanics, examples and counterexamples, after "settle" had
   come to mean three things in three products. Controls, layers and work in
@@ -290,10 +287,11 @@ verify` passed with 100 Chromium and WebKit cases, 60 of them the shell's,
 
 ## Next event
 
-Blake's review of 0.9.0: the defaults in `docs/motion.md`, values on
-`/motion/calibrate/`, whether graphite's tones join it, then authorization to
-tag. Observatory, Space and Relay
-then adopt it in their own sessions, as `docs/adoption.md` describes.
+Observatory, Space and Relay adopt 0.9.0 in their own sessions, as
+`docs/adoption.md` describes, and every product that copies a graphite value
+replaces it. Blake's review of the defaults in `docs/motion.md` and a
+calibration round on `/motion/calibrate/` may move values in a later
+release.
 
 Products adopting 0.8.0 follow `docs/adoption.md`; until Relay moves to
 `Shell`, it keeps its breakpoint's query, `(max-width: 59.99rem)`, in its own
