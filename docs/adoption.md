@@ -745,11 +745,24 @@ consumers for as long as each product needs.
 - **Kinra Site** and **Gateway** pin the exact expanded-system test commit
   `21327ae489243316988019e6b6ca9a7737982699` through public GitHub codeload
   URLs and package-lock integrity.
-- **Kinra Space** pins **0.7.0** at exact commit
-  `3708fc229556d57e80720b5f497d581581b80e2a`, with package-lock integrity,
-  since its `a518d7ed` (2026-10-12), the commit that moved it onto the shared
-  shell, including `wordmark-space.svg`. Space 0.20.0 (`v0.20.0`, `4c8934c7`)
-  released it.
+- **Kinra Space** pins **0.9.1** at exact commit
+  `02aa3f4f26cf5c6fda428f7afe4c80ec5f103b49`, with package-lock integrity,
+  since its `86b59f96` (2026-11-20); it pinned 0.7.0 from its `a518d7ed`, the
+  commit that moved it onto the shared shell. Its `49df6460` writes the shared
+  page and section heads through its own `PageHead` and `SectionHead` rather
+  than the Svelte layer, its `18bca1ec` runs `kinra-check-spacing` strictly,
+  and its `075c14bd` moves it to the terms, lets Design draw its dialogs'
+  arrival and exit, and adds `kinra-check-motion --strict` and the guard. Its
+  adoption found what 0.9.1 fixes, a head's description beside a short title
+  in a wide head, and three things the next consumer meets: a product that
+  removes a dialog when its exit ends should mark the closing dialog inert and
+  `aria-hidden`, since it stays displayed for the exit and a test or reader
+  otherwise finds its controls twice; the shared page head keeps reading
+  order, so a product that kept a narrow page's action on the title's line
+  keeps a rule of its own for it; and a project that type-checks JavaScript
+  excludes the copied guard. `scripts/check-layout-css.mjs` stays for the two
+  rules the spacing check does not hold, and its widget kit, which loads
+  without Design, carries Design's numbers outside the motion check.
 - **Kinra Home** pins **0.7.0** through `#v0.7.0`, resolved by its lockfile to
   `3708fc229556d57e80720b5f497d581581b80e2a`, since its `7412712` (2026-10-12),
   the commit that moved it onto the shared shell.
@@ -760,10 +773,10 @@ consumers for as long as each product needs.
   to `3708fc229556d57e80720b5f497d581581b80e2a`, since its first commit
   `097d7b3` (2026-11-13). It uses the shell's frame without the drawer or the
   fold.
-  These four pins were read from each owner's manifest and lockfile on
-  2026-11-20, in the local checkouts at Space `db1eeae3`, Home `8cfd070`,
-  Relay `6d804088` and Thread `d4be2ad`; Space, Home and Relay are unchanged
-  since 2026-10-12. Each consumer's package/lockfile owns its current revision
+  Home's, Relay's and Thread's pins were read from each owner's manifest and
+  lockfile on 2026-11-20, in the local checkouts at Home `8cfd070`, Relay
+  `6d804088` and Thread `d4be2ad`; Home and Relay are unchanged since
+  2026-10-12. Each consumer's package/lockfile owns its current revision
   and its own gates own upgrade evidence.
 - **Kinra Observatory** pins **0.9.0** through the public codeload archive of
   `f1f434b8650b88b2eee41c1198a21f6aaeb99917`, with package-lock integrity,
