@@ -7,6 +7,12 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Fixed
+
+- A page or section head's description always stands on its own line beneath
+  the title. Its prose measure kept it narrow enough to fit beside a short
+  title in a wide head.
+
 ## [0.9.0] - 2026-11-20
 
 Motion is named by what moves: a

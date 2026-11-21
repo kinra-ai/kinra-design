@@ -82,6 +82,9 @@
 		max-inline-size: 100%;
 	}
 
+	/* The description always takes a line of its own. A measure on its box
+	   would let it fit beside a short title in a wide head, so the measure is
+	   the room it leaves at its end instead. */
 	.kin-page-head__description,
 	.kin-section-head__description {
 		color: var(--kin-color-text-muted);
@@ -89,7 +92,7 @@
 		font-size: var(--kin-text-sm);
 		line-height: 1.55;
 		margin: 0;
-		max-inline-size: var(--kin-measure-prose);
+		padding-inline-end: max(0px, 100% - var(--kin-measure-prose));
 	}
 
 	/* Sections: open groups of the page, spaced by room rather than rules. */
