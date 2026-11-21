@@ -60,18 +60,21 @@
 :root {
 	color-scheme: dark;
 
-	/* Ground and structure */
-	--kin-color-ground: light-dark(#f6f5f2, #101114);
-	--kin-color-ground-deep: light-dark(#eeede9, #0c0d10);
-	--kin-color-surface: light-dark(#fdfcf9, #14171d);
-	--kin-color-surface-raised: light-dark(#ffffff, #1a1d23);
+	/* Ground and structure. Graphite's tones stand one step apart, 0.045 in
+	   OKLCH lightness, so a plane holds its edge with no line: ground-deep one
+	   step below the page, the surface one above it, surface-raised two.
+	   docs/catalog.md#tones owns the ladder and its check. */
+	--kin-color-ground: light-dark(#f6f5f2, #141518);
+	--kin-color-ground-deep: light-dark(#eeede9, #0b0c0f);
+	--kin-color-surface: light-dark(#fdfcf9, #1d2026);
+	--kin-color-surface-raised: light-dark(#ffffff, #282b31);
 	--kin-color-text: light-dark(#15171c, #e3e3e6);
 	--kin-color-text-subtle: light-dark(#3d414a, #b4b8bf);
-	--kin-color-text-muted: light-dark(#585e68, #8c9099);
+	--kin-color-text-muted: light-dark(#585e68, #9b9fa8);
 	--kin-color-text-inverse: light-dark(#ffffff, #101114);
-	--kin-color-rule: light-dark(#d3d6dc, #2a2e36);
-	--kin-color-rule-strong: light-dark(#b3b8c1, #3a3f49);
-	--kin-color-control-edge: light-dark(#7f8691, #626975);
+	--kin-color-rule: light-dark(#d3d6dc, #343840);
+	--kin-color-rule-strong: light-dark(#b3b8c1, #444953);
+	--kin-color-control-edge: light-dark(#7f8691, #6d7480);
 	--kin-color-transparent: transparent;
 
 	/* Signal roles */
@@ -129,16 +132,21 @@
 		var(--kin-color-text) 6%,
 		transparent
 	);
-	/* Space's soft layers: translucent roles work on either ground. */
+	/* Space's soft layers: translucent roles work on either ground. On
+	   graphite a card stands one step over the plane beneath it and a well
+	   0.8 of a step below. */
 	--kin-surface-step: color-mix(in srgb, var(--kin-color-text) 5%, transparent);
 	--kin-surface-card: light-dark(
 		rgb(255 255 255 / 0.9),
-		color-mix(in srgb, var(--kin-color-text) 3.5%, transparent)
+		color-mix(in srgb, var(--kin-color-text) 5.4%, transparent)
 	);
 	--kin-surface-card-ring: 0 0 0 1px
 		light-dark(rgb(21 23 28 / 0.05), transparent);
-	--kin-surface-well: light-dark(rgb(21 23 28 / 0.04), rgb(0 0 0 / 0.22));
-	--kin-surface-well-hover: light-dark(rgb(21 23 28 / 0.065), rgb(0 0 0 / 0.3));
+	--kin-surface-well: light-dark(rgb(21 23 28 / 0.04), rgb(0 0 0 / 0.266));
+	--kin-surface-well-hover: light-dark(
+		rgb(21 23 28 / 0.065),
+		rgb(0 0 0 / 0.346)
+	);
 	--kin-surface-lift: var(--kin-surface-hover);
 	--kin-surface-lift-hover: color-mix(
 		in srgb,

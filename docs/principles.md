@@ -15,7 +15,11 @@ longer every small thing. Amended 2026-11-20 (Blake): motion is named by what
 moves. Controls, layers and work in flight move the same on every surface;
 content and place take a register, productive or expressive, set on a page or
 any subtree as a scheme is. [`motion.md`](motion.md) owns the vocabulary,
-each term's mechanics and their checks.
+each term's mechanics and their checks. Amended 2026-11-20 (Blake):
+graphite's tones stand one step apart, 0.045 in OKLCH lightness, so a plane
+holds its edge with no line in a lit room as in a dark one; the page rose to
+give ground-deep a step below it. [`catalog.md`](catalog.md#tones) owns the
+ladder and its check.
 
 ## One identity, different surfaces
 
@@ -55,13 +59,13 @@ pages open with a plain title and one sentence.
 ## Layers are soft, marks are exact
 
 A surface's shape says which layer it is. The page panel, the cards and
-composers on it, and the rows inside them each sit a step apart in tone, and
-their radii step down as they nest. Shadow belongs only to what floats above
-the page: a composer over a scrolling conversation, a panel, a dialog. What
-floats has an edge of its own tone, a hairline dark on paper and light on
-graphite, and at most a short shadow, black on graphite, so depth reads as
-cleanly on an OLED screen or over pure black as on paper. Content inside a
-layer stays flat.
+composers on it, and the rows inside them each sit a step apart in tone, a
+step wide enough to hold an edge with no line, and their radii step down as
+they nest. Shadow belongs only to what floats above the page: a composer over
+a scrolling conversation, a panel, a dialog. What floats has an edge of its
+own tone, a hairline dark on paper and light on graphite, and at most a short
+shadow, black on graphite, so depth reads as cleanly on an OLED screen or over
+pure black as on paper. Content inside a layer stays flat.
 
 Small things stay exact: they sit on whole pixels, keep one size for each
 role, and are never softened to look friendly. Their shape follows what they

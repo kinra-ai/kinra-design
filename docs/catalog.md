@@ -78,6 +78,44 @@ operations recipes raise their default controls to the same target. Touch text
 inputs use at least 16px to avoid focus zoom. A consumer may keep product
 chrome compact where its own interaction contract calls for it.
 
+### Tones
+
+Graphite separates planes by tone alone, so the step between two tones is all
+that holds a plane's edge. Its tones stand one step apart, 0.045 in OKLCH
+lightness, about 5 L*: `--kin-color-ground-deep` one step below the page,
+`--kin-color-surface` one above it and `--kin-color-surface-raised` two. A
+card stands one step over the plane beneath it and a well at least 0.8 of a
+step below, so two planes that meet with no line are never less than 0.8 of a
+step apart. Muted text holds 4.5:1 on the lightest tone, a row under the
+pointer on a raised layer; the control edge holds 3:1 on a card and a raised
+layer; and code's colours 4.5:1 on `--kin-color-ground-deep` and
+`--kin-color-surface`. Paper keeps its own values. `tests/unit/tones.test.js`
+holds `tokens.css` to this table and the table to these rules. The catalog's
+`/tones/` page shows why the steps widened on 2026-11-20 and measures every
+place two tones meet.
+
+<!-- tones:graphite -->
+
+| Token                        | Graphite  | OKLCH lightness |
+| ---------------------------- | --------- | --------------- |
+| `--kin-color-ground-deep`    | `#0b0c0f` | 0.155           |
+| `--kin-color-ground`         | `#141518` | 0.196           |
+| `--kin-color-surface`        | `#1d2026` | 0.243           |
+| `--kin-color-surface-raised` | `#282b31` | 0.289           |
+| `--kin-color-rule`           | `#343840` | 0.340           |
+| `--kin-color-rule-strong`    | `#444953` | 0.405           |
+| `--kin-color-control-edge`   | `#6d7480` | 0.557           |
+| `--kin-color-text-muted`     | `#9b9fa8` | 0.702           |
+
+| Layer                      | Graphite       | Steps from its plane |
+| -------------------------- | -------------- | -------------------- |
+| `--kin-surface-card`       | text at 5.4%   | +1.00 over a panel   |
+| `--kin-surface-hover`      | text at 6%     | +0.97 over a card    |
+| `--kin-surface-well`       | black at 26.6% | −0.85 under a panel  |
+| `--kin-surface-well-hover` | black at 34.6% | −1.06 under a panel  |
+
+<!-- /tones:graphite -->
+
 ### Layers
 
 `--kin-radius-panel`, `--kin-radius-layer`, and `--kin-radius-row` step down

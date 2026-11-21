@@ -232,9 +232,10 @@ new styling refresh. The [changelog](../CHANGELOG.md) owns the complete lists.
 
 ## Moving to 0.9: motion by what moves
 
-Version 0.9.0 names motion by what moves, in [`motion.md`](motion.md).
-Existing tokens keep their values, so a product that only uses
-`--kin-motion-control`, `-surface` and `-layer` sees no change from them.
+Version 0.9.0 names motion by what moves, in [`motion.md`](motion.md), and
+stands graphite's tones a full step apart. Existing motion tokens keep their
+values, so a product that only uses `--kin-motion-control`, `-surface` and
+`-layer` sees no motion change from them.
 
 - **Terms and registers.** Every term is `--kin-duration-<term>` and
   `--kin-motion-<term>`. Content and place read `data-kin-motion`: productive
@@ -281,6 +282,13 @@ Existing tokens keep their values, so a product that only uses
   filling in its adapt block.
 - **Entries.** The candidate [entries pattern](../registry/patterns/entries/README.md)
   carries first-sight entries for expressive subtrees.
+- **Graphite's tones.** The page, ground-deep, surfaces, raised layers,
+  rules, muted text, the control edge, cards and wells change on graphite, as
+  [`catalog.md`](catalog.md#tones) lists; paper does not. A product that reads
+  the tokens follows. One that copies a graphite value keeps the old one and
+  no longer matches its own page: a theme colour, a manifest's background, an
+  offline page, a first paint or a native palette. Replace each copy with the
+  token or its new value. App icons are brand images and keep theirs.
 
 Per product, each in its own session:
 
@@ -293,7 +301,8 @@ Per product, each in its own session:
   with their `signature:` reasons: the hands' sweep and beat, the pulse
   strip's glide, the ribbon, the solar wind, the zoom's pace, the NTP
   exchange, the Sun's breath and light, and the time-lapse. Keep its
-  off-screen, hands-only and pulse-strip tests.
+  off-screen, hands-only and pulse-strip tests. Its tones all come from the
+  tokens.
 - **Kinra Space** replaces `motion.ts`'s Svelte curves and duration mirror
   with Design's terms; renames `@keyframes settle` and `settle-still` to
   appear's, and its `settle()` gate; removes its own layer exits where
@@ -301,19 +310,30 @@ Per product, each in its own session:
   `responsive.css`, which keeps `animationend` from firing; keeps its caption
   shimmer as its signature; follows the live edge's source; restates the
   Motion table in `docs/interface.md` in the standard's terms; and calls
-  `navigated()`.
+  `navigated()`. It copies the old ground `#101114` in `src/app.html`'s theme
+  colours and first paint, `static/manifest.webmanifest`, `static/offline.html`
+  and its PWA test, and older graphite values in `src/widget/space.css`.
 - **Kinra Relay** fixes `src/app.css:4059`, where
   `var(--kin-motion-control, 120ms) ease` is invalid and the row gets no
   transition; gives a row a change has touched the tone bar, held still with
   less motion, in place of its edge line; renames `settle` to exit, `lift` to
   appear and `bloom` to appear's open form; uses Design's curves; lets cards
   answer the pointer in tone; records Play as a signature; and removes its own
-  layer exits where Design's apply.
-- **Kinra Home, Kinra Thread, Kinra Site, Kin and Scope** take the release
-  with nothing to change.
+  layer exits where Design's apply. `--relay-shelf` copies the old
+  `#0c0d10` in `src/app.css` and `screen/src/app.css`; it reads
+  `--kin-color-ground-deep` instead.
+- **Kinra Home, Kinra Thread and Kinra Site** have no motion to change, but
+  copy the old ground `#101114` in their theme colours, manifests and, for
+  Home, its offline page and install prompt. **Kin and Scope** take the
+  release with nothing to change. **Kinra Space for Apple** and **Kinra TV**
+  copy graphite into Swift (`Ground.swift`, `ComposerBar.swift` and
+  `GroundMessage.swift`; `Core/Brand.swift`); each takes the new values from
+  the catalog's table.
 
 Compare dialogs, drawers, popovers and toasts closing, the switch and the
-disclosure, on both grounds, in both engines, with and without less motion.
+disclosure, on both grounds, in both engines, with and without less motion;
+and compare each graphite page with its last release, in a lit room as well
+as a dark one.
 
 ## Moving to 0.8: shared structure and the Svelte layer
 
