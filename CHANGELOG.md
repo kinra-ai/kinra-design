@@ -7,6 +7,11 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-20
+
+Fixes the shared heads' descriptions, which Kinra Space's adoption of 0.9.0
+found standing beside short section titles on a wide page.
+
 ### Fixed
 
 - A page or section head's description always stands on its own line beneath
@@ -601,7 +606,8 @@ Initial consumer contract release: role-named tokens, base/canvas/prose
 styles, canonical brand assets, and the release and adoption contract
 documented in `docs/adoption.md` and `docs/releasing.md`.
 
-[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.9.0...main
+[Unreleased]: https://github.com/kinra-ai/kinra-design/compare/v0.9.1...main
+[0.9.1]: https://github.com/kinra-ai/kinra-design/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/kinra-ai/kinra-design/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/kinra-ai/kinra-design/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/kinra-ai/kinra-design/compare/v0.7.0...v0.7.1

@@ -7,12 +7,14 @@ adoption map; this file only tracks current state, not process.
 
 ## Release
 
-- Latest immutable tag: `v0.9.0` (2026-11-20, authorized by Blake). It names
-  motion by what moves, with registers, checks, a script reader and the
-  `/motion/` lab, and stands graphite's tones a full step apart. Consumer
-  upgrades follow the
+- Latest immutable tag: `v0.9.1` (2026-11-20, authorized by Blake). It keeps
+  a page or section head's description on its own line beneath the title,
+  which Kinra Space's adoption of 0.9.0 found beside short section titles on
+  a wide page. Consumer upgrades from 0.8 follow the
   [adoption guide](docs/adoption.md#moving-to-09-motion-by-what-moves).
-- Prior releases: `v0.8.0` (2026-11-20, shared page and list structure,
+- Prior releases: `v0.9.0` (2026-11-20, motion named by what moves, with
+  registers, checks, a script reader and the `/motion/` lab, and graphite's
+  tones a full step apart; authorized by Blake), `v0.8.0` (2026-11-20, shared page and list structure,
   spacing roles and check, and the optional Svelte 5 layer; authorized by
   Blake), `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
   spacing refinements and the shell guide and first-paint correction;
@@ -30,16 +32,17 @@ adoption map; this file only tracks current state, not process.
   registry publication sits behind it, so this repository owns no deploy
   command. Each consumer deploys its own site from the version it pins.
 
-## Verification of 0.9.0
+## Verification of 0.9.1
 
 - `npm ci`, `npm run verify`, `npm audit` and `npm pack --dry-run` pass on
-  Node 26.9.0 and npm 11.17.0. Verification covers the public contract and
-  token list, the spacing and motion checks, 139 unit tests, Svelte and Astro
-  types, formatting, the production reference build and 389 Chromium and
-  WebKit cases, one more skipped where WebKit cannot run it. The audit
-  reports zero vulnerabilities. The manifest includes 124 public files. A
-  CSS-only install resolves the stylesheet and the motion reader and runs
-  both commands with Svelte absent.
+  Node 26.7.0 and npm 11.17.0 through `mise.lock`. Verification covers the
+  public contract and token list, the spacing and motion checks, 139 unit
+  tests, Svelte and Astro types, formatting, the production reference build
+  and 389 Chromium and WebKit cases, one more skipped where WebKit cannot run
+  it. The audit reports zero vulnerabilities. The manifest includes 124
+  public files. Kinra Space's layout audit, run in Chromium and WebKit with
+  this release's `page.css`, shows every section description beneath its
+  title with no new findings.
 - The vendored Kinra Type `v0.2.1` fonts are unchanged since 0.8.0; see
   [`assets/fonts/VENDORED.md`](assets/fonts/VENDORED.md) for their hashes.
 
