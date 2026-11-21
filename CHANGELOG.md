@@ -11,7 +11,9 @@ Prepared for 0.9.0, not yet tagged. Motion is named by what moves: a
 control, a layer, content, the place or work in flight. "Settle" had come to
 mean three things in three products; now every motion word has one meaning,
 its mechanics, examples and counterexamples, and checks that hold products to
-it. Existing tokens keep their values. For what changes per product, see
+it. Existing motion tokens keep their values. Graphite's tones now stand a
+full step apart, so a plane holds its edge with no line, in a lit room as in a
+dark one. For what changes per product, see
 [moving to 0.9](docs/adoption.md#moving-to-09-motion-by-what-moves).
 
 ### Added
@@ -46,8 +48,27 @@ it. Existing tokens keep their values. For what changes per product, see
   proposed value.
 - `scripts/public-tokens.json`: the contract check now fails when a public
   token disappears or appears unlisted.
+- The catalog's `/tones/` page: why graphite's steps widened, the ladders
+  weighed, every place two tones meet measured before and after, and an
+  explorer for the next calibration. `tests/unit/tones.test.js` holds
+  `tokens.css` to the ladder in [`docs/catalog.md`](docs/catalog.md#tones).
 
 ### Changed
+
+- Graphite's tones stand one step apart, 0.045 in OKLCH lightness, about 5
+  L*. They stood about 0.026 apart, and a lit room's veil of light took a
+  third of that, so a plane needed a line to hold its edge. The page rose to
+  give ground-deep a step below it. On graphite, `--kin-color-ground` moves
+  from `#101114` to `#141518`, `--kin-color-ground-deep` from `#0c0d10` to
+  `#0b0c0f`, `--kin-color-surface` from `#14171d` to `#1d2026`,
+  `--kin-color-surface-raised` from `#1a1d23` to `#282b31`,
+  `--kin-color-rule` from `#2a2e36` to `#343840` and `--kin-color-rule-strong`
+  from `#3a3f49` to `#444953`. `--kin-color-text-muted` (`#8c9099` to
+  `#9b9fa8`) and `--kin-color-control-edge` (`#626975` to `#6d7480`) rise so
+  they keep 4.5:1 and 3:1 on the lightest tone. `--kin-surface-card` takes 5.4%
+  of the text colour (from 3.5%), and `--kin-surface-well` 26.6% black (from
+  22%) and `--kin-surface-well-hover` 34.6% (from 30%). Paper, the hover
+  tones and `--kin-color-text-inverse` keep their values.
 
 - Layers leave the way they came, faster. Dialogs, drawers and popovers exit
   at 180ms on the in curve, half their arrival distance, where the browser

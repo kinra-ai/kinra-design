@@ -1,0 +1,311 @@
+/*
+ * The graphite tones page (/tones/). Layout only: every tone a scene shows is
+ * a token, resolved by the ladder its own element carries.
+ */
+
+.tones-findings {
+	display: grid;
+	font-family: var(--kin-font-prose);
+	gap: var(--kin-space-3);
+	margin: 0;
+	max-width: var(--kin-measure-content);
+	padding-inline-start: var(--kin-space-5);
+}
+
+.tones-findings strong {
+	color: var(--kin-color-text);
+}
+
+.tones-scenes {
+	display: grid;
+	gap: var(--kin-space-5);
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.tones-scene {
+	border-radius: var(--kin-radius-panel);
+	display: grid;
+	margin: 0;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.tones-scene > figcaption {
+	display: grid;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	padding: var(--kin-space-4) var(--kin-space-4) 0;
+}
+
+.tones-scene > figcaption code {
+	color: var(--kin-color-text-muted);
+}
+
+.tones-scene__page {
+	display: grid;
+	gap: var(--kin-space-3);
+	padding: var(--kin-space-4);
+}
+
+.tones-scene__band {
+	background: var(--kin-color-ground-deep);
+	border-radius: var(--kin-radius-row);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+	padding: var(--kin-space-3);
+}
+
+.tones-scene__band code {
+	color: var(--kin-color-text-muted);
+}
+
+.tones-scene__pair {
+	display: grid;
+	gap: var(--kin-space-3);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tones-scene .kin-card {
+	min-width: 0;
+}
+
+.tones-scene__code {
+	background: var(--kin-color-ground-deep);
+	border-radius: var(--kin-radius-row);
+	color: var(--kin-color-text-subtle);
+	font-family: var(--kin-font-code);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+	overflow: hidden;
+	padding: var(--kin-space-3);
+	white-space: normal;
+}
+
+.tones-scene__app {
+	background: var(--kin-shell-shelf);
+	display: grid;
+	grid-template-columns: var(--kin-space-8) minmax(0, 1fr);
+	padding-block-start: var(--kin-space-3);
+}
+
+.tones-scene__shelf {
+	align-content: start;
+	display: grid;
+	gap: var(--kin-space-3);
+	justify-items: center;
+	padding-block-start: var(--kin-space-2);
+}
+
+.tones-scene__shelf span {
+	background: var(--kin-color-text-muted);
+	border-radius: var(--kin-radius-mark);
+	height: var(--kin-space-2);
+	opacity: 0.6;
+	width: var(--kin-space-2);
+}
+
+.tones-scene__panel {
+	background: var(--kin-shell-panel);
+	border-start-start-radius: var(--kin-radius-panel);
+	display: grid;
+	gap: var(--kin-space-3);
+	min-width: 0;
+	padding: var(--kin-space-4);
+}
+
+.tones-scene__title {
+	font-size: var(--kin-text-sm);
+	font-weight: var(--kin-weight-strong);
+	margin: 0;
+}
+
+.tones-scene__muted {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+	margin: 0;
+}
+
+.tones-scene__hover {
+	background: var(--kin-surface-hover);
+}
+
+.tones-scene__raised {
+	align-items: center;
+	background: var(--kin-color-surface-raised);
+	border-radius: var(--kin-radius-layer);
+	box-shadow: var(--kin-shadow-overlay);
+	display: flex;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-3);
+	justify-content: space-between;
+	padding: var(--kin-space-3);
+}
+
+.tones-scene__hint {
+	color: var(--kin-color-text-muted);
+}
+
+/* Tables */
+
+.tones-table th span,
+.tones-table td span {
+	color: var(--kin-color-text-muted);
+	display: block;
+	font-size: var(--kin-text-xs);
+	font-weight: var(--kin-weight-quiet);
+}
+
+.tones-table td {
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+[data-reach]::before {
+	background: var(--reach);
+	border-radius: var(--kin-radius-mark);
+	content: "";
+	display: inline-block;
+	height: var(--kin-space-2);
+	margin-inline-end: var(--kin-space-2);
+	vertical-align: 0.1em;
+	width: var(--kin-space-2);
+}
+
+[data-reach="low"] {
+	--reach: var(--kin-color-error);
+}
+
+[data-reach="near"] {
+	--reach: var(--kin-color-warning);
+}
+
+[data-reach="holds"] {
+	--reach: var(--kin-color-success);
+}
+
+.tones-values span {
+	color: var(--kin-color-text-subtle);
+	font-family: var(--kin-font-code);
+}
+
+/* Explorer */
+
+.tones-explore {
+	align-items: start;
+	display: grid;
+	gap: var(--kin-space-6);
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.tones-explore__controls {
+	display: grid;
+	gap: var(--kin-space-4);
+	min-width: 0;
+}
+
+.tones-slider {
+	display: grid;
+	font-size: var(--kin-text-sm);
+	gap: var(--kin-space-2);
+}
+
+.tones-slider span {
+	display: flex;
+	justify-content: space-between;
+}
+
+.tones-slider output {
+	color: var(--kin-color-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.tones-slider input {
+	accent-color: var(--kin-color-primary);
+	width: 100%;
+}
+
+.tones-explore__readings {
+	display: grid;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tones-explore__readings li {
+	align-items: baseline;
+	display: grid;
+	gap: var(--kin-space-2);
+	grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 9rem);
+}
+
+.tones-explore__readings strong {
+	font-variant-numeric: tabular-nums;
+}
+
+.tones-explore__readings li > span:last-child {
+	color: var(--kin-color-text-muted);
+}
+
+.tones-copy {
+	display: grid;
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-2);
+}
+
+.tones-copy textarea {
+	font-family: var(--kin-font-code);
+	font-size: var(--kin-text-xs);
+}
+
+/* Other systems */
+
+.tones-systems {
+	display: grid;
+	gap: var(--kin-space-5);
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.tones-system p {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: var(--kin-text-sm);
+	gap: var(--kin-space-3);
+	margin: 0 0 var(--kin-space-2);
+}
+
+.tones-system p span {
+	color: var(--kin-color-text-muted);
+}
+
+.tones-system ol {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	overflow-x: auto;
+	padding: 0;
+}
+
+.tones-system li {
+	background: var(--tone);
+	color: #e3e3e6;
+	display: grid;
+	flex: 1 0 7rem;
+	font-family: var(--kin-font-code);
+	font-size: var(--kin-text-xs);
+	gap: var(--kin-space-1);
+	min-height: var(--kin-space-10);
+	padding: var(--kin-space-3);
+	position: relative;
+}
+
+.tones-system__step {
+	color: #8c9099;
+}
+
+.tones-note {
+	color: var(--kin-color-text-muted);
+	font-size: var(--kin-text-xs);
+	margin-top: var(--kin-space-4);
+}

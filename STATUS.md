@@ -14,7 +14,8 @@ adoption map; this file only tracks current state, not process.
   [adoption guide](docs/adoption.md#moving-to-08-shared-structure-and-the-svelte-layer).
 - Prepared: `0.9.0`, motion by what moves, on `design/motion`. `package.json`
   and both root lockfile versions read 0.9.0; it is not tagged, and tagging
-  and pushing wait for Blake's authorization.
+  and pushing wait for Blake's authorization. Graphite's wider tones sit on
+  `design/tones`, cut from it; whether they join 0.9.0 is Blake's call.
 - Prior releases: `v0.7.1` (2026-11-14, Kinra Type 0.2.1's ampersand and Sans
   spacing refinements and the shell guide and first-paint correction;
   authorized by Blake), `v0.7.0` (2026-10-12, shared application shell and
@@ -47,21 +48,27 @@ adoption map; this file only tracks current state, not process.
 
 ## Development
 
+- **Graphite tones (2026-11-20; on `design/tones`):** Blake felt graphite's
+  panels and header bands needed a line to hold their edge. Its tones stood
+  about 0.026 apart in OKLCH lightness, half of what dark systems step
+  without lines, and a lit room's veil took a third of that. On `/tones/` he
+  chose a ladder a full step (0.045) apart with the page lifted 0.02.
+  `tokens.css` carries it, [`docs/catalog.md`](docs/catalog.md#tones) owns
+  the rule and `tests/unit/tones.test.js` checks it; paper is unchanged. The
+  adoption guide lists the products that copy graphite values.
+
 - **Motion by what moves (prepared for 0.9.0; on `design/motion`):**
   [`docs/motion.md`](docs/motion.md) defines seventeen terms in five families,
   each with its mechanics, examples and counterexamples, after "settle" had
   come to mean three things in three products. Controls, layers and work in
-  flight move the same everywhere; content and place take a register,
-  productive or expressive, set by `data-kin-motion`. Design's own CSS moves
-  by the terms and passes `kinra-check-motion --strict`; dialogs, drawers and
-  popovers now leave the way they came. `@kinra/web/motion` reads terms for
-  script, the entries pattern is a candidate, and a public token list holds
-  the tokens to the contract. `/motion/` plays every term and rebuilds eleven
-  corrections, each measured against its rule. Blake approved the vocabulary
-  and the lab on 2026-11-20; the defaults listed in `docs/motion.md` await
-  his review, and his calibration round may move values. A fresh-context review found no
-  blockers; its three important findings and the minor ones are fixed. `npm
-run verify` passes with 389 browser cases. Consumers keep their pins.
+  flight move the same everywhere; content and place take a register set by
+  `data-kin-motion`. Design's CSS moves by the terms and passes
+  `kinra-check-motion --strict`; layers leave the way they came.
+  `@kinra/web/motion` reads terms for script, and `/motion/` plays every term
+  and rebuilds eleven corrections. Blake approved the vocabulary and the lab
+  on 2026-11-20; the defaults in `docs/motion.md` await his review. A
+  fresh-context review's findings are fixed. `npm run verify` passes with 389
+  browser cases. Consumers keep their pins.
 
 - **Shared structure and the Svelte layer (0.8.0, 2026-11-20):** a review of
   Kinra Space's and Kinra Relay's layout passes found both building the same
@@ -153,18 +160,13 @@ run verify` passes with 389 browser cases. Consumers keep their pins.
   short-window rule is a heuristic a product with a taller rail extends; and
   a folded rail under a hovering pointer may cut off its foot in a short
   window.
-- **Design verification (2026-10-12, the 0.7.0 release commit):** after
-  `npm ci` and browser-engine setup, `npm run verify` passed: contract checks
-  (14 style files), Astro/TypeScript (0 errors, warnings or hints),
-  formatting, the 15-page reference build and 100 Chromium and WebKit cases,
-  60 of them the shell's, with forced colours emulated in both engines; the
-  suite also passed 400 runs at thirteen workers. Captures of each shell state
-  were reviewed on both grounds, right to left and in forced colours.
-  `npm pack --dry-run` lists 58 public files and `npm audit` reports zero
-  vulnerabilities. This checks the shell in its own demo, not in any product.
+- **Design verification (2026-10-12, the 0.7.0 release commit):** `npm run
+verify` passed with 100 Chromium and WebKit cases, 60 of them the shell's,
+  and 400 runs at thirteen workers; shell captures were reviewed on both
+  grounds, right to left and in forced colours. `npm audit` reported zero
+  vulnerabilities. It checks the shell in its own demo, not in a product.
 - 0.6.0 (2026-10-11) moved application UI, headings and display to sans, with
-  a documented mono override; its verification and history are in the
-  CHANGELOG.
+  a documented mono override; the CHANGELOG holds its history.
 
 - `main` contains the released design-system expansion and refresh: a paper
   scheme beside graphite, serif and sans voices beside mono, type roles,
@@ -289,12 +291,10 @@ run verify` passes with 389 browser cases. Consumers keep their pins.
 ## Next event
 
 Blake's review of 0.9.0: the defaults in `docs/motion.md`, values on
-`/motion/calibrate/`, then authorization to tag. Observatory, Space and Relay
+`/motion/calibrate/`, whether graphite's tones join it, then authorization to
+tag. Observatory, Space and Relay
 then adopt it in their own sessions, as `docs/adoption.md` describes.
 
-Each product can adopt 0.8.0 in its own repository. Relay removes its notice
-override, Space updates its switch wording, and each moves its heads, rows,
-shell wiring and spacing script to the shared ones as `docs/adoption.md`
-lists. Until Relay moves to `Shell`, it still needs its breakpoint's query,
-`(max-width: 59.99rem)`, in its own stylesheet, as the catalog's Layout step
-asks.
+Products adopting 0.8.0 follow `docs/adoption.md`; until Relay moves to
+`Shell`, it keeps its breakpoint's query, `(max-width: 59.99rem)`, in its own
+stylesheet.

@@ -174,6 +174,10 @@ or keeps. Slow the page to a tenth, or simulate less motion. Its calibration
 page, `/motion/calibrate/`, compares a token with a proposed value for a
 review round; a value changes only in `tokens.css`.
 
+Open `/tones/` to see why graphite's tones stand a full step apart: every
+place two tones meet with no line, measured before and after, beside the
+ladders weighed and other dark systems for scale.
+
 Open `/refresh/` to review the styling brought back from Kinra Space: soft
 layers on both grounds, quieter controls, the corner key's states and motion,
 labelled corner confirmations, and the live edge. All three are source to

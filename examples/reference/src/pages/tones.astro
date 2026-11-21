@@ -1,0 +1,403 @@
+---
+/*
+ * Graphite's tones: why the ladder changed on 2026-11-20, the ladders that
+ * were weighed, and an explorer for the next calibration. Graphite separates
+ * planes by tone alone, so the step between two tones is all that holds a
+ * plane's edge. Each scene carries its ladder's tokens on its own element
+ * (scripts/tones-math.ts); "Shipped" is tokens.css, which
+ * tests/unit/tones.test.js holds to the rule in docs/catalog.md#tones.
+ */
+import ReferenceLayout from "../layouts/ReferenceLayout.astro";
+import Scene from "../components/tones/Scene.astro";
+import {
+	BEFORE,
+	PRESETS,
+	SHIPPED,
+	checks,
+	declarations,
+	lstar,
+	okl,
+	pairs,
+	veiled,
+} from "../scripts/tones-math";
+import "../styles/tones-lab.css";
+
+const presets = PRESETS.map((preset) => ({
+	...preset,
+	pairs: pairs(preset.tones),
+	checks: checks(preset.tones),
+	style: declarations(preset.tones)
+		.map(([name, value]) => `${name}: ${value}`)
+		.join("; "),
+}));
+const names = presets[0].pairs.map(({ name, where }) => ({ name, where }));
+const signed = (value: number) =>
+	`${value < 0 ? "−" : "+"}${Math.abs(value).toFixed(1)}`;
+const step = (a: string, b: string) => lstar(b) - lstar(a);
+const glare = (a: string, b: string) => veiled(b, 0.01) - veiled(a, 0.01);
+
+// Published dark palettes, darkest first, for scale. Where a system steps
+// about 4 L* between planes it also draws a line; where it draws none it
+// steps further.
+const systems = [
+	{
+		name: "Kinra graphite, before",
+		line: "no line between planes",
+		tones: [BEFORE.deep, BEFORE.ground, BEFORE.surface, BEFORE.raised],
+	},
+	{
+		name: "Kinra graphite, shipped",
+		line: "no line between planes",
+		tones: [SHIPPED.deep, SHIPPED.ground, SHIPPED.surface, SHIPPED.raised],
+	},
+	{
+		name: "Material 3, baseline dark",
+		line: "no line between planes",
+		tones: ["#0f0d13", "#141218", "#1d1b20", "#211f26", "#2b2930", "#36343b"],
+	},
+	{
+		name: "Material 2, elevation overlays",
+		line: "no line between planes",
+		tones: ["#121212", "#1e1e1e", "#222222", "#272727", "#2e2e2e"],
+	},
+	{
+		name: "Apple, grouped backgrounds",
+		line: "no line between planes",
+		tones: ["#000000", "#1c1c1e", "#2c2c2e"],
+	},
+	{
+		name: "Radix, gray 1 to 4",
+		line: "a line on cards and fields",
+		tones: ["#111111", "#191919", "#222222", "#2a2a2a"],
+	},
+	{
+		name: "GitHub Primer, canvas",
+		line: "a line on every plane",
+		tones: ["#010409", "#0d1117", "#161b22"],
+	},
+	{
+		name: "Tailwind zinc, 950 to 800",
+		line: "a ring in most dark cards",
+		tones: ["#09090b", "#18181b", "#27272a"],
+	},
+];
+---
+
+<ReferenceLayout
+	title="Graphite tones"
+	description="Graphite's tone steps: why the ladder widened, where planes meet with no line, and how far apart they sit."
+	current="Surfaces"
+>
+	<header class="catalog-header">
+		<div class="catalog-header__inner kin-frame">
+			<h1 class="kin-title">Graphite tones</h1>
+			<p class="catalog-header__summary">
+				Graphite separates planes by tone alone, so the step between two tones
+				is all that holds a plane's edge. Since 2026-11-20 graphite's tones
+				stand one step apart, 0.045 in OKLCH lightness, about 5 L*. This page
+				shows why, the ladders weighed, and every step measured.
+			</p>
+		</div>
+	</header>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-finding">
+		<div class="catalog-heading">
+			<h2 id="tones-finding">Why graphite changed</h2>
+			<p>
+				Steps are in CIE L*, lightness as the eye sees it. Dark systems that
+				draw no line between planes step about 6 or more; those that step about
+				4 draw one. The numbers below are the ladder graphite had before.
+			</p>
+		</div>
+		<ol class="tones-findings">
+			<li>
+				<strong>Tone is the only edge.</strong> Kinra draws a line only where it means
+				something, so between two planes the step in tone is all there is.
+			</li>
+			<li>
+				<strong>Graphite's steps were about half of what holds an edge.</strong>
+				A panel sat 2.6 above the page, a card 3.5 above its panel, a popover 3.0,
+				and an input's well 2.2 below. Material steps about 6 from a page to what
+				sits on it and Apple about 10, with no line; Primer and Radix step about 4
+				and draw one.
+			</li>
+			<li>
+				<strong>Deep had no room.</strong> The page was L* 5.1, so a tone darker than
+				the page had almost nowhere to go: ground-deep was 1.4 below it. It is the
+				colour of the header bands, the stack's blocks, code, keys, table heads and
+				the application shelf. Inside a dialog or popover, overlays.css already made
+				it one step below that layer; on the page there was no step left.
+			</li>
+			<li>
+				<strong>Light in the room takes the rest.</strong> A display's black level
+				and its reflections add a veil of light, about 1% of white in a lit room and
+				less in a dark one. Over graphite that veil takes about a third of every step:
+				a card on a panel fell from 3.5 to 2.3. On paper it takes 1%.
+			</li>
+			<li>
+				<strong>The top was already full.</strong> Muted text on the lightest tone,
+				a row under the pointer in a popover, held 4.56:1, and the control edge on
+				a card 3.02:1. Wider steps lift the top tones, so each ladder here lifts muted
+				text and the control edge by the least that keeps 4.5:1 and 3:1.
+			</li>
+			<li>
+				<strong>What changed.</strong> The page rose by 0.02 in OKLCH lightness, which
+				gave ground-deep a full step below it, and every tone above the page stands
+				a full step from its neighbour. Of the three ladders weighed, it is the only
+				one where every meeting place clears 3.4 L*, ground-deep included, with no
+				tone near black. Paper kept its values.
+			</li>
+		</ol>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-scenes">
+		<div class="catalog-heading">
+			<h2 id="tones-scenes">Side by side</h2>
+			<p>
+				The same components in each ladder: the page with a header band, a card
+				and code on it; then an application frame, with its shelf, a panel, a
+				card, rows, an input, code and a raised layer.
+			</p>
+		</div>
+		<div class="tones-scenes">
+			{
+				presets.map((preset) => (
+					<figure
+						class="tones-scene"
+						data-lab-scope={preset.id}
+						data-kin-scheme="dark"
+						style={preset.style}
+					>
+						<figcaption>
+							<strong>{preset.label}</strong>
+							<code>{preset.note}</code>
+						</figcaption>
+						<Scene label={preset.label} />
+					</figure>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-meet">
+		<div class="catalog-heading">
+			<h2 id="tones-meet">Where tones meet</h2>
+			<p>
+				The step in L* at every place two graphite tones meet with no line, and
+				beneath it the same step through a 1% veil of room light. Marks: under
+				3, from 3 to 4.5, and 4.5 or more.
+			</p>
+		</div>
+		<div class="kin-table-wrap">
+			<table class="kin-table tones-table">
+				<thead>
+					<tr>
+						<th scope="col">Where</th>
+						{presets.map((preset) => <th scope="col">{preset.label}</th>)}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						names.map(({ name, where }, row) => (
+							<tr>
+								<th scope="row">
+									{name}
+									<span>{where}</span>
+								</th>
+								{presets.map((preset) => {
+									const { a, b } = preset.pairs[row];
+									const value = Math.abs(step(a, b));
+									return (
+										<td
+											data-reach={
+												value < 3 ? "low" : value < 4.5 ? "near" : "holds"
+											}
+										>
+											{signed(step(a, b))}
+											<span>{signed(glare(a, b))} in a lit room</span>
+										</td>
+									);
+								})}
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-hold">
+		<div class="catalog-heading">
+			<h2 id="tones-hold">What still has to hold</h2>
+			<p>
+				Text and edges keep their contrast on the lightest tone each ladder
+				makes. Muted text and the control edge moved only as far as that needs.
+			</p>
+		</div>
+		<div class="kin-table-wrap">
+			<table class="kin-table tones-table">
+				<thead>
+					<tr>
+						<th scope="col">Check</th>
+						{presets.map((preset) => <th scope="col">{preset.label}</th>)}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						presets[0].checks.map((check, row) => (
+							<tr>
+								<th scope="row">
+									{check.name}
+									<span>at least {check.floor}:1</span>
+								</th>
+								{presets.map((preset) => (
+									<td>{preset.checks[row].value.toFixed(2)}:1</td>
+								))}
+							</tr>
+						))
+					}
+					<tr>
+						<th scope="row">
+							Values
+							<span>graphite only</span>
+						</th>
+						{
+							presets.map((preset) => (
+								<td class="tones-values">
+									{
+										<>
+											<span>ground-deep {preset.tones.deep}</span>
+											<span>ground {preset.tones.ground}</span>
+											<span>surface {preset.tones.surface}</span>
+											<span>surface-raised {preset.tones.raised}</span>
+											<span>text-muted {preset.tones.muted}</span>
+											<span>rule {preset.tones.rule}</span>
+											<span>control-edge {preset.tones.edge}</span>
+											<span>
+												card {(preset.tones.card * 100).toFixed(1)}% ink
+											</span>
+											<span>
+												well {(preset.tones.well * 100).toFixed(1)}% black
+											</span>
+										</>
+									}
+								</td>
+							))
+						}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-explore">
+		<div class="catalog-heading">
+			<h2 id="tones-explore">Explore a ladder</h2>
+			<p>
+				For the next calibration: set the step, how far ground-deep sits below
+				the page, and the page's own lift, all in OKLCH lightness. It starts at
+				the shipped ladder, and the values that differ collect as lines for
+				tokens.css.
+			</p>
+		</div>
+		<div class="tones-explore" data-tones-explore>
+			<div class="tones-explore__controls">
+				<label class="tones-slider">
+					<span>Step <output data-out="step"></output></span>
+					<input
+						type="range"
+						min="0.02"
+						max="0.065"
+						step="0.001"
+						value="0.045"
+						data-param="step"
+					/>
+				</label>
+				<label class="tones-slider">
+					<span>Deep below the page <output data-out="deep"></output></span>
+					<input
+						type="range"
+						min="0.005"
+						max="0.06"
+						step="0.001"
+						value="0.045"
+						data-param="deep"
+					/>
+				</label>
+				<label class="tones-slider">
+					<span>Page lift <output data-out="lift"></output></span>
+					<input
+						type="range"
+						min="0"
+						max="0.04"
+						step="0.001"
+						value="0.02"
+						data-param="lift"
+					/>
+				</label>
+				<ul class="tones-explore__readings" data-readings></ul>
+				<label class="tones-copy">
+					<span>For tokens.css, graphite side of each light-dark()</span>
+					<textarea class="kin-textarea" rows="9" readonly data-copy></textarea>
+				</label>
+			</div>
+			<figure
+				class="tones-scene"
+				data-lab-scope="explore"
+				data-kin-scheme="dark"
+			>
+				<figcaption>
+					<strong>Your ladder</strong>
+					<code data-explore-caption></code>
+				</figcaption>
+				<Scene label="your ladder" />
+			</figure>
+		</div>
+	</section>
+
+	<section class="catalog-section kin-frame" aria-labelledby="tones-others">
+		<div class="catalog-heading">
+			<h2 id="tones-others">Other dark systems</h2>
+			<p>
+				Published dark palettes, darkest first, with the step in L* between
+				neighbours. The steps are the point, not the hues.
+			</p>
+		</div>
+		<div class="tones-systems">
+			{
+				systems.map((system) => (
+					<div class="tones-system">
+						<p>
+							<strong>{system.name}</strong>
+							<span>{system.line}</span>
+						</p>
+						<ol>
+							{system.tones.map((tone, index) => (
+								<li style={`--tone: ${tone}`}>
+									<span>{tone}</span>
+									<span>L* {lstar(tone).toFixed(1)}</span>
+									{index > 0 && (
+										<span class="tones-system__step">
+											{signed(step(system.tones[index - 1], tone))}
+										</span>
+									)}
+								</li>
+							))}
+						</ol>
+					</div>
+				))
+			}
+		</div>
+		<p class="tones-note">
+			OKLCH lightness for reference: graphite's page to panel is
+			{(okl(SHIPPED.surface) - okl(SHIPPED.ground)).toFixed(3)}, and was
+			{(okl(BEFORE.surface) - okl(BEFORE.ground)).toFixed(3)}; Material 3's
+			surface to container is {(okl("#211f26") - okl("#141218")).toFixed(3)}.
+		</p>
+	</section>
+
+	<script>
+		import { startTones } from "../scripts/tones-lab.ts";
+		startTones();
+	</script>
+</ReferenceLayout>

@@ -1,0 +1,62 @@
+---
+/*
+ * One graphite scene for the tones page: every place two tones meet with no
+ * line between them, drawn with the catalog's own components. Its ladder is
+ * the tokens set on the figure that holds it.
+ */
+interface Props {
+	label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="tones-scene__page">
+	<p class="tones-scene__band">Header band <code>deep</code> on the page</p>
+	<div class="tones-scene__pair">
+		<article class="kin-card">
+			<div class="kin-card__body">
+				<p class="kin-card__text">A card on the page</p>
+			</div>
+		</article>
+		<pre class="tones-scene__code"><code>code on the page</code></pre>
+	</div>
+</div>
+<div class="tones-scene__app">
+	<div class="tones-scene__shelf" aria-hidden="true">
+		<span></span><span></span><span></span>
+	</div>
+	<div class="tones-scene__panel">
+		<p class="tones-scene__title">Panel</p>
+		<p class="tones-scene__muted">A muted caption on the panel</p>
+		<article class="kin-card">
+			<div class="kin-card__body">
+				<p class="kin-card__text">A card on the panel</p>
+			</div>
+		</article>
+		<ul class="kin-list" data-variant="bounded">
+			<li class="kin-list__item">
+				<div class="kin-list__body">
+					<p class="kin-list__title">A row</p>
+					<p class="kin-list__meta">A muted caption</p>
+				</div>
+			</li>
+			<li class="kin-list__item tones-scene__hover">
+				<div class="kin-list__body">
+					<p class="kin-list__title">A row under the pointer</p>
+					<p class="kin-list__meta">A muted caption</p>
+				</div>
+			</li>
+		</ul>
+		<input
+			class="kin-input"
+			placeholder="An input on the panel"
+			aria-label={`An input, ${label}`}
+		/>
+		<pre class="tones-scene__code"><code>code on the panel</code></pre>
+		<div class="tones-scene__raised">
+			Raised: a popover's tone
+			<span class="tones-scene__hint">⌘K</span>
+		</div>
+	</div>
+</div>
