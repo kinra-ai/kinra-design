@@ -765,6 +765,16 @@ consumers for as long as each product needs.
   Relay `6d804088` and Thread `d4be2ad`; Space, Home and Relay are unchanged
   since 2026-10-12. Each consumer's package/lockfile owns its current revision
   and its own gates own upgrade evidence.
+- **Kinra Observatory** pins **0.9.0** through the public codeload archive of
+  `f1f434b8650b88b2eee41c1198a21f6aaeb99917`, with package-lock integrity,
+  since its `2c4a5a9` (2026-11-20); it pinned 0.7.0 before. Its `00cddf1`
+  moves it to the terms in the expressive register, reads them through
+  `@kinra/web/motion`, copies the entries pattern unchanged and declares its
+  signatures, and its `40d898d` adds `kinra-check-motion --strict` and the
+  guard. Its adoption found two things the next TypeScript consumer meets: a
+  project that type-checks JavaScript excludes the copied `entries.js` and
+  guard, which carry no types of their own; and the guard's `whole` list names
+  words and values, since an entry's own marks may rest translucent.
 - **Kin** and **Scope** copy exact assets from `21327ae`, with provenance in
   each owning vendored manifest; neither gains a runtime dependency.
 

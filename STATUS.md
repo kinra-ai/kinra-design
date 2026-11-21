@@ -254,6 +254,11 @@ verify` passed with 100 Chromium and WebKit cases, 60 of them the shell's,
   local checkouts at Space `db1eeae3`, Home `8cfd070`, Relay `6d804088` and
   Thread `d4be2ad`; Space, Home and Relay are unchanged since 2026-10-12.
   Their own package/lockfile and verification gates remain authoritative.
+- **kinra-observatory** pins Design 0.9.0 through the public codeload archive
+  of `f1f434b8650b88b2eee41c1198a21f6aaeb99917`, with lockfile integrity,
+  since its `2c4a5a9` (2026-11-20), after 0.7.0. It moves in the expressive
+  register through `@kinra/web/motion`, carries the entries pattern
+  unchanged, and runs `kinra-check-motion --strict` and the guard (`c5110e2`).
 - **Kin** and **Scope** retain exact brand assets from `21327ae`; these are
   source copies recorded in their owning vendored manifests.
 - Retired Spaces and Kinra OS pins, and retired Depot's vendored copy,
@@ -287,9 +292,9 @@ verify` passed with 100 Chromium and WebKit cases, 60 of them the shell's,
 
 ## Next event
 
-Observatory, Space and Relay adopt 0.9.0 in their own sessions, as
-`docs/adoption.md` describes, and every product that copies a graphite value
-replaces it. Blake's review of the defaults in `docs/motion.md` and a
+Space and Relay adopt 0.9.0 in their own sessions, as `docs/adoption.md`
+describes, and every product that copies a graphite value replaces it;
+Observatory has. Blake's review of the defaults in `docs/motion.md` and a
 calibration round on `/motion/calibrate/` may move values in a later
 release.
 
