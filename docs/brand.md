@@ -94,8 +94,8 @@ never the K's.
 A terminal draws the K where it can. Where the terminal offers an image
 protocol, the mark is placed from the asset itself. Where it does not, the
 name stands alone in the mono face, and the wordmark, if shown, means Kinra
-rather than the product. Outside the Kin terminal welcome exception below,
-do not approximate the K with block or ASCII characters. Its thinnest band
+rather than the product. Outside the two reviewed exceptions below, do not
+approximate the K with block, pixel or ASCII characters. Its thinnest band
 is 28 units of a 300-unit grid, so a cell rendering quantizes the proportions
 and needs a deliberately reviewed size.
 
@@ -134,6 +134,28 @@ without image passthrough. This narrow exception was approved by Blake on
 - Kin owns the derivation and its reproduction check. The exception is
   limited to its terminal welcome; it creates no product wordmark or new
   logo and does not change web lockups, application icons, or other products.
+
+## Observatory desk display exception
+
+Kinra Observatory's desk display, a 52×16 pixel panel, may place the reviewed
+eleven-row pixel rendering of the shared K beside the live product name.
+Blake approved it on 2026-11-26 after review on the panel.
+
+- Derive the pixels from the canonical K path: a pixel is lit when the path
+  covers more than half of it, and takes the blue gradient at its row's
+  centre. Eleven rows is the height at which the K's bands land on whole
+  pixels (3, 2, 1, 2 and 3 rows; 3, 3 and 3 columns), with every edge within
+  a seventh of a pixel. Other heights quantize the proportions and are not
+  admitted.
+- The asset's clear space is kept as one column each side. The source SVG
+  remains verbatim.
+- The name remains live `Observatory` text in written case, and the K spans
+  the height of the text block beside it, as a masthead does.
+- Observatory owns the derivation and its reproduction check. The exception
+  is limited to that display; it creates no product wordmark or new logo and
+  does not change web lockups, application icons, or other products. The
+  wordmark is not rendered there: at the same pixel size it is wider than the
+  panel.
 
 ## Getting the assets
 

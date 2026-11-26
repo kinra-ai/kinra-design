@@ -7,6 +7,13 @@ the pre-1.0 discipline in [`docs/releasing.md`](docs/releasing.md). See
 
 ## [Unreleased]
 
+### Changed
+
+- `docs/brand.md` admits a second reviewed cell rendering of the K: Kinra
+  Observatory's desk display may place it at eleven pixel rows, derived from
+  the canonical path, beside the live product name. No asset, token or class
+  changes.
+
 ## [0.9.1] - 2026-11-20
 
 Fixes the shared heads' descriptions, which Kinra Space's adoption of 0.9.0

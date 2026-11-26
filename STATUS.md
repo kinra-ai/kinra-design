@@ -223,7 +223,10 @@ verify` passed with 100 Chromium and WebKit cases, 60 of them the shell's,
   product wordmarks and the Facet mark are removed from `assets/`; Kinra
   Spaces replaces its wordmark with the lockup on its next upgrade. Kin's
   terminal welcome has one reviewed exception (2026-09-11, Blake): a compact
-  cell rendering of the shared K, with live product text. Kinra Space has
+  cell rendering of the shared K, with live product text. Kinra
+  Observatory's desk display has the second (2026-11-26, Blake): the K at
+  eleven pixel rows, the one height where its bands land on whole pixels,
+  not yet in a release. Kinra Space has
   the one appointed product wordmark (2026-09-13, Blake, PP-0029):
   `assets/wordmark-space.svg`, the wordmark continued by `.␣` on its grid.
 
